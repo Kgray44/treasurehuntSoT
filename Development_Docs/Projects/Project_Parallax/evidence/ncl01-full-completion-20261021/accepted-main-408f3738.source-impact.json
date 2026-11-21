@@ -1,0 +1,367 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "engineering-evidence",
+  "role": "READ_ONLY_ACCEPTED_MAIN_SOURCE_IMPACT",
+  "qualification": false,
+  "observedAtUtc": "2026-10-22T04:13:19.745Z",
+  "accepted": {
+    "before": "8e49351e62e1f32340109566557a824bfa74e14d",
+    "beforeTree": "856588ebd490a15bacbe9947763b35923fcf75ce",
+    "after": "408f37389e6dd358b1ab005d91f3f588405f61db",
+    "afterTree": "c1b234b905b04fd56f045dcd6f9ea0e646bb8a60",
+    "pullRequest": 789
+  },
+  "nclMerge": {
+    "before": "0dccf762799b03134aa9323ef0e2a7fc86af59eb",
+    "after": "ffc3cb34ae7e7bb371e2d1ab2c7c9553f3c81d58",
+    "afterTree": "bc68bba4039bf87d44317aea0295dc6a713fdb10",
+    "orderedParents": [
+      "0dccf762799b03134aa9323ef0e2a7fc86af59eb",
+      "408f37389e6dd358b1ab005d91f3f588405f61db"
+    ],
+    "deltaExactlyEqualsAcceptedFourteenFiles": true
+  },
+  "changedPathCount": 14,
+  "changedPaths": [
+    {
+      "status": "M",
+      "path": ".agents/README.md",
+      "beforeBlob": "f82e881de89af1737c423c9685168e8995266b93",
+      "afterBlob": "55c49f0525000b0553d7d913ee9f67580656e771",
+      "afterSha256": "ffa57d229fa040e09c99eab34472ccd76d1310449a54bb562ea43c5dda1ac596",
+      "afterBytes": 5058
+    },
+    {
+      "status": "A",
+      "path": ".agents/development-failure-retention-repair.md",
+      "beforeBlob": null,
+      "afterBlob": "a4569567c4d3b3eadda840eeb3abab4888d8f4b6",
+      "afterSha256": "e8b2c2305c980f5f2a8f3a408b838df517d2caf362537d984053d59fb02c3d02",
+      "afterBytes": 2951
+    },
+    {
+      "status": "A",
+      "path": "Development_Docs/Engineering/Development_Report_And_Producer_Output_Retention_Repair.md",
+      "beforeBlob": null,
+      "afterBlob": "343cd9c877397f632ebd7649bce7e5841c814751",
+      "afterSha256": "614208cc99deff451483975696816c746ff2e5464aeb7a5b0a16954beae4c2a9",
+      "afterBytes": 7473
+    },
+    {
+      "status": "M",
+      "path": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+      "beforeBlob": "9a8cad5d7401494d03b9bc442caa2bd0ca1182e7",
+      "afterBlob": "4d94360570b00628f8b008ac554187b8cb1534c0",
+      "afterSha256": "5cf96725ce66d60673302b6e5be7d73ecfb8376b03c3b8a9635f38c4a7556cde",
+      "afterBytes": 3438124
+    },
+    {
+      "status": "M",
+      "path": "Development_Docs/document-index.json",
+      "beforeBlob": "c54545f9d0aa5d413611de9acb843e985ae0cd03",
+      "afterBlob": "e18ad5b7b14c2cb251d86dd3c804705255b3a0da",
+      "afterSha256": "451956a47dd1cbc4c8822643cbb5aa2ef913baa953bb5ff4c9e2db02b4147a21",
+      "afterBytes": 545817
+    },
+    {
+      "status": "M",
+      "path": "package.json",
+      "beforeBlob": "37b096381c2acaa747a24bccee901c62215b3577",
+      "afterBlob": "94a936609579a5a517fd837deba77f628a10ad27",
+      "afterSha256": "c4ca384e34a36b08e222978fa73907d82a8e2879aeac89db3793f1fcf7f5dfcf",
+      "afterBytes": 31284
+    },
+    {
+      "status": "M",
+      "path": "scripts/sounding-line/browser-authority.mjs",
+      "beforeBlob": "2f27a5ac5b47ca07ad8737e9b8b394c7e46835b9",
+      "afterBlob": "3aa54fc3fbd342adc3218aecdccc9dd660cfb3b7",
+      "afterSha256": "ba53d79ec0dd234c9ee9aa608563f141522ddf7c05241f5547321110c2dcc55a",
+      "afterBytes": 27530
+    },
+    {
+      "status": "M",
+      "path": "scripts/sounding-line/develop-browser-suite.mjs",
+      "beforeBlob": "0b5fa3e62d7da95d7ed42a02eb4692262c5d4371",
+      "afterBlob": "7fb4e359a06b3a9bdf31b7d8c28196125b5393f1",
+      "afterSha256": "876f1580c75fcf7807f5365eb5bbcfec62e4246b3ea1c681e51d8aa848b0bf58",
+      "afterBytes": 34045
+    },
+    {
+      "status": "A",
+      "path": "scripts/sounding-line/development-failure-evidence.mjs",
+      "beforeBlob": null,
+      "afterBlob": "206222c84ccacaa7b3ae029d534d81da69fd2502",
+      "afterSha256": "f9288b0d463696f8cffca58a9d09a61b52fa34e9bf76ee9d575cd3e72ec40e26",
+      "afterBytes": 7420
+    },
+    {
+      "status": "M",
+      "path": "scripts/sounding-line/private-browser-failure-publication.mjs",
+      "beforeBlob": "0320cdb6af01f7d2635de012b0235b49dc8ca2aa",
+      "afterBlob": "ff65d156d7ef75ef75d8c1eac6146632cae8bf1b",
+      "afterSha256": "8df9671c86d606a27fc12e12b8bf5c729e04888e7f90f879f8d78952a004e7e2",
+      "afterBytes": 13648
+    },
+    {
+      "status": "M",
+      "path": "scripts/sounding-line/private-browser-failure.mjs",
+      "beforeBlob": "0ae85ada4144272ac7d6d16f380ea65164cdf72c",
+      "afterBlob": "c94376abb3fea6386986c776e51aad554803d22c",
+      "afterSha256": "538266a46905cecf75ef4ea82b477bee9913aed3db28d97957607583fb428bcc",
+      "afterBytes": 19394
+    },
+    {
+      "status": "A",
+      "path": "tests/sounding-line/development-failure-evidence.test.mjs",
+      "beforeBlob": null,
+      "afterBlob": "19d234dfa9e7bd34eb38230379ee5c6704d8b509",
+      "afterSha256": "9f35738c0d217663e5035988bddfc982f411011e7a9ac17d23352b8c49cdc459",
+      "afterBytes": 13694
+    },
+    {
+      "status": "M",
+      "path": "tests/sounding-line/private-browser-failure-lifecycle.test.mjs",
+      "beforeBlob": "05f73dd10c9250a1c0b9d2618214b6646989d0fe",
+      "afterBlob": "7d8a004dde728c152aeb2d42c898c936c106b2ac",
+      "afterSha256": "be2d03426fe0a0499df61c8c35f44797208c1b7657c6f4c5b135f0eb76926d6c",
+      "afterBytes": 17482
+    },
+    {
+      "status": "M",
+      "path": "tests/sounding-line/private-browser-failure.test.mjs",
+      "beforeBlob": "169b173e269fedaccf5cd9396530574f2d978e85",
+      "afterBlob": "f620bd0bf4ce89b7f3cb8cbc794e4a62c8edb9f6",
+      "afterSha256": "c3add1fc3f1c47c20407c3460b97927647a5d2b5e14fbf22685ee2481e13c477",
+      "afterBytes": 31575
+    }
+  ],
+  "unchangedScopes": [
+    {
+      "path": "src",
+      "nclBefore": "e411c6ef5a4aca3e52a67917fdfeb23200655b5a",
+      "nclAfter": "e411c6ef5a4aca3e52a67917fdfeb23200655b5a",
+      "nclEqual": true,
+      "acceptedBefore": "75a313c3d1d252793dedfa26c76d3e76b71e9ce6",
+      "acceptedAfter": "75a313c3d1d252793dedfa26c76d3e76b71e9ce6",
+      "acceptedEqual": true
+    },
+    {
+      "path": "native/ios",
+      "nclBefore": "7a009230e07a559b9c6584f4917f9d27724f4f9a",
+      "nclAfter": "7a009230e07a559b9c6584f4917f9d27724f4f9a",
+      "nclEqual": true,
+      "acceptedBefore": "004213a41facd4b0419b9220ea74f517413948a0",
+      "acceptedAfter": "004213a41facd4b0419b9220ea74f517413948a0",
+      "acceptedEqual": true
+    },
+    {
+      "path": "native/android",
+      "nclBefore": "dc78ec87ba6cd31260cf0ee0b417ddfaa4412a18",
+      "nclAfter": "dc78ec87ba6cd31260cf0ee0b417ddfaa4412a18",
+      "nclEqual": true,
+      "acceptedBefore": "5c687f83d536f52ef6b2bb4ec9fdbcd25d9f6881",
+      "acceptedAfter": "5c687f83d536f52ef6b2bb4ec9fdbcd25d9f6881",
+      "acceptedEqual": true
+    },
+    {
+      "path": "public",
+      "nclBefore": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+      "nclAfter": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+      "nclEqual": true,
+      "acceptedBefore": "c83c10066b6513478c9e4398f39b1f19b1c45678",
+      "acceptedAfter": "c83c10066b6513478c9e4398f39b1f19b1c45678",
+      "acceptedEqual": true
+    },
+    {
+      "path": "public/parallax/sc02",
+      "nclBefore": "fde0b1446f453c239490fe2122f510812ad4d561",
+      "nclAfter": "fde0b1446f453c239490fe2122f510812ad4d561",
+      "nclEqual": true,
+      "acceptedBefore": null,
+      "acceptedAfter": null,
+      "acceptedEqual": true
+    },
+    {
+      "path": "prisma",
+      "nclBefore": "78003b641cb139afb4ad965d5506451a671fefdf",
+      "nclAfter": "78003b641cb139afb4ad965d5506451a671fefdf",
+      "nclEqual": true,
+      "acceptedBefore": "a6352d94b93ffe8a12636f38b054a98a627fa4e4",
+      "acceptedAfter": "a6352d94b93ffe8a12636f38b054a98a627fa4e4",
+      "acceptedEqual": true
+    },
+    {
+      "path": "tests/e2e",
+      "nclBefore": "dfca40239784a21cfec9f980cfa114e0bd1e166f",
+      "nclAfter": "dfca40239784a21cfec9f980cfa114e0bd1e166f",
+      "nclEqual": true,
+      "acceptedBefore": "aedcadb36870f970448ed806c44805fcbeb2ccc1",
+      "acceptedAfter": "aedcadb36870f970448ed806c44805fcbeb2ccc1",
+      "acceptedEqual": true
+    },
+    {
+      "path": "testing/contracts.json",
+      "nclBefore": "e0adec7671ba3967ca480a0bf1e1c84731fb0463",
+      "nclAfter": "e0adec7671ba3967ca480a0bf1e1c84731fb0463",
+      "nclEqual": true,
+      "acceptedBefore": "ddf7a990800adf9febe328b8eaf1204fb3fb62f1",
+      "acceptedAfter": "ddf7a990800adf9febe328b8eaf1204fb3fb62f1",
+      "acceptedEqual": true
+    },
+    {
+      "path": "package-lock.json",
+      "nclBefore": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+      "nclAfter": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+      "nclEqual": true,
+      "acceptedBefore": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+      "acceptedAfter": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+      "acceptedEqual": true
+    },
+    {
+      "path": ".nvmrc",
+      "nclBefore": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+      "nclAfter": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+      "nclEqual": true,
+      "acceptedBefore": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+      "acceptedAfter": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+      "acceptedEqual": true
+    },
+    {
+      "path": ".github/workflows",
+      "nclBefore": "e558e3d553fea096dad666ddbe48e2230cc28380",
+      "nclAfter": "e558e3d553fea096dad666ddbe48e2230cc28380",
+      "nclEqual": true,
+      "acceptedBefore": "e558e3d553fea096dad666ddbe48e2230cc28380",
+      "acceptedAfter": "e558e3d553fea096dad666ddbe48e2230cc28380",
+      "acceptedEqual": true
+    },
+    {
+      "path": "scripts/landfall",
+      "nclBefore": "d0e21d83f79a0d0b5c0cac6d00cdb1f93ede9d78",
+      "nclAfter": "d0e21d83f79a0d0b5c0cac6d00cdb1f93ede9d78",
+      "nclEqual": true,
+      "acceptedBefore": "d24a622426987534973abf65328a59f076ab4ebd",
+      "acceptedAfter": "d24a622426987534973abf65328a59f076ab4ebd",
+      "acceptedEqual": true
+    },
+    {
+      "path": ".agents/ncl01-testflight-hosted.yml",
+      "nclBefore": "1c352e591460455d5a5b5872b5bd3066dfc08c19",
+      "nclAfter": "1c352e591460455d5a5b5872b5bd3066dfc08c19",
+      "nclEqual": true,
+      "acceptedBefore": null,
+      "acceptedAfter": null,
+      "acceptedEqual": true
+    }
+  ],
+  "packageMeaning": {
+    "changedTopLevelKeys": [
+      "scripts"
+    ],
+    "changedScripts": [
+      "test:sounding-line"
+    ],
+    "nonScriptValuesEqual": true,
+    "lockfileUnchanged": true,
+    "scriptChange": "Adds tests/sounding-line/development-failure-evidence.test.mjs to existing test:sounding-line."
+  },
+  "producerChanges": [
+    {
+      "path": "scripts/sounding-line/develop-browser-suite.mjs",
+      "lines": [
+        466,
+        472,
+        557,
+        686
+      ],
+      "meaning": "Resumes privately consumed child streams; captures bounded exact report and server/browser stdout/stderr snapshots through a failure-only callback after producer closure."
+    },
+    {
+      "path": "scripts/sounding-line/browser-authority.mjs",
+      "lines": [
+        362,
+        578,
+        587,
+        600
+      ],
+      "meaning": "Opts the browser phase into supplemental development failure retention; collects only nonzero/signal outcome after worker and server closure with a5000ms supplemental bound. Collection failure does not replace the child/cleanup result."
+    },
+    {
+      "path": "scripts/sounding-line/development-failure-evidence.mjs",
+      "lines": [
+        7,
+        33,
+        81,
+        99,
+        121
+      ],
+      "meaning": "New live WeakMap token, exact source/provider/selector binding, copied buffers, bounded report/private-file reader and stream original-count/hash/completeness metadata. Not a deserialized evidence admission route."
+    },
+    {
+      "path": "scripts/sounding-line/private-browser-failure.mjs",
+      "lines": [
+        217,
+        224,
+        245,
+        309
+      ],
+      "meaning": "Success still returns NOT_REQUIRED without report capture. Explicit development-only missing-manifest fallback retains incomplete diagnostics and supplemental causal bytes; existing missing attachment requirements remain unmet."
+    },
+    {
+      "path": "scripts/sounding-line/private-browser-failure-publication.mjs",
+      "lines": [
+        322,
+        347
+      ],
+      "meaning": "Threads explicit development-only mode through existing live publication/encrypted artifact route."
+    }
+  ],
+  "evidenceApplicability": {
+    "retainedNativeGraphicsAndInput": "NCL native source/test trees remain exact, so existing scope-bound iOS31/native29, Android16 and Release20 proofs are not invalidated by this maintenance merge. No test was re-executed by this audit.",
+    "retainedAppWebFixtureSemantics": "Application, Scene assets, canonical Prisma fixtures, E2E source, experience contracts, bridge and Landfall/signing inputs are exact. Historical execution remains bound to its original producer and source.",
+    "currentProducerFingerprint": "browser-authority, develop-browser-suite and private retention helpers changed. A prior exact producer/package fingerprint is not a fingerprint of the merged helper; current governed execution must bind the actual merged source and accepted authority.",
+    "historicalSuccessCounts": "Still unpublished where earlier successful hosted run reports were unpublished. The new path is failure-only and cannot retroactively supply earlier success counts or an exact report digest.",
+    "historicalFailureCause": "No retained old failure cause/report/stream bytes are reconstructed or recovered. New retention does not identify an earlier UI failure cause.",
+    "newFailureRetention": "Only prospective trusted-host failed development executions can capture supplemental exact bytes, subject to closure, file/stream/aggregate bounds and existing encrypted publication. Missing or incomplete artifacts remain explicit.",
+    "signingAndDistribution": "Governed TestFlight dispatcher/runner/template and native distribution inputs are unchanged. Previous preflight remains read/material validity evidence only, with beta7/preview preserved; this is not a new Apple permission/upload/physical check."
+  },
+  "executionDeadlineSourceFiles": [
+    {
+      "path": "scripts/sounding-line/experience-current-r26.mjs",
+      "beforeBlob": "6d6de7a12e08dd1b578731a9d1bd86ed581c7100",
+      "afterBlob": "6d6de7a12e08dd1b578731a9d1bd86ed581c7100",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/sounding-line/experience-exception.mjs",
+      "beforeBlob": "b2205c9d8953228e282dcce336e6086f8120886c",
+      "afterBlob": "b2205c9d8953228e282dcce336e6086f8120886c",
+      "unchanged": true
+    },
+    {
+      "path": "testing/product-experience-exceptions.json",
+      "beforeBlob": "089308bf475a2b22bfdc64ac46164996855e7010",
+      "afterBlob": "089308bf475a2b22bfdc64ac46164996855e7010",
+      "unchanged": true
+    }
+  ],
+  "captureGate": {
+    "observedByParent": "Capture attempt0dcc stopped before plan because protected R26 executionDeadline03:59:59 was exceeded at04:05:13. No capture/reservation reached.",
+    "independentlyExecutedByThisAudit": false,
+    "maintenanceDeltaChangesDeadlineAuthority": false,
+    "repairOrBypassAuthorized": false,
+    "noExpiryExtensionOrCaptureRetryPerformed": true
+  },
+  "limits": {
+    "gitObjectReadsOnly": true,
+    "newTestsOrCi": false,
+    "sourceEdits": false,
+    "checkoutOrMergeByReviewer": false,
+    "credentialValuesRead": false,
+    "appleApiOrDistribution": false,
+    "previewMutation": false,
+    "protectedOrPhysicalOrOwnerAcceptance": false,
+    "maintenanceOwnQualificationNotReexecuted": true
+  }
+}

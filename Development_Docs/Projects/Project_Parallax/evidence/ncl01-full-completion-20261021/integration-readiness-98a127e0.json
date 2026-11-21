@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "role": "READ_ONLY_READINESS_NOT_MAINLINE_QUALIFICATION",
+  "qualification": false,
+  "source": {
+    "commit": "98a127e0254d5324b0afeeb44e22b26ee46ea9a3",
+    "tree": "591415b2ec6cf5a9675cb326a7e2db1226ce8d51"
+  },
+  "protectedMain": "d699de9568ea355a363223dd88f747536b450688",
+  "planner": {
+    "command": "node scripts/sounding-line/experience-browser.mjs --base d699de9568ea355a363223dd88f747536b450688 --candidate 98a127e0254d5324b0afeeb44e22b26ee46ea9a3 --plan true",
+    "exitCode": 1,
+    "gate": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration",
+    "originalLogSha256": "66e716a10e5b7fd823847a801499edeaecbfeb4c7e08076ff9004e0ff543ace4",
+    "earlierMalformedInvocation": {
+      "preservedOriginalSha256": "16d6882c96959b1264045d3d04b710c384eab0dbf75532f4f49347e2c64bf277",
+      "result": "EXACT_SOURCE_REQUIRED",
+      "establishesDesignGate": false
+    }
+  },
+  "dependencySnapshot": {
+    "observedAtMinute": "2026-10-21T17:13Z",
+    "crossdeck": {
+      "pullRequest": 721,
+      "state": "OPEN",
+      "draft": true,
+      "head": "8dd97d7a63989cc7ee0fde7e8e178b515e2d8a94",
+      "accepted": false
+    },
+    "proposedCharter": {
+      "pullRequest": 781,
+      "state": "OPEN",
+      "draft": false,
+      "head": "182233e0f6d11a5dd5f74f35e01183b633b6ec8f",
+      "accepted": false
+    }
+  },
+  "acceptedMainChange": {
+    "pullRequest": 784,
+    "scope": "Replay artifact root infrastructure; no product/native/provider change or NCL consumer authority"
+  },
+  "ordinaryMainlineTriggered": false,
+  "mainlineDecision": null,
+  "merged": false,
+  "landedVerification": "NOT_APPLICABLE_NOT_MERGED",
+  "limits": [
+    "This is a read-only plan result at the named source, not ordinary Sounding Line acceptance or rejection.",
+    "No Crossdeck capture/review/qualification allowance was consumed; no protected source changed.",
+    "Snapshot timestamps do not assert that a dependency remains unchanged indefinitely."
+  ]
+}

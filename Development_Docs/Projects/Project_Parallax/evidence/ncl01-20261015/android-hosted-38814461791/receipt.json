@@ -1,0 +1,383 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "ORDINARY_ANDROID_DEVELOPMENT_SOFTWARE_PROOF",
+  "date": "2026-10-15",
+  "candidateSha": "53f5bb19262c1b2e0547396f6a7b696c8e0a6442",
+  "sourceTree": "ff9796801c4278fba5fca8068a1c65ef935361fd",
+  "sourceFingerprint": "f33945d8226da95efaeb1098c756c0de8ee85772dcce7f18427790da731cb6c8",
+  "sourceUnchanged": true,
+  "transportSha": "589f8276e0080a9c5b490035ca0f500ac5bd0b35",
+  "runId": "38814461791",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38814461791",
+  "conclusion": "success",
+  "dispatchMode": "ORDINARY_DEVELOPMENT",
+  "graphicsProbePresent": false,
+  "backendOverrideArgumentUsed": false,
+  "candidateAndTransportMainBackendMatchVerified": true,
+  "immutableTransportWorkflowSha256": "94435c674a45236fb12e6f8bc8eff9e542f89a62948380a633b076919a7a36cc",
+  "nativeAndInstrumentationSourceUnchangedFrom46a20fc": true,
+  "defaultCorrectionSourceCheckpoint": "53f5bb19262c1b2e0547396f6a7b696c8e0a6442",
+  "originalDefaultFocusedTestLog": "default-swangle-tests.original.log",
+  "originalDefaultFocusedTestResult": "10_TESTS_PASS",
+  "oldToolingManifestNotReboundToThisCheckpoint": true,
+  "observedEnvironment": {
+    "platform": "Android Emulator",
+    "api": 36,
+    "osVersion": "16",
+    "device": "pixel_7",
+    "model": "sdk_gphone64_x86_64",
+    "ramMiB": 3072,
+    "emulatorVersionFromOriginalRunLog": "37.2.12.0",
+    "emulatorBuildId": 16428233,
+    "defaultGpu": "swangle",
+    "graphicsBackend": "gfxstream",
+    "selectedVulkanMode": "swiftshader",
+    "selectedGlesMode": "swangle",
+    "graphicsAdapter": "Android Emulator OpenGL ES Translator (ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver-5.0.0))",
+    "graphicsApi": "OpenGL ES 3.0 (OpenGL ES 3.1.0 (ANGLE 2.1.17841 git hash: 5fa2e61da947))",
+    "capabilityInventoryEmulatorVersion": null
+  },
+  "appBuild": "PASS",
+  "instrumentationApkBuild": "PASS",
+  "perRunAppSha256": "b67a664786a826e2a526af43b88176638acc6dd8046610cccb95474c61e18376",
+  "perRunTestApkSha256": "4d4d993a1ed6f19a137de040188020d1d7ac0296a1601b6b082e2795b9732948",
+  "nativeTests": {
+    "result": "PASS",
+    "passed": 16,
+    "failed": 0,
+    "durationSeconds": 69.657,
+    "testMethods": [
+      {
+        "class": "com.voyagewright.landfall.GeofenceTests",
+        "method": "cancelledLateServiceAddCannotRestoreConsent",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.GeofenceTests",
+        "method": "failedRemovalCannotAccumulateAnotherRegion",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.GeofenceTests",
+        "method": "fullClaimsUseBoundedOsIdsAndResolveOnlyTheActiveEncryptedRegion",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.GeofenceTests",
+        "method": "restartRegionIsEncryptedSingleBoundedAndClearable",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.HardwareTests",
+        "method": "inactiveMalformedAndStoppedOptionalScansAcquireNothing",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.ParallaxTests",
+        "method": "actualDialogBackAndProgrammaticDismissAreIdempotent",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.ParallaxTests",
+        "method": "sharedBoundaryFixtures",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.ParallaxTests",
+        "method": "originalCatalogLoadsAndRendersThroughFilament",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.ParallaxTests",
+        "method": "sharedDeliveryFixturesAndOriginalCatalog",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.PowerTests",
+        "method": "actualEmulatorLowBatteryConstrainsSamplingAndRestoresFixture",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.PrivateStoreTests",
+        "method": "completeLeaseReturnsOnlyItsBoundJourney",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.PrivateStoreTests",
+        "method": "invalidKeysExpiryAndOversizedValuesFailClosed",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.PrivateStoreTests",
+        "method": "encryptedRestartLeaseIsOriginBoundAndClearable",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.SensorPerformanceTests",
+        "method": "actualSensorRegistrationFitsPreliminaryCpuAndMemoryBudgetsAndStops",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.UwbTests",
+        "method": "optionalRadioHasNoSessionWithoutForegroundPreparation",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.UwbTests",
+        "method": "pairingRejectsCoercionAndAdditionalIdentityClaims",
+        "result": "PASS"
+      }
+    ],
+    "cleanup": {
+      "result": "PASS"
+    }
+  },
+  "sceneRendering": {
+    "schemaVersion": 1,
+    "evidenceClass": "INSTRUMENTED_FILAMENT_GLTF_RENDERING_ONLY",
+    "renderer": "FILAMENT_1_75_1_OPENGL",
+    "fixtureUsesCamera": false,
+    "fixtureCreatesARCoreSession": false,
+    "physicalTrackingProven": false,
+    "engineDisposed": true,
+    "assets": [
+      {
+        "assetId": "brass-compass",
+        "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+        "renderables": 4,
+        "materialInstances": 4,
+        "originalWorldBoundsMeters": [
+          -0.08,
+          0,
+          -0.095000006,
+          0.08,
+          0.045,
+          0.095
+        ],
+        "rootTransformAndBottomPivotVerified": true,
+        "renderedNontransparentPixels": 4386,
+        "clearedNontransparentPixels": 0,
+        "assetDisposed": true
+      },
+      {
+        "assetId": "treasure-chest",
+        "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+        "renderables": 7,
+        "materialInstances": 4,
+        "originalWorldBoundsMeters": [
+          -0.4,
+          0,
+          -0.25,
+          0.4,
+          0.61,
+          0.25
+        ],
+        "rootTransformAndBottomPivotVerified": true,
+        "renderedNontransparentPixels": 10976,
+        "clearedNontransparentPixels": 0,
+        "assetDisposed": true
+      }
+    ]
+  },
+  "sceneRenderingSha256": "b64b9dd4dea42bdc8e0901899c8f177bf9b6b440a521462ccce172086db58737",
+  "sensorPerformance": {
+    "version": 1,
+    "measurementClass": "NATIVE_SENSOR_ADAPTER_INSTRUMENTATION",
+    "api": 36,
+    "sampleCount": 3,
+    "physicalEnergyProven": false,
+    "budgets": {
+      "activeCpuMsPerTwoSecondInterval": 1000,
+      "processPssKiB": 262144,
+      "incrementalPssKiB": 32768
+    },
+    "samples": [
+      {
+        "baselineElapsedMs": 1000,
+        "baselineCpuMs": 1,
+        "baselinePssKiB": 93761,
+        "activeElapsedMs": 2000,
+        "activeCpuMs": 11,
+        "activePssKiB": 93739,
+        "pssDeltaKiB": -22,
+        "callbacks": 23,
+        "stopVerified": true
+      },
+      {
+        "baselineElapsedMs": 1000,
+        "baselineCpuMs": 0,
+        "baselinePssKiB": 93721,
+        "activeElapsedMs": 2005,
+        "activeCpuMs": 7,
+        "activePssKiB": 93650,
+        "pssDeltaKiB": -71,
+        "callbacks": 23,
+        "stopVerified": true
+      },
+      {
+        "baselineElapsedMs": 1000,
+        "baselineCpuMs": 0,
+        "baselinePssKiB": 93562,
+        "activeElapsedMs": 2000,
+        "activeCpuMs": 6,
+        "activePssKiB": 93433,
+        "pssDeltaKiB": -129,
+        "callbacks": 24,
+        "stopVerified": true
+      }
+    ]
+  },
+  "sensorPerformanceSha256": "f76f0d739267b22b4b260785c903ee44688db4f6283f9009589708d1aac9690e",
+  "stageCaptureSha256": "3cc1929fb69ddeee383e7b975ef1afc43a3a07e87c80fc5740b7a8a79153dec6",
+  "loggerClosed": true,
+  "loggerWriteFailed": false,
+  "stageStreamsTruncated": false,
+  "scenario": {
+    "id": "permission-denied-native",
+    "result": "PASS",
+    "stepsPassed": 5,
+    "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+    "canonicalProgressionEvents": 0,
+    "cleanup": {
+      "result": "PASS",
+      "ownedResources": [
+        "loopback-native-lab-server",
+        "native-app-process",
+        "native-app-private-data",
+        "owned-adb-reverse"
+      ],
+      "remainingResources": []
+    },
+    "authorityWorkerCleanup": "PASS"
+  },
+  "recoveredHostedArtifactFiles": 24,
+  "transportCleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-53f5bb19262c-1792101817497"
+    ],
+    "remainingResources": []
+  },
+  "preservedRawEvidencePath": "artifacts/landfall-device-lab/hosted-53f5bb19262c-1792101817497/run-38814461791",
+  "originalRunLogSha256": "830982c5b4c05d08cc4dd4200670c852a7548b7871f0eb6b1f02f6392dd9711c",
+  "allNativeExportAndStageStreamHashesVerified": true,
+  "publishedEvidence": [
+    {
+      "path": "native-receipt.original.json",
+      "bytes": 1030,
+      "sha256": "4f2e84f61e3d0a1499d97a30e75258f54fd24809e1d21f237bd5e1d51ac06971",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\artifacts\\landfall-android-primary-phone-53f5bb19262c1b2e0547396f6a7b696c8e0a6442\\android-native-tests-1792102155691\\receipt.json"
+    },
+    {
+      "path": "native-scene-rendering.original.json",
+      "bytes": 1238,
+      "sha256": "b64b9dd4dea42bdc8e0901899c8f177bf9b6b440a521462ccce172086db58737",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\artifacts\\landfall-android-primary-phone-53f5bb19262c1b2e0547396f6a7b696c8e0a6442\\android-native-tests-1792102155691\\native-scene-rendering.json"
+    },
+    {
+      "path": "native-sensor-performance.original.json",
+      "bytes": 1082,
+      "sha256": "f76f0d739267b22b4b260785c903ee44688db4f6283f9009589708d1aac9690e",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\artifacts\\landfall-android-primary-phone-53f5bb19262c1b2e0547396f6a7b696c8e0a6442\\android-native-tests-1792102155691\\native-sensor-performance.json"
+    },
+    {
+      "path": "instrumentation.original.log",
+      "bytes": 10888,
+      "sha256": "b925e33fca535e4efa723aa26aa00a14601374fe3596bdb8da1c851f5718e061",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\artifacts\\landfall-android-primary-phone-53f5bb19262c1b2e0547396f6a7b696c8e0a6442\\android-native-tests-1792102155691\\instrumentation.txt"
+    },
+    {
+      "path": "filament-stage-capture.original.json",
+      "bytes": 862,
+      "sha256": "3cc1929fb69ddeee383e7b975ef1afc43a3a07e87c80fc5740b7a8a79153dec6",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\artifacts\\landfall-android-primary-phone-53f5bb19262c1b2e0547396f6a7b696c8e0a6442\\android-native-tests-1792102155691\\filament-stage-capture.json"
+    },
+    {
+      "path": "filament-stages.stdout.original.log",
+      "bytes": 4919,
+      "sha256": "825bce6825b72c0b1191d18a172c458172c5e9ddee84a84183c5d172105f9252",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\artifacts\\landfall-android-primary-phone-53f5bb19262c1b2e0547396f6a7b696c8e0a6442\\android-native-tests-1792102155691\\filament-stages.stdout.original.log"
+    },
+    {
+      "path": "filament-stages.stderr.original.log",
+      "bytes": 34,
+      "sha256": "426b9110c9497224234887d6087a99af8900da5094dc929fb1cd0b22a33c1be5",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\artifacts\\landfall-android-primary-phone-53f5bb19262c1b2e0547396f6a7b696c8e0a6442\\android-native-tests-1792102155691\\filament-stages.stderr.original.log"
+    },
+    {
+      "path": "scenario.original.json",
+      "bytes": 6123,
+      "sha256": "c62be4b365d32fee7d2bc0dc8b9be618cc9ade5389c8cc35e98a964a44e0f14d",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\artifacts\\landfall-android-primary-phone-53f5bb19262c1b2e0547396f6a7b696c8e0a6442\\20261015T221110298Z-3779\\permission-denied-native.json"
+    },
+    {
+      "path": "scenario-summary.original.json",
+      "bytes": 496,
+      "sha256": "fd7d4a13bb12cf8656e87bfce062cdcf6bf13c973138d0eb57c5a131b530d1ee",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\artifacts\\landfall-android-primary-phone-53f5bb19262c1b2e0547396f6a7b696c8e0a6442\\20261015T221110298Z-3779\\summary.json"
+    },
+    {
+      "path": "host-capabilities.original.json",
+      "bytes": 475,
+      "sha256": "7668f2a42a7bdb3c08f6074d65e89b8943758ee713d5f57fa6cbaaebd6b30f51",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\artifacts\\landfall-android-primary-phone-53f5bb19262c1b2e0547396f6a7b696c8e0a6442\\20261015T221110298Z-3779\\capabilities.json"
+    },
+    {
+      "path": "scenario-steps.original.json",
+      "bytes": 1431,
+      "sha256": "d2fdbc0f1bb477e7b19d04dcb97732cb83bf4f1eb6d59a7234cb6d2a830ceed1",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\artifacts\\landfall-android-primary-phone-53f5bb19262c1b2e0547396f6a7b696c8e0a6442\\20261015T221110298Z-3779\\permission-denied-native\\native-steps.json"
+    },
+    {
+      "path": "authority.original.json",
+      "bytes": 277,
+      "sha256": "4d85b990fe83158a8a3798cb4163b2ef6f03aded363359ce0511e94b12b30904",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\artifacts\\landfall-android-primary-phone-53f5bb19262c1b2e0547396f6a7b696c8e0a6442\\20261015T221110298Z-3779\\permission-denied-native\\authority\\receipt.json"
+    },
+    {
+      "path": "authority-cleanup.original.json",
+      "bytes": 41,
+      "sha256": "e8ef499cb820eec097bb6e7c6318ed06add5450bd8422606cd35242352f97435",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\artifacts\\landfall-android-primary-phone-53f5bb19262c1b2e0547396f6a7b696c8e0a6442\\20261015T221110298Z-3779\\permission-denied-native\\authority\\worker-cleanup.json"
+    },
+    {
+      "path": "hosted-receipt.original.json",
+      "bytes": 6711,
+      "sha256": "cf78168d0feb901ff291aaf19139286f827f0c4a90b36cb51c1236c625f6109f",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\hosted-receipt.json"
+    },
+    {
+      "path": "default-swangle-tests.original.log",
+      "bytes": 642,
+      "sha256": "bc78151743dbe34f7d464e733f800e2ee0442dad509bfbcd244c924c89957f0d",
+      "sourcePath": "D:\\CodexTemp\\ncl01-evidence\\android-default-swangle-tests.original.log"
+    },
+    {
+      "path": "backend-observations.original.log",
+      "bytes": 1408,
+      "sha256": "1a27923824f5f3f48574b566b39e9e76762d21dae8480c683e4f3a614a7d4d0d",
+      "sourcePath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-53f5bb19262c-1792101817497\\run-38814461791\\run.log",
+      "originalLineNumbers": [
+        984,
+        985,
+        986,
+        991,
+        1011,
+        1035,
+        1036
+      ]
+    }
+  ],
+  "preservedComparisonReceiptSha256": "6f08c4328ef1d45c9a9f8206a2590bc7efef28eac8b5521f94db4b919eb29624",
+  "boundaries": {
+    "ordinaryDefaultDevelopmentProfileExecutedAndPassed": true,
+    "realCatalogGltfRasterizationProvenInObservedEnvironment": true,
+    "priorSwiftshaderFailureCauseEstablished": false,
+    "physicalWorldTrackingProven": false,
+    "arCoreCameraProjectionOrAnchorDriftProven": false,
+    "visualFidelityOrOwnerAcceptanceProven": false,
+    "arPerformanceThermalOrBatteryQualificationProven": false,
+    "protectedQualificationOrMergeProven": false
+  },
+  "followup": "Preserve four prior failures and the explicitly non-authoritative comparison scope; this fresh ordinary development proof does not establish physical AR or protected qualification"
+}

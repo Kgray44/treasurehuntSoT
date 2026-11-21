@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "candidate": "c2aff376990900a356f802fd639e5cf6cdaf099e",
+  "mode": "upload",
+  "origin": "https://192.168.0.18:8449",
+  "version": "0.1.0",
+  "build": "2",
+  "teamId": "X2JZ9N65V2",
+  "bundleId": "com.voyagewright.landfall",
+  "publish": true,
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "transportSha": "575264b4caf12ad6d893ad13bc349cd3132346d2",
+  "transportTree": "d0eea8abdbc86289cd2e044384e3281ed04ba40c",
+  "branch": "codex/ncl01-testflight-upload-c2aff3769909-1792465724468",
+  "cleanup": "PENDING"
+}

@@ -1,0 +1,321 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_SOURCE_BOUND_ANDROID_REVIEW",
+  "qualification": false,
+  "runId": "39699792641",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39699792641",
+  "workflowConclusion": "success",
+  "source": {
+    "candidateSha": "39e28ffdea15171f8373bb6fdf752a118c20dccd",
+    "candidateTree": "f87ab7a2a2faee85f0d7510dd97fe2cc21691fbe",
+    "transportSha": "ceb5f46ba650501b1435ff28eb599266ddaeb097",
+    "transportTree": "9c57fcd860bd39bf6423e1b55facfc9a1da5c99f",
+    "parentOfTransportVerified": true,
+    "sourceUnchanged": true,
+    "dirty": false,
+    "sourceFingerprint": "55ce9fc4b46ffe3bbf091d4a3e0b72f005c30a0fb259eec90e789b4a18e5e9b5",
+    "fixtureOnlyChangeFrom": "1985afadc1e184089530eebaebe690e9785c0350",
+    "changedFiles": [
+      "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxModelRenderingFixture.java",
+      "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxNativeInputFixture.java"
+    ]
+  },
+  "environment": {
+    "scope": "DEVELOPMENT_EMULATOR_ONLY",
+    "target": "android",
+    "profile": "primary-phone",
+    "androidApi": 36,
+    "androidVersion": "16",
+    "emulatorVersion": "37.2.12.0",
+    "emulatorBuild": "16428233",
+    "requestedGraphicsBackend": "swangle",
+    "graphicsBackendArgObservedInOriginalLog": true,
+    "renderer": "FILAMENT_1_75_1_OPENGL",
+    "graphicsComparisonOverride": false
+  },
+  "build": {
+    "debugAppAndInstrumentationApks": "PASS",
+    "originalLogBuildDuration": "1m 46s",
+    "appSha256": "c0ab4b2c5a0af87704d6adddf88a13503a323c9351b9774d85d7d6836325eb41",
+    "testApkSha256": "ecd2c4ec5bfe73e18379165a610ff7a30cdf7289ab37ff1d2f523fe085a9e610",
+    "releaseAndGlobalLintNotRunByThisReplay": true,
+    "fullLintBaselineErrorsRemainSeparate": 8
+  },
+  "native": {
+    "result": "PASS",
+    "testCount": 16,
+    "durationSeconds": 93.147,
+    "strictSceneParser": "PASS",
+    "strictInputParser": "PASS",
+    "independentFramePngValidationCount": 4,
+    "engineDisposed": true,
+    "largeTextEscapeLayoutVerified": true,
+    "assets": [
+      {
+        "assetId": "brass-compass",
+        "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+        "renderableCount": 4,
+        "materialInstanceCount": 4,
+        "originalWorldBoundsMeters": [
+          -0.08,
+          0,
+          -0.095000006,
+          0.08,
+          0.045,
+          0.095
+        ],
+        "populatedPixels": 4386,
+        "clearedPixels": 0,
+        "rootTransformAndBottomPivotVerified": true,
+        "disposed": true,
+        "motionEventMeshTapVerified": true,
+        "pickIntentCount": 1,
+        "inspectIntentCount": 1,
+        "inspectLocalSuccessShown": false,
+        "inspectPendingGuidanceShown": true,
+        "manualReturnVerified": true,
+        "loadingAndTrackingGatesVerified": true,
+        "latePickAfterCloseRejected": true,
+        "accessibilityCenter": {
+          "inputMethod": "ACCESSIBILITY_ACTION_CLICK",
+          "meshSelected": true,
+          "hiddenBackgroundMissVerified": true,
+          "loadingAndTrackingGatesVerified": true,
+          "manualReturnVerified": true,
+          "closedGuardVerified": true,
+          "pickIntentCount": 1,
+          "inspectIntentCount": 1
+        }
+      },
+      {
+        "assetId": "treasure-chest",
+        "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+        "renderableCount": 7,
+        "materialInstanceCount": 4,
+        "originalWorldBoundsMeters": [
+          -0.4,
+          0,
+          -0.25,
+          0.4,
+          0.61,
+          0.25
+        ],
+        "populatedPixels": 10974,
+        "clearedPixels": 0,
+        "rootTransformAndBottomPivotVerified": true,
+        "disposed": true,
+        "motionEventMeshTapVerified": true,
+        "pickIntentCount": 1,
+        "inspectIntentCount": 1,
+        "inspectLocalSuccessShown": false,
+        "inspectPendingGuidanceShown": true,
+        "manualReturnVerified": true,
+        "loadingAndTrackingGatesVerified": true,
+        "latePickAfterCloseRejected": true,
+        "accessibilityCenter": {
+          "inputMethod": "ACCESSIBILITY_ACTION_CLICK",
+          "meshSelected": true,
+          "hiddenBackgroundMissVerified": true,
+          "loadingAndTrackingGatesVerified": true,
+          "manualReturnVerified": true,
+          "closedGuardVerified": true,
+          "pickIntentCount": 1,
+          "inspectIntentCount": 1
+        }
+      }
+    ]
+  },
+  "readinessDiagnostics": {
+    "classification": "OBSERVED_FIXTURE_PRECONDITIONS_NOT_HISTORICAL_CAUSAL_PROOF",
+    "readinessBudgetMs": 10000,
+    "readinessRecordCount": 27,
+    "softwareProviderReturnRecordCount": 1,
+    "allFinalSamplesReady": true,
+    "allFinalSamplesPreDrawAndFocusObserved": true,
+    "allFinalSamplesNoPendingAncestorLayout": true,
+    "allExactPointsInsideVisibleWindowAndDisplay": true,
+    "maximumCompletionElapsedMs": 1419,
+    "initialSamplesNotReady": 27,
+    "initialSamplesLayoutPending": 0,
+    "targetEventRecords": 24,
+    "orderedSingleDownUpPairs": 12,
+    "allTargetEventsHandled": true,
+    "actualPickerRecords": 10,
+    "allExpectedAndActiveGenerationsMatch": true,
+    "continuousObserverClosed": true,
+    "diagnosticStreamsTruncated": false,
+    "priorFailureCauses": "UNPROVED"
+  },
+  "joinedLens": {
+    "result": "PASS",
+    "actionCount": 4,
+    "actions": [
+      "OPEN",
+      "TAP",
+      "INSPECT",
+      "CLOSE"
+    ],
+    "realSQLite": true,
+    "synthetic": true,
+    "disposition": "SIMULATION_REJECTED",
+    "canonicalProgressionEventsAdded": 0,
+    "observationRowsAdded": 0,
+    "visibleCanonicalRejectionIndependentlyViewed": true,
+    "sameVoyageReturnIndependentlyViewed": true,
+    "screenshots": [
+      {
+        "file": "native-selected.png",
+        "bytes": 954921,
+        "sha256": "486944a4862aab2ff4bea6b0287a724d2cbe0146b955359d312cee7c0b72e1c8",
+        "width": 1080,
+        "height": 2400
+      },
+      {
+        "file": "canonical-rejection.png",
+        "bytes": 820604,
+        "sha256": "29816c788ee67efbdcdb0ccecd0bce1b2bb8cab5e1844173131fee44156467dc",
+        "width": 1080,
+        "height": 2400
+      },
+      {
+        "file": "same-voyage-return.png",
+        "bytes": 76608,
+        "sha256": "8d9146ab3000b118dca193f16467b1539e93e42cb5fd0f8f36c11d80f4b13485",
+        "width": 1080,
+        "height": 2400
+      }
+    ],
+    "cleanup": {
+      "result": "PASS",
+      "databaseRemoved": true,
+      "ownedServerClosed": true,
+      "ownedAndroidReleased": true,
+      "ownedAndroidConnectionsClosed": true
+    },
+    "positivePhysicalInspectProven": false
+  },
+  "permissionScenario": {
+    "scenarioId": "permission-denied-native",
+    "result": "PASS",
+    "passed": 1,
+    "total": 1,
+    "stepCount": 5,
+    "allStepsPassed": true,
+    "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+    "canonicalProgressionEvents": 0,
+    "blockCompletions": 0,
+    "rawLocationsRetained": false,
+    "cleanup": "PASS"
+  },
+  "sensorInstrumentation": {
+    "measurementClass": "NATIVE_SENSOR_ADAPTER_INSTRUMENTATION",
+    "sampleCount": 3,
+    "activeCpuMs": [
+      10,
+      7,
+      9
+    ],
+    "activePssKiB": [
+      91571,
+      91317,
+      82549
+    ],
+    "pssDeltaKiB": [
+      -52,
+      -99,
+      -3782
+    ],
+    "callbacksPerSample": [
+      24,
+      24,
+      24
+    ],
+    "allRecordedBudgetsSatisfied": true,
+    "allStopVerified": true,
+    "physicalEnergyProven": false
+  },
+  "cleanup": {
+    "native": "PASS",
+    "joined": "PASS",
+    "scenario": "PASS",
+    "authorityWorker": "PASS",
+    "exactOwnedTransportRef": "PASS",
+    "remainingOwnedTransportResources": 0
+  },
+  "evidence": {
+    "originalFileCount": 36,
+    "originalBytes": 2289019,
+    "hostedArtifactHashLinksVerified": 34,
+    "originalManifestSha256": "b84303254f573d545f91ccdb9a7bc7e47b5d2d2de275377bc50b07ea211ea8de",
+    "independentArtifactReviewSha256": "ecc4c95128a27b4ebd310aa18e7409afeb909b31c17dd5c4458d4a7cc9992b6b",
+    "proofFiles": [
+      {
+        "file": "native-scene-rendering.json",
+        "bytes": 6191,
+        "sha256": "fe572d1da3fc532f466d580772c027212dd8ab67b772efc6a03dda0189e5c9e9"
+      },
+      {
+        "file": "native-input.json",
+        "bytes": 3923,
+        "sha256": "4a83820f748251d15d84b4f9f308fe1f122433c0a73592e4fbe7e070e8dddc95"
+      },
+      {
+        "file": "native-sensor-performance.json",
+        "bytes": 1083,
+        "sha256": "3d381fe091c236b748fe01734d1423a66cc131379dc788977c009fdb97a006b1"
+      },
+      {
+        "file": "native-inspect.json",
+        "bytes": 1426,
+        "sha256": "f57abe5b85fe289de2c169d3343eb7cf1654f04f7b37166f010808f249b71ca0"
+      },
+      {
+        "file": "permission-denied-native.json",
+        "bytes": 6123,
+        "sha256": "07e2cedfd6711d64694daa5bff2f2f048ae1460c79fa121499fbfdcd657f0090"
+      },
+      {
+        "file": "filament-stage-capture.json",
+        "bytes": 864,
+        "sha256": "34eb34bd8781bf26265a1041f5d10d3810077fa255cfef9461a01c8929e33320"
+      },
+      {
+        "file": "instrumentation.txt",
+        "bytes": 10888,
+        "sha256": "7fe1d5dad8effd8c391921de3225d30ea382b17548db0407209cac07deb9bd34"
+      },
+      {
+        "file": "run.log",
+        "bytes": 194286,
+        "sha256": "340cbfb57d90bdb072e3defdf7d6e5ad2fca047ab85db075344ba02350d95852"
+      },
+      {
+        "file": "hosted-receipt.json",
+        "bytes": 9274,
+        "sha256": "649bcd4ef7670c5c4cdb94b510501afebcb164771885eb97a9a63f6164a11c2d"
+      }
+    ]
+  },
+  "preservedFailures": [
+    {
+      "runId": "39694528107",
+      "nativePassed": 15,
+      "nativeFailed": 1,
+      "cause": "UNPROVED",
+      "publicReceiptSha256": "19c1c338b8bb84ed08f0308bedcdc51e46b98b0a2979dee53f400fba3da62606"
+    },
+    {
+      "runId": "39697272562",
+      "nativePassed": 15,
+      "nativeFailed": 1,
+      "cause": "UNPROVED",
+      "publicReceiptSha256": "410ed30e4fa8eaee50c9d69f72f7933c8b84020e4c3683adf2fe0071297346df"
+    }
+  ],
+  "limits": [
+    "Emulator rendering, input and synthetic canonical rejection only; no physical AR, authored-room, positive real-observation or owner-acceptance claim.",
+    "Fixture readiness observations do not prove the causes of either preserved historical failure.",
+    "No new iOS, browser, Release, full-lint, signing or TestFlight qualification is inferred from this replay.",
+    "Original CI logs and other nonpublic artifacts remain private; this receipt publishes bounded derived metadata only."
+  ]
+}

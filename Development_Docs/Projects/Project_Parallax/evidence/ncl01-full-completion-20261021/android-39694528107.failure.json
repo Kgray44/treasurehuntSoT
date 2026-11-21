@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_SOURCE_BOUND_ANDROID_FAILURE_REVIEW",
+  "qualification": false,
+  "runId": "39694528107",
+  "workflowConclusion": "failure",
+  "source": {
+    "candidate": "0d83b64488711215bfdcfa47f898fa48f07e074e",
+    "tree": "493196847b029b756b76c2a42ee262cbe7f15b02",
+    "transport": "92844f091b2750258caaead9bdb0821d85281333",
+    "sourceUnchanged": true,
+    "binding": "CHECKOUT_SNAPSHOT_AND_EXACT_APK"
+  },
+  "build": {
+    "debugApkAndInstrumentationBuild": "PASS",
+    "observedBuildDuration": "1m 41s",
+    "appSha256": "77ee8e16a076366c61a3099aed28384dc812d25a4ec3cf60fa94b0bf77c7f92d",
+    "testApkSha256": "b02a721a9cdce25a0420c9c0f28bb108d33791515d5c151f42624085035ef174",
+    "fullLintRun": false,
+    "releaseOrTestFlightQualification": false
+  },
+  "emulator": {
+    "androidVersion": "16",
+    "emulatorVersion": "37.2.12.0",
+    "configuredBackend": "swangle",
+    "backendLaunchObserved": true,
+    "graphicsComparison": false
+  },
+  "native": {
+    "result": "FAIL",
+    "methodsRun": 16,
+    "passed": 15,
+    "failed": 1,
+    "elapsedSeconds": 100.523,
+    "failedMethod": "ParallaxTests.originalCatalogLoadsAndRendersThroughFilament",
+    "failedFixture": "ParallaxNativeInputFixture.verifySoftwareProvider",
+    "assertion": "Actual Return dismisses the camera-free controller",
+    "failureStage": "INSTRUMENTATION",
+    "failureCode": "NATIVE_INSTRUMENTATION_TOOL_FAILED",
+    "cleanup": "PASS",
+    "sceneRenderingReceiptExported": false,
+    "nativeInputReceiptExported": false,
+    "sensorReceiptExported": false
+  },
+  "joinedLens": {
+    "result": "NOT_EXECUTED",
+    "fourActionResult": null,
+    "realSQLiteOutcome": null,
+    "observationRowsAdded": null,
+    "canonicalProgressionEventsAdded": null,
+    "framesExported": false
+  },
+  "permissionScenario": {
+    "result": "NOT_EXECUTED"
+  },
+  "cleanup": {
+    "native": "PASS",
+    "transport": "PASS",
+    "temporaryTransportRefAbsent": true,
+    "hostedSourceBindingValidated": true
+  },
+  "preservedOriginals": {
+    "fileCount": 30,
+    "totalBytes": 395474,
+    "privateManifestSha256": "53a512a4e11bce655fb6ddaaeeaea96e5f1cda5ab8437db71119ec1b8f473e7f",
+    "nativeReceiptSha256": "2d16a604f72dcd892cc14d4387529de855328851a5345c1cfc2186d4f462feb8",
+    "instrumentationSha256": "c5d68b6d4312666f17cd26704eb3e992ac0be441725dcfd2ea4ec460ae60b840",
+    "ciLogSha256": "593298dbaf11d4e7ab3b121890123b972fcae28e7876542ea4d9ab65fe4e4534",
+    "hostedReceiptSha256": "19f51eb99f47e37f9fe38732d2b433aadf448bc194bbc709f6e4725c388f3fb2",
+    "failureDiagnosticsSha256": "1e98fcaf097d66e92ee7408065d87f87049690ba94a24982fbf465da2de7bf88",
+    "controlledStageCaptureSha256": "a7145da0c73b5988f09176a0dfaf42f6e29788f2a3d7ab075db8563030c0adce"
+  },
+  "boundedDiagnosis": {
+    "established": "A single injected Return gesture in the newly opened camera-free controller did not satisfy the immediate Dialog dismissal assertion. All sixteen instrumentation methods completed; this was not an observed emulator process loss.",
+    "fixturePreconditionGap": "The fixture used main-queue idle without observing the new Dialog first layout, window focus and visible Return geometry before its one gesture.",
+    "oldFailureCause": "UNPROVED",
+    "noInputRetry": true,
+    "noSourceRepairAtRunTime": true,
+    "noBlindRerun": true,
+    "controlledBreadcrumbsAreNotPassingGpuReceipt": true
+  },
+  "childSourceApplicability": {
+    "commit": "e66d1638eb8acc88f31c4c27426aad5f1c105b1b",
+    "differenceFromRunCandidate": [
+      "tests/e2e/parallax-native-authority.spec.ts"
+    ],
+    "nativeAndProductionWebInputsUnchanged": true,
+    "resultDoesNotBecomePass": true
+  },
+  "limits": [
+    "Original 15/1 failure remains immutable even if a later fixture correction passes.",
+    "No joined canonical, physical AR, positive physical Inspect, release, protected merge or owner acceptance is established.",
+    "Historical native GPU and full lint outcomes retain their own source/run scope; they do not replace this failure."
+  ]
+}

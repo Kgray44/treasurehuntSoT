@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "HOSTED_ANDROID_INSTRUMENTATION_INTERRUPTED",
+  "date": "2026-10-15",
+  "candidateSha": "c282137ff0ff1343ec9fa71c06ee6aea32718c34",
+  "sourceTree": "a7dcdd709fe44b4406bbd6844b3edb7a7f0a9bbe",
+  "sourceFingerprint": "f39bf21e4a7fce9b51ed615ac2f0851bcfedc3e4d34af7b8e5da77887e020ad3",
+  "sourceUnchanged": true,
+  "transportSha": "308e05de8772b18d692755d446207aa8d51f8ed6",
+  "runId": "38804690428",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38804690428",
+  "conclusion": "failure",
+  "profile": {
+    "platform": "Android Emulator",
+    "api": 36,
+    "device": "pixel_7",
+    "ramMiB": 3072,
+    "graphics": "swiftshader_indirect",
+    "emulatorVersion": "37.2.12"
+  },
+  "appBuild": "PASS",
+  "instrumentationApkBuild": "PASS",
+  "appSha256": "17d668cb568f712299891c39b89722c141246da9eee57b5f371014abd6c2145d",
+  "testApkSha256": "211995135b5c2ce14b03b8f61cb0c75121d806c2c526f73f5237749475b36355",
+  "nativeDriver": {
+    "result": "FAIL",
+    "failureStage": "INSTRUMENTATION",
+    "toolExitCode": 255,
+    "toolSignal": null,
+    "toolKilledByTimeout": false,
+    "expectedTests": 16,
+    "observedSuccessfulCompletions": 7,
+    "lastStartedTestIndex": 8,
+    "lastStartedTest": "ParallaxTests.originalCatalogLoadsAndRendersThroughFilament",
+    "lastStartedTestCompletionObserved": false,
+    "instrumentationOutput": "BOUNDED_ORIGINAL_PARTIAL_STDOUT",
+    "partialStdoutTruncated": false,
+    "sceneRenderingOutput": "NOT_EXPORTED",
+    "sensorPerformanceOutput": "NOT_EXPORTED",
+    "cleanup": "FAIL"
+  },
+  "preCleanupObservations": {
+    "adbState": "OFFLINE",
+    "adbLogcat": "UNAVAILABLE_AFTER_DEVICE_LOSS",
+    "guestMemory": "UNAVAILABLE_AFTER_DEVICE_LOSS",
+    "hostQemuOrEmulatorProcessListed": false,
+    "hostApportProcessListed": true,
+    "hostMemTotalKiB": 16373452,
+    "hostMemAvailableKiB": 14774520,
+    "hostKernel": "READ_DENIED",
+    "cgroupV2MemoryFiles": "UNAVAILABLE_ENOENT",
+    "oomProven": false,
+    "rootCause": "UNDETERMINED"
+  },
+  "failureDiagnosticsSha256": "2ca4d227228f5d6f40cf9c24462fb630279d849ba33b5a36e556dec2e02e7289",
+  "allDiagnosticStreamHashesVerified": true,
+  "allDiagnosticStreamsTruncated": false,
+  "scenarioReceipt": "NOT_PRODUCED",
+  "transportCleanup": "PASS",
+  "preservedRawEvidencePath": "artifacts/landfall-device-lab/hosted-c282137ff0ff-1792097203245/run-38804690428",
+  "originalRunLogSha256": "95d054c0ff37dcbc39365231ec8998f2c89464e7094c030044728b64ca3feb34",
+  "publishedRunLogLineStart": 1141,
+  "publishedRunLogLineEnd": 1149,
+  "environmentReference": {
+    "source": "https://developer.android.com/studio/run/emulator-acceleration",
+    "checked": "2026-10-15",
+    "observation": "swiftshader_indirect is deprecated since emulator36.4.9; swiftshader is a current documented software backend",
+    "causeEstablishedByThisReference": false
+  },
+  "publishedEvidence": [
+    {
+      "path": "adb-logcat.stderr.original.log",
+      "bytes": 23,
+      "sha256": "3ac98e1b3dca881f7dd64bfe98388694b4c4af23988443a9d3ac9dc7ab771f22",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/adb-logcat.stderr.original.log"
+    },
+    {
+      "path": "adb-logcat.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/adb-logcat.stdout.original.log"
+    },
+    {
+      "path": "adb-state.stderr.original.log",
+      "bytes": 22,
+      "sha256": "4be638bde642b088a4bdd4b24186451522d04388f3e0e28ba5ba745a391f01c8",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/adb-state.stderr.original.log"
+    },
+    {
+      "path": "adb-state.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/adb-state.stdout.original.log"
+    },
+    {
+      "path": "failure-diagnostics.original.json",
+      "bytes": 6704,
+      "sha256": "2ca4d227228f5d6f40cf9c24462fb630279d849ba33b5a36e556dec2e02e7289",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/failure-diagnostics.json"
+    },
+    {
+      "path": "guest-memory.stderr.original.log",
+      "bytes": 20,
+      "sha256": "a7d0391f2b9ecc7dc302d6ca042251f413b26e1f1ee29d396e7db3df0701640f",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/guest-memory.stderr.original.log"
+    },
+    {
+      "path": "guest-memory.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/guest-memory.stdout.original.log"
+    },
+    {
+      "path": "host-cgroup-memory-current.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/host-cgroup-memory-current.stderr.original.log"
+    },
+    {
+      "path": "host-cgroup-memory-current.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/host-cgroup-memory-current.stdout.original.log"
+    },
+    {
+      "path": "host-cgroup-memory-events.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/host-cgroup-memory-events.stderr.original.log"
+    },
+    {
+      "path": "host-cgroup-memory-events.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/host-cgroup-memory-events.stdout.original.log"
+    },
+    {
+      "path": "host-cgroup-memory-max.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/host-cgroup-memory-max.stderr.original.log"
+    },
+    {
+      "path": "host-cgroup-memory-max.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/host-cgroup-memory-max.stdout.original.log"
+    },
+    {
+      "path": "host-kernel.stderr.original.log",
+      "bytes": 58,
+      "sha256": "eb7773ca6beb7854c1984fe13ca1a9c96b7c92861c48ec1f6e2c881c19f3084f",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/host-kernel.stderr.original.log"
+    },
+    {
+      "path": "host-kernel.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/host-kernel.stdout.original.log"
+    },
+    {
+      "path": "host-memory.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/host-memory.stderr.original.log"
+    },
+    {
+      "path": "host-memory.stdout.original.log",
+      "bytes": 1615,
+      "sha256": "63294ce619dd068a91ff9d0ad69a33e3e8312fdd993cdebf52fcb5b46d40f879",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/host-memory.stdout.original.log"
+    },
+    {
+      "path": "host-processes.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/host-processes.stderr.original.log"
+    },
+    {
+      "path": "host-processes.stdout.original.log",
+      "bytes": 6798,
+      "sha256": "f6980070cc6dd33a5bcb479edaf1190950041b8a1085eb1fbaed063ac37348ff",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/host-processes.stdout.original.log"
+    },
+    {
+      "path": "native-receipt.original.json",
+      "bytes": 914,
+      "sha256": "4c2091bb754493cc0a54c4991525df08218c3a88728d7588b5657024b5a4dd36",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/receipt.json"
+    },
+    {
+      "path": "tool-failure.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/tool-failure.stderr.original.log"
+    },
+    {
+      "path": "tool-failure.stdout.original.log",
+      "bytes": 5008,
+      "sha256": "66f5553f5a06a9c6b996604da23f4c9fc86933594f648d6a065790282ff67921",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c282137ff0ff1343ec9fa71c06ee6aea32718c34/android-native-tests-1792097717300/tool-failure.stdout.original.log"
+    },
+    {
+      "path": "hosted-receipt.original.json",
+      "bytes": 6741,
+      "sha256": "6687029a0884ff1543b2e4d1fbbef42a09221d6494d0fd15006542f38bbf36ea"
+    },
+    {
+      "path": "native-driver.original.log",
+      "bytes": 1339,
+      "sha256": "d75debe6591067b2ce918d8e02b6c016a7374aca81faa75dc7dfbfdae8d66a47"
+    }
+  ],
+  "boundaries": {
+    "filamentTestStarted": true,
+    "gltfLoadCompletedProven": false,
+    "gpuReadbackCompletedProven": false,
+    "nativeRenderingProven": false,
+    "physicalWorldTrackingProven": false,
+    "performanceQualificationProven": false,
+    "ownerAcceptanceProven": false
+  },
+  "followup": "No renderer repair applied; coordinate a fresh exact-source diagnostic probe before attributing the emulator exit to a specific native loader or graphics operation"
+}

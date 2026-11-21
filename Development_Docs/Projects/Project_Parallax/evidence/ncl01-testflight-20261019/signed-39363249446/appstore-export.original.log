@@ -1,0 +1,4 @@
+Exported LandfallCompanion to: /Users/runner/work/_temp/ncl01-testflight-g0dsyqwd/export
+** EXPORT SUCCEEDED **
+
+2026-10-20 03:15:51.371 xcodebuild[3822:15248] [MT] IDEDistribution: -[IDEDistributionLogging _createLoggingBundleAtPath:]: Created bundle at path "/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/LandfallCompanion_2026-10-20_03-15-51.367.xcdistributionlogs".

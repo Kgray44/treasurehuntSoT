@@ -1,0 +1,73 @@
+{
+  "operation": "Subpixel rigid translation and iOS packaging of the generated position refinement",
+  "source": "C:/Users/kkids/.codex/generated_images/01a1410b-0d88-7c50-a78c-25d9ee66bb66/exec-2853bb43-73c2-48c7-a246-e283d087d500.png",
+  "versions": {
+    "aom": "3.15.1",
+    "archive": "3.8.9",
+    "cairo": "1.18.6",
+    "cgif": "0.5.4",
+    "exif": "0.6.26",
+    "expat": "2.8.5",
+    "ffi": "3.8.0",
+    "fontconfig": "2.18.3",
+    "freetype": "2.14.3",
+    "fribidi": "1.0.17",
+    "glib": "2.90.0",
+    "harfbuzz": "14.5.0",
+    "heif": "1.23.5",
+    "highway": "1.4.0",
+    "imagequant": "2.4.1",
+    "lcms": "2.19.1",
+    "mozjpeg": "0826579",
+    "pango": "1.58.2",
+    "pixman": "0.46.4",
+    "png": "1.6.58",
+    "proxy-libintl": "0.5",
+    "rsvg": "2.63.2",
+    "tiff": "4.7.2",
+    "uhdr": "2.0.2",
+    "vips": "8.18.7",
+    "webp": "1.6.0",
+    "xml2": "2.15.4",
+    "zlib-ng": "2.3.3",
+    "sharp": "0.35.5"
+  },
+  "translationPixels": {
+    "x": 4.954,
+    "y": 7.217
+  },
+  "pivotSource": {
+    "x": 621.546,
+    "y": 619.283
+  },
+  "targetPixelCenter": {
+    "x": 626.5,
+    "y": 626.5
+  },
+  "edgeExtension": {
+    "pixels": 32,
+    "mode": "mirror",
+    "onlyExposedDarkBackground": true
+  },
+  "interpolation": "bicubic",
+  "outputSize": [
+    1254,
+    1254
+  ],
+  "iconResize": {
+    "size": [
+      1024,
+      1024
+    ],
+    "kernel": "lanczos3"
+  },
+  "logo": {
+    "bytes": 2226363,
+    "sha256": "59aa4f4054561fe83ede9e514d41abedbb35da90ded5d52fd89f398a1013d7d9"
+  },
+  "icon": {
+    "bytes": 1518596,
+    "sha256": "f85442a36f1697d47b3d1c8814f44100a72b564145e3960a295ba2233874219f",
+    "pixelsSha256": "c8bd2157e3420dae558b9edbc39c1a4ef524480ac406fb2a0d75831b6c25545b"
+  }
+}

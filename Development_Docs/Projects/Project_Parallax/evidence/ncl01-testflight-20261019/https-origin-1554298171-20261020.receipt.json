@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "OWNED_LAPTOP_HTTPS_NETWORK_REBIND_ONLY",
+  "summaryCreatedAt": "2026-10-20T13:50:12.916Z",
+  "observedAtUtc": {
+    "ownedProcessCleanup": "2026-10-20T13:47:30.9943784+00:00",
+    "identityRebound": "2026-10-20T13:47:38.1237216+00:00",
+    "basicTransport": "2026-10-20T13:48:58.951Z",
+    "authenticatedAssetChecks": "2026-10-20T13:49:05.044Z",
+    "ownedServiceStartVerified": "2026-10-20T13:49:41.9421618+00:00"
+  },
+  "oldPublicOrigin": "https://192.168.0.18:8449",
+  "publicOrigin": "https://155.42.98.171:8449",
+  "preferredAdapter": {
+    "name": "Wi-Fi",
+    "ipv4": "155.42.98.171",
+    "prefixLength": 24,
+    "addressState": "Preferred"
+  },
+  "ownedPortCleanup": {
+    "status": "PASS",
+    "portsReleased": [
+      3149,
+      8448,
+      8449
+    ],
+    "recordedProcessesAbsent": true,
+    "unrelatedProcessesUntouched": true
+  },
+  "restoration": {
+    "status": "PASS",
+    "newLeafForAssignedAddress": true,
+    "caKeysAndPublicProfileUnchanged": true,
+    "canonicalFixtureMetadataUnchanged": true,
+    "oldConfigurationAndPriorProcessRecordsRetained": true,
+    "relayIdentityAndSelfTest": "PASS"
+  },
+  "ca": {
+    "sha256": "17ad9c5ccd0eb37f00b0062d6c8dcff72a368fb85553175402be5016b21ac8b6",
+    "validUntilUtc": "2026-10-22T20:08:04.000Z",
+    "trustScope": "Explicit public CA per verification request; no global trust change"
+  },
+  "transport": {
+    "status": "PASS",
+    "appHttpsStatus": 200,
+    "bootstrapHttpStatus": 200,
+    "tlsAuthorized": true,
+    "tlsProtocol": "TLSv1.3",
+    "normalTlsVerification": true,
+    "firewallChanged": false,
+    "routingChanged": false,
+    "atsWeakened": false
+  },
+  "authenticatedChecks": {
+    "status": "PASS",
+    "passed": 11,
+    "total": 11,
+    "unauthenticatedAssetsDenied": true,
+    "staleRevisionAssetsDenied": true,
+    "originalModels": [
+      {
+        "assetId": "treasure-chest",
+        "bytes": 630120,
+        "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+        "status": 200,
+        "tlsAuthorized": true,
+        "tlsProtocol": "TLSv1.3"
+      },
+      {
+        "assetId": "brass-compass",
+        "bytes": 313396,
+        "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+        "status": 200,
+        "tlsAuthorized": true,
+        "tlsProtocol": "TLSv1.3"
+      }
+    ],
+    "syntheticVoyageId": "cmv9yxc3u001i25do46ylmr89",
+    "syntheticBlockId": "cmv9yxb8h000o25dotduo8sce:clue",
+    "sceneChecksum": "3742976133f66aea45c4da97d628fc8b0bd951289aba2abe0712664b544cdf35",
+    "sceneChecksumUnchanged": true,
+    "canonicalProgressionRequests": 0
+  },
+  "probeSessionCleanup": {
+    "status": "PASS",
+    "ownSessionLogoutSucceeded": true,
+    "ownSessionRevocationVerified": true,
+    "otherSessionsTouched": false
+  },
+  "runtimeHelperSha256": {
+    "app": "a6267a674e71a0e49e8c0273a1ce59349845c5617182791ec3aeab1e4ea486d8",
+    "httpsRelay": "a4317b6e9bd9551ea1c405def86757d223f678c9502fa1ee75600690621a2979"
+  },
+  "physicalEvidence": {
+    "phoneReachabilityOnCurrentNetworkProven": false,
+    "phoneTrustOnCurrentNetworkProven": false,
+    "nativeAROnCurrentNetworkProven": false
+  },
+  "sourceReceipts": [
+    "cleanup.receipt.private.json",
+    "restoration.receipt.private.json",
+    "basic-transport.receipt.private.json",
+    "local-https-assets.private.json",
+    "start.receipt.private.json"
+  ]
+}

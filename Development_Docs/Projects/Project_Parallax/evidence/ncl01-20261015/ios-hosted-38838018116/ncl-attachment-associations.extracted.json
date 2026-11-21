@@ -1,0 +1,35 @@
+[
+  {
+    "attachments": [
+      {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "A8BFD7D2-0FC0-4428-B0FB-54F0DD8E0E7E",
+        "deviceName": "landfall-owned-17423",
+        "exportedFileName": "8F4E5EED-5FE5-419B-982D-D44A0C5A2D9E.json",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "ncl01-scenekit-catalog_0_10FD5521-F846-4E1E-ABE6-14673A0E4544.json",
+        "timestamp": 1792116697.125
+      },
+      {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "A8BFD7D2-0FC0-4428-B0FB-54F0DD8E0E7E",
+        "deviceName": "landfall-owned-17423",
+        "exportedFileName": "A9DA184D-3BD6-47AD-AE22-C901E6D08740.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "treasure-chest-populated_0_C9C0E5B8-7E73-4A58-8419-0277F122F8DC.png",
+        "timestamp": 1792116697.122
+      },
+      {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "A8BFD7D2-0FC0-4428-B0FB-54F0DD8E0E7E",
+        "deviceName": "landfall-owned-17423",
+        "exportedFileName": "653EB7D4-D423-4DC7-B68C-A3F1D5FBDB32.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "treasure-chest-empty_0_2C5F59B7-039B-47D0-923E-9734AD616713.png",
+        "timestamp": 1792116697.118
+      }
+    ],
+    "testIdentifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+    "testIdentifierURL": "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera"
+  }
+]

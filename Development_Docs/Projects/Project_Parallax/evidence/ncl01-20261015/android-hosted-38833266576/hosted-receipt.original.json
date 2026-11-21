@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "candidateSha": "c2357ffe19b7efe88b8f1843bb47e036b4a3ae31",
+  "transportSha": "4daa8a2f618db4dd7de7df67191ccb2bfc4ec723",
+  "runId": "38833266576",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38833266576",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/capabilities.json",
+      "sha256": "7668f2a42a7bdb3c08f6074d65e89b8943758ee713d5f57fa6cbaaebd6b30f51"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/authority/receipt.json",
+      "sha256": "4d85b990fe83158a8a3798cb4163b2ef6f03aded363359ce0511e94b12b30904"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/authority/worker-cleanup.json",
+      "sha256": "e8ef499cb820eec097bb6e7c6318ed06add5450bd8422606cd35242352f97435"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/authority-command-diagnostics.json",
+      "sha256": "fa460711d804f9cc205abf604ea4e243d4f98ac760eece217d8c9eac32e197e9"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/native-action-performance.json",
+      "sha256": "26b28bceab93e00abf4cc07135c6d057ec3f6694bdafa1e21ee0ddf907920431"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/native-apple-input-diagnostics.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/native-client-readiness.json",
+      "sha256": "307dc451eb577762fa212988ad3addc8e4a876b5a974b7b7f0745fc2a82082c1"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/native-final.png",
+      "sha256": "62d81b807351eb2eb686b23d5554ffc3dbc3cd74dd5b7ad136727bd998a90279"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/native-guest-reboots.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/native-location-controls.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/native-location-diagnostics.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/native-startups.json",
+      "sha256": "caaa3e0043ce50d8711eadd6684db0f8c25831cefd20b8dd9cdcdac501bef1f9"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/native-steps.json",
+      "sha256": "d2fdbc0f1bb477e7b19d04dcb97732cb83bf4f1eb6d59a7234cb6d2a830ceed1"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native.json",
+      "sha256": "5de8880ce2c390456af086e2a4dd6dd17952a1cf7a1063de8c91fed95e4a0cb7"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/summary.json",
+      "sha256": "8203a54a28ec741a0d9a448a42e79d5e6d8725196fb343fc5450a268c31e6fc4"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/filament-stage-capture.json",
+      "sha256": "359aa880fa2793e751e56ed50c7a744204c15e54bb6827dcbf8eecad20ff800c"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/filament-stages.stderr.original.log",
+      "sha256": "426b9110c9497224234887d6087a99af8900da5094dc929fb1cd0b22a33c1be5"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/filament-stages.stdout.original.log",
+      "sha256": "c8628d6350e57cae8c871030c8df6f22ef23a3b3545daf3972e4fd73090f47c8"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/instrumentation.txt",
+      "sha256": "556660d3cb708393d176384ea17462b5baf73b3ffa4b6dd7b58157de08f00272"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/native-scene-rendering.json",
+      "sha256": "269495c4fe3db32c0dd6c88952467ac857db9f481d27da6292cb1fb0dca3f284"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/native-sensor-performance.json",
+      "sha256": "a5ffa4174a864901f4d6c2f3de67fe777f6dde9cbbfd53c89cb685ecc643bb71"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/ncl01-filament-brass-compass-cleared.png",
+      "sha256": "df5c0b1b4a75c7c4a96d15363a45fb3690ff2f4d27f9e052098608d25f4bacc9"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/ncl01-filament-brass-compass-populated.png",
+      "sha256": "ac9c33a8c86f65a854c92fd28fdc63227e6466fa0a2635ce6610019831968d3c"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/ncl01-filament-treasure-chest-cleared.png",
+      "sha256": "0b1bf4a9c1fa3e13557d32c3a48cdca24eaabe3e0aa65aa95bd9f1a8b379d98d"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/ncl01-filament-treasure-chest-populated.png",
+      "sha256": "ff88402ca4ba8903c1554ca744613b52d5a1713a466199efd28b74465a8e6808"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/receipt.json",
+      "sha256": "7bf6ff54ec529a922058907fd0d6439f9814d8b797170aaf089d264ea71bc499"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/camera-fixture.json",
+      "sha256": "f4c3976310e25d08cf619d3c8440104bfa935e60cda05f0b0d5ac5fa49dadd75"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/camera-qr.png",
+      "sha256": "70814ef0360f3dc46dae381866f51c59b8a2abd334869a053084c936dbf0d1d5"
+    }
+  ],
+  "artifactState": "AVAILABLE",
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-c2357ffe19b7-1792112755935"
+    ],
+    "remainingResources": []
+  }
+}

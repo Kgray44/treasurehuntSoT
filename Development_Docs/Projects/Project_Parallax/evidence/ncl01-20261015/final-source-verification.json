@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "SOFTWARE_CHECKPOINT_VERIFICATION_ONLY",
+  "verifiedAt": "2026-10-15T20:49:15.529Z",
+  "sourceCheckpoint": "c282137ff0ff1343ec9fa71c06ee6aea32718c34",
+  "productSourceManifest": "final-product-source-manifest.json",
+  "manifestSha256": "7fba70937338e759652a4faa3bd2b337eb1f6267b0558314fcf5dcbf8d61d14c",
+  "fullTypeScript": {
+    "command": "npx tsc --noEmit --incremental false",
+    "exitCode": 0,
+    "originalLog": "typecheck-final-checkpoint.original.log"
+  },
+  "targetedESLint": {
+    "result": "PASS",
+    "scope": [
+      "src/components/wayfarer/AccountFlow.tsx",
+      "scripts/parallax/ncl01-preview.ts",
+      "scripts/landfall/device-lab/android-test.ts",
+      ".agents/scripts/ncl01-local-app.mjs",
+      ".agents/scripts/ncl01-local-https.mjs"
+    ]
+  },
+  "sharedAndAssetSourcesUnchangedSince125PassingTests": true,
+  "accountLifecycleTests": 12,
+  "documentationValidation": "PASS",
+  "featureCatalogValidation": "PASS",
+  "featureCatalogDecision": "NO_CHANGE_REQUIRED_PARTIAL_UNACCEPTED_CAPABILITY",
+  "formalExperienceApproval": false,
+  "physicalAcceptance": false,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

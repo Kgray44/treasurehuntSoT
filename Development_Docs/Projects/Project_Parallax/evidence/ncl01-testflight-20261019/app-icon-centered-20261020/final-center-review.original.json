@@ -1,0 +1,317 @@
+{
+  "schemaVersion": 1,
+  "kind": "INDEPENDENT_LOCAL_LOGO_PIVOT_MEASUREMENT_AND_PACKAGING_REVIEW",
+  "reviewedAt": "2026-10-20T23:30:00.656045+00:00",
+  "result": "REVIEW_COMPLETE_NO_ACTIONABLE_BLOCKER",
+  "scope": "Temporary final mechanical logo and iOS icon packaging; no canonical edits, compilation, upload or phone action performed by reviewer",
+  "measurementLibraries": {
+    "Pillow": "12.2.0",
+    "numpy": "2.4.4"
+  },
+  "coordinateConvention": "Pixel center coordinates, zero-based; canvas geometric center is ((width-1)/2,(height-1)/2)",
+  "methodDescription": "Dark-aperture four-neighbor flood fill at five max-RGB thresholds; least-squares boundary circle. Independent 360-angle bilinear radial sampling of mean-RGB intensity identifies inner positive gradient and bright rim peak; fit each resulting boundary circle. The depicted aperture is not a perfect mathematical circle.",
+  "uncertainty": "Antialiasing, shading, edge selection and interpolation produce a method-dependent subpixel center. Reported residuals support subpixel centering; no zero-error or mathematically exact center claim is made. Radial RMS describes boundary deviation, not a confidence interval.",
+  "originalOwnerSource": {
+    "relativePath": "native/ios/Branding/VoyageWright-AppIcon.source.png",
+    "sha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+    "unchanged": true
+  },
+  "generatedPositionalRefinementSource": {
+    "sha256": "cd3ffa3a3db274310bade32dfa6ae2d19e8a1a05208d67a1cadf56709167d19e",
+    "meaning": "Input generated positional refinement; distinct from the retained original owner image"
+  },
+  "packagingScriptSha256": "5309cdaab5164c570d26db7eb0a6f15bdecd00208796517dc6366f45dc3c6898",
+  "packagingRecordSha256": "e18f7a98015ef33baf89bd6998116723e080422853a2e0e650ae74eb9729ee2e",
+  "images": [
+    {
+      "filename": "VoyageWright-Logo.official.png",
+      "bytes": 2226363,
+      "fileSha256": "59aa4f4054561fe83ede9e514d41abedbb35da90ded5d52fd89f398a1013d7d9",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "opaque": true,
+      "decodedPixelsSha256": "63f8ef61e593314a39cc936c89e2b62a8823b43d92835c656a482b9010e0c7fd",
+      "canvasPixelCenter": [
+        626.5,
+        626.5
+      ],
+      "measurements": [
+        {
+          "method": "threshold_component_boundary_circle_fit",
+          "thresholdMaxRgbChannelExclusive": 35,
+          "componentPixels": 3797,
+          "center": [
+            626.6438,
+            626.7522
+          ],
+          "radiusPixels": 34.3194,
+          "radialRmsPixels": 0.5813,
+          "residualFromCanvasPixelCenter": [
+            0.1438,
+            0.2522
+          ]
+        },
+        {
+          "method": "threshold_component_boundary_circle_fit",
+          "thresholdMaxRgbChannelExclusive": 40,
+          "componentPixels": 3827,
+          "center": [
+            626.6164,
+            626.6499
+          ],
+          "radiusPixels": 34.4644,
+          "radialRmsPixels": 0.5436,
+          "residualFromCanvasPixelCenter": [
+            0.1164,
+            0.1499
+          ]
+        },
+        {
+          "method": "threshold_component_boundary_circle_fit",
+          "thresholdMaxRgbChannelExclusive": 50,
+          "componentPixels": 3880,
+          "center": [
+            626.5427,
+            626.492
+          ],
+          "radiusPixels": 34.6928,
+          "radialRmsPixels": 0.4623,
+          "residualFromCanvasPixelCenter": [
+            0.0427,
+            -0.008
+          ]
+        },
+        {
+          "method": "threshold_component_boundary_circle_fit",
+          "thresholdMaxRgbChannelExclusive": 60,
+          "componentPixels": 3913,
+          "center": [
+            626.562,
+            626.4342
+          ],
+          "radiusPixels": 34.8372,
+          "radialRmsPixels": 0.4334,
+          "residualFromCanvasPixelCenter": [
+            0.062,
+            -0.0658
+          ]
+        },
+        {
+          "method": "threshold_component_boundary_circle_fit",
+          "thresholdMaxRgbChannelExclusive": 70,
+          "componentPixels": 3944,
+          "center": [
+            626.5428,
+            626.3816
+          ],
+          "radiusPixels": 34.9792,
+          "radialRmsPixels": 0.4774,
+          "residualFromCanvasPixelCenter": [
+            0.0428,
+            -0.1184
+          ]
+        },
+        {
+          "method": "radial_inner_gradient",
+          "radialAngles": 360,
+          "radialSampleStepPixels": 0.08,
+          "center": [
+            626.5058,
+            626.4207
+          ],
+          "radiusPixels": 36.0158,
+          "radialRmsPixels": 0.5069,
+          "residualFromCanvasPixelCenter": [
+            0.0058,
+            -0.0793
+          ]
+        },
+        {
+          "method": "radial_bright_rim_peak",
+          "radialAngles": 360,
+          "radialSampleStepPixels": 0.08,
+          "center": [
+            626.8695,
+            626.7329
+          ],
+          "radiusPixels": 37.2153,
+          "radialRmsPixels": 0.3207,
+          "residualFromCanvasPixelCenter": [
+            0.3695,
+            0.2329
+          ]
+        }
+      ],
+      "maximumAbsoluteCenterResidualPerAxisPixels": [
+        0.3695,
+        0.2522
+      ],
+      "centerSpreadAcrossMethodsPerAxisPixels": [
+        0.3637,
+        0.3706
+      ]
+    },
+    {
+      "filename": "AppIcon.png",
+      "bytes": 1518596,
+      "fileSha256": "f85442a36f1697d47b3d1c8814f44100a72b564145e3960a295ba2233874219f",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "opaque": true,
+      "decodedPixelsSha256": "c8bd2157e3420dae558b9edbc39c1a4ef524480ac406fb2a0d75831b6c25545b",
+      "canvasPixelCenter": [
+        511.5,
+        511.5
+      ],
+      "measurements": [
+        {
+          "method": "threshold_component_boundary_circle_fit",
+          "thresholdMaxRgbChannelExclusive": 35,
+          "componentPixels": 2538,
+          "center": [
+            511.6068,
+            511.6563
+          ],
+          "radiusPixels": 27.9807,
+          "radialRmsPixels": 0.4313,
+          "residualFromCanvasPixelCenter": [
+            0.1068,
+            0.1563
+          ]
+        },
+        {
+          "method": "threshold_component_boundary_circle_fit",
+          "thresholdMaxRgbChannelExclusive": 40,
+          "componentPixels": 2558,
+          "center": [
+            511.5524,
+            511.5997
+          ],
+          "radiusPixels": 28.0938,
+          "radialRmsPixels": 0.4392,
+          "residualFromCanvasPixelCenter": [
+            0.0524,
+            0.0997
+          ]
+        },
+        {
+          "method": "threshold_component_boundary_circle_fit",
+          "thresholdMaxRgbChannelExclusive": 50,
+          "componentPixels": 2584,
+          "center": [
+            511.546,
+            511.4796
+          ],
+          "radiusPixels": 28.2343,
+          "radialRmsPixels": 0.4265,
+          "residualFromCanvasPixelCenter": [
+            0.046,
+            -0.0204
+          ]
+        },
+        {
+          "method": "threshold_component_boundary_circle_fit",
+          "thresholdMaxRgbChannelExclusive": 60,
+          "componentPixels": 2609,
+          "center": [
+            511.5327,
+            511.4373
+          ],
+          "radiusPixels": 28.3646,
+          "radialRmsPixels": 0.4323,
+          "residualFromCanvasPixelCenter": [
+            0.0327,
+            -0.0627
+          ]
+        },
+        {
+          "method": "threshold_component_boundary_circle_fit",
+          "thresholdMaxRgbChannelExclusive": 70,
+          "componentPixels": 2625,
+          "center": [
+            511.5025,
+            511.3951
+          ],
+          "radiusPixels": 28.4523,
+          "radialRmsPixels": 0.4114,
+          "residualFromCanvasPixelCenter": [
+            0.0025,
+            -0.1049
+          ]
+        },
+        {
+          "method": "radial_inner_gradient",
+          "radialAngles": 360,
+          "radialSampleStepPixels": 0.08,
+          "center": [
+            511.6214,
+            511.5015
+          ],
+          "radiusPixels": 29.3861,
+          "radialRmsPixels": 0.3906,
+          "residualFromCanvasPixelCenter": [
+            0.1214,
+            0.0015
+          ]
+        },
+        {
+          "method": "radial_bright_rim_peak",
+          "radialAngles": 360,
+          "radialSampleStepPixels": 0.08,
+          "center": [
+            511.6411,
+            511.6031
+          ],
+          "radiusPixels": 30.4582,
+          "radialRmsPixels": 0.5016,
+          "residualFromCanvasPixelCenter": [
+            0.1411,
+            0.1031
+          ]
+        }
+      ],
+      "maximumAbsoluteCenterResidualPerAxisPixels": [
+        0.1411,
+        0.1563
+      ],
+      "centerSpreadAcrossMethodsPerAxisPixels": [
+        0.1386,
+        0.2612
+      ]
+    }
+  ],
+  "visualReview": {
+    "bothImagesViewedAtOriginalResolution": true,
+    "entireCompassLeafAndStarVisible": true,
+    "darkBackgroundAndArtMarginsPreserved": true,
+    "noObviousRoundedCornerClippingRisk": true,
+    "noMaskAppliedToCanonicalArtwork": true,
+    "platformRoundedMaskOrDeviceRenderingValidated": false
+  },
+  "iconSlot": {
+    "relativePath": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/Contents.json",
+    "sha256": "852920cb36e95beb53771138a4b8195a16fcce1cc31250632f246081cc638f9a",
+    "contentsImage": {
+      "filename": "AppIcon.png",
+      "idiom": "universal",
+      "platform": "ios",
+      "size": "1024x1024"
+    },
+    "projectSelectsAppIcon": true,
+    "packagingCandidateMatchesSlotNameSizeAndRgb": true,
+    "requiresProjectOrCatalogChange": false
+  },
+  "limitations": {
+    "canonicalAssetReplacementPerformedByReviewer": false,
+    "compiledIconExtractionValidated": false,
+    "appStoreProcessingValidated": false,
+    "testFlightInstalledIconValidated": false,
+    "runtimeOrArBehaviorChangedOrValidated": false
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "kind": "EXPORTED_COMPILED_APPROVED_ORIGINAL_ICON_RESOURCES_SOURCE_HASHES_ARE_SEPARATE",
+  "candidateSha": "5c79701f027a7e035a1a486f96db182e24f25942",
+  "version": "0.1.0",
+  "build": "7",
+  "retainedOriginalSourcePngSha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+  "approvedCropSourcePngSha256": "0351edb99b3dfcc14508e78c60926e87eb1d1840205ebd754e6000731107bd96",
+  "officialApprovedOriginalLogoPngSha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+  "preparedAppIconPngSha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+  "officialLogoAndPreparedAppIconAreSameBytes": true,
+  "sourceGitBlobsVerifiedAtExactCandidate": true,
+  "rootReportedBeforeDispatchVerification": true,
+  "assetsCarSha256": "908e83055e2d34e18d987a32504676bee7ac15716a0936c89141b6d12b346cfb",
+  "priorBuild6AssetsCarSha256": "84e3fa6864589507ee9d28f1ffd0b511f5ddcf842df4c23fd27ecfb165a21587",
+  "assetsCarChangedFromBuild6": true,
+  "compiledIcons": [
+    {
+      "resource": "Payload/LandfallCompanion.app/AppIcon60x60@2x.png",
+      "bytes": 21570,
+      "sha256": "60de95a4782ac64b3d3545aa4436cd0d777bd4fec71c8bfbf468cbe91a467cfb",
+      "priorBuild6Sha256": "270a70859f783649b19e5e7c9b14550767181393f3b0f6cd7a9ac721778861c4",
+      "changedFromBuild6": true,
+      "dimensions": [
+        120,
+        120
+      ],
+      "previewFile": "compiled-icons/AppIcon60x60@2x.png.preview.png",
+      "previewSha256": "5b588a3543051ef5c77e286423dbffa4dae3caf52ba550402e680143d20ca1a6",
+      "previewDecode": "CGBI_RAW_DEFLATE_PNG_FILTERS_BGR_TO_RGB_NO_RESIZE"
+    },
+    {
+      "resource": "Payload/LandfallCompanion.app/AppIcon76x76@2x~ipad.png",
+      "bytes": 33720,
+      "sha256": "f7ba24a3aa6e9fc0e23ec92978a5d15cf9420e98d5d6c8d128597779e8164b0b",
+      "priorBuild6Sha256": "806b676a95672ce3ca7db7ccb01c5a3d530ecfd04342f184e3c332b213103719",
+      "changedFromBuild6": true,
+      "dimensions": [
+        152,
+        152
+      ],
+      "previewFile": "compiled-icons/AppIcon76x76@2x~ipad.png.preview.png",
+      "previewSha256": "6abc57995d064f3b12b1035c8f7797b3a9d3825ba26ba51935062cb837f21dff",
+      "previewDecode": "CGBI_RAW_DEFLATE_PNG_FILTERS_BGR_TO_RGB_NO_RESIZE"
+    }
+  ],
+  "allCompiledIconsChangedFromBuild6": true,
+  "previewIsExtractedCompiledResource": true,
+  "previewResizedOrArtisticallyChanged": false,
+  "physicalPhoneIconVerified": false
+}

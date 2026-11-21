@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "sourceSha": "adc0e2c87f07aca1fc136dbdf0114e2e575b12ec",
+  "sourceTree": "c50a26613ac1bcf41c69df7f54723dec863d73d2",
+  "dirty": false,
+  "sourceFingerprint": "e9e21e9f765da593ae10fd0f0abcb2cb3ec7721552f6b53fc057bbcc3a6f8cca",
+  "sourceUnchanged": true,
+  "sourceBinding": "CHECKOUT_SNAPSHOT_AND_EXACT_APK",
+  "evidenceClass": "EXECUTION_FAILED",
+  "result": "FAIL",
+  "failure": "NATIVE_INSTRUMENTATION_TOOL_FAILED",
+  "canonicalProgressionEvents": null,
+  "androidVersion": null,
+  "appSha256": "4bdc0cbc41e58beabf2cd2fc177697d1c866cdd402025e5173424818cc62091f",
+  "testApkSha256": "22eb60b61d37033c030521a293a3788973a7e569ab6beea3f6b12c8051072ab0",
+  "sensorPerformanceSha256": null,
+  "sceneRenderingSha256": null,
+  "cleanup": {
+    "result": "FAIL"
+  }
+}

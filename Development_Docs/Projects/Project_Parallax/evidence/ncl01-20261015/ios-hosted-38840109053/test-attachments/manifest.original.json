@@ -1,0 +1,266 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "95CF6865-B310-4AAD-A036-C9D0510FEC9C.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "installation-framework-capabilities-and-inactive-guards_0_375C6395-010F-4C3C-A23A-4C114295A608.json",
+        "timestamp" : 1792118063.992
+      }
+    ],
+    "testIdentifier" : "InstallationInteractionTests/testActualFrameworkCapabilitiesAndInactiveAcquisition()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/InstallationInteractionTests/testActualFrameworkCapabilitiesAndInactiveAcquisition"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "D2C22B24-F7E9-4279-B30E-88E825874F7A.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "nearby-interaction-framework-capability_0_A49659F0-D10D-49A2-AFEF-0A8D77A53D0E.json",
+        "timestamp" : 1792118064.078
+      }
+    ],
+    "testIdentifier" : "NearbyInteractionTests/testFrameworkCapabilityAndInactiveLifecycle()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/NearbyInteractionTests/testFrameworkCapabilityAndInactiveLifecycle"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "E4A7CC58-B8B5-4096-BEAC-280A203B5DB2.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "ncl01-scenekit-catalog_0_91B19CD9-22BF-444C-B829-5C8E8E079E3C.json",
+        "timestamp" : 1792118066.375
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "C4AE731C-4852-4F23-A96C-0F1FDD3103B6.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "brass-compass-removed_0_14615C1C-B006-49F3-8F08-97EA055132DA.png",
+        "timestamp" : 1792118066.369
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "83767E80-63AA-43C5-84C1-71210B30F97A.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "brass-compass-populated_0_33928EBA-068B-4B63-9CD8-60E98DCA5C7B.png",
+        "timestamp" : 1792118066.368
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "BA0F2F2F-B25E-46A6-80E8-26EB53CBB44E.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "brass-compass-empty_0_4C2A751F-23F0-4DC4-85E6-A6865C06ADBA.png",
+        "timestamp" : 1792118066.368
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "63A3267F-9EC5-4734-9F2D-09EC8954A95D.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "treasure-chest-removed_0_24D25D28-726C-4AF5-B1AD-B04F55602F84.png",
+        "timestamp" : 1792118066.367
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "7E1877CB-9E5A-407D-9BBE-79D74D87F9FE.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "treasure-chest-populated_0_B2E651CD-F511-402B-9F3D-E10AA8F2D04C.png",
+        "timestamp" : 1792118066.367
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "136C180C-472A-4A87-961A-06778979C73F.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "treasure-chest-empty_0_27B322F9-BF9D-4D3C-9162-6D18AB6158D2.png",
+        "timestamp" : 1792118066.366
+      }
+    ],
+    "testIdentifier" : "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "4F15DA70-F1A0-42AA-BEEE-B66A505618D0.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "native-lease-performance_0_026CCA99-803B-4681-A467-B6E34360879E.json",
+        "timestamp" : 1792118067.153
+      }
+    ],
+    "testIdentifier" : "PrivateStoreTests/testBoundedNativeLeaseEncryptionAndRestorePerformance()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/PrivateStoreTests/testBoundedNativeLeaseEncryptionAndRestorePerformance"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "12EEE136-B4D2-44A1-928D-39BE4AB89E64.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_6C21C523-9131-40A1-9789-D2D7A15D2E49.landfall'`",
+        "timestamp" : 1792118120.669
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "1C5B5D1D-CF00-440E-B357-542987F0D256.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_89C27680-908C-42CF-9589-F4201E14ECD2.landfall'`",
+        "timestamp" : 1792118119.672
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "F7D675CB-66C6-40B2-87F6-70039E807C56.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_0AAE7069-41BE-43AE-B26E-877A8FBFED83.landfall'`",
+        "timestamp" : 1792118118.721
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "E495A43C-2B11-4248-ADE2-FA385866D63E.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_68E6F616-5B20-4AD7-9355-0E4E699ED174.landfall'`",
+        "timestamp" : 1792118117.742
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "A4ABC8FE-FF59-4D1C-86D6-2227BF4C872C.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_6F1BB1EC-410C-4174-878B-20449EC90AC1.landfall'`",
+        "timestamp" : 1792118116.709
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "FA356966-FBB4-4ABA-9C3E-E4FD8719CCC9.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_64AA0B98-8751-4E00-BEAB-7FB0F351A221.landfall'`",
+        "timestamp" : 1792118115.669
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "FDD8F5E3-764B-4EFD-94B9-28346116914C.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_5916CB16-D6F5-4B5E-A4BE-9AE2143522DF.landfall'`",
+        "timestamp" : 1792118114.733
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "99242D53-7C45-4609-A26E-1E0C15E0250E.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_C1E82827-4627-4AE0-AA16-209DA563207F.landfall'`",
+        "timestamp" : 1792118113.677
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "C0F5A3BA-303A-4663-A718-99E4EA6CEBA4.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_2FC25379-1909-4640-B815-371DAF9FC4A4.landfall'`",
+        "timestamp" : 1792118112.692
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "E02EA5D2-8988-4D9C-A6F1-FCD9760201D4.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_51820F9C-63CE-4B23-B93D-F83C674BF7D5.landfall'`",
+        "timestamp" : 1792118111.736
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "C44F3C40-392E-4DED-B209-D271E91AAD3E.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_F95B5A00-0E76-451D-A8F7-ACFF8FDE22B2.landfall'`",
+        "timestamp" : 1792118110.694
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "61057E94-257B-4A09-92DA-9DD032284944.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_2C7EDB5F-00B1-46A8-AC43-2DEC56387ABF.landfall'`",
+        "timestamp" : 1792118109.692
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "F6F05F79-4FE4-47A3-9708-0BB4D5D642E6.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_B5E67699-3457-46E1-97C6-C5EDB7CC0BAF.landfall'`",
+        "timestamp" : 1792118108.688
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "2A5A7099-5C4B-4CA2-B23C-CD52F91EAE93.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_8F12A7D9-B77E-423C-9E07-4D21E5CD0C36.landfall'`",
+        "timestamp" : 1792118107.678
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "A2893941-BD89-4E66-B349-E9D2E850EB73.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `Target Application 'com.voyagewright_0_CF282B9A-4C87-484B-A271-3E4BBC02A5A5.landfall'`",
+        "timestamp" : 1792118106.814
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "exportedFileName" : "8DB15E6A-4913-4C91-B371-8980E94AA1D8.mp4",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Screen Recording 2026-10-16 at 02.34.41 AM.mp4",
+        "timestamp" : 1792118081.435
+      }
+    ],
+    "testIdentifier" : "NativeLifecycleTests/testUnconfiguredShellReturnsFromHome()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionUiTests/NativeLifecycleTests/testUnconfiguredShellReturnsFromHome"
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "fixtureHash": "ed951b7086333d2ea7f685e316df0963adf3c62d7ebba845bb8e65d21a8d4223",
+  "counts": {
+    "canonicalProgressionEvents": 0,
+    "blockCompletions": 0,
+    "currentBlock": "active",
+    "rawLocationsRetained": false
+  },
+  "clock": "NATIVE_UNMODIFIED_TIMESTAMPS"
+}

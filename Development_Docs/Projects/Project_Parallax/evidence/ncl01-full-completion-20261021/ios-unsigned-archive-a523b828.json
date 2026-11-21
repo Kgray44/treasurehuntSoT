@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_READ_ONLY_REVIEW",
+  "result": "PASS_WITH_EXPLICIT_EVIDENCE_LIMITS",
+  "runId": "39619394225",
+  "transportSha": "aedd3f42af81912007bf69bb88433437aa434c1f",
+  "candidateSha": "a523b8287231b44c3cc30c5ebb6fba6954e6d95a",
+  "mode": "unsigned",
+  "evidenceClass": "HOSTED_UNSIGNED_GENERIC_IOS_RELEASE_ARCHIVE_ONLY",
+  "deviceArchiveValidated": true,
+  "version": "0.1.0",
+  "build": "8",
+  "xcode": "Xcode 26.6\nBuild version 17F113",
+  "iphoneosSdk": "26.5",
+  "appExecutableSha256": "9aa73770560f7f5ef5ccf5fefa5559fa7bb1b01fd10cefeb295845ef08e7f15b",
+  "reportedCredentialCleanup": "PASS",
+  "workflowCleanupStep": "success",
+  "uploadJob": "skipped",
+  "uploadAccepted": false,
+  "appleProcessing": "NOT_STARTED",
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "sourceIconSha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+  "retainedOriginalIconSha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+  "archivedMetadataAssertionsReviewed": [
+    "bundle/version/build",
+    "HTTPS origin and app-bound host",
+    "camera and local-network purpose strings",
+    "no ATS exceptions",
+    "AppIcon catalog name",
+    "app and GLTFKit2 privacy manifests"
+  ],
+  "compiledIconPixelComparison": "UNAVAILABLE_ARCHIVE_NOT_PUBLISHED",
+  "releaseLabBinaryScan": "UNAVAILABLE_EXECUTABLE_NOT_PUBLISHED",
+  "warnings": ["UIButton contentEdgeInsets deprecation; build succeeded"],
+  "artifactHashes": {
+    "altool-help.log": "088129dcdb14c95951f4fa267c86bcf6b5341e40206321a883d0ee9e4d377752",
+    "device_archive.log": "e193a810bc035f7db297c7d61ac39a722d75fffb8ddae471a0db42efe99bb66f",
+    "project_generation.log": "a54854f2c9443ced13a946a0750746b2629b98e378f2818801eeb1460fe24167",
+    "receipt.json": "2e17619a6ebc7bbab3ec3adc4c9ba088eabf41b0238355e6af544bda39d605ae"
+  },
+  "sourceCapabilityReview": [
+    "ARKit remains optional at install and checked through ARWorldTrackingConfiguration.isSupported; no required-hardware claim added",
+    "Camera-free enablement returns false outside DEBUG Simulator compilation",
+    "Source NFC TAG entitlement preserved; no unsigned entitlement-signature proof claimed"
+  ]
+}

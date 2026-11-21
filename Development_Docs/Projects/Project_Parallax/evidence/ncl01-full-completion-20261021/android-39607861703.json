@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "SOURCE_BOUND_HOSTED_EMULATOR_DIAGNOSTIC_ONLY",
+  "runId": "39607861703",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39607861703",
+  "candidateSha": "26da4135d851ee67a0c685a0726486739612d1e2",
+  "transportSha": "5632143ec359ed17ad47097c025f4ccfce3ff165",
+  "conclusion": "FAILURE",
+  "graphicsProbe": false,
+  "environment": {
+    "api": 36,
+    "android": "16",
+    "emulatorVersion": "37.2.12.0",
+    "requestedBackend": "swangle",
+    "observedGlesMode": "swangle",
+    "observedVulkanMode": "swiftshader",
+    "physicalDevice": false
+  },
+  "native": {
+    "result": "PASS",
+    "sourceUnchanged": true,
+    "sourceFingerprint": "38d4c0f656f084bc922286ee21a2a03054c599859ff3c30bda03f1d27015ef90",
+    "instrumentationTestsPassed": 16,
+    "instrumentationSeconds": 96.005,
+    "appApkSha256": "faae3dda30ae860dbe631e344e8aafe190323d7651db7e2f96df6c5176bad4a7",
+    "testApkSha256": "7e844c44159b98d7566a6c40015641a9c0b3f53b6457b4776603d63f31f5f184",
+    "engineDisposed": true,
+    "assets": [
+      {
+        "assetId": "brass-compass",
+        "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+        "renderables": 4,
+        "materialInstances": 4,
+        "originalWorldBoundsMeters": [
+          -0.08,
+          0,
+          -0.095000006,
+          0.08,
+          0.045,
+          0.095
+        ],
+        "rootTransformAndBottomPivotVerified": true,
+        "renderedNontransparentPixels": 4386,
+        "clearedNontransparentPixels": 0,
+        "assetDisposed": true
+      },
+      {
+        "assetId": "treasure-chest",
+        "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+        "renderables": 7,
+        "materialInstances": 4,
+        "originalWorldBoundsMeters": [
+          -0.4,
+          0,
+          -0.25,
+          0.4,
+          0.61,
+          0.25
+        ],
+        "rootTransformAndBottomPivotVerified": true,
+        "renderedNontransparentPixels": 10975,
+        "clearedNontransparentPixels": 0,
+        "assetDisposed": true
+      }
+    ],
+    "nativeInputEvidenceClass": "INSTRUMENTED_NATIVE_INPUT_ONLY",
+    "largeTextEscapeLayoutVerified": true,
+    "canonicalOutcomeProven": false,
+    "cleanupResult": "PASS"
+  },
+  "joinedLens": {
+    "result": "FAIL",
+    "failingStage": "UI_CONTROL_OBSERVATION",
+    "errorCode": "NATIVE_LENS_CONTROL_UNOBSERVED_OR_AMBIGUOUS",
+    "exactControl": "NOT_RETAINED",
+    "missingVersusAmbiguous": "NOT_ESTABLISHED",
+    "nativeInspectReceiptProduced": false,
+    "screenshotsProduced": false,
+    "hierarchyProduced": false,
+    "canonicalRejectionProven": false,
+    "cleanupResult": "PASS"
+  },
+  "laterPermissionDeniedScenario": "NOT_EXECUTED",
+  "ownedTransportCleanupResult": "PASS",
+  "physicalTrackingProven": false,
+  "positivePhysicalInspectProven": false,
+  "artifactHashesVerified": 15,
+  "originals": [
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/android-native-tests-1792589541130/filament-stage-capture.json",
+      "bytes": 862,
+      "sha256": "b4b3ea739b924ccb401a43d162f07ccff7191fb48c50f7461f08d8a57b0380ce"
+    },
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/android-native-tests-1792589541130/filament-stages.stderr.original.log",
+      "bytes": 34,
+      "sha256": "426b9110c9497224234887d6087a99af8900da5094dc929fb1cd0b22a33c1be5"
+    },
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/android-native-tests-1792589541130/filament-stages.stdout.original.log",
+      "bytes": 6065,
+      "sha256": "947c1de6a998fbd0c28f9b38b55331334308d6f48392967704acad6017b32205"
+    },
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/android-native-tests-1792589541130/instrumentation.txt",
+      "bytes": 10888,
+      "sha256": "059afd1fb1c84f12ad79edf0ea054ebc6dadb54004dd2cd5a331b6a9156a4217"
+    },
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/android-native-tests-1792589541130/native-input.json",
+      "bytes": 2157,
+      "sha256": "b53279722fba88069f4686cd0b9411b16e68138bc9fedea7044a4e3b2ab0fe50"
+    },
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/android-native-tests-1792589541130/native-scene-rendering.json",
+      "bytes": 6192,
+      "sha256": "949268a380f23ba6d89a236c99cd31def6ca63dec0dc9e3e2eefd7d7f11793af"
+    },
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/android-native-tests-1792589541130/native-sensor-performance.json",
+      "bytes": 1086,
+      "sha256": "f0f05c358f960c6bbf75c5615462b4748ae3053cf2bf6465c99bce50beb56bee"
+    },
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/android-native-tests-1792589541130/ncl01-filament-brass-compass-cleared.png",
+      "bytes": 10173,
+      "sha256": "7c68696d5bc64adee2b58bcd1ffddf44997fd3d843446b077718259365eed616"
+    },
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/android-native-tests-1792589541130/ncl01-filament-brass-compass-populated.png",
+      "bytes": 20285,
+      "sha256": "ac9c33a8c86f65a854c92fd28fdc63227e6466fa0a2635ce6610019831968d3c"
+    },
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/android-native-tests-1792589541130/ncl01-filament-treasure-chest-cleared.png",
+      "bytes": 10067,
+      "sha256": "2d8ee69bd9189c5aefb697b887715a040836d165639fa8e9f825e8f0aaaa0fab"
+    },
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/android-native-tests-1792589541130/ncl01-filament-treasure-chest-populated.png",
+      "bytes": 26587,
+      "sha256": "fc3a42a55af73a4af3b6ef859548f95a6cac090c32781c078400088391d83735"
+    },
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/android-native-tests-1792589541130/receipt.json",
+      "bytes": 1121,
+      "sha256": "e6a201824569c9ec4747590ec253ff4ad01678484c51a1427cdaa33fd3c7a46d"
+    },
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/camera-fixture.json",
+      "bytes": 920,
+      "sha256": "a54e8bb9a6f9cbe598713018923937242defe0582a16551f1deb4ff0e45342a7"
+    },
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/camera-qr.png",
+      "bytes": 17466,
+      "sha256": "459892de6eb8d116e00056b120f7db203537bddb4c264808288188a17faf967a"
+    },
+    {
+      "file": "artifacts/landfall-android-primary-phone-26da4135d851ee67a0c685a0726486739612d1e2/parallax-native-1792589677338/cleanup.json",
+      "bytes": 176,
+      "sha256": "fcbc94a7f90647040673f2adae080a35f48272fae4e3b8308b2e86ed28f68d3f"
+    },
+    {
+      "file": "dispatch.original.json",
+      "bytes": 1251,
+      "sha256": "e2ab43bf87b87b5f59e4cab29219f2a036c49edcb3dbf63782a6d36c5bd3ca2f"
+    },
+    {
+      "file": "run-status.original.json",
+      "bytes": 5873,
+      "sha256": "76231189a40bde6c8e3a8a32be5716bbe3f446552cff26e523f4cab165109e0d"
+    },
+    {
+      "file": "artifact-inventory.original.json",
+      "bytes": 819,
+      "sha256": "16067370079670841a578cb9c43950af82b7e4c89ad937b8526026ecc4eb2e38"
+    },
+    {
+      "file": "canonical-harvest.original.log",
+      "bytes": 247,
+      "sha256": "5df07969032d6ca53fb9da4d62818c7089c685cfc2b7a43f8933643d179bee50"
+    },
+    {
+      "file": "canonical-harvest/hosted-receipt.json",
+      "bytes": 4297,
+      "sha256": "d6c943384b31d61bc67d3966bf89567300bdcf4c4127d7b7781e35c4626f94be"
+    },
+    {
+      "file": "canonical-harvest/run.log",
+      "bytes": 185885,
+      "sha256": "7a857a1e700a57b470f0059770ce3637081f6be3a2114d4699975f3ff6b33621"
+    }
+  ]
+}

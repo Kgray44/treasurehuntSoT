@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "role": "DEVELOPMENT_ONLY",
+  "qualification": false,
+  "source": {
+    "sourceSha": "26da4135d851ee67a0c685a0726486739612d1e2",
+    "sourceTree": "ad5d8c03f683b68ed89d2f263e182f5878bed070",
+    "dirty": false,
+    "sourceFingerprint": "3a80bde73138422730372467aae362ad4c22c1b1520889fdd4864d6a9b67d93b"
+  },
+  "sourceUnchangedDuringExecution": true,
+  "command": "node node_modules/vitest/vitest.mjs run src/parallax src/components/player/parallax src/components/player/journal/ChronicleJournalSession.test.ts src/landfall/device-lab/android-native-input.test.ts src/landfall/device-lab/native-lens-control.test.ts src/landfall/device-lab/android-scene-rendering.test.ts src/landfall/device-lab/hosted-selection.test.ts src/landfall/device-lab/android-graphics-probe.test.ts --reporter=json",
+  "success": true,
+  "testFiles": 39,
+  "tests": 493,
+  "passed": 493,
+  "failed": 0,
+  "originalReportSha256": "b8708f3c39e438d62ec32fecaf2c748246f18aa449bf737c241635db26d0cc8b",
+  "files": [
+    {
+      "path": "src/parallax/adaptive-runtime.test.ts",
+      "status": "passed",
+      "tests": 4
+    },
+    {
+      "path": "src/parallax/adaptive.test.ts",
+      "status": "passed",
+      "tests": 20
+    },
+    {
+      "path": "src/parallax/ai-ledger.test.ts",
+      "status": "passed",
+      "tests": 14
+    },
+    {
+      "path": "src/parallax/ai-policy.test.ts",
+      "status": "passed",
+      "tests": 7
+    },
+    {
+      "path": "src/parallax/ai-quota-commands.test.ts",
+      "status": "passed",
+      "tests": 8
+    },
+    {
+      "path": "src/parallax/asset-delivery.test.ts",
+      "status": "passed",
+      "tests": 7
+    },
+    {
+      "path": "src/parallax/authoring.test.ts",
+      "status": "passed",
+      "tests": 20
+    },
+    {
+      "path": "src/parallax/browser-scene-presentation.test.ts",
+      "status": "passed",
+      "tests": 11
+    },
+    {
+      "path": "src/parallax/browser-spatial-adapter.test.ts",
+      "status": "passed",
+      "tests": 9
+    },
+    {
+      "path": "src/parallax/device-lab.test.ts",
+      "status": "passed",
+      "tests": 8
+    },
+    {
+      "path": "src/parallax/drydock.test.ts",
+      "status": "passed",
+      "tests": 3
+    },
+    {
+      "path": "src/parallax/editor-assets.test.ts",
+      "status": "passed",
+      "tests": 2
+    },
+    {
+      "path": "src/parallax/evidence.test.ts",
+      "status": "passed",
+      "tests": 6
+    },
+    {
+      "path": "src/parallax/field-retention.test.ts",
+      "status": "passed",
+      "tests": 2
+    },
+    {
+      "path": "src/parallax/field-service.test.ts",
+      "status": "passed",
+      "tests": 9
+    },
+    {
+      "path": "src/parallax/floating-panel.test.ts",
+      "status": "passed",
+      "tests": 10
+    },
+    {
+      "path": "src/parallax/library-service.test.ts",
+      "status": "passed",
+      "tests": 8
+    },
+    {
+      "path": "src/parallax/native.test.ts",
+      "status": "passed",
+      "tests": 4
+    },
+    {
+      "path": "src/parallax/openai-provider.test.ts",
+      "status": "passed",
+      "tests": 25
+    },
+    {
+      "path": "src/parallax/parallax-experience-fixture.test.ts",
+      "status": "passed",
+      "tests": 7
+    },
+    {
+      "path": "src/parallax/phase1.test.ts",
+      "status": "passed",
+      "tests": 14
+    },
+    {
+      "path": "src/parallax/phase3-device-lab.test.ts",
+      "status": "passed",
+      "tests": 18
+    },
+    {
+      "path": "src/parallax/runtime-delivery.test.ts",
+      "status": "passed",
+      "tests": 8
+    },
+    {
+      "path": "src/parallax/scene-delivery.test.ts",
+      "status": "passed",
+      "tests": 14
+    },
+    {
+      "path": "src/parallax/scene-transfer.test.ts",
+      "status": "passed",
+      "tests": 37
+    },
+    {
+      "path": "src/parallax/service.test.ts",
+      "status": "passed",
+      "tests": 7
+    },
+    {
+      "path": "src/parallax/spatial-assistant-corpus.test.ts",
+      "status": "passed",
+      "tests": 66
+    },
+    {
+      "path": "src/parallax/spatial-assistant-experiments.test.ts",
+      "status": "passed",
+      "tests": 31
+    },
+    {
+      "path": "src/parallax/spatial-assistant-service.test.ts",
+      "status": "passed",
+      "tests": 22
+    },
+    {
+      "path": "src/parallax/spatial-assistant.test.ts",
+      "status": "passed",
+      "tests": 19
+    },
+    {
+      "path": "src/parallax/workspace-layout.test.ts",
+      "status": "passed",
+      "tests": 3
+    },
+    {
+      "path": "src/landfall/device-lab/android-graphics-probe.test.ts",
+      "status": "passed",
+      "tests": 7
+    },
+    {
+      "path": "src/landfall/device-lab/android-native-input.test.ts",
+      "status": "passed",
+      "tests": 4
+    },
+    {
+      "path": "src/landfall/device-lab/android-scene-rendering.test.ts",
+      "status": "passed",
+      "tests": 9
+    },
+    {
+      "path": "src/landfall/device-lab/hosted-selection.test.ts",
+      "status": "passed",
+      "tests": 3
+    },
+    {
+      "path": "src/landfall/device-lab/native-lens-control.test.ts",
+      "status": "passed",
+      "tests": 8
+    },
+    {
+      "path": "src/components/player/journal/ChronicleJournalSession.test.ts",
+      "status": "passed",
+      "tests": 28
+    },
+    {
+      "path": "src/components/player/parallax/ChronicleLens.native.test.tsx",
+      "status": "passed",
+      "tests": 6
+    },
+    {
+      "path": "src/components/player/parallax/ChronicleLens.test.tsx",
+      "status": "passed",
+      "tests": 5
+    }
+  ],
+  "limits": [
+    "No physical device, world tracking, protected-main qualification or owner acceptance."
+  ]
+}

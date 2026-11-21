@@ -1,0 +1,5 @@
+{
+  "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+  "minimumIOS": "16.0",
+  "policy": "PREINSTALLED_LATEST_SUPPORTED"
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "kind": "EXPORTED_IPA_METADATA_RESOURCE_VERIFICATION",
+  "result": "PASS",
+  "candidateSha": "5c79701f027a7e035a1a486f96db182e24f25942",
+  "version": "0.1.0",
+  "build": "7",
+  "checks": {
+    "bundleIdentifier": true,
+    "marketingVersion": true,
+    "buildNumber": true,
+    "stablePublicOrigin": true,
+    "appBoundHost": true,
+    "nonExemptEncryptionFalse": true,
+    "cameraPurposePresent": true,
+    "localNetworkPurposePresent": true,
+    "primaryIconAppIcon": true,
+    "compiledIconAssetPresent": true,
+    "rootPrivacyManifestValid": true,
+    "gltfKitPrivacyManifestValid": true,
+    "atsArbitraryLoadsDisabled": true
+  },
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "iconArtworkChanged": true
+}

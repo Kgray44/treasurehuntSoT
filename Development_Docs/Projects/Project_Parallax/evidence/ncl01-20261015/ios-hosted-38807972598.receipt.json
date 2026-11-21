@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "HOSTED_IOS_SIMULATOR_BOOT_FAILURE",
+  "candidateSha": "b328c49a69b7179c54b0dd0608aba65ded6c368d",
+  "transportSha": "97d1a376ee4a6efd66bafbf5ccdfe119d8ba0eca",
+  "runId": "38807972598",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38807972598",
+  "conclusion": "failure",
+  "artifactName": "landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d",
+  "harvestedArtifactFiles": 6,
+  "originalHarvestReceiptSha256": "6d8bf1f9ffe073ef3b7b9fe7d859e771d54869c0b0f32aa8516c8ba554fbfe89",
+  "originalRunLogSha256": "eff90682e0ca774c7f51bc01bd32217238d497186ca42974156e2020720e02ca",
+  "preservedRawEvidencePath": "artifacts/landfall-device-lab/hosted-b328c49a69b7-1792098697318/run-38807972598",
+  "failure": {
+    "stage": "BOOT_SIMULATOR",
+    "code": null,
+    "killed": true,
+    "signal": "SIGTERM",
+    "diagnosticHash": "827dcd6d2b30ab880cf93bc0b99edb7e9114a9da5bdac4e06cd7268e4a1c0e90",
+    "command": "xcrun simctl bootstatus 2BE11633-C0CB-4850-8C0E-3504C74A9479 -b",
+    "configuredTimeoutMs": 420000,
+    "observedState": "Waiting on Data Migration: com.apple.locationd.migrator (CoreLocationMigrator.migrator)",
+    "interpretation": "The owned simulator did not finish booting before the existing bootstatus timeout; this run produced no compilation or XCTest result."
+  },
+  "nativeTests": {
+    "state": "NOT_RUN",
+    "passed": null,
+    "failed": null,
+    "skipped": null,
+    "total": null,
+    "xcresult": "NOT_CREATED",
+    "nclMethods": [
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testAuthorizedAssetReferencesAndIntegrity()",
+        "result": "NOT_RUN"
+      },
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+        "result": "NOT_RUN"
+      },
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testSelectionUsesHitAncestryAndNeverAnArbitraryFirstEntity()",
+        "result": "NOT_RUN"
+      },
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testSharedVersionTwoSceneTransferAndIdentityFixtures()",
+        "result": "NOT_RUN"
+      }
+    ]
+  },
+  "deviceLabScenario": {
+    "scenarioId": "permission-denied-native",
+    "state": "NOT_RUN",
+    "reason": "The prerequisite apple-build job step failed during simulator boot.",
+    "canonicalProgressionEvents": null
+  },
+  "simulatorCleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "2BE11633-C0CB-4850-8C0E-3504C74A9479"
+    ],
+    "remainingResources": []
+  },
+  "transportCleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-b328c49a69b7-1792098697318"
+    ],
+    "remainingResources": []
+  },
+  "boundaries": {
+    "softwareCompilationProven": false,
+    "nativeXCTestProven": false,
+    "canonicalScenarioProven": false,
+    "physicalWorldTrackingProven": false,
+    "physicalOwnerAcceptanceProven": false,
+    "physicalLocalNetworkPermissionProven": false,
+    "laptopOriginReachableFromPhoneProven": false,
+    "physicalTLSAndAppBoundOriginProven": false
+  },
+  "publishedEvidence": [
+    {
+      "path": "ios-hosted-38807972598/build-scope.original.json",
+      "sha256": "28b1afa081f5aa54a251110bfbc71ffc0b2c5096b359cd8b11477b61950b797a",
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d/apple-build/build-scope.json",
+      "bytes": 370
+    },
+    {
+      "path": "ios-hosted-38807972598/capabilities.original.json",
+      "sha256": "c6e36223d4b3ab7f069c9358cff082c7ee0c25cae7919dd1156cf8f0d1ba6ebb",
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d/apple-build/capabilities.json",
+      "bytes": 16217
+    },
+    {
+      "path": "ios-hosted-38807972598/build-cleanup.original.json",
+      "sha256": "dac40b89412fa33f3e75be86dace3ad645f40a05f469688714a30e19a49cea26",
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d/apple-build/cleanup.json",
+      "bytes": 99
+    },
+    {
+      "path": "ios-hosted-38807972598/execution-error.original.json",
+      "sha256": "ec36a0bbe26cce7ee4e20b0dd502f24bd4a1643c2c3085a68dd4d426ab04753f",
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d/apple-build/execution-error.json",
+      "bytes": 176
+    },
+    {
+      "path": "ios-hosted-38807972598/runtime-selection.original.json",
+      "sha256": "c3e6e0896902914f970c32ccd7b25bf7d12a9ee733252931867273f2a7768f1d",
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d/apple-build/runtime-selection.json",
+      "bytes": 131
+    },
+    {
+      "path": "ios-hosted-38807972598/test-summary.original.txt",
+      "sha256": "9fe8573bba09dfd95889aac22320a2257045436d85de593ba40b88ffe51d1bba",
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d/apple-build/test-summary.json",
+      "bytes": 20
+    },
+    {
+      "path": "ios-hosted-38807972598/hosted-receipt.original.json",
+      "sha256": "6d8bf1f9ffe073ef3b7b9fe7d859e771d54869c0b0f32aa8516c8ba554fbfe89",
+      "bytes": 1823,
+      "sourceRawPath": "hosted-receipt.json"
+    },
+    {
+      "path": "ios-hosted-38807972598/hosted-run.excerpt.log",
+      "sha256": "7ed4264d0a0317acd25f00aa269229e6491dbccaa8e80e070560ee2ecde7f9ef",
+      "bytes": 52445,
+      "sourceRunLogSha256": "eff90682e0ca774c7f51bc01bd32217238d497186ca42974156e2020720e02ca",
+      "selection": "Original numbered lines from the apple-build companion-only step through failed run completion"
+    }
+  ],
+  "priorRunReceiptsPreserved": [
+    "38798660744",
+    "38800480310"
+  ]
+}

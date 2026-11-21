@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "EXACT_NATIVE_FIXTURE_SOURCE_AND_HOSTED_TRANSPORT_BINDING",
+  "candidateSha": "9314c749e426110ee38ed1da373a4e2361c6431a",
+  "candidateParent": "2f2d55fd15743bc49d815dd4d9d2179debf52238",
+  "transportSha": "24785d704de8d4d977262392ff58b2b78ce63796",
+  "candidateChangedPaths": [
+    "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift"
+  ],
+  "transportChangedPaths": [
+    ".github/workflows/landfall-device-lab.yml"
+  ],
+  "fixture": {
+    "path": "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift",
+    "sha256": "d40db072a0fbcbc8580d24eda2ad622e5fd7b123de4cb483df816669dfb0d94e",
+    "bytes": 35405,
+    "gitBlob": "6212fc4bfe8d359acd72d9204c63c48118b41cf7"
+  },
+  "priorPublishedIosFilesPreserved": 106,
+  "priorPublishedIosHashSetSha256": "7374744a841f909452704621f017e8e9c95d6d576997c77d9f93813334d13a46",
+  "canonicalHarvestReceiptSha256": "eb8e9e54a20fb0aaa2480aaf190bae9ee614e4dbb3585eec6602d499cbb1e083",
+  "note": "Every original artifact copied for this receipt is checked against the canonical harvest manifest; no prior run image is rebound.",
+  "lifecycle": {
+    "path": "native/ios/LandfallCompanionUiTests/NativeLifecycleTests.swift",
+    "sha256": "54fb976b436e0326447029b64762ccbfa2a60a04dd8f665dc85a6131530c4f6e",
+    "bytes": 19868,
+    "gitBlob": "dbd78a1f35df038d645b746bcf5d4fad38979acb",
+    "assertionLine": 20,
+    "failureMessage": "LANDFALL_HOME_BACKGROUND_UNOBSERVED",
+    "existingBackgroundObservationTimeoutSeconds": 15,
+    "unchangedFromFailedGeometryCandidate2f": true,
+    "unchangedFromPriorSuccessfulCandidateAec": true
+  },
+  "ordinaryUnchangedCandidateReplay": {
+    "previousRunId": "38840109053",
+    "previousCandidateSha": "9314c749e426110ee38ed1da373a4e2361c6431a",
+    "previousTransportSha": "5e9d42412f2798e07b89b523000fed5e94753825",
+    "previousTransportTree": "70198b6da751994897c782f690c7c135197b0f7c",
+    "currentTransportTree": "70198b6da751994897c782f690c7c135197b0f7c",
+    "exactCandidateAndTransportTreeUnchanged": true,
+    "sourceAssertionsTimeoutProfileBackendChanged": false,
+    "reason": "One root-authorized replay after independently preserved and reviewed aggregate Home-background failure; environment cause remains unknown."
+  }
+}

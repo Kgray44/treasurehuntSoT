@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "engineering-evidence",
+  "role": "FAILED_NCL01_EXPERIENCE_CAPTURE_CUSTODY",
+  "qualification": false,
+  "acceptance": false,
+  "runId": 39850146091,
+  "runAttempt": 1,
+  "workflow": ".github/workflows/sounding-line-ordinary.yml",
+  "mode": "capture",
+  "outcome": "FAILURE",
+  "baseSha": "1a7653c3d6f3476b38f789c9b7a017b4e529243c",
+  "candidateSha": "18b4cd2392a17ed3666258b42ba0b8b8de705b6f",
+  "candidateTree": "5d3de4602282563fa6f29fe18db57432b44102f5",
+  "sourceDigest": "9e8eb22cfd8bbe9ec30960e41db1e561af62ad560d67ca47c0e45bcc26bfcdfb",
+  "contractDigest": "1641e055d4bcb7d0cb34ef8c641023cd8957e10e46768c07ee63418cb03ffeb3",
+  "plannedCoverage": {
+    "contracts": 18,
+    "genericContexts": 68,
+    "pairedContexts": 6,
+    "pairedCases": 3,
+    "declaredBrowserFiles": 10,
+    "executedPassCount": null
+  },
+  "failure": {
+    "category": "PRODUCT_FAILURE",
+    "code": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+    "atUtc": "2026-10-22T21:01:30.209Z",
+    "contractId": "admiralty.phase2.account-dossier-support",
+    "journeyId": "ncl01-admiralty-empty-search-and-account-return",
+    "device": "MOBILE",
+    "role": "ADMINISTRATOR",
+    "motion": "NORMAL",
+    "operation": "wait for visible Return to account link",
+    "timeoutMs": 30000
+  },
+  "cleanup": {
+    "browser": "PASS",
+    "server": "PASS",
+    "proxy": "PASS",
+    "portsReleased": true,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": false
+  },
+  "artifacts": [
+    {
+      "id": 12458726519,
+      "bytes": 591805450,
+      "sha256": "617aec96ba99f09add54dcfb76ca441111bcaf5c4b888db0cf4477e12aaa880b",
+      "role": "CAPTURE_ORIGINAL",
+      "apiSizeAndDigestMatch": true
+    },
+    {
+      "id": 12459116353,
+      "bytes": 59309015,
+      "sha256": "2430c018f062dfa036cc08aee7a76e23006295c99d3ca05e06e9dba60186a2b3",
+      "role": "ENCRYPTED_RAW_RETENTION_ORIGINAL",
+      "apiSizeAndDigestMatch": true
+    },
+    {
+      "id": 12458302682,
+      "bytes": 37902,
+      "sha256": "d0a79cd6a72ddb4f53cb4c0391861c504931865cc26a18246c497815d7c02c80",
+      "role": "LIFECYCLE_ORIGINAL",
+      "apiSizeAndDigestMatch": true
+    }
+  ],
+  "custody": {
+    "captureDownloadInitialTimeoutSeconds": 120,
+    "preservedPrefixBytes": 406241280,
+    "preservedPrefixSha256": "09ce8668fc8cb42d9b0db7730a9d45c4bd3bbd9bfe2da7d86453b7d9f7135b4d",
+    "rangeContinuationBytes": 185564170,
+    "rangeStatus": 206,
+    "originalPrefixPreserved": true,
+    "completeArchiveDigestMatches": true,
+    "allDownloadCleanup": "PASS",
+    "captureArchiveEntries": 360,
+    "captureArchiveExpandedBytes": 600555838,
+    "pngCount": 235,
+    "webmCount": 62,
+    "traceZipCount": 62,
+    "countMeaning": "file inventory, not a passing context or test count",
+    "fullExtraction": "FAILED_PRESERVED_AFTER_42_MEMBERS",
+    "failingExtractedMemberCrcRechecked": "PASS",
+    "failingDestinationCharacters": 314,
+    "longPathHelperPreparedNotExecuted": true
+  },
+  "retention": {
+    "producerStatus": "COMPLETE",
+    "encryptedFiles": 424,
+    "allManifestFileSizesAndSha256Match": true,
+    "decryptionAttempted": false,
+    "failedMobileTraceViewed": false
+  },
+  "developmentMediaReview": {
+    "independentAcceptance": false,
+    "screenshots": [
+      {
+        "role": "DESKTOP_PEOPLE_EMPTY",
+        "sha256": "ee569715f63c0fe0e5f3f4e4d9e5151cc63e2bcc8267371880cdf08df1594cb4",
+        "bytes": 499868,
+        "crcVerified": true
+      },
+      {
+        "role": "MOBILE_PEOPLE_EMPTY",
+        "sha256": "3372c38ae18813401418e2f49a253180422a6dc29b181a1b9420f17ba6b79cce",
+        "bytes": 127512,
+        "crcVerified": true
+      }
+    ],
+    "desktopControlTraceSha256": "01a4aada5fa4556e0e519c318ba539145d7f311c597855f7267d00b4513d43cc",
+    "desktopControlTraceExpandedBytes": 26323583,
+    "compiledStylesheetResource": "eed86644df0843199fdb8a7c43f18ec5ad6f8a36.css",
+    "compiledRule": "@media (max-width:52rem) .chartroom-actions>a { display:none }",
+    "screenshotLimitation": "Navigation scrolls main into view; screenshots alone do not distinguish an offscreen header from a CSS-hidden link."
+  },
+  "repair": {
+    "productionFiles": [
+      "src/styles/admiralty.css"
+    ],
+    "testFiles": [
+      "tests/e2e/ncl01-consumer-continuity.spec.ts"
+    ],
+    "behavior": "Keep mobile account return and sign-out visible in a wrapping header action row.",
+    "regressionCases": [
+      "DESKTOP NORMAL",
+      "MOBILE NORMAL",
+      "MOBILE REDUCED"
+    ],
+    "consumerFileDeclaredCases": 9,
+    "runtimeQualification": "PENDING",
+    "originalAssertionsAndTimeoutsPreserved": true,
+    "naturalHeaderScrollBeforeNewViewportChecks": true
+  },
+  "boundaries": {
+    "mainlineDecision": "NOT_STARTED",
+    "merge": "NOT_STARTED",
+    "newCapture": "NOT_DISPATCHED",
+    "testFlightBeta": "0.1.0 (7) UNCHANGED",
+    "physicalAcceptance": "OUTSTANDING_BOTH_PLATFORMS",
+    "liveMetricBrowserProvider": "NOT_ADMITTED",
+    "sharedResourcePriority": "STUDIO_FIRST"
+  },
+  "recordedAtUtc": "2026-10-22T22:31:15.905781+00:00"
+}

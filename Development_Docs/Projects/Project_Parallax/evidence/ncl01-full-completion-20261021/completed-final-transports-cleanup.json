@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "role": "DEVELOPMENT_TRANSPORT_CLEANUP_NOT_ACCEPTANCE",
+  "qualification": false,
+  "entries": [
+    {
+      "runId": 39637797267,
+      "candidate": "b4cea94abc64fc6e02dfa5f241242eda3888d4b3",
+      "transport": "be4ca1a68945a09f116eb27de23236441b47fabd",
+      "branch": "codex/landfall-lab-b4cea94abc64-1792601188830",
+      "workflowConclusion": "failure",
+      "retainedReviewSha256": "17907bcd5888f45cc326dd2c008e318b72c5430d59d2dd09875e229901267cb0",
+      "result": "PASS",
+      "remoteRefAbsent": true,
+      "scope": "EXACT_TASK_OWNED_COMPLETED_TEMPORARY_REF_ONLY"
+    },
+    {
+      "runId": 39642636045,
+      "candidate": "98a127e0254d5324b0afeeb44e22b26ee46ea9a3",
+      "transport": "27a6c3892bbfacb6c85c47959f2f9c9e3e0ac9ab",
+      "branch": "codex/landfall-lab-98a127e0254d-1792603107204",
+      "workflowConclusion": "cancelled",
+      "retainedReviewSha256": "b61cfc5b7f765d651979db6920f5513b5f165a297e7eb9acad4dfed31117899b",
+      "result": "PASS",
+      "remoteRefAbsent": true,
+      "scope": "EXACT_TASK_OWNED_COMPLETED_TEMPORARY_REF_ONLY"
+    },
+    {
+      "runId": 39644586302,
+      "candidate": "98a127e0254d5324b0afeeb44e22b26ee46ea9a3",
+      "transport": "8dc438b5704c8f748c769a55b373080a349e9d29",
+      "branch": "codex/landfall-lab-98a127e0254d-1792603895879",
+      "workflowConclusion": "success",
+      "retainedReviewSha256": "eab416bca250d2644aad1a0a8726d7d8d787be19d51018d4b5388f9b985f79bd",
+      "result": "PASS",
+      "remoteRefAbsent": true,
+      "scope": "EXACT_TASK_OWNED_COMPLETED_TEMPORARY_REF_ONLY"
+    }
+  ],
+  "allSelectedRunsCompleted": true,
+  "nativeCleanupNotInferredFromRefDeletion": true,
+  "implementationBranchPreserved": "codex/ncl01-full-completion",
+  "originalPullRequestBranchPreserved": "codex/parallax-ncl01",
+  "historicalBranchesWorktreesEvidenceAndOwnerServicesPreserved": true
+}

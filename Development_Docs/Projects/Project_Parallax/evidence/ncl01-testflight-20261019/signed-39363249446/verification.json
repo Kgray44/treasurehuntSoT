@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "kind": "UPLOAD_ACCEPTED_PROCESSING_VALID_INTERNAL_GROUP_BLOCKED",
+  "runId": 39363249446,
+  "candidateSha": "484183ac15badcfefd5b08cfd187e330e567fbf8",
+  "transportSha": "796cac96619a2df919f0b4f78bb2728262b6bb2a",
+  "deviceArchiveValidated": true,
+  "appTargetSigningSettingsValidated": true,
+  "appStoreExportSucceeded": true,
+  "ipaBytes": 1975043,
+  "ipaSha256": "6752f16f7a56a8a6816e0eb450a4d6fafa4d32783546e69316760eb3b03e9b6f",
+  "ipaRetainedInOwnedArtifactDirectory": true,
+  "credentialCleanup": "PASS",
+  "appleValidatePassed": true,
+  "appleUploadPassed": true,
+  "uploadAccepted": true,
+  "appleProcessing": "VALID",
+  "appleBuildId": "6964a888-1759-4982-8254-b0005dbad00f",
+  "pipelineResult": "FAIL",
+  "failureStage": "INTERNAL_GROUP",
+  "error": "ASC_HTTP_422_INTERNAL_GROUP",
+  "internalGroupAttached": false,
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "privacyScan": "PASS_NO_PRIVATE_KEY_JWT_OR_RAW_KEY_BODY_FOUND",
+  "files": [
+    {
+      "path": "altool-help.original.log",
+      "bytes": 8183,
+      "sha256": "088129dcdb14c95951f4fa267c86bcf6b5341e40206321a883d0ee9e4d377752"
+    },
+    {
+      "path": "appstore-export.original.log",
+      "bytes": 373,
+      "sha256": "0b6c96a711c563da7d8a8f595b591253874b7772b9fe4bee4bd12a66fbaf95b4"
+    },
+    {
+      "path": "asc-upload.original.json",
+      "bytes": 68,
+      "sha256": "1aa85e05ea2335c79fb99fdeabde221ce3ff107edb9f5e988d0dae0b10bd5eb7"
+    },
+    {
+      "path": "asc-validate.original.json",
+      "bytes": 68,
+      "sha256": "1aa85e05ea2335c79fb99fdeabde221ce3ff107edb9f5e988d0dae0b10bd5eb7"
+    },
+    {
+      "path": "device-archive.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dispatch.original.json",
+      "bytes": 560,
+      "sha256": "ee613a65363a2bc0760bf71945132f9d91faf9c021f94bc1e0dc33da8398227e"
+    },
+    {
+      "path": "github-run.original.json",
+      "bytes": 270,
+      "sha256": "4304b494af2cf428a0bd83795f6f16350b07aed901fc8183aa0b3e76be29ec2a"
+    },
+    {
+      "path": "project-generation.original.log",
+      "bytes": 195,
+      "sha256": "a54854f2c9443ced13a946a0750746b2629b98e378f2818801eeb1460fe24167"
+    },
+    {
+      "path": "receipt.original.json",
+      "bytes": 1150,
+      "sha256": "11a2710bc6ef59e7f92177167fc44968092423227d27752b997ec0ed187189cc"
+    },
+    {
+      "path": "transport-cleanup.original.json",
+      "bytes": 188,
+      "sha256": "c1e98b91478318d82d94a6c3e01a825b2cb77740a259efec92dd33a90a13b346"
+    }
+  ]
+}

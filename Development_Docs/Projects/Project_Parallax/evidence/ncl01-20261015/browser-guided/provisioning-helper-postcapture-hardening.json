@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "ENGINEERING_PROVISIONING_METADATA",
+  "captureCheckpoint": "019030c3a88eeec3c7b07c5a3cc008b92128e7cb",
+  "captureHelperSha256": "6c98a30e472748592396acd2f1a88b5fedcccd08817b41d61f8012a3625d8a18",
+  "currentHelperSha256": "24319fa702d06fbdb9f9c8d06d2163b2a9037d0f136baec37e5bf58e2484088b",
+  "source": "scripts/parallax/ncl01-preview.ts",
+  "postcaptureChange": "Error handling now writes its private failure receipt only after exact task-root ownership and protected Windows DACL verification. This provisioning failure path is outside the captured product runtime.",
+  "verification": {
+    "readyStatus": "PASS",
+    "eslint": "PASS",
+    "featuresSync": "PASS",
+    "featuresValidate": "PASS"
+  },
+  "featureCatalogDecision": "NO CHANGE REQUIRED"
+}

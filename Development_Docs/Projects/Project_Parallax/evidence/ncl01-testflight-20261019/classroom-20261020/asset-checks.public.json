@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "OWNED_LAPTOP_NODE_HTTPS_ASSET_TRANSPORT_ONLY",
+  "timestamp": "2026-10-20T14:00:06.237Z",
+  "sourceSha": "e6eb9659d38918ef24f903ba78a13b2d067fd1ff",
+  "sourceShaScope": "Legacy physical-checkout administrative pointer only; exact server source hashes follow; not a TestFlight candidate SHA",
+  "sourceFiles": [
+    {
+      "path": "src/parallax/asset-delivery.ts",
+      "sha256": "f2f4c5ab3361feb4ec30b81921d89ef9c3d5b93e290ee627f788944a4bd90148"
+    },
+    {
+      "path": "src/parallax/service.ts",
+      "sha256": "3ad9586ad0dcc346edfc79a40f23fc315bdd2e08b8ccc36a8a162327360cc112"
+    },
+    {
+      "path": "src/app/api/player/playthroughs/[playthroughId]/parallax/assets/[assetId]/route.ts",
+      "sha256": "45357c8a987c38e19e4bf78b027b56cd5d2f4359a9a7effe17b10f65b6bec824"
+    },
+    {
+      "path": "src/app/api/player/playthroughs/[playthroughId]/parallax/route.ts",
+      "sha256": "7012a0c18c0d5f3d14d5466937051a3bed55fd8fdcfa5efe6d1a2519b6f160ee"
+    },
+    {
+      "path": "src/app/api/auth/sign-in/route.ts",
+      "sha256": "60fc1392f06848d53411eb4ca1c561e29172cd00e69547302ed1ddf48ed25614"
+    },
+    {
+      "path": "src/app/api/auth/sign-out/route.ts",
+      "sha256": "d6a13e97e0914de175cfa605dfe0c945a41978b544410b369078a9d99a7b78ee"
+    }
+  ],
+  "probeScriptSha256": "87d50366f4a476a09ffb5a355193e7921669cca3b00f0d3b9096133824bf981e",
+  "canonicalTlsPatternScriptSha256": "3f4d532536dfae6a16ac92584049f218abe2a5e4da5b8665d958b17c5cb71fe9",
+  "command": {
+    "executable": "node",
+    "arguments": [
+      "D:\\CodexTemp\\ncl01-preview\\verify-classroom-20261020.mjs",
+      "--provisioned"
+    ],
+    "workingDirectory": "D:\\CodexWorktrees\\parallax-ncl01-physical-20261015\\Codex_TreasureHunt"
+  },
+  "publicOrigin": "https://155.42.98.171:8449",
+  "caSha256": "17ad9c5ccd0eb37f00b0062d6c8dcff72a368fb85553175402be5016b21ac8b6",
+  "caTrustScope": "EXPLICIT_PUBLIC_CA_REQUEST_OPTION_ONLY",
+  "normalTlsVerification": true,
+  "redirectsFollowed": 0,
+  "globalTrustChanged": false,
+  "firewallChanged": false,
+  "listenersStarted": false,
+  "syntheticVoyageId": "cmvgr299f000v25o8koydyrcd",
+  "syntheticBlockId": "cmvgr27ij000125o8k5egqrde:clue",
+  "sceneChecksum": "13c1178ec10faae82ef92a7095b376380bcfbf0a1b436caaa7d51beb005edf6d",
+  "sceneChecksumUnchanged": true,
+  "mutationScope": {
+    "canonicalSessionsCreated": 1,
+    "ownSessionLogoutAttempted": true,
+    "ownSessionLogoutSucceeded": true,
+    "ownSessionRevocationVerified": true,
+    "otherSessionsTouched": false,
+    "canonicalProgressionRequests": 0,
+    "resetOrPreparationRequests": 0
+  },
+  "classroom": {
+    "planSha256": "d804ea8192f1f3ad6f4b5a3e5a8a09ca8011cac8721845e9c445512eda2be1e6",
+    "entityCount": 3,
+    "uniqueModelCount": 2,
+    "threeEntityBindingsVerified": true,
+    "twoVoyagesProgressionUnchanged": true
+  },
+  "physicalDeviceProven": false,
+  "nativeLoaderProven": false,
+  "browserArProven": false,
+  "stage": "COMPLETE",
+  "failure": null,
+  "records": [
+    {
+      "name": "unauthenticated-treasure-chest",
+      "status": 401,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "elapsedMs": 57,
+      "expectedStatus": 401,
+      "assetId": "treasure-chest",
+      "passed": true
+    },
+    {
+      "name": "unauthenticated-brass-compass",
+      "status": 401,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "elapsedMs": 43,
+      "expectedStatus": 401,
+      "assetId": "brass-compass",
+      "passed": true
+    },
+    {
+      "name": "owned-canonical-sign-in",
+      "status": 200,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "elapsedMs": 330,
+      "expectedStatus": 200,
+      "ownedSessionOnly": true,
+      "secureCookie": true,
+      "passed": true
+    },
+    {
+      "name": "released-scene-before",
+      "status": 200,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "elapsedMs": 85,
+      "expectedStatus": 200,
+      "sameSceneChecksum": true,
+      "adaptiveResolutionAbsent": true,
+      "passed": true
+    },
+    {
+      "name": "authorized-treasure-chest",
+      "status": 200,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "elapsedMs": 54,
+      "assetId": "treasure-chest",
+      "expectedStatus": 200,
+      "bytes": 630120,
+      "expectedBytes": 630120,
+      "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "expectedSha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "digestHeaderMatches": true,
+      "contentLengthMatches": true,
+      "gltfBinaryContentType": true,
+      "cachePrivate": true,
+      "cacheNoStore": true,
+      "nosniff": true,
+      "passed": true
+    },
+    {
+      "name": "authorized-brass-compass",
+      "status": 200,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "elapsedMs": 44,
+      "assetId": "brass-compass",
+      "expectedStatus": 200,
+      "bytes": 313396,
+      "expectedBytes": 313396,
+      "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "expectedSha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "digestHeaderMatches": true,
+      "contentLengthMatches": true,
+      "gltfBinaryContentType": true,
+      "cachePrivate": true,
+      "cacheNoStore": true,
+      "nosniff": true,
+      "passed": true
+    },
+    {
+      "name": "stale-revision-treasure-chest",
+      "status": 404,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "elapsedMs": 44,
+      "assetId": "treasure-chest",
+      "expectedStatus": 404,
+      "assetDigestHeaderAbsent": true,
+      "passed": true
+    },
+    {
+      "name": "stale-revision-brass-compass",
+      "status": 404,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "elapsedMs": 47,
+      "assetId": "brass-compass",
+      "expectedStatus": 404,
+      "assetDigestHeaderAbsent": true,
+      "passed": true
+    },
+    {
+      "name": "released-scene-after",
+      "status": 200,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "elapsedMs": 45,
+      "expectedStatus": 200,
+      "sameSceneChecksum": true,
+      "adaptiveResolutionAbsent": true,
+      "passed": true
+    },
+    {
+      "name": "owned-session-sign-out",
+      "status": 200,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "elapsedMs": 45,
+      "expectedStatus": 200,
+      "ownedSessionOnly": true,
+      "passed": true
+    },
+    {
+      "name": "signed-out-owned-session-denied",
+      "status": 401,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "elapsedMs": 24,
+      "expectedStatus": 401,
+      "passed": true
+    }
+  ],
+  "allPassed": true,
+  "knownPrivateValuesAbsent": true
+}

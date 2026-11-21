@@ -1,0 +1,111 @@
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:48:22.2047570Z ##[group]Run npx --no-install tsx scripts/landfall/device-lab/apple-build.ts companion-only
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:48:22.2048320Z ^[[36;1mnpx --no-install tsx scripts/landfall/device-lab/apple-build.ts companion-only^[[0m
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:48:22.2108000Z shell: /bin/bash -e {0}
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:48:22.2108370Z env:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:48:22.2108740Z   LANDFALL_LAB_PROFILE: primary-phone
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:48:22.2109040Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:57:53.8791660Z ##[group]Run npm run landfall:device-lab -- --platform ios --scenario permission-denied-native
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:57:53.8792700Z ^[[36;1mnpm run landfall:device-lab -- --platform ios --scenario permission-denied-native^[[0m
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:57:54.0865380Z shell: /bin/bash -e {0}
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:57:54.0870990Z env:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:57:54.0871950Z   LANDFALL_LAB_PROFILE: primary-phone
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:57:54.0872650Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:57:55.0694620Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:57:55.0695620Z > forever-treasure-companion@0.2.0 landfall:device-lab
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:57:55.0696440Z > tsx scripts/landfall/device-lab/run.ts --platform ios --scenario permission-denied-native
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:57:55.0696940Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.3460260Z {
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.3463610Z   "version": 1,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.3472430Z   "sourceSha": "9314c749e426110ee38ed1da373a4e2361c6431a",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.3484770Z   "sourceTree": "e5a5ad5f6f6dbfd047bcb9861683f7886decee91",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.3490730Z   "sourceFingerprint": "1269f153a6c2fabed05a301b4fb1b44b317e0bb48d10f62b0745aa976e41fafd",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.3492340Z   "dirty": false,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.3497650Z   "target": "ios-simulator",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.3498090Z   "total": 1,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.3498640Z   "passed": 1,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.3499790Z   "failed": 0,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.3504680Z   "unsupported": 0,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.3510360Z   "notConfigured": 0,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.3526080Z   "artifactDirectory": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261016T025756861Z-21702"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.3527450Z }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.6085710Z ##[group]Run actions/upload-artifact@v4
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.6086300Z with:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.6086950Z   name: landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.6096170Z   path: artifacts/landfall-device-lab
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.6096580Z   retention-days: 14
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.6097100Z   if-no-files-found: warn
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.6098010Z   compression-level: 6
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.6098680Z   overwrite: false
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.6102210Z   include-hidden-files: false
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.6102790Z env:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.6103240Z   LANDFALL_LAB_PROFILE: primary-phone
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:50.6103690Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:51.3492610Z (node:25358) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:51.3493580Z (Use `node --trace-deprecation ...` to show where the warning was created)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:52.6518830Z With the provided path, there will be 5092 files uploaded
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:52.6523190Z Artifact name is valid!
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:52.6523480Z Root directory input is valid!
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:53.1168870Z Beginning upload of artifact content to blob storage
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:53.8643600Z (node:25358) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:54.7845400Z Uploaded bytes 8388608
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:55.4181220Z Uploaded bytes 16777216
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:56.1525450Z Uploaded bytes 25165824
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:57.5459400Z Uploaded bytes 33554432
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:58.1056350Z Uploaded bytes 41943040
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:58.6657460Z Uploaded bytes 50331648
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:00:59.4874310Z Uploaded bytes 58720256
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:00.2999870Z Uploaded bytes 67108864
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:00.8381090Z Uploaded bytes 75497472
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:00.9922400Z Uploaded bytes 83886080
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:01.5549580Z Uploaded bytes 92274688
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:02.1941050Z Uploaded bytes 100663296
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:02.8767240Z Uploaded bytes 109051904
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:03.4460920Z Uploaded bytes 117440512
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:03.9704990Z Uploaded bytes 125829120
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:04.5399570Z Uploaded bytes 134217728
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:05.0489500Z Uploaded bytes 142606336
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:05.5777780Z Uploaded bytes 150994944
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:05.8753480Z Uploaded bytes 159383552
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:06.6306220Z Uploaded bytes 167772160
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:06.9099670Z Uploaded bytes 176160768
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:06.9277460Z Uploaded bytes 184549376
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:07.3285690Z Uploaded bytes 192937984
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:07.7950460Z Uploaded bytes 201326592
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:08.3199520Z Uploaded bytes 209715200
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:08.3220310Z Uploaded bytes 218103808
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:08.7896520Z Uploaded bytes 221267359
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:08.8668010Z Finished uploading artifact content to blob storage!
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:08.8767980Z SHA256 digest of uploaded artifact zip is ffbd7742c6b3b3c7c77cc20a001ead111cb64fcc21bb6abd14e017638b0115e8
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:08.8769370Z Finalizing artifact upload
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:09.3683080Z Artifact landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a.zip successfully finalized. Artifact ID 12021743680
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:09.3684370Z Artifact landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a has been successfully uploaded! Final size is 221267359 bytes. Artifact ID is 12021743680
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:09.3696200Z Artifact download URL: https://github.com/Kgray44/treasurehuntSoT/actions/runs/38841961822/artifacts/12021743680
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:09.4315510Z Post job cleanup.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:09.7261640Z (node:25739) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:09.7262760Z (Use `node --trace-deprecation ...` to show where the warning was created)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:09.7900250Z [command]/opt/homebrew/bin/gtar --posix -cf cache.tzst --exclude cache.tzst -P -C /Users/runner/work/treasurehuntSoT/treasurehuntSoT --files-from manifest.txt --delay-directory-restore --use-compress-program zstdmt
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:11.6218630Z (node:25739) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:12.6136290Z Sent 0 of 223690040 (0.0%), 0.0 MBs/sec
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:13.6081610Z Sent 0 of 223690040 (0.0%), 0.0 MBs/sec
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:14.6085540Z Sent 201326592 of 223690040 (90.0%), 63.9 MBs/sec
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:15.6108470Z Sent 201326592 of 223690040 (90.0%), 47.9 MBs/sec
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:16.6129850Z Sent 201326592 of 223690040 (90.0%), 38.3 MBs/sec
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:16.7631730Z Sent 223690040 of 223690040 (100.0%), 41.4 MBs/sec
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.1490500Z Cache saved with the key: node-cache-macOS-arm64-npm-eeaa6ce6b7e31124258f95a3da15d06379b7af7e0167eab6b73e97a18c3b4af8
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.1632460Z Post job cleanup.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.3868250Z [command]/opt/homebrew/bin/git version
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.4417430Z git version 2.55.0
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.4485740Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/1f92283b-abb1-411e-8718-6c52d615c218/.gitconfig'
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.4493310Z Temporarily overriding HOME='/Users/runner/work/_temp/1f92283b-abb1-411e-8718-6c52d615c218' before making global git config changes
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.4494760Z Adding repository directory to the temporary git global config as a safe directory
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.4495780Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/treasurehuntSoT/treasurehuntSoT
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.4592440Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.4658690Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.5870280Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.5928920Z http.https://github.com/.extraheader
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.5936050Z [command]/opt/homebrew/bin/git config --local --unset-all http.https://github.com/.extraheader
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.6005910Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.6808250Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.6874870Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:17.9101820Z Cleaning up orphan processes
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T03:01:21.2139700Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

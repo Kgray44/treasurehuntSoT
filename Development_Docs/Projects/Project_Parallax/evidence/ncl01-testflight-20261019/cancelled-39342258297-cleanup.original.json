@@ -1,0 +1,8 @@
+{
+  "runId": 39342258297,
+  "branch": "codex/ncl01-testflight-unsigned-526b5c0a879e-1792452780775",
+  "expectedSha": "814885f4dee5522741cc6dc3945ce39a764ccf13",
+  "runConclusion": "cancelled",
+  "remoteBranchAbsent": true,
+  "cleanup": "PASS"
+}

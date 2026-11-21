@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "role": "DEVELOPMENT_ONLY",
+  "qualification": false,
+  "result": "PASS",
+  "candidateBase": "2f8aa894959f8e363759b39f745e055ca899a9bf",
+  "source": [
+    {
+      "file": "scripts/landfall/device-lab/apple-build.ts",
+      "byteLength": 18910,
+      "windowsBytesSha256": "bacdc0d13882fe3b1cf419a27c9f95ca380f5bed89537b4aa780c6016ef8cb44",
+      "gitBlobSha1": "8928983dd9660834d1d541275b1b769c09e3bb5b"
+    },
+    {
+      "file": "scripts/landfall/device-lab/hosted.ts",
+      "byteLength": 14943,
+      "windowsBytesSha256": "9ce9b34ae57652416978eecf83bfdf7b401c8bbf10f018a227fda4dbd159f294",
+      "gitBlobSha1": "1a415563c0dc8ad523ebe2bce014b39302629bd7"
+    },
+    {
+      "file": "scripts/landfall/device-lab/apple-presentation-diagnostic.ts",
+      "byteLength": 6816,
+      "windowsBytesSha256": "aced82ca107544184db85ce7b010f8423bf1eb44030e0ef4b0d41adfaa4c0427",
+      "gitBlobSha1": "ee97c4a75500298b2da9446d5e75ca5340741df2"
+    },
+    {
+      "file": "src/landfall/device-lab/apple-presentation-diagnostic.test.ts",
+      "byteLength": 9802,
+      "windowsBytesSha256": "2dbea2519f9596f80e89dd2ae884259c8a0e4114437f035f45b159eb883e8055",
+      "gitBlobSha1": "5f90e16786a45698f58786cbc853a6a209ee2be8"
+    }
+  ],
+  "checks": [
+    {
+      "exitCode": 0,
+      "breakdown": {
+        "existingStrictPresentationSummaryTests": 10,
+        "newDiagnosticGuardTests": 8,
+        "existingRunnerSelectionTests": 7
+      },
+      "command": "node_modules/.bin/vitest.cmd run src/landfall/device-lab/apple-presentation-diagnostic.test.ts src/landfall/device-lab/apple-test-summary.test.ts src/landfall/device-lab/hosted-ios-runner.test.ts --maxWorkers=2",
+      "log": "focused-tests.reviewed-failure-fix.original.log",
+      "passedTests": 25,
+      "name": "FOCUSED_VITEST"
+    },
+    {
+      "name": "ESLINT",
+      "log": "eslint.final-source.original.log",
+      "exitCode": 0
+    },
+    {
+      "name": "PRETTIER",
+      "log": "prettier.final-source.original.log",
+      "exitCode": 0
+    },
+    {
+      "name": "FOCUSED_TYPESCRIPT",
+      "log": "typecheck.final-source.original.log",
+      "config": "tsconfig.focused-owned-types.json",
+      "exitCode": 0
+    },
+    {
+      "name": "DIFF_CHECK",
+      "log": "diff-check.final-source.original.log",
+      "exitCode": 0
+    }
+  ],
+  "independentReadOnlySourceReview": "READY_NO_BLOCKING_FINDING",
+  "noNativeTemplateOrStrictFull31CombinerDiff": true,
+  "defaultAll31AndCompanion29SemanticsRetained": true,
+  "noMacOrSimulatorExecution": true,
+  "noDispatch": true,
+  "noCommit": true,
+  "diagnosticInvocation": "npx --no-install tsx scripts/landfall/device-lab/hosted.ts <candidate40> ios-presentation-diagnostic development --ios-runner macos-26",
+  "diagnosticOnlyTwoExistingUiMethods": true,
+  "noNative29RepeatedByDiagnostic": true,
+  "strictFull31Satisfied": false,
+  "newFailureSummaryBoundaryRegressionCovered": true,
+  "typeScriptScope": "Temporary config extends repository tsconfig and includes only four owned entry files plus normal imports. noEmit=true/incremental=false; existing repository @types explicitly resolved because config resides outside checkout. Initial unresolved-typeRoots failure retained.",
+  "originals": [
+    {
+      "sha256": "ac28b41b4087a1669c6793719e82588d9900b082ba916a5d068ce0d7f22cdb72",
+      "file": "focused-tests.first-source.original.log",
+      "byteLength": 656
+    },
+    {
+      "sha256": "b02352c3f32637fbd7ad9e99a746d78ec77299cc347e454ba20588faf75975e9",
+      "file": "focused-tests.reviewed-failure-fix.original.log",
+      "byteLength": 656
+    },
+    {
+      "sha256": "f20510a9da4717c51c4cffee6d0dd88d6c9a723d0a83711d01216f5b48961283",
+      "file": "prettier.final-source.original.log",
+      "byteLength": 68
+    },
+    {
+      "sha256": "f20510a9da4717c51c4cffee6d0dd88d6c9a723d0a83711d01216f5b48961283",
+      "file": "prettier.first-source.original.log",
+      "byteLength": 68
+    },
+    {
+      "sha256": "43f40293de3de7c367d8414c9916127106b093291625d88d196db27b16a982a8",
+      "file": "tsconfig.focused-owned-types.json",
+      "byteLength": 917
+    },
+    {
+      "sha256": "5867c008508d851d296f8a77cb6ae020e054b0bc40707823e83846ead26783df",
+      "file": "tsconfig.focused.json",
+      "byteLength": 778
+    },
+    {
+      "sha256": "1be9a76bdeb82bf5c4d6f99634848b44484b13516f8a53508610eff63852777f",
+      "file": "typecheck.original.log",
+      "byteLength": 8972
+    }
+  ]
+}

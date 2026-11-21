@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "PROJECT_TYPESCRIPT_AND_DEFAULT_BACKEND_SOURCE_DELTA_ONLY",
+  "date": "2026-10-15",
+  "sourceCheckpoint": "53f5bb19262c1b2e0547396f6a7b696c8e0a6442",
+  "priorVerification": "software-checkpoint-d3c8d45.verification.json",
+  "sourceDelta": [
+    {
+      "path": ".agents/landfall-device-lab-hosted.yml",
+      "sha256": "d2485c880a3f231c46ece478ba09479eda33f9c2f3ae12fa8442a112d67a2c28",
+      "gitBlob": "894b925d12ff8d3499fdaa25b060e881454f5c74"
+    },
+    {
+      "path": "src/landfall/device-lab/android-graphics-probe.test.ts",
+      "sha256": "a4b043decd3962b8c32ba2f19e221b61d58d2f3cd4d3d7ce3161ed10264e8ea7",
+      "gitBlob": "365d0426d20aec5ad2aa462bfc5dfd683a4cd5a7"
+    }
+  ],
+  "typescript": {
+    "command": "npm run typecheck",
+    "exitCode": 0,
+    "originalLog": "typecheck-53f5bb1.original.log",
+    "sha256": "87cbed0ffc784c19ac32b5eb5829e31eca5ebd6ea4b569718fa3d43d88a58e8d"
+  },
+  "sourceEquivalence": {
+    "iosUnchangedFromHostedCandidate": "b328c49a69b7179c54b0dd0608aba65ded6c368d",
+    "nativeAndroidAndSharedSourcesUnchangedFromComparisonCandidate": "46a20fc1940d7c1fd01275dd8e7163281a42e998",
+    "allGitDiffChecksEmpty": true
+  },
+  "focusedTests": {
+    "files": 2,
+    "passed": 10,
+    "failed": 0,
+    "scope": "Graphics receipt guards and hosted selection"
+  },
+  "independentSourceReview": "ACCEPTED",
+  "formalExperienceApproval": false,
+  "physicalAcceptance": false,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "engineering-evidence",
+  "role": "READ_ONLY_INSTALLED_CAPTURE_PREREQUISITE_AND_SOURCE_TIMING_REVIEW",
+  "qualification": false,
+  "observedAtUtc": "2026-10-22T12:55:57.019Z",
+  "source": {
+    "acceptedMain": "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+    "acceptedMainTree": "54669bc7d6723bdb61067017d2b29844046d92f3",
+    "installedRepairPullRequest": 790,
+    "candidate": "b1a1f44f4b4b1f1bc3e66958f21f01f52dfc6d5f",
+    "tree": "205efe8c7b32caf86b4385c23dd385f22776013c",
+    "orderedParents": [
+      "d61b3ca297b9e489db2bd3779acfb5e55fd7efdc",
+      "90bff6ec281d79a6788c8270a8a3d67fd8257010"
+    ],
+    "normalReconciliation": true,
+    "authorityInputs": [
+      {
+        "path": "scripts/sounding-line/experience-exception.mjs",
+        "acceptedBlob": "b95e1118513e93c9a28f6356367c6f7bdd65f15b",
+        "candidateBlob": "b95e1118513e93c9a28f6356367c6f7bdd65f15b",
+        "equal": true
+      },
+      {
+        "path": ".github/workflows/sounding-line-ordinary.yml",
+        "acceptedBlob": "cef69188292774c816e33e7a9aad467edadeff25",
+        "candidateBlob": "cef69188292774c816e33e7a9aad467edadeff25",
+        "equal": true
+      },
+      {
+        "path": "scripts/sounding-line/experience-prepare.mjs",
+        "acceptedBlob": "d0e2f3d58c394a09e3784a40bd57f86fd5286c0f",
+        "candidateBlob": "d0e2f3d58c394a09e3784a40bd57f86fd5286c0f",
+        "equal": true
+      },
+      {
+        "path": "scripts/sounding-line/product-experience.mjs",
+        "acceptedBlob": "6b2736640260866ebc383be16891549f65c8caed",
+        "candidateBlob": "6b2736640260866ebc383be16891549f65c8caed",
+        "equal": true
+      },
+      {
+        "path": "scripts/sounding-line/experience-attestation.mjs",
+        "acceptedBlob": "40c8cf7d0f3940e03cf3aafbf9b466ac796f0f47",
+        "candidateBlob": "40c8cf7d0f3940e03cf3aafbf9b466ac796f0f47",
+        "equal": true
+      },
+      {
+        "path": "testing/product-experience-exceptions.json",
+        "acceptedBlob": "089308bf475a2b22bfdc64ac46164996855e7010",
+        "candidateBlob": "089308bf475a2b22bfdc64ac46164996855e7010",
+        "equal": true
+      },
+      {
+        "path": "scripts/sounding-line/experience-reviewed-adoption.mjs",
+        "acceptedBlob": "304ce1da07e56322e43e197963bbb751d723c508",
+        "candidateBlob": "304ce1da07e56322e43e197963bbb751d723c508",
+        "equal": true
+      }
+    ]
+  },
+  "conclusion": {
+    "status": "SOURCE_READY_FOR_NORMAL_CAPTURE_ATTEMPT_AFTER_PUBLICATION_NOT_PLAN_PASS",
+    "linuxHostedCaptureMayProceedUnderInstalled790": true,
+    "uninstalled788Prerequisite": false,
+    "newOwnerPermissionRequested": false,
+    "mainlineAcceptance": false,
+    "meaning": "No remaining expired-R26 external gate is identified for this unrelated NCL candidate. Publish the exact reconciled candidate and use current installed protected-main identity; the hosted planner still must validate actual selection, coverage, references and context denominator before capture."
+  },
+  "expectedRoute": {
+    "workflow": ".github/workflows/sounding-line-ordinary.yml",
+    "workflowRef": "refs/heads/main",
+    "candidateSha": "b1a1f44f4b4b1f1bc3e66958f21f01f52dfc6d5f",
+    "baseSha": "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+    "pullRequest": 741,
+    "experienceMode": "capture",
+    "experienceDiagnostic": false,
+    "publicationStillRequiredAtParentCheckpoint": true,
+    "host": "ubuntu-latest",
+    "expectedCampaign": "false",
+    "expectedPlanException": null,
+    "executionObserved": false
+  },
+  "staticCampaignMetadataAudit": {
+    "method": "Two exact frozen leaf inventories plus directory-presence markers, JSON metadata, SHA256 and read-only ancestry comparison; no installed validator, planner or custody operation executed.",
+    "registryRecordCount": 26,
+    "immutableHistoryRowsInspected": 26116,
+    "uniqueFrozenReferencesAlreadyAncestorsOfAcceptedBase": 25,
+    "explicitPullRequestMatches": 0,
+    "newRefitContractIds": [],
+    "newHistoryPresenceSignals": 0,
+    "newExactSharedReviewBlobSignals": 0,
+    "newFrozenSrcSignals": 0,
+    "r3MaskedSourceFamilyAdded": false,
+    "r3SourceDigest": {
+      "base": "1f7d2f565eede8feca4355ddd2916cb6b524a6e952ae086bd0a9fbc083e06951",
+      "candidate": "5b05662cd41e5c9219eecb3941aa8938d6ce08996ca7af9797eafed9a97532ab",
+      "campaign": "551b77fba9be6c7b048c899f37cf09117138d1613a69d1273da05a1c861f45e0"
+    },
+    "literalOriginalCampaignSignalsDuplicateFirstRegistryRow": true,
+    "noFinite721GrantOrReservationInferred": true
+  },
+  "registryScope": {
+    "acceptedRegisteredExperiences": 11,
+    "candidateRegisteredExperiences": 19,
+    "additiveNclExperienceContracts": [
+      "drydock-authoring-contracts",
+      "wayfarer-history-projection",
+      "community-public-projection",
+      "public-privacy-projection",
+      "homeport.phase7.account.canonical-lifecycle",
+      "homeport.phase7.account.cross-workspace-session",
+      "admiralty.phase2.account-dossier-support",
+      "parallax.ncl01.owner-sea-trials"
+    ],
+    "selectedContractsNotYetObserved": true,
+    "officialContextDenominator": null,
+    "meaning": "The protected and candidate registries are merged without removing trusted obligations.19 is the number registered, not an observed selected plan or capture denominator."
+  },
+  "guards": [
+    {
+      "path": "scripts/sounding-line/experience-exception.mjs",
+      "lines": "754-762",
+      "rule": "Installed790 historically validates the complete immutable R26 registry, returns no records only for unrelated work, and retains the original live validator for recognized campaigns."
+    },
+    {
+      "path": "scripts/sounding-line/experience-exception.mjs",
+      "lines": "827-859",
+      "rule": "Campaign recognition retains all PR, masked-source, frozen-src, refit-contract, ancestry and historical-presence signals."
+    },
+    {
+      "path": "scripts/sounding-line/experience-exception.mjs",
+      "lines": "2975-2989",
+      "rule": "Unrelated custody outputs campaign=false and returns before record request/store/reservation construction."
+    },
+    {
+      "path": ".github/workflows/sounding-line-ordinary.yml",
+      "lines": "63-117",
+      "rule": "Requested base must equal the trusted workflow SHA; execute installed authority against the exact checked-out candidate."
+    },
+    {
+      "path": ".github/workflows/sounding-line-ordinary.yml",
+      "lines": "125-200",
+      "rule": "Capture is the existing protected-main workflow_dispatch preparation job on Ubuntu, with locked dependencies/browser and protected-base prepare entry."
+    },
+    {
+      "path": "scripts/sounding-line/experience-prepare.mjs",
+      "lines": "108-148",
+      "rule": "Exact40hex identities, refs/heads/main and GITHUB_SHA=base, ancestor/HEAD checks, ordinary plan validation, applicable experience and authenticated actor precede capture."
+    },
+    {
+      "path": "scripts/sounding-line/product-experience.mjs",
+      "lines": "589-674",
+      "rule": "Accepted contract obligations are merged with candidate additions; unknown/uncovered surfaces fail closed; selected contracts, source/contract digests and denominator are generated by the actual plan."
+    }
+  ],
+  "sourceTiming": {
+    "ordinaryGenericCaptureAcrossBaseChange": "NOT_REBOUND_BY_SOURCE_EQUIVALENCE_ALONE",
+    "guardDetails": [
+      {
+        "path": "scripts/sounding-line/product-experience.mjs",
+        "lines": "778-783",
+        "rule": "evidence.baseSha, sourceDigest and contractDigest must equal the plan."
+      },
+      {
+        "path": "scripts/sounding-line/experience-attestation.mjs",
+        "lines": "49-65,109-116",
+        "rule": "Authenticated capture/review run.head_sha must equal plan.baseSha; downloaded manifest base/source/contract identities must match."
+      },
+      {
+        "path": "scripts/sounding-line/experience-reviewed-adoption.mjs",
+        "lines": "1-16",
+        "rule": "Installed historical adoption is limited to explicitly named R24/R25/R26 plans; it gives no NCL adoption or new execution authority."
+      },
+      {
+        "path": "scripts/sounding-line/product-experience.mjs",
+        "lines": "393-419",
+        "rule": "SourceDigest includes scripts, tests, app/assets/Prisma, contract/suite/impact-map JSON and package/configuration identities. Testing-infrastructure source can therefore change the capture binding even with unchanged app UI."
+      }
+    ],
+    "baseAdvanceBeforeReviewOrOrdinary": "Reconcile to the newly installed base and produce its fresh plan/capture/review through normal policy; do not rewrite old manifests or borrow a Crossdeck adoption.",
+    "sameBaseDocsOnlyCandidateAdvance": "Existing capture can remain reusable only when all validator-required source/contract/context/artifact/provenance bindings still match; metadata-only commit changes are not themselves a substitute for checking those bindings.",
+    "alreadySealedTechnicalAuthority": "Separate accepted semantic-preservation/protected-binding rules may carry completed obligations or an existing authoritative result; this does not create generic cross-base capture adoption.",
+    "queueOrdering": "An anticipated mainline advance is timing/cost information, not a new approval rule or external prerequisite. Re-read exact installed main immediately before freezing/dispatching; no other project is held or acquired.",
+    "uninstalledSourceUsed": false
+  },
+  "limits": {
+    "noTestsOrPolicyPlannerExecution": true,
+    "noCaptureOrCiDispatch": true,
+    "noRegistryOrSourceChange": true,
+    "noGitRefOrCheckoutMutation": true,
+    "noApiPollingOrOtherThreadMessages": true,
+    "noOwnerOrPhysicalOrVisualAcceptance": true,
+    "beta7AndSigningPreflightPreserved": true,
+    "noCredentialValuesRead": true
+  }
+}

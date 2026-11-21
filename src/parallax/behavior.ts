@@ -8,6 +8,51 @@ export type SpatialInput = {
   entityId?: string;
   atMs: number;
 };
+type SpatialContent = DraftContent | SpatialVersion;
+/** Publication eligibility includes reachable future SHOW targets without
+ * exposing editor-only, disabled, or unreachable entities to consumers. */
+export function runtimePresentableEntityIds(content: SpatialContent): Set<string> {
+  const candidates = content.entities.filter(
+    (entity) =>
+      entity.element?.enabled !== false &&
+      content.studio?.layers.find((layer) => layer.entityId === entity.id)?.audience !== "EDITOR_ONLY",
+  );
+  const eligible = new Set(candidates.map((entity) => entity.id));
+  const visible = new Set(
+    candidates
+      .filter((entity) => content.studio?.layers.find((layer) => layer.entityId === entity.id)?.visible !== false)
+      .map((entity) => entity.id),
+  );
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const behavior of content.studio?.behaviors ?? []) {
+      if (behavior.action !== "SHOW" || !eligible.has(behavior.targetEntityId) || visible.has(behavior.targetEntityId))
+        continue;
+      const triggerable =
+        behavior.trigger === "SCENE_ENTER" || behavior.trigger === "TIMER"
+          ? !behavior.sourceEntityId
+          : candidates.some(
+              (entity) =>
+                visible.has(entity.id) &&
+                (!behavior.sourceEntityId || behavior.sourceEntityId === entity.id) &&
+                entity.interactions.includes(behavior.trigger as "PICK" | "INSPECT" | "PLACE") &&
+                content.studio?.layers.find((layer) => layer.entityId === entity.id)?.selectable !== false,
+            );
+      if (triggerable) {
+        visible.add(behavior.targetEntityId);
+        changed = true;
+      }
+    }
+  }
+  return visible;
+}
+export function isRuntimeInteractionEligible(content: SpatialContent, entityId: string) {
+  return (
+    runtimePresentableEntityIds(content).has(entityId) &&
+    content.studio?.layers.find((layer) => layer.entityId === entityId)?.selectable !== false
+  );
+}
 export const maximumSpatialInputs = 128;
 export const initialSpatialInputs = (): SpatialInput[] => [
   { trigger: "SCENE_ENTER", atMs: 0 },
@@ -66,6 +111,7 @@ function behaviorStates(
         {
           visible:
             (layer?.visible ?? true) &&
+            e.element?.enabled !== false &&
             (editor ? layer?.audience !== "RUNTIME_ONLY" : layer?.audience !== "EDITOR_ONLY"),
           highlighted: false,
           selectable: layer?.selectable ?? true,
@@ -76,7 +122,8 @@ function behaviorStates(
   for (const event of events) {
     if (event.status !== "APPLIED") continue;
     const target = states[event.entityId];
-    if (target) {
+    const entity = content.entities.find((candidate) => candidate.id === event.entityId);
+    if (target && entity?.element?.enabled !== false) {
       if (event.action === "HIGHLIGHT") target.highlighted = true;
       else target.visible = event.action === "SHOW";
     }

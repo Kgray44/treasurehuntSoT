@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_SOURCE_BOUND_ANDROID_FAILURE_REVIEW",
+  "qualification": false,
+  "runId": "39697272562",
+  "workflowConclusion": "failure",
+  "source": {
+    "candidate": "1985afadc1e184089530eebaebe690e9785c0350",
+    "tree": "36811d381450b93f73927d1c512878285f11a672",
+    "transport": "bdc0315439938cf97a0a749eff835f0d42febcd7",
+    "sourceUnchanged": true,
+    "binding": "CHECKOUT_SNAPSHOT_AND_EXACT_APK"
+  },
+  "build": {
+    "debugApkAndInstrumentationBuild": "PASS",
+    "observedBuildDuration": "1m 21s",
+    "appSha256": "27fd5a5b76fb76303816c0c03fcce47fc80d3a2a5b6f886bec6b02383dee2576",
+    "testApkSha256": "1a777aed5efd146b19ae75c4aac0c2c03ebfe8f5db602543f975d41c76b91b51",
+    "fullLintRun": false
+  },
+  "emulator": {
+    "androidVersion": "16",
+    "emulatorVersion": "37.2.12.0",
+    "configuredBackend": "swangle",
+    "backendLaunchObserved": true,
+    "graphicsComparison": false
+  },
+  "native": {
+    "result": "FAIL",
+    "methodsRun": 16,
+    "passed": 15,
+    "failed": 1,
+    "elapsedSeconds": 58.665,
+    "failedMethod": "ParallaxTests.originalCatalogLoadsAndRendersThroughFilament",
+    "failedFixture": "ParallaxNativeInputFixture.run",
+    "failedSourceLine": 375,
+    "assertion": "assertNotNull(delayed.get()) immediately after replacement controls creation and one target gesture",
+    "failureStage": "INSTRUMENTATION",
+    "failureCode": "NATIVE_INSTRUMENTATION_TOOL_FAILED",
+    "cleanup": "PASS",
+    "sceneRenderingReceiptExported": false,
+    "nativeInputReceiptExported": false,
+    "sensorReceiptExported": false
+  },
+  "returnReadinessDiagnostic": {
+    "count": 0,
+    "disposition": "NOT_REACHED_BECAUSE_EARLIER_MODEL_NATIVE_INPUT_ASSERTION_FAILED",
+    "result": null
+  },
+  "joinedLens": {
+    "result": "NOT_REACHED",
+    "fourActionResult": null,
+    "realSQLiteOutcome": null,
+    "observationRowsAdded": null,
+    "canonicalProgressionEventsAdded": null,
+    "framesExported": false
+  },
+  "permissionScenario": {
+    "result": "NOT_REACHED"
+  },
+  "cleanup": {
+    "native": "PASS",
+    "transport": "PASS",
+    "temporaryTransportRefAbsent": true,
+    "hostedSourceBindingValidated": true
+  },
+  "preservedOriginals": {
+    "fileCount": 30,
+    "totalBytes": 364580,
+    "privateManifestSha256": "ff9896be543c1ed409daf85b5c4937e40421247850e2ed259f723d241327f4b3",
+    "nativeReceiptSha256": "7d0f24c16af67465249f150f95525033d71eaac23e9d87b27ab2c0d0a4006eb3",
+    "instrumentationSha256": "e1236267618d301d2d4331501bc24af8cf8d5056d81aec493905bdf48a8987d9",
+    "ciLogSha256": "66a81acb7735ce9982a8ad63001c30e9b9b9005fe4182b510d2da732196851e5",
+    "hostedReceiptSha256": "764ef5a841e41313bc706d94d0dd0c86067ebdd36725f9af93b66b1cada8cae9",
+    "failureDiagnosticsSha256": "eab747fa4e6da2a618c37bb4a400a6fd3a9a7af84cb6593b94b344b220dcfa62",
+    "controlledStageCaptureSha256": "39588f9fcb3cf282d0174311a26871140b011499baa52cb9b5f74b3f3efd20bf"
+  },
+  "boundedDiagnosis": {
+    "established": "The replacement controls did not synchronously register their delayed-pick callback after one injected target gesture. The test failed before the newly guarded software-provider Return fixture ran.",
+    "exactCause": "UNPROVED",
+    "returnBarrierHypothesis": "NOT_EXERCISED_BY_THIS_RUN",
+    "emulatorProcessLossObserved": false,
+    "possibleSourceSeam": "A WRAP_CONTENT fixture Dialog can reflow when controls are removed/re-added; the replacement target gesture currently has no observed stable layout/window/hit-region precondition.",
+    "nextActionRequiresNewEvidence": "Observe actual target/window geometry, pre-draw/focus and delivered gesture/callback ownership after that hierarchy mutation. Do not retry unchanged.",
+    "automaticRetry": false,
+    "sourceChangedAfterRun": false
+  },
+  "limits": [
+    "Original 15/1 failure remains immutable.",
+    "Controlled stage breadcrumbs cannot substitute for absent exported model/input/PNG receipts.",
+    "No fresh joined canonical, physical AR, positive physical Inspect, release, full lint, protected merge or owner acceptance is established."
+  ]
+}

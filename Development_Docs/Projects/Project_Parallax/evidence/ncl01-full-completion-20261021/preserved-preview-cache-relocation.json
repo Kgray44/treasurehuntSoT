@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "TASK_OWNED_REPRODUCIBLE_GRADLE_CACHE_RELOCATION",
+  "result": "PASS",
+  "files": 8466,
+  "directories": 6711,
+  "logicalBytes": 405298183.0,
+  "allFileHashesMatchedBeforeCopyAfterCopyAfterJunctionAndAfterCleanup": true,
+  "junctionTargetIndependentlyResolved": true,
+  "exactOriginalDPathPreservedByJunction": true,
+  "retainedCopyCleanupComplete": true,
+  "cleanupError": null,
+  "dFreeBeforeBytes": 0,
+  "dFreeAfterBytes": 410316800,
+  "runtimeNeighborCreationIdentitiesUnchanged": true,
+  "sourceEvidenceDatabaseMediaNodeModulesIncluded": false,
+  "authenticationAttempted": false,
+  "databaseDirectlyReadOrModified": false,
+  "normalRuntimeMayWriteD": true,
+  "at": "2026-10-21T14:58:11.0579822Z"
+}

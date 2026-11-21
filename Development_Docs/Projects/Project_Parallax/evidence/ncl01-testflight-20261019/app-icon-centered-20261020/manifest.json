@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "recordedDate": "2026-10-20",
+  "kind": "CENTERED_OFFICIAL_LOGO_PREPARATION_EVIDENCE",
+  "members": [
+    {
+      "path": "final-center-review.original.json",
+      "bytes": 10201,
+      "sha256": "8234f901acd7a6494134181bc2bc1a6d56eb8a4927124126a863f1e361610228"
+    },
+    {
+      "path": "generation-history.json",
+      "bytes": 3202,
+      "sha256": "7a1350cdf386d21e14ffcc3b69f13a20dc7b8aaa454e6387f8b887290f8b16fd"
+    },
+    {
+      "path": "packaging.original.json",
+      "bytes": 1710,
+      "sha256": "e18f7a98015ef33baf89bd6998116723e080422853a2e0e650ae74eb9729ee2e"
+    },
+    {
+      "path": "packaging.original.mjs",
+      "bytes": 2210,
+      "sha256": "5309cdaab5164c570d26db7eb0a6f15bdecd00208796517dc6366f45dc3c6898"
+    },
+    {
+      "path": "source-artwork-verification.json",
+      "bytes": 3289,
+      "sha256": "f65e6e94b81779c20ddf349c3e1852587522493f5669bb9fbd4a5d4518ac94a6"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "role": "ANDROID_RETURN_READINESS_COMPILE_PREFLIGHT_NOT_QUALIFICATION",
+  "qualification": false,
+  "sourceFixtureGitBlob": "d198b1527ee773eba43f9c8ee8b2c1ab4a529688",
+  "fixtureUnchangedDuringBuild": true,
+  "changedPaths": [
+    "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxNativeInputFixture.java"
+  ],
+  "productionSourceChanged": false,
+  "peerReview": "READY_NO_BLOCKER",
+  "readiness": {
+    "newSetupBoundMs": 10000,
+    "originalGestureRetained": true,
+    "inputRetry": false,
+    "sleepAdded": false,
+    "existingGpuDeadlineMs": 10000,
+    "oldFailureCause": "UNPROVED",
+    "observations": "SEPARATE_BOUNDED_FIXED_TAG_DIAGNOSTIC_ONLY"
+  },
+  "compile": {
+    "result": "PASS",
+    "dependencyMode": "OFFLINE_EXISTING_LOCKED_CACHE_COPY",
+    "gradleVersion": "8.11.1",
+    "jdkVersion": "21.0.10",
+    "observedDuration": "1m 12s",
+    "tasks": "62 actionable tasks: 62 executed",
+    "commands": [
+      ":app:assembleDebug",
+      ":app:assembleDebugAndroidTest"
+    ],
+    "apks": [
+      {
+        "path": "build/app/outputs/apk/debug/app-debug.apk",
+        "bytes": 64081461,
+        "sha256": "a53b7ba695bca23afa036dd3836a9496a75a44bf2c0c8feaecda41843737df5c"
+      },
+      {
+        "path": "build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk",
+        "bytes": 1377660,
+        "sha256": "9a5f5435c102c2441ec343c394a25fb03475d7335a354116f9b5d0287c4170f0"
+      }
+    ]
+  },
+  "inspection": {
+    "schemaVersion": 1,
+    "role": "ANDROID_APK_FIXTURE_INPUT_INSPECTION_NOT_EXECUTION",
+    "qualification": false,
+    "assets": [
+      {
+        "assetId": "brass-compass",
+        "bytes": 313396,
+        "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb"
+      },
+      {
+        "assetId": "treasure-chest",
+        "bytes": 630120,
+        "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f"
+      }
+    ],
+    "newFixtureDiagnosticInTestDex": true,
+    "newFixtureDiagnosticAbsentFromDebugAppDex": true,
+    "originalAndNewAssertionsInTestDex": true,
+    "instrumentationMethodsDeclared": 16
+  },
+  "originals": {
+    "buildReceiptSha256": "3221796017b7cf06d0b566d38bc477340681eab63aac595dc74d5a037f4068ea",
+    "stdoutSha256": "2e5d9fafba87e4eae8c1197eead428fbde036234151b8c68e151a5e1f5010b41",
+    "stderrSha256": "c39fdab6c452412b888f32118136add721c1f6d83354cf1035665fea42fb142b",
+    "toolCopyManifestSha256": "571f82def56e26367b09d7a414ea1a83da837329232a9c8f3401a9641de8fbc6"
+  },
+  "limits": [
+    "Compilation and APK inspection do not execute the new Dialog readiness barrier or prove a passing Return gesture.",
+    "No fresh GPU, joined Lens, physical tracking, full lint, Release or TestFlight result is claimed.",
+    "Immutable run39694528107 remains fifteen passes and one failure."
+  ]
+}

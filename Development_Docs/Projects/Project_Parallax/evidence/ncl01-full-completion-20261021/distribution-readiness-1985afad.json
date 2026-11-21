@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 1,
+  "role": "READ_ONLY_DISTRIBUTION_CONFIGURATION_AND_SOURCE_REVIEW",
+  "qualification": false,
+  "sealedAt": "2026-10-22T00:20:14.077Z",
+  "source": {
+    "candidateSha": "1985afadc1e184089530eebaebe690e9785c0350",
+    "candidateTree": "36811d381450b93f73927d1c512878285f11a672",
+    "reviewedCheckpoint": "0d83b64488711215bfdcfa47f898fa48f07e074e",
+    "comparison": "Exact committed nonempty Git trees and blobs; no changes in the listed scopes.",
+    "trees": [
+      {
+        "path": "native/ios",
+        "reviewedTree": "7a009230e07a559b9c6584f4917f9d27724f4f9a",
+        "candidateTree": "7a009230e07a559b9c6584f4917f9d27724f4f9a",
+        "identical": true
+      },
+      {
+        "path": "native/ios/LandfallCompanion",
+        "reviewedTree": "1bc1224ec5d955eb89b31f022d45c1f40fd1195d",
+        "candidateTree": "1bc1224ec5d955eb89b31f022d45c1f40fd1195d",
+        "identical": true
+      },
+      {
+        "path": "native/ios/Branding",
+        "reviewedTree": "47710d898ed68daf93e70636bc946c626d4d53bb",
+        "candidateTree": "47710d898ed68daf93e70636bc946c626d4d53bb",
+        "identical": true
+      },
+      {
+        "path": "scripts/landfall/testflight",
+        "reviewedTree": "7daca8471c5e8cf3d591fb8cf4f91ba856c7730c",
+        "candidateTree": "7daca8471c5e8cf3d591fb8cf4f91ba856c7730c",
+        "identical": true
+      }
+    ],
+    "blobs": [
+      {
+        "path": "native/ios/project.yml",
+        "gitBlobSha1": "9d09991534263e5cba6b6182b3ba00c6d71cf163",
+        "identicalToReviewedSource": true
+      },
+      {
+        "path": ".agents/ncl01-testflight-hosted.yml",
+        "gitBlobSha1": "a2d7295816d5a8e1b9fa968ab280a6370f748c3d",
+        "identicalToReviewedSource": true
+      },
+      {
+        "path": ".agents/scripts/ncl01-apple-signing.ps1",
+        "gitBlobSha1": "fe49d633a997195ec3f56d7a8eeb92eb6920b30b",
+        "identicalToReviewedSource": true
+      },
+      {
+        "path": "scripts/landfall/testflight/dispatch.mjs",
+        "gitBlobSha1": "d955844c7e5b126fc853919e6a535a2394f57b0e",
+        "identicalToReviewedSource": true
+      },
+      {
+        "path": "scripts/landfall/testflight/runner.py",
+        "gitBlobSha1": "a2a5ff23eb3d7cc7ba816ac121735cab1aa4988b",
+        "identicalToReviewedSource": true
+      },
+      {
+        "path": "scripts/landfall/testflight/release_proof.py",
+        "gitBlobSha1": "d7a470dffdee35c624da532bbed59fef63be60ac",
+        "identicalToReviewedSource": true
+      },
+      {
+        "path": "native/ios/LandfallCompanion/Landfall.entitlements",
+        "gitBlobSha1": "3950d3193db7ecc168c54b9d50da4788e56802ee",
+        "identicalToReviewedSource": true
+      }
+    ]
+  },
+  "artwork": {
+    "effectiveIconAndOfficialLogoIdentical": true,
+    "approvedOriginalCropPreserved": true,
+    "files": [
+      {
+        "path": "native/ios/Branding/VoyageWright-Logo.official.png",
+        "gitBlobSha1": "448bba68585527f2b53db02966a579084610a30b",
+        "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+        "bytes": 1617603
+      },
+      {
+        "path": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+        "gitBlobSha1": "448bba68585527f2b53db02966a579084610a30b",
+        "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+        "bytes": 1617603
+      }
+    ],
+    "retainedHistoricalArtworkNotPromoted": true,
+    "currentCandidateCompiledIconOrSignedArchiveClaim": false
+  },
+  "githubConfiguration": {
+    "environment": "ncl01-testflight",
+    "observationMethod": "Read-only names-only CLI JSON and environment/branch-policy GETs during the audit; no secret or variable values inspected.",
+    "requiredSecretNames": [
+      "NCL01_DISTRIBUTION_P12_BASE64",
+      "NCL01_DISTRIBUTION_P12_PASSWORD",
+      "NCL01_APPSTORE_PROFILE_BASE64",
+      "NCL01_ASC_PRIVATE_KEY_P8"
+    ],
+    "allRequiredSecretNamesPresent": true,
+    "requiredVariableNames": [
+      "NCL01_ASC_KEY_ID",
+      "NCL01_ASC_ISSUER_ID",
+      "NCL01_ASC_APP_ID",
+      "NCL01_INTERNAL_GROUP_ID"
+    ],
+    "allRequiredVariableNamesPresent": true,
+    "valuesNeverRead": true,
+    "secretValuesRead": false,
+    "configurationValuesInspected": false,
+    "valuesIncludedInEvidence": false,
+    "deploymentBranchPolicy": {
+      "customBranchPolicies": true,
+      "protectedBranches": false,
+      "allowedBranches": [
+        {
+          "name": "codex/ncl01-testflight-*",
+          "type": "branch"
+        }
+      ],
+      "policyCount": 1,
+      "protectionRuleTypes": [
+        "branch_policy"
+      ],
+      "requiredReviewerOrWaitRuleReturned": false
+    },
+    "workflowPermissions": {
+      "contents": "read"
+    },
+    "unsignedJobUsesSigningEnvironment": false,
+    "distributionP12AndProfileInputsOnlyInExplicitUploadMode": true,
+    "observeModeUsesExistingApiKeyWithoutDistributionP12OrProfile": true
+  },
+  "signingReadiness": {
+    "currentCertificateValidity": "NOT_VERIFIED",
+    "currentProfileValidity": "NOT_VERIFIED",
+    "currentCertificatePrivateKeyMatch": "NOT_VERIFIED",
+    "currentAppleApiRoleAndAppAccess": "NOT_VERIFIED",
+    "currentAppleInternalGroupAccess": "NOT_VERIFIED",
+    "currentAppleAgreements": "NOT_VERIFIED",
+    "currentUnusedBuildNumber": "NOT_VERIFIED",
+    "configurationPresenceDoesNotEstablishValidity": true,
+    "existingRunnerChecks": [
+      "Profile team, exact bundle identity, App Store profile class and expiry greater than one hour",
+      "Matching Apple Distribution private-key identity and effective Release signing settings",
+      "Exact archive version/build/origin/app-bound host, privacy strings, entitlements and approved icon/Release proof",
+      "Signed device archive, exported IPA, Apple validation/upload result and processing state",
+      "Existing internal group belongs to the same app and is internal",
+      "Owned keychain, profile and API-key cleanup"
+    ],
+    "noMissingEnrollmentOrNewSigningIdentityInferred": true
+  },
+  "retainedDistribution": {
+    "version": "0.1.0",
+    "build": "7",
+    "sourceSha": "5c79701f027a7e035a1a486f96db182e24f25942",
+    "recordedSignedRunId": 39521997164,
+    "statusBasis": "Existing immutable deployment record; Apple status not refreshed by this audit.",
+    "existingBetaPreserved": true,
+    "existingBetaContainsLatestInspectCorrections": false,
+    "shippingFilesChangedSinceBeta7": [
+      "native/ios/LandfallCompanion/LandfallCompanion.swift",
+      "native/ios/LandfallCompanion/ParallaxAssetCache.swift",
+      "native/ios/LandfallCompanion/ParallaxLocalRuntime.swift"
+    ],
+    "oldUnsignedBuild8WasMetadataOnly": true,
+    "build8CurrentlyUnusedNotAsserted": true
+  },
+  "futureHandoff": {
+    "teamId": "X2JZ9N65V2",
+    "bundleId": "com.voyagewright.landfall",
+    "httpsOrigin": "https://ncl01.absoluterelativesystems.com",
+    "version": "0.1.0",
+    "candidateForThisAudit": "1985afadc1e184089530eebaebe690e9785c0350",
+    "buildNumber": "Freshly confirm an unused number; never reuse consumed builds2through7.",
+    "mechanism": "Reuse scripts/landfall/testflight/dispatch.mjs and unchanged owned-branch workflow/runner with the exact authorized SHA, origin, version and new build number.",
+    "gates": [
+      "Complete current-source integration qualification and required acceptance/distribution disposition.",
+      "Prepare matching web-source readiness at the preserved HTTPS origin without silently replacing the retained private preview.",
+      "Revalidate existing signing credentials, Apple app/group access and unused build number through the authorized pipeline."
+    ],
+    "preservedPreviewSource": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+    "matchingWebCandidateDeploymentClaim": false,
+    "afterGates": "One source-bound signed archive/export/upload; observe Apple VALID and existing internal-group attachment; retain binary/icon/privacy/source/build/cleanup proof. Physical acceptance must use that exact installed future build.",
+    "noRepeatedEnrollment": true,
+    "noNewTesters": true,
+    "noPublicAppStorePublication": true
+  },
+  "actions": {
+    "repositoryOrSourceEdits": false,
+    "mainPolled": false,
+    "githubConfigurationMutations": false,
+    "appleQueries": false,
+    "appleMutations": false,
+    "workflowDispatches": false,
+    "signingMaterialAccess": false,
+    "archiveOrUpload": false,
+    "privatePreviewMutation": false
+  },
+  "limits": [
+    "Configuration/source readiness only; no valid-current-signing, new distribution, current Apple availability or physical acceptance claim.",
+    "Prior source-equivalent native/Release evidence retains its producing source and scope.",
+    "The future handoff does not authorize bypassing qualification, deployment or protected-main policy."
+  ]
+}

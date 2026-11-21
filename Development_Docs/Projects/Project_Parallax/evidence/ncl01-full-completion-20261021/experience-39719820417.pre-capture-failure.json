@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "role": "ORDINARY_CAPTURE_PRE_APPLICABILITY_GATE_FAILURE_REVIEW",
+  "qualification": false,
+  "result": "FAILED_BEFORE_EXPERIENCE_CAPTURE",
+  "reviewedAtUtc": "2026-10-22T04:11:26.754Z",
+  "run": {
+    "id": 39719820417,
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39719820417",
+    "attempt": 1,
+    "event": "workflow_dispatch",
+    "protectedWorkflowSha": "8e49351e62e1f32340109566557a824bfa74e14d",
+    "branch": "main",
+    "workflowPath": ".github/workflows/sounding-line-ordinary.yml",
+    "createdAtUtc": "2026-10-22T03:59:06Z",
+    "updatedAtUtc": "2026-10-22T04:05:17Z",
+    "conclusion": "failure"
+  },
+  "requestedCapture": {
+    "candidateSha": "0dccf762799b03134aa9323ef0e2a7fc86af59eb",
+    "candidateTree": "54f226d6c0f73cb39af05591d094295be1ddc589",
+    "baseSha": "8e49351e62e1f32340109566557a824bfa74e14d",
+    "prNumber": 741,
+    "mode": "capture",
+    "diagnostic": false
+  },
+  "failure": {
+    "jobId": 119630466576,
+    "stepName": "Reserve finite work using installed protected-main authority only",
+    "stepStartedAtUtc": "2026-10-22T04:05:13Z",
+    "stepCompletedAtUtc": "2026-10-22T04:05:13Z",
+    "errorCode": "PRODUCT_EXPERIENCE_EXCEPTION_R26_RECORD_OR_EXPIRY_CHANGED",
+    "errorObservedAtUtc": "2026-10-22T04:05:13.8084161Z",
+    "classification": "PROTECTED_PRE_APPLICABILITY_REGISTRY_WINDOW_VALIDATION",
+    "productUiFailureClaim": false
+  },
+  "actualCapture": {
+    "experiencePreparationJob": "SKIPPED",
+    "engineStarted": false,
+    "freshPlanProduced": false,
+    "planReadiness": null,
+    "plannedContextDenominator": null,
+    "capturedContextDenominator": null,
+    "captureManifestAvailable": false,
+    "reviewerPacketAvailable": false,
+    "publishedArtifactCount": 0,
+    "immutableCaptureZipCount": 0,
+    "retainedMediaFileCount": 0
+  },
+  "campaignObservation": {
+    "cliOperation": "reserve",
+    "normalWorkflowStepCallsSameEntryForAllConsumers": true,
+    "registryValidationFailedBeforeCampaignRelatedFind": true,
+    "campaignApplicabilitySelectionCompleted": false,
+    "planExceptionOrCampaignBindingProduced": false,
+    "reservationStageNotReachedByRetainedSourceOrder": true,
+    "remoteCustodyStoreAudited": false,
+    "independentlyObservedRemoteWriteCount": null,
+    "finiteAllowanceConsumptionClaim": null,
+    "meaning": "The generic reserve entry threw while loading trusted records, before determining whether741 relates to any campaign. No inference of741 belonging to721 or independent remote storage inventory."
+  },
+  "fixedWindowWitness": {
+    "recordId": "PE-X-CROSSDECK-CURRENT-VERIFY-20261021-R26",
+    "version": 26,
+    "status": "ACTIVE",
+    "recordExpiresAtUtc": "2026-10-22T23:59:59Z",
+    "recordAndProtectedConstantExecutionDeadlineUtc": "2026-10-22T03:59:59Z",
+    "observedCheckAfterDeadline": true,
+    "recordGuardPath": "scripts/sounding-line/experience-current-r26.mjs",
+    "recordGuardLines": "301-315",
+    "registryReaderPath": "scripts/sounding-line/experience-exception.mjs",
+    "registryReaderLines": "692-725",
+    "mainTrustedReadBeforeFindLine": 2920,
+    "mainReservationStageLine": 2977,
+    "meaning": "At least the fixed execution-deadline predicate is false at the observed failure; no grant extension or bypass is proposed or performed."
+  },
+  "environment": {
+    "custodyNodeObserved": "v24.19.0",
+    "workflowRunner": "ubuntu-latest"
+  },
+  "protectedSourceWitnesses": {
+    "workflow": {
+      "role": "READ_ONLY_CAPTURE_WORKFLOW_BINDING",
+      "qualification": false,
+      "runId": 39719820417,
+      "protectedWorkflowSha": "8e49351e62e1f32340109566557a824bfa74e14d",
+      "workflowPath": ".github/workflows/sounding-line-ordinary.yml",
+      "workflowGitBlob": "cef69188292774c816e33e7a9aad467edadeff25",
+      "workflowSha256": "a086c2e4dfda1abd4bf0785ba0639abf62cd43b47386d0f144815fe3a3175c08",
+      "expectedCandidateSha": "0dccf762799b03134aa9323ef0e2a7fc86af59eb",
+      "expectedCandidateTree": "54f226d6c0f73cb39af05591d094295be1ddc589",
+      "mode": "capture"
+    },
+    "sources": [
+      {
+        "path": "scripts/sounding-line/experience-exception.mjs",
+        "gitBlob": "b2205c9d8953228e282dcce336e6086f8120886c",
+        "bytes": 135400,
+        "sha256": "95829caace6a29a3fca7ea2ab1ef4a4951b52b5f6b786607d04156d25fadac59"
+      },
+      {
+        "path": "scripts/sounding-line/experience-current-r26.mjs",
+        "gitBlob": "6d6de7a12e08dd1b578731a9d1bd86ed581c7100",
+        "bytes": 23311,
+        "sha256": "c6475a1098f45d84fc231545b9a5505b8b0e209964423f77d76ad1cbcf0f772f"
+      },
+      {
+        "path": "scripts/sounding-line/experience-current-admission.mjs",
+        "gitBlob": "540ba2ea53d30535fc34c6d19dda578776cc9a11",
+        "bytes": 92400,
+        "sha256": "5418df7a1028bb56d7736e5a411f08684b191615c76a708f9f7194a7510f2024"
+      },
+      {
+        "path": "testing/product-experience-exceptions.json",
+        "gitBlob": "089308bf475a2b22bfdc64ac46164996855e7010",
+        "bytes": 10079573,
+        "sha256": "404670ce9f99e960b8805571dd4f463f4ca3ab6c61162b5d51e33d361d8e67d7"
+      }
+    ]
+  },
+  "jobs": [
+    {
+      "id": 119630466576,
+      "name": "Sounding Line / Finite campaign custody",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 119632264612,
+      "name": "Sounding Line / Focused verification",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 119632265346,
+      "name": "Sounding Line / Mainline Decision",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 119632265358,
+      "name": "Sounding Line / Experience preparation (no mainline decision)",
+      "status": "completed",
+      "conclusion": "skipped"
+    }
+  ],
+  "retention": {
+    "originalCustodyLogBytes": 90376,
+    "originalCustodyLogSha256": "02f6211349c847d5a7431d3ca366d557d22864a76252f22133fc758774bf7c29",
+    "originalMapSha256": "7c4956596309657125d8b67acbcbb44b4fdfca51a46aa4b4e91512e19cdbb285",
+    "originalFileCount": 20,
+    "originalBytes": 10493552,
+    "neutralMediaInventorySha256": "dc851fd8cc363619df303881993bb6b9498772f1b27e4fdc6f7c08235f96907d"
+  },
+  "limits": [
+    "No capture media, fresh plan, reviewer packet, visual review, or acceptance was produced.",
+    "Source call order supports failure before reservation-stage execution; remote custody records were not queried by this review.",
+    "The ordinary741 request is distinct from finite721 authority; this review neither consumes, renews, nor changes any allowance.",
+    "No cancellation, rerun, dispatch, source edit, policy/registry modification, historical-evidence rewrite, key search, or decryption was performed.",
+    "All new local monitor/download streams and explicit tool TEMP/TMP were on D.",
+    "Hosted397176 development pass and Windowsa820 pass/control failure retain their separate original scope."
+  ]
+}

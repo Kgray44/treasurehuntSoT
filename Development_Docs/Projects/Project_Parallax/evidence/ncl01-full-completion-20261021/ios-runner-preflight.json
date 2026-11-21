@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "role": "RETAINED_LOCAL_PREFLIGHT",
+  "result": "PASS",
+  "baseCommit": "a523b8287231b44c3cc30c5ebb6fba6954e6d95a",
+  "sourceHashes": {
+    "scripts/landfall/device-lab/hosted.ts": "803a55bee24e6d8c64b05ac33a35db74b4e835e23d1dc1aec43e66d472ca6b76",
+    "src/landfall/device-lab/hosted-ios-runner.test.ts": "3da11f8c10155a2d07b25aa58bf186d80688c86febf0bc12af8a37e9467a30d0",
+    ".agents/landfall-device-lab-hosted.yml": "79594607b2dd857ca6a517976b62bfeb8cc596cad788f1bb5f40e90dc7862848"
+  },
+  "checks": {
+    "focusedVitest": {
+      "files": 2,
+      "passed": 14,
+      "failed": 0,
+      "exitCode": 0
+    },
+    "eslint": {
+      "exitCode": 0,
+      "emptyOutput": true
+    },
+    "prettier": {
+      "exitCode": 0
+    },
+    "diffCheck": {
+      "exitCode": 0
+    }
+  },
+  "logs": {
+    "diff-check.original.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "eslint.original.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "focused-vitest.original.log": {
+      "bytes": 656,
+      "sha256": "72a94fc4eba5ca698f005062eb28960777691c9ed5e446256774f9afabe271cb"
+    },
+    "prettier-check.original.log": {
+      "bytes": 68,
+      "sha256": "f20510a9da4717c51c4cffee6d0dd88d6c9a723d0a83711d01216f5b48961283"
+    }
+  },
+  "limits": [
+    "This is a fresh retained verification after the initial tool-output-only pass.",
+    "Logs retain combined process output through PowerShell Tee-Object; exit codes are recorded separately.",
+    "No hosted dispatch, native execution, ARM-to-Intel qualification or physical-device proof."
+  ],
+  "createdAt": "2026-10-21T15:09:15.6702849Z",
+  "rootTypecheck": {
+    "command": "npm run typecheck",
+    "sourceHashesReverified": true,
+    "originalLogSha256": "87cbed0ffc784c19ac32b5eb5829e31eca5ebd6ea4b569718fa3d43d88a58e8d",
+    "exitCode": 0
+  }
+}

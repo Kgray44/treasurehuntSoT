@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "role": "READ_ONLY_READINESS_NOT_MAINLINE_QUALIFICATION",
+  "qualification": false,
+  "source": {
+    "commit": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+    "tree": "982f254e7e54ac28e08aac93a75db427496a4d90"
+  },
+  "protectedMain": "e1a86f98e56d68e8e87e3704d17439489ff1a170",
+  "planner": {
+    "command": "node scripts/sounding-line/experience-browser.mjs --base e1a86f98e56d68e8e87e3704d17439489ff1a170 --candidate a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+    "exitCode": 1,
+    "gate": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration",
+    "originalLogSha256": "4331c91b2fe252b92a004ec0fdb21d6cb41088a227d3afa88e5df1f65f8740c0"
+  },
+  "dependencies": {
+    "crossdeck": {
+      "pullRequest": 721,
+      "state": "OPEN",
+      "draft": true,
+      "head": "245e5128afa00e6c888818a698ebd37717d81a3d",
+      "accepted": false
+    },
+    "proposedCharter": {
+      "pullRequest": 781,
+      "state": "OPEN",
+      "head": "182233e0f6d11a5dd5f74f35e01183b633b6ec8f",
+      "accepted": false
+    }
+  },
+  "ordinaryMainlineTriggered": false,
+  "mainlineDecision": null,
+  "merged": false,
+  "landedVerification": "NOT_APPLICABLE_NOT_MERGED",
+  "limits": [
+    "Readiness failure is not an ordinary Sounding Line rejection or permission to consume Crossdeck qualification. No protected source changed."
+  ]
+}

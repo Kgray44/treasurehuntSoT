@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "recordedDate": "2026-10-20",
+  "kind": "OWNER_APPROVED_ORIGINAL_CROP_PREPARATION_EVIDENCE",
+  "members": [
+    {
+      "path": "crop-and-resize.original.json",
+      "bytes": 557,
+      "sha256": "f80fab8e88143f00f8c302d5a55528553d8a2658bc27d2a034cda7942efc2daf"
+    },
+    {
+      "path": "local-review.original.json",
+      "bytes": 7190,
+      "sha256": "b25f96d1c2528776907759d1133f97576e032de2986b4ff7d72aa667c3812c25"
+    },
+    {
+      "path": "source-artwork-verification.json",
+      "bytes": 3760,
+      "sha256": "a2933db9ddbe53ee28ea7cc864cd6c804c7557c9513198d25ceddbe635579af3"
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:26:30.6365880Z ##[group]Run npx --no-install tsx scripts/landfall/device-lab/apple-build.ts companion-only
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:26:30.6367870Z ^[[36;1mnpx --no-install tsx scripts/landfall/device-lab/apple-build.ts companion-only^[[0m
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:26:30.6624720Z shell: /bin/bash -e {0}
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:26:30.6625230Z env:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:26:30.6625780Z   LANDFALL_LAB_PROFILE: primary-phone
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:26:30.6626120Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3263860Z {
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3269330Z   "devicesAndConfigurations" : [
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3272980Z     {
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3275780Z       "device" : {
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3276930Z         "architecture" : "arm64",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3320290Z         "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3357380Z         "deviceName" : "landfall-owned-8613",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3359710Z         "modelName" : "iPhone 17e",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3363450Z         "osBuildNumber" : "23F77",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3372490Z         "osVersion" : "26.5",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3376640Z         "platform" : "iOS Simulator"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3421360Z       },
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3486760Z       "expectedFailures" : 0,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3505170Z       "failedTests" : 1,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3505880Z       "passedTests" : 23,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3510570Z       "skippedTests" : 1,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3511080Z       "testPlanConfiguration" : {
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3516110Z         "configurationId" : "1",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3516520Z         "configurationName" : "Test Scheme Action"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3520160Z       }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3520500Z     }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3520780Z   ],
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3554740Z   "environmentDescription" : "LandfallCompanion · Built with macOS 26.6.2",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3555420Z   "expectedFailures" : 0,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3559430Z   "failedTests" : 1,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3559890Z   "finishTime" : 1792118217.188,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3563030Z   "passedTests" : 23,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3563820Z   "result" : "Failed",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3568280Z   "skippedTests" : 1,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3568730Z   "startTime" : 1792117946.677,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3590380Z   "statistics" : [
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3590730Z     {
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3594540Z       "subtitle" : "1 test run",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3597740Z       "title" : "1 test collected performance metrics"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.3599130Z     }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4230350Z   ],
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4232300Z   "testFailures" : [
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4233020Z     {
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4233520Z       "failureText" : "XCTAssertTrue failed - LANDFALL_HOME_BACKGROUND_UNOBSERVED",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4234620Z       "targetName" : "LandfallCompanionUiTests",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4235510Z       "testIdentifier" : 25,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4236600Z       "testIdentifierString" : "NativeLifecycleTests/testUnconfiguredShellReturnsFromHome()",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4239100Z       "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionUiTests/NativeLifecycleTests/testUnconfiguredShellReturnsFromHome",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4240930Z       "testName" : "testUnconfiguredShellReturnsFromHome()"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4241350Z     }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4242010Z   ],
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4244320Z   "title" : "Test - LandfallCompanion",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4245340Z   "topInsights" : [
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4247260Z     {
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4248270Z       "category" : "Longest Test Runs",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4253720Z       "impact" : "60% of duration",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4254630Z       "text" : "1 longest test run with outlier durations exceeding 1.51s (three standard deviations)"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4255200Z     }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4255390Z   ],
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4258270Z   "totalTestCount" : 25
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4258600Z }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:16.4258730Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8673770Z Command failed: xcodebuild -quiet -project /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion.xcodeproj -scheme LandfallCompanion -destination platform=iOS Simulator,id=FDB7DEAD-BECF-460F-BBF4-F84AE3418269 -derivedDataPath /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData -resultBundlePath /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/NativeTests.xcresult CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- LANDFALL_LAB_PRESENTATION=1 -skip-testing:LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation -skip-testing:LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorReducedMotionSetting test
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8680710Z --- xcodebuild: WARNING: Using the first of multiple matching destinations:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8681670Z { platform:iOS Simulator, arch:arm64, id:FDB7DEAD-BECF-460F-BBF4-F84AE3418269, OS:26.5, name:landfall-owned-8613 }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8682660Z { platform:iOS Simulator, arch:x86_64, id:FDB7DEAD-BECF-460F-BBF4-F84AE3418269, OS:26.5, name:landfall-owned-8613 }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8727060Z 2026-10-16 02:34:43.296 xcodebuild[11388:37094] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8728410Z 2026-10-16 02:34:43.296 xcodebuild[11388:37094] [MT] IDELaunchParametersSnapshot: no debugger version
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8729880Z 2026-10-16 02:36:56.630 xcodebuild[11388:37094] [MT] IDETestOperationsObserverDebug: 214.853 elapsed -- Testing started completed.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8730740Z 2026-10-16 02:36:56.630 xcodebuild[11388:37094] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8732350Z 2026-10-16 02:36:56.630 xcodebuild[11388:37094] [MT] IDETestOperationsObserverDebug: 214.854 sec, +214.854 sec -- end
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8733170Z Failing tests:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8734180Z 	NativeLifecycleTests.testUnconfiguredShellReturnsFromHome()
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8734500Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8734650Z ** TEST FAILED **
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8734800Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8734800Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8734940Z Writing result bundle at path:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8735670Z 	/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/NativeTests.xcresult
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8737000Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8737230Z Testing started
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8737350Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8737850Z --- xcodebuild: WARNING: Using the first of multiple matching destinations:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8738830Z { platform:iOS Simulator, arch:arm64, id:FDB7DEAD-BECF-460F-BBF4-F84AE3418269, OS:26.5, name:landfall-owned-8613 }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8739780Z { platform:iOS Simulator, arch:x86_64, id:FDB7DEAD-BECF-460F-BBF4-F84AE3418269, OS:26.5, name:landfall-owned-8613 }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8741780Z 2026-10-16 02:34:43.296 xcodebuild[11388:37094] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8743050Z 2026-10-16 02:34:43.296 xcodebuild[11388:37094] [MT] IDELaunchParametersSnapshot: no debugger version
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8744080Z 2026-10-16 02:36:56.630 xcodebuild[11388:37094] [MT] IDETestOperationsObserverDebug: 214.853 elapsed -- Testing started completed.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8746360Z 2026-10-16 02:36:56.630 xcodebuild[11388:37094] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8747560Z 2026-10-16 02:36:56.630 xcodebuild[11388:37094] [MT] IDETestOperationsObserverDebug: 214.854 sec, +214.854 sec -- end
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8748690Z Failing tests:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8749160Z 	NativeLifecycleTests.testUnconfiguredShellReturnsFromHome()
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8749390Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8749690Z ** TEST FAILED **
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8750060Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8750060Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:24.8750680Z LANDFALL_APPLE_BUILD_FAILED
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.1207220Z ##[error]Process completed with exit code 1.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.1627820Z ##[group]Run actions/upload-artifact@v4
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.1628400Z with:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.1629100Z   name: landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.1629500Z   path: artifacts/landfall-device-lab
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.1629890Z   retention-days: 14
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.1630310Z   if-no-files-found: warn
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.1630620Z   compression-level: 6
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.1630870Z   overwrite: false
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.1631410Z   include-hidden-files: false
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.1631670Z env:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.1632110Z   LANDFALL_LAB_PROFILE: primary-phone
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.1632570Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.8858480Z (node:25529) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:25.8861190Z (Use `node --trace-deprecation ...` to show where the warning was created)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:26.6876140Z With the provided path, there will be 5071 files uploaded
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:26.6876610Z Artifact name is valid!
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:26.6876840Z Root directory input is valid!
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:27.1462980Z Beginning upload of artifact content to blob storage
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:27.9669590Z (node:25529) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:28.9417220Z Uploaded bytes 8388608
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:29.4817610Z Uploaded bytes 16777216
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:29.5459760Z Uploaded bytes 25165824
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:31.7350260Z Uploaded bytes 33554432
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:32.3146700Z Uploaded bytes 41943040
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:32.8089030Z Uploaded bytes 50331648
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:33.3747980Z Uploaded bytes 58720256
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:34.0860980Z Uploaded bytes 67108864
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:34.7910180Z Uploaded bytes 75497472
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:35.4023930Z Uploaded bytes 83886080
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:36.3260620Z Uploaded bytes 92274688
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:37.1689020Z Uploaded bytes 100663296
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:37.8001580Z Uploaded bytes 109051904
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:38.4469120Z Uploaded bytes 117440512
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:39.0959860Z Uploaded bytes 125829120
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:39.9994860Z Uploaded bytes 134217728
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:40.4824430Z Uploaded bytes 142606336
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:41.1264490Z Uploaded bytes 150994944
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:41.4350440Z Uploaded bytes 159383552
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:41.6695650Z Uploaded bytes 167772160
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:42.1076650Z Uploaded bytes 176160768
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:42.4617220Z Uploaded bytes 184549376
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:42.7492180Z Uploaded bytes 192937984
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:42.9552940Z Uploaded bytes 201326592
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:43.4013730Z Uploaded bytes 209715200
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:43.7648440Z Uploaded bytes 218103808
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:44.2115110Z Uploaded bytes 226492416
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:45.0960640Z Uploaded bytes 234881024
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:45.2546010Z Uploaded bytes 238826446
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:45.3351280Z Finished uploading artifact content to blob storage!
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:45.3452170Z SHA256 digest of uploaded artifact zip is 55de5038d415fe69dd07f74863d5237149cf08595eed61b09f12b07e9b725a81
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:45.3554220Z Finalizing artifact upload
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:45.8105880Z Artifact landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a.zip successfully finalized. Artifact ID 12020873204
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:45.8109220Z Artifact landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a has been successfully uploaded! Final size is 238826446 bytes. Artifact ID is 12020873204
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:45.8118660Z Artifact download URL: https://github.com/Kgray44/treasurehuntSoT/actions/runs/38840109053/artifacts/12020873204
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:45.8578590Z Post job cleanup.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.0852250Z [command]/opt/homebrew/bin/git version
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.1573940Z git version 2.56.0
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.1612890Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/991fce21-577a-4f38-bebb-594b897f7a24/.gitconfig'
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.1632620Z Temporarily overriding HOME='/Users/runner/work/_temp/991fce21-577a-4f38-bebb-594b897f7a24' before making global git config changes
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.1634900Z Adding repository directory to the temporary git global config as a safe directory
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.1641370Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/treasurehuntSoT/treasurehuntSoT
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.1866240Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.1977950Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.4002050Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.4071540Z http.https://github.com/.extraheader
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.4079110Z [command]/opt/homebrew/bin/git config --local --unset-all http.https://github.com/.extraheader
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.4157270Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.5989520Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.6295940Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:46.8339010Z Cleaning up orphan processes
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-16T02:37:50.9719980Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

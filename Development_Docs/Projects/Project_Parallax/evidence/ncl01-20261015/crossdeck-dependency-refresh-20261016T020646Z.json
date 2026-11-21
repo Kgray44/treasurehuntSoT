@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "MACHINE_ENGINEERING_EVIDENCE",
+  "evidenceClass": "READ_ONLY_CURRENT_CROSSDECK_DEPENDENCY_REFRESH",
+  "reviewerContext": "/root/ncl01_review",
+  "repository": "Kgray44/treasurehuntSoT",
+  "workingDirectory": "D:\\CodexWorktrees\\parallax-ncl01-git-20261016",
+  "startedAtUtc": "2026-10-16T02:06:35.301Z",
+  "completedAtUtc": "2026-10-16T02:06:46.197Z",
+  "retrieval": "gh api --hostname github.com with explicit repository endpoints; immutable ref-qualified Contents API reads; no fetch",
+  "mutableRefsStableAcrossRead": true,
+  "protectedMain": {
+    "sha": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+    "committedAt": "2026-10-15T21:42:00Z",
+    "url": "https://github.com/Kgray44/treasurehuntSoT/commit/a2495fd14efd5ade67832e18fd260f32da98b3b2"
+  },
+  "ownerPullRequest": {
+    "number": 721,
+    "url": "https://github.com/Kgray44/treasurehuntSoT/pull/721",
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "mergedAt": null,
+    "headSha": "87bb29391ee747d9738cc7f259c47f4343a7da89",
+    "baseRef": "main",
+    "baseSha": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+    "updatedAt": "2026-10-16T01:22:39Z"
+  },
+  "sources": [
+    {
+      "role": "protected-main",
+      "commitSha": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+      "registry": {
+        "path": "testing/contracts.json",
+        "gitBlob": "40dddf8be2e9ef9da94deb235b2bb5cc5ce1b3ea",
+        "sha256": "a7e1f9ad0294a005ca334f531399b49f39c362a0090ea2d3b40c3fd498e4c186",
+        "bytes": 177757,
+        "gitBlobBytesVerified": true,
+        "apiEndpoint": "repos/Kgray44/treasurehuntSoT/contents/testing/contracts.json?ref=a2495fd14efd5ade67832e18fd260f32da98b3b2"
+      },
+      "requiredContract": {
+        "id": "crossdeck.phase2.continuity",
+        "experiencePresent": false,
+        "experienceIntentPresent": true,
+        "integrationOwner": null,
+        "continuityChecks": [],
+        "normalizedExperienceJsonSha256": null
+      },
+      "browserProvider": {
+        "path": "src/parallax/browser-spatial-adapter.ts",
+        "present": false,
+        "discovery": "Complete Contents API listing at immutable commit",
+        "directoryApiEndpoint": "repos/Kgray44/treasurehuntSoT/contents/src/parallax?ref=a2495fd14efd5ade67832e18fd260f32da98b3b2",
+        "listedEntryCount": 64,
+        "sortedEntryNamesJsonSha256": "f4a310f94f181edc7f8b58499b7db45c9c98a8f88a1f162b335c5b94feb959db",
+        "source": null
+      }
+    },
+    {
+      "role": "crossdeck-owner-head",
+      "commitSha": "87bb29391ee747d9738cc7f259c47f4343a7da89",
+      "registry": {
+        "path": "testing/contracts.json",
+        "gitBlob": "eb8324379b3348cacf9e2ecbd592c5899ee5a63b",
+        "sha256": "e9b1fa638ffc8a7d67ca06ba7ffe1f05453d5c41f3929309fe94493dd204bdd9",
+        "bytes": 240794,
+        "gitBlobBytesVerified": true,
+        "apiEndpoint": "repos/Kgray44/treasurehuntSoT/contents/testing/contracts.json?ref=87bb29391ee747d9738cc7f259c47f4343a7da89"
+      },
+      "requiredContract": {
+        "id": "crossdeck.phase2.continuity",
+        "experiencePresent": true,
+        "experienceIntentPresent": true,
+        "integrationOwner": "Crossdeck experience refit integration",
+        "continuityChecks": [
+          "same-voyage",
+          "same-edition"
+        ],
+        "normalizedExperienceJsonSha256": "6b9992e544e062d969f612ab10bd04e051a8f56c6a48c76fd79b098d6c3448fc"
+      },
+      "browserProvider": {
+        "path": "src/parallax/browser-spatial-adapter.ts",
+        "present": false,
+        "discovery": "Complete Contents API listing at immutable commit",
+        "directoryApiEndpoint": "repos/Kgray44/treasurehuntSoT/contents/src/parallax?ref=87bb29391ee747d9738cc7f259c47f4343a7da89",
+        "listedEntryCount": 64,
+        "sortedEntryNamesJsonSha256": "f4a310f94f181edc7f8b58499b7db45c9c98a8f88a1f162b335c5b94feb959db",
+        "source": null
+      }
+    }
+  ],
+  "comparisonTo0108Z": {
+    "priorMain": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+    "mainChanged": false,
+    "priorPrHead": "87bb29391ee747d9738cc7f259c47f4343a7da89",
+    "ownerHeadChanged": false,
+    "ownerRegistryMatchesPriorBlob": true
+  },
+  "decision": {
+    "bothRequiredSourcePrerequisitesPresentOnMain": false,
+    "priorSourceDependencyGateCleared": false,
+    "status": "EXTERNAL_UNMERGED_SOURCE_DEPENDENCY_REMAINS",
+    "reason": "Protected main still lacks the required crossdeck.phase2.continuity experience object and/or browser-spatial-adapter.ts. Owner source movement outside main does not provide an integrated NCL baseline."
+  },
+  "boundaries": {
+    "ownerExperienceAcceptance": "NOT_ASSERTED",
+    "productAcceptance": false,
+    "physicalAcceptance": false,
+    "sourceOrExistingEvidenceModified": false,
+    "fetchOrRefMutation": false,
+    "planOrQualificationInvoked": false,
+    "protectedPreparationTouched": false,
+    "jobsLaunched": false,
+    "otherUserChatsMessaged": false
+  }
+}

@@ -1,0 +1,267 @@
+{
+  "schemaVersion": 1,
+  "task": "NCL-01",
+  "candidate": "019030c3a88eeec3c7b07c5a3cc008b92128e7cb",
+  "workingSource": {
+    "head": "019030c3a88eeec3c7b07c5a3cc008b92128e7cb",
+    "lensCssGitBlob": "569b241ba6906b2a391c1228b36d386c13fad9de",
+    "lensCssSha256": "4337752c6f7c5f48e549f6652d6099255f53f4f99f4cbdad427e0595e034ae8e",
+    "accountFlowSha256": "438ad95ae181657a216f87ae54238ad602d9777bb577fc3b8e288d50c32e3e2b",
+    "previewHelperSha256": "6c98a30e472748592396acd2f1a88b5fedcccd08817b41d61f8012a3625d8a18",
+    "disclosure": "Product runtime source matches committed candidate; preview provisioning helper is task-owned and uncommitted at capture time"
+  },
+  "capturedAt": "2026-10-15T20:37:50.926Z",
+  "evidenceTier": "SUPPORTING_ACTUAL_AUTHENTICATED_BROWSER",
+  "transport": "LOOPBACK_HTTP_ACTUAL_APPLICATION",
+  "origin": "http://127.0.0.1:3149",
+  "tls": {
+    "target": "https://155.42.98.160:8449",
+    "defaultCertificateValidation": "FAILED_ERR_CERT_AUTHORITY_INVALID",
+    "ignoredErrors": false,
+    "globalTrustChanged": false
+  },
+  "limitations": [
+    "Emulated mobile viewport, not physical iPhone evidence",
+    "Guided View cards; browser AR presenter is not wired to a world-tracking provider",
+    "No native rendering, world anchoring, physical qualification or owner acceptance established",
+    "Formal Product Experience plan remains blocked by crossdeck.phase2.continuity experience-design debt"
+  ],
+  "journeys": [
+    {
+      "viewport": "desktop",
+      "dimensions": {
+        "width": 1440,
+        "height": 1000
+      },
+      "authentication": "PRIVATE_SESSION_FROM_PRIOR_ACTUAL_FORM_SIGN_IN",
+      "renderedMode": "GUIDED",
+      "objectNames": [
+        "The Navigator’s Brass Compass",
+        "The Navigator’s Treasure Chest"
+      ],
+      "releasedScene": {
+        "versionId": "ncl01-original-model-scene:v1",
+        "checksum": "3742976133f66aea45c4da97d628fc8b0bd951289aba2abe0712664b544cdf35",
+        "replayOnly": false
+      },
+      "before": {
+        "sessionId": "cmv9yxc3u001i25do46ylmr89",
+        "status": "ACTIVE",
+        "versionId": "cmv9yxbf0001d25doh10rwzol",
+        "versionChecksum": "c7afb033729b341c255c4794f3e1f4d53e83799476a2c02ecdfff25345197a7c",
+        "sequence": 3,
+        "blockId": "cmv9yxb8h000o25dotduo8sce:clue",
+        "journalBlockId": "cmv9yxb8h000o25dotduo8sce:clue",
+        "completedAt": null
+      },
+      "after": {
+        "sessionId": "cmv9yxc3u001i25do46ylmr89",
+        "status": "ACTIVE",
+        "versionId": "cmv9yxbf0001d25doh10rwzol",
+        "versionChecksum": "c7afb033729b341c255c4794f3e1f4d53e83799476a2c02ecdfff25345197a7c",
+        "sequence": 3,
+        "blockId": "cmv9yxb8h000o25dotduo8sce:clue",
+        "journalBlockId": "cmv9yxb8h000o25dotduo8sce:clue",
+        "completedAt": null
+      },
+      "progressionUnchanged": true,
+      "closeRestoresJournalFocus": true,
+      "observations": [
+        {
+          "httpStatus": 200,
+          "receipt": {
+            "schemaVersion": 1,
+            "interactionId": "7ba80a82-b58b-40ce-80f8-1f338568dbf0",
+            "idempotencyKey": "7ba80a82-b58b-40ce-80f8-1f338568dbf0",
+            "instanceId": "instance:cmv9yxb8h000o25dotduo8sce:clue:spatial:cmv9yxc3u001i25do46ylmr89",
+            "sessionId": "cmv9yxc3u001i25do46ylmr89",
+            "chronicleVersionId": "cmv9yxbf0001d25doh10rwzol",
+            "blockId": "cmv9yxb8h000o25dotduo8sce:clue",
+            "actorId": "cmv9yxa80000225do9xxm9vxf",
+            "spatialDefinitionVersionId": "ncl01-original-model-scene:v1",
+            "versionChecksum": "3742976133f66aea45c4da97d628fc8b0bd951289aba2abe0712664b544cdf35",
+            "entityId": "ncl01-original-model-scene:entity-0",
+            "interactionType": "INSPECT",
+            "anchorId": "ncl01-original-model-scene:anchor",
+            "anchorVersion": 1,
+            "observedAt": "2026-10-15T20:38:01.997Z",
+            "mode": "GUIDED",
+            "providerId": "parallax.guided.v1",
+            "synthetic": false,
+            "authority": "NONAUTHORITATIVE"
+          },
+          "response": null,
+          "responseBodyUnavailable": true
+        },
+        {
+          "httpStatus": 200,
+          "receipt": {
+            "schemaVersion": 1,
+            "interactionId": "b52307f2-21c6-47fa-89b9-7fa9f3ebcc4a",
+            "idempotencyKey": "b52307f2-21c6-47fa-89b9-7fa9f3ebcc4a",
+            "instanceId": "instance:cmv9yxb8h000o25dotduo8sce:clue:spatial:cmv9yxc3u001i25do46ylmr89",
+            "sessionId": "cmv9yxc3u001i25do46ylmr89",
+            "chronicleVersionId": "cmv9yxbf0001d25doh10rwzol",
+            "blockId": "cmv9yxb8h000o25dotduo8sce:clue",
+            "actorId": "cmv9yxa80000225do9xxm9vxf",
+            "spatialDefinitionVersionId": "ncl01-original-model-scene:v1",
+            "versionChecksum": "3742976133f66aea45c4da97d628fc8b0bd951289aba2abe0712664b544cdf35",
+            "entityId": "ncl01-original-model-scene:chest",
+            "interactionType": "INSPECT",
+            "anchorId": "ncl01-original-model-scene:anchor",
+            "anchorVersion": 1,
+            "observedAt": "2026-10-15T20:38:05.698Z",
+            "mode": "GUIDED",
+            "providerId": "parallax.guided.v1",
+            "synthetic": false,
+            "authority": "NONAUTHORITATIVE"
+          },
+          "response": null,
+          "responseBodyUnavailable": true
+        }
+      ],
+      "authorizedAssetDelivery": [
+        {
+          "modelId": "brass-compass",
+          "status": 200,
+          "bytes": 313396,
+          "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+          "contentType": "model/gltf-binary",
+          "cacheControl": "private, no-store, max-age=0",
+          "staleRevisionStatus": 404
+        },
+        {
+          "modelId": "treasure-chest",
+          "status": 200,
+          "bytes": 630120,
+          "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+          "contentType": "model/gltf-binary",
+          "cacheControl": "private, no-store, max-age=0",
+          "staleRevisionStatus": 404
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "viewport": "mobile",
+      "dimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "authentication": "PRIVATE_SESSION_FROM_PRIOR_ACTUAL_FORM_SIGN_IN",
+      "renderedMode": "GUIDED",
+      "objectNames": [
+        "The Navigator’s Brass Compass",
+        "The Navigator’s Treasure Chest"
+      ],
+      "releasedScene": {
+        "versionId": "ncl01-original-model-scene:v1",
+        "checksum": "3742976133f66aea45c4da97d628fc8b0bd951289aba2abe0712664b544cdf35",
+        "replayOnly": false
+      },
+      "before": {
+        "sessionId": "cmv9yxc3u001i25do46ylmr89",
+        "status": "ACTIVE",
+        "versionId": "cmv9yxbf0001d25doh10rwzol",
+        "versionChecksum": "c7afb033729b341c255c4794f3e1f4d53e83799476a2c02ecdfff25345197a7c",
+        "sequence": 3,
+        "blockId": "cmv9yxb8h000o25dotduo8sce:clue",
+        "journalBlockId": "cmv9yxb8h000o25dotduo8sce:clue",
+        "completedAt": null
+      },
+      "after": {
+        "sessionId": "cmv9yxc3u001i25do46ylmr89",
+        "status": "ACTIVE",
+        "versionId": "cmv9yxbf0001d25doh10rwzol",
+        "versionChecksum": "c7afb033729b341c255c4794f3e1f4d53e83799476a2c02ecdfff25345197a7c",
+        "sequence": 3,
+        "blockId": "cmv9yxb8h000o25dotduo8sce:clue",
+        "journalBlockId": "cmv9yxb8h000o25dotduo8sce:clue",
+        "completedAt": null
+      },
+      "progressionUnchanged": true,
+      "closeRestoresJournalFocus": true,
+      "observations": [
+        {
+          "httpStatus": 200,
+          "receipt": {
+            "schemaVersion": 1,
+            "interactionId": "f398169c-6987-4619-80ef-e9508c3246a3",
+            "idempotencyKey": "f398169c-6987-4619-80ef-e9508c3246a3",
+            "instanceId": "instance:cmv9yxb8h000o25dotduo8sce:clue:spatial:cmv9yxc3u001i25do46ylmr89",
+            "sessionId": "cmv9yxc3u001i25do46ylmr89",
+            "chronicleVersionId": "cmv9yxbf0001d25doh10rwzol",
+            "blockId": "cmv9yxb8h000o25dotduo8sce:clue",
+            "actorId": "cmv9yxa80000225do9xxm9vxf",
+            "spatialDefinitionVersionId": "ncl01-original-model-scene:v1",
+            "versionChecksum": "3742976133f66aea45c4da97d628fc8b0bd951289aba2abe0712664b544cdf35",
+            "entityId": "ncl01-original-model-scene:entity-0",
+            "interactionType": "INSPECT",
+            "anchorId": "ncl01-original-model-scene:anchor",
+            "anchorVersion": 1,
+            "observedAt": "2026-10-15T20:38:15.829Z",
+            "mode": "GUIDED",
+            "providerId": "parallax.guided.v1",
+            "synthetic": false,
+            "authority": "NONAUTHORITATIVE"
+          },
+          "response": null,
+          "responseBodyUnavailable": true
+        },
+        {
+          "httpStatus": 200,
+          "receipt": {
+            "schemaVersion": 1,
+            "interactionId": "7c867f32-0ed1-4ae2-a867-164ade3aa403",
+            "idempotencyKey": "7c867f32-0ed1-4ae2-a867-164ade3aa403",
+            "instanceId": "instance:cmv9yxb8h000o25dotduo8sce:clue:spatial:cmv9yxc3u001i25do46ylmr89",
+            "sessionId": "cmv9yxc3u001i25do46ylmr89",
+            "chronicleVersionId": "cmv9yxbf0001d25doh10rwzol",
+            "blockId": "cmv9yxb8h000o25dotduo8sce:clue",
+            "actorId": "cmv9yxa80000225do9xxm9vxf",
+            "spatialDefinitionVersionId": "ncl01-original-model-scene:v1",
+            "versionChecksum": "3742976133f66aea45c4da97d628fc8b0bd951289aba2abe0712664b544cdf35",
+            "entityId": "ncl01-original-model-scene:chest",
+            "interactionType": "INSPECT",
+            "anchorId": "ncl01-original-model-scene:anchor",
+            "anchorVersion": 1,
+            "observedAt": "2026-10-15T20:38:19.229Z",
+            "mode": "GUIDED",
+            "providerId": "parallax.guided.v1",
+            "synthetic": false,
+            "authority": "NONAUTHORITATIVE"
+          },
+          "response": null,
+          "responseBodyUnavailable": true
+        }
+      ],
+      "authorizedAssetDelivery": [],
+      "pageErrors": []
+    }
+  ],
+  "screenshots": [
+    "desktop-journal-before.png",
+    "desktop-guided-objects-modal.png",
+    "desktop-guided-objects.png",
+    "desktop-inspect-compass-modal.png",
+    "desktop-inspect-compass.png",
+    "desktop-inspect-chest-modal.png",
+    "desktop-inspect-chest.png",
+    "desktop-reopened-guided.png",
+    "desktop-journal-return.png",
+    "mobile-journal-before.png",
+    "mobile-guided-objects-modal.png",
+    "mobile-guided-objects.png",
+    "mobile-inspect-compass-modal.png",
+    "mobile-inspect-compass.png",
+    "mobile-inspect-chest-modal.png",
+    "mobile-inspect-chest.png",
+    "mobile-reopened-guided.png",
+    "mobile-journal-return.png"
+  ],
+  "traces": [
+    "desktop-sanitized.zip",
+    "mobile-sanitized.zip"
+  ],
+  "status": "PASS"
+}

@@ -1,0 +1,12 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 C:/Users/kkids/.codex/worktrees/parallax-ncl01/Codex_TreasureHunt
+
+
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  16:26:43
+   Duration  20.23s (transform 175ms, setup 2.87s, import 2.14s, tests 783ms, environment 13.78s)
+

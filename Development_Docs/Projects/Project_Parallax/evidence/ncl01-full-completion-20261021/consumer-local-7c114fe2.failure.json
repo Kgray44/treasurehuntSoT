@@ -1,0 +1,399 @@
+{
+  "version": 1,
+  "role": "LOCAL_WINDOWS_7C114_DEVELOPMENT_DIAGNOSTIC_REVIEW",
+  "qualification": false,
+  "createdAt": "2026-10-22T02:28:02.083615+00:00",
+  "sourceSha": "7c114fe26c1e9dafe79e42b2dec94fa4c938e6a4",
+  "sourceTree": "7399d6e42ca7475d6e731af524cb755a079a08e6",
+  "sourcePaths": [
+    {
+      "path": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+      "gitBlob": "e96dc2ddca9cf63ac91ffcaf93fbbb0e03383d55",
+      "sha256": "228f4df80767aecc492613754e0f78ae156c0c054899ec0969b07c7eb09a7ff6"
+    },
+    {
+      "path": "src/components/wakebook/WakebookVoyageDetail.tsx",
+      "gitBlob": "c7f290c94c6243f991c1c7b3d4cfcdaddc633cd0",
+      "sha256": "964c8748e0a670399f73d9ea936f69a2922422c7b4879827b0b6eeef99eae7bf"
+    },
+    {
+      "path": "src/components/wakebook/WakebookVoyageBook.tsx",
+      "gitBlob": "90ac70fb0836f9b0455919974957fa76785ca46d",
+      "sha256": "0d4f6cf00328ad5f7ad4e2f2f9dd3fa88ef8b6581239e12567829a408171895f"
+    },
+    {
+      "path": "src/animation/platform/RouteMotionBoundary.tsx",
+      "gitBlob": "ce1933aebb50ef8578fb761be2ed6dc409cc40e3",
+      "sha256": "15609902218ba335f892a2bbc63d9feef28a63f9fbbce43436d355a466107b44"
+    }
+  ],
+  "environment": {
+    "platform": "win32",
+    "node": "v24.18.0",
+    "declaredNodeVersion": "24.19.0",
+    "browser": "locked Chromium1194 /141.0.7390.37",
+    "workers": 1,
+    "retries": 0,
+    "repeatEach": 1,
+    "runtime": "fresh owned detached worktree, physical dependencies, canonical synthetic database, ordinary production build, existing runBrowserAuthority",
+    "minimumEachDriveReserveBytes": 32212254720,
+    "preparedManifestOrImmutableCopierUsed": false,
+    "evidenceTier": "ordinary DEVELOPMENT diagnostic; not ProductExperience acceptance"
+  },
+  "setup": {
+    "ownedCommands": 7,
+    "passedCommands": 7,
+    "passedCleanup": 7,
+    "buildRegularFiles": 6073,
+    "buildRegularBytes": 509956184,
+    "sameOwnedBuildJunctions": 3,
+    "freshDatabase": true,
+    "warmNpmCacheReused": true
+  },
+  "actualExecution": {
+    "executed": 7,
+    "passed": 6,
+    "failed": 1,
+    "skipped": 0,
+    "flaky": 0,
+    "durationMs": 47316.892,
+    "cases": [
+      {
+        "declarationLine": 117,
+        "title": "anonymous account navigation exposes registration and its conventional sign-in return",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 133,
+        "title": "Player returns through account and real version-pinned private history",
+        "project": "chromium",
+        "result": "failed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 174,
+        "title": "Creator opens the actual owned draft and cancels creation without publishing",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 196,
+        "title": "Captain reads eligible editions and closes the real Voyage wizard without creating a Voyage",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 220,
+        "title": "Administrator uses the real privacy-preserving People empty state and returns to the same account",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 234,
+        "title": "isolated fixed Owner opens Sea Trials and follows the actual conventional return",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 253,
+        "title": "public Community and Chronicle discovery preserve private history through empty-state recovery",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  "positiveObservations": {
+    "exactClickedProjectedDetailHrefShapeAndDestinationURL": "PASS",
+    "administratorPeopleEmptyStateAndSameAccountReturn": "PASS",
+    "ownerHomeAccountMenuPersonalHarborExactIdentityReturn": "PASS",
+    "profileAxeAssertion": "PASS",
+    "creatorCaptainPublicDiscoveryAnonymousCases": "PASS"
+  },
+  "demonstratedFailure": {
+    "caseDeclarationLine": 133,
+    "assertionLine": 160,
+    "category": "AMBIGUOUS_UNSCOPED_EDITION_TEXT_LOCATOR",
+    "locator": {
+      "method": "getByText",
+      "name": "Synthetic account history v1",
+      "exact": true
+    },
+    "strictMatchCount": 3,
+    "staticMatchContexts": [
+      "outgoing Your Voyages card played-edition label",
+      "current Voyage Detail hero paragraph",
+      "current named Exact Edition section historical-label strong"
+    ],
+    "persistentCurrentDetailMatchCount": 2,
+    "sourceWitnesses": [
+      {
+        "path": "src/components/wakebook/WakebookVoyageDetail.tsx",
+        "line": 186,
+        "role": "hero paragraph"
+      },
+      {
+        "path": "src/components/wakebook/WakebookVoyageDetail.tsx",
+        "line": 480,
+        "role": "named Exact Edition section"
+      },
+      {
+        "path": "src/components/wakebook/WakebookVoyageDetail.tsx",
+        "line": 485,
+        "role": "historical-label strong"
+      },
+      {
+        "path": "src/components/wakebook/WakebookVoyageBook.tsx",
+        "line": 45,
+        "role": "list played-edition label"
+      }
+    ],
+    "retainedCurrentAX": {
+      "heading": "Voyage Detail",
+      "heroParagraph": "Synthetic account history v1",
+      "namedRegion": "Exact Edition",
+      "regionHistoricalLabel": "Synthetic account history v1"
+    },
+    "traceAssertions": [
+      {
+        "callId": "call@139",
+        "startMs": 34892.418,
+        "expression": "to.have.url",
+        "editionLabelTarget": false,
+        "endMs": 35021.002,
+        "failed": false,
+        "beforeSnapshot": "before@call@139",
+        "afterSnapshot": "after@call@139"
+      },
+      {
+        "callId": "call@143",
+        "startMs": 35126.666,
+        "expression": "to.be.visible",
+        "editionLabelTarget": true,
+        "endMs": 35215.4,
+        "failed": true,
+        "beforeSnapshot": "before@call@143",
+        "afterSnapshot": "after@call@143"
+      }
+    ],
+    "lastRetainedRouteSnapshots": [
+      {
+        "snapshot": "after@call@141",
+        "timestampMs": 35123.654,
+        "pathname": "/passport/history/<synthetic-history-record>",
+        "routes": [
+          {
+            "class": "product-route-transition",
+            "data-route-active-generation": "7",
+            "data-route-state": "ready"
+          },
+          {
+            "class": "product-route-layer",
+            "data-route-generation": "7",
+            "data-route-role": "incoming",
+            "data-route-interactive": "true",
+            "style": "opacity: 0; transform: translateY(2.18246px); pointer-events: auto;",
+            "data-route-layer": "/passport/history/<synthetic-history-record>"
+          }
+        ]
+      },
+      {
+        "snapshot": "before@call@143",
+        "timestampMs": 35135.332,
+        "pathname": "/passport/history/<synthetic-history-record>",
+        "routes": [
+          {
+            "class": "product-route-transition",
+            "data-route-active-generation": "7",
+            "data-route-state": "ready"
+          },
+          {
+            "class": "product-route-layer",
+            "data-route-generation": "7",
+            "data-route-role": "incoming",
+            "data-route-interactive": "true",
+            "style": "opacity: 0; transform: translateY(1.64988px); pointer-events: auto;",
+            "data-route-layer": "/passport/history/<synthetic-history-record>"
+          }
+        ]
+      },
+      {
+        "snapshot": "after@call@143",
+        "timestampMs": 35228.142,
+        "pathname": "/passport/history/<synthetic-history-record>",
+        "routes": [
+          {
+            "class": "product-route-transition",
+            "data-route-active-generation": "7",
+            "data-route-state": "ready"
+          },
+          {
+            "class": "product-route-layer",
+            "data-route-generation": "7",
+            "data-route-role": "outgoing",
+            "data-route-interactive": "false",
+            "style": "opacity: 1; pointer-events: none;",
+            "data-route-layer": "/passport/history"
+          },
+          {
+            "class": "product-route-layer",
+            "data-route-generation": "7",
+            "data-route-role": "incoming",
+            "data-route-interactive": "true",
+            "style": "opacity: 0; transform: translateY(0.16213px); pointer-events: auto;",
+            "data-route-layer": "/passport/history/<synthetic-history-record>"
+          }
+        ]
+      }
+    ],
+    "currentPathname": "/passport/history/<synthetic-history-record>",
+    "causeEvidence": "Broad exact text legitimately matches two current detail labels; an outgoing list copy contributed the third transient match. Waiting for transition completion alone would not make this locator unique.",
+    "meaningfulRepair": "Assert the exact historical edition label within the source-owned named Exact Edition region, preserving URL, heading, full readiness and AXE predicates; do not use first/last or remove identity assertion.",
+    "detailReadinessAndAxe": "NOT_RUN because edition-label assertion failed first",
+    "laterPlayerReturnAndDenials": "NOT_REACHED",
+    "productionRouteOrColorDefectEstablished": false
+  },
+  "runtimeOutcome": {
+    "failureCategory": "PRODUCT_FAILURE",
+    "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+    "cleanup": {
+      "browser": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": 1,
+        "elapsedMs": 4,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "fixture": {
+        "status": "NOT_STARTED",
+        "treeReaped": true,
+        "streamsClosed": true
+      },
+      "server": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": null,
+        "elapsedMs": 172,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "proxy": {
+        "status": "PASS"
+      },
+      "portsReleased": true,
+      "status": "PASS"
+    },
+    "timings": {
+      "serverPreparationMs": 10,
+      "serverReadinessMs": 2435,
+      "browserExecutionMs": 61231,
+      "infrastructureFailureWaitMs": 0,
+      "cleanupMs": 176
+    }
+  },
+  "unchangedProductionConfigAndContractsScope": {
+    "base": "d8065ceed41e3bff77b01838145afeb8e57f1b7f",
+    "positiveScopeCount": 12,
+    "scopes": [
+      {
+        "path": "src",
+        "unchangedGitObject": "e411c6ef5a4aca3e52a67917fdfeb23200655b5a"
+      },
+      {
+        "path": "native",
+        "unchangedGitObject": "e09204778f7cfe91039656e1e29efe89df25972e"
+      },
+      {
+        "path": "public",
+        "unchangedGitObject": "a51b84c67bd0b040b472b73037ca7ac3d30e035f"
+      },
+      {
+        "path": "prisma",
+        "unchangedGitObject": "78003b641cb139afb4ad965d5506451a671fefdf"
+      },
+      {
+        "path": "scripts/sounding-line",
+        "unchangedGitObject": "0d80234abed61c6898aa849e04e6b683a437d82b"
+      },
+      {
+        "path": "package.json",
+        "unchangedGitObject": "37b096381c2acaa747a24bccee901c62215b3577"
+      },
+      {
+        "path": "package-lock.json",
+        "unchangedGitObject": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2"
+      },
+      {
+        "path": "next.config.ts",
+        "unchangedGitObject": "76a78483839ff606b9706867a5c442857e7a2456"
+      },
+      {
+        "path": "playwright.config.ts",
+        "unchangedGitObject": "e43e9912bc263909c58a31ded843a25209761917"
+      },
+      {
+        "path": ".nvmrc",
+        "unchangedGitObject": "60ade1ae01e833a5c291c47883bf26fb031f7727"
+      },
+      {
+        "path": "testing/contracts.json",
+        "unchangedGitObject": "e0adec7671ba3967ca480a0bf1e1c84731fb0463"
+      },
+      {
+        "path": "tests/e2e/fixtures/ncl01-experience.ts",
+        "unchangedGitObject": "c6c222d120af1cee17e743720175954f665da2a0"
+      }
+    ],
+    "freshBuildAndDatabaseStillPerformed": true
+  },
+  "preservation": {
+    "trackedSourceUnchanged": true,
+    "originalFileCount": 72,
+    "originalBytes": 23155189,
+    "originalMapSha256": "37344b507ab895865102b7869f2eed3bf3edd34ccff87cbf3a3ecd4e139fdfb7",
+    "originalReportSha256": "abf958233eb04586281cbaff72f784f5ab391f06cb52b9c8f2ca82ac2cf91e6e",
+    "originalRuntimeSha256": "1aadcb63ca593d5faae82cfc1431e2897ac3741766b863097fe79ebed284c0e5",
+    "terminalSha256": "949ec6e0dcfc45a7b204551a78175084c46c57c506dcd3d70ba3f1eeae62221e",
+    "launcherV3Sha256": "db59c94798eafbfc34877186582dcb9f6e19ccb2a2b5182cc5db35c60cdd6868",
+    "priorFailureOriginals": [
+      {
+        "priorRun": "reproduction-b9b6956f",
+        "originalMapSha256": "f4c850d550326981a8633f23a5dcd0ca3247bbc5e67c5e3c91f6ae1ef553599c",
+        "originalFilesRehashedUnchanged": 47
+      },
+      {
+        "priorRun": "corrected-846ef70ebdcb",
+        "originalMapSha256": "594d8e988a66601829f1ad0bb419c29cd6911d69d8b0be1a97f7830a9dd90cb3",
+        "originalFilesRehashedUnchanged": 78
+      },
+      {
+        "priorRun": "corrected-d8065ceed41e",
+        "originalMapSha256": "7523c7ea581a38c0217aa61b404039b1343740ada686455bf598a457a3964f0c",
+        "originalFilesRehashedUnchanged": 72
+      }
+    ],
+    "runtimeDatabaseAndGeneratedCredentialExcluded": true
+  },
+  "limits": [
+    "One actual 7c114 local execution; no retry or source edit.",
+    "All seven case results are directly reported; detail readiness, detail AXE and later Player assertions did not execute.",
+    "Separate846LinuxPASS is not a current seven-case or ProductExperience acceptance result.",
+    "No ProductExperience, protected integration, native GPU, physical AR, owner acceptance or seven-case PASS claim.",
+    "No raw DOM, authentication secrets, cookies, synthetic record IDs, private media, database paths or local account metadata exported."
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-15",
+  "evidenceClass": "GRAPHICS_COMPARISON_TOOLING_GUARD_TESTS_ONLY",
+  "result": "PASS",
+  "nativeCandidate": "46a20fc1940d7c1fd01275dd8e7163281a42e998",
+  "toolingSourceParent": "46a20fc1940d7c1fd01275dd8e7163281a42e998",
+  "toolingCommit": "UNCOMMITTED_REVIEWED_SOURCE",
+  "sourceFiles": [
+    {
+      "path": "scripts/landfall/device-lab/hosted.ts",
+      "sha256": "726785bd346faac7febd54de37e53975df0565dbf8250643c773fb8f6f72c822"
+    },
+    {
+      "path": "scripts/landfall/device-lab/harvest-hosted.ts",
+      "sha256": "056d0f34272b4708e6140695e61d29f739ea6bd1356175e07124755fcc6c8c20"
+    },
+    {
+      "path": "scripts/landfall/device-lab/android-graphics-probe.ts",
+      "sha256": "e5aaf4c4e1f8892aa7d2396bbb4bd7c4269f6ddc3dfbce4a9489dfcedd59cb64"
+    },
+    {
+      "path": "src/landfall/device-lab/android-graphics-probe.test.ts",
+      "sha256": "b7409120665a2eb2a5f35f1298815431478d5eab32f981a8352c3c7725c8c7ab"
+    }
+  ],
+  "tests": {
+    "files": 2,
+    "originalLog": "D:\\CodexTemp\\ncl01-evidence\\android-graphics-probe-tests.original.log",
+    "command": "node node_modules/vitest/vitest.mjs run src/landfall/device-lab/android-graphics-probe.test.ts src/landfall/device-lab/hosted-selection.test.ts --maxWorkers 1",
+    "originalLogSha256": "468f7ffd8da298c1e42e9d03283a18f9e219aec1ad860f0be0e5578ef3685b8b",
+    "passed": 10
+  },
+  "focusedTypescript": "PASS",
+  "eslintZeroWarnings": "PASS",
+  "prettier": "PASS",
+  "diffWhitespace": "PASS",
+  "independentReadOnlyReview": "NO_REMAINING_ACTIONABLE_FINDINGS",
+  "allowedProbe": {
+    "profiles": [
+      "primary-phone"
+    ],
+    "kind": "ANDROID_DEVELOPMENT_GRAPHICS_COMPARISON",
+    "authoritative": false,
+    "backend": "swangle",
+    "target": "android",
+    "tier": "development"
+  },
+  "nativeSourceChanged": false,
+  "defaultTemplateChanged": false,
+  "androidInstrumentationDriverChanged": false,
+  "externalDispatchPerformed": false,
+  "sharedDatabaseUsed": false,
+  "emulatorExecutionProven": false,
+  "physicalTrackingProven": false
+}

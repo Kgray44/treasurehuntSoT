@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_BOUNDED_ARTIFACT_REVIEW",
+  "runId": "39607854995",
+  "sourceCommit": "26da4135d851ee67a0c685a0726486739612d1e2",
+  "transportCommit": "5affcae64cd5b3c751b0d266c4b938ee037ed361",
+  "result": "AGGREGATE_FAILURE_PRESERVED",
+  "tests": {
+    "result": "Failed",
+    "passed": 28,
+    "failed": 1,
+    "skipped": 1,
+    "soleFailedMethod": "testAtomicGraphReplacementRejectsMissingModelAndStopsStaleInput",
+    "failedAssertion": "INSPECT-only authored content is still selectable",
+    "observedSelection": null,
+    "expectedSelection": "actual-chest",
+    "homeFailureObserved": false
+  },
+  "joined": {
+    "result": "PASS",
+    "evidenceClass": "SIMULATOR_NATIVE_INPUT_CANONICAL_REJECTION_ONLY",
+    "realSQLite": true,
+    "canonicalProgressionEventsAdded": 0,
+    "observationRowsAdded": 0,
+    "physicalTrackingProven": false,
+    "positivePhysicalInspectProven": false
+  },
+  "graphics": {
+    "evidenceClass": "INSTRUMENTED_SCENEKIT_GLTF_RENDERING_ONLY",
+    "originalBudgetSeconds": 20,
+    "sealElapsedMilliseconds": 1263.684,
+    "visualReview": "Two original catalog GLBs visibly rendered; four empty/removed images blank.",
+    "chestNontransparentPixels": 8301,
+    "compassNontransparentPixels": 2509,
+    "physicalTrackingProven": false,
+    "physicalInspectProven": false,
+    "gpuDriverMemoryReleaseProven": false
+  },
+  "cleanup": {
+    "appleResult": "PASS",
+    "appleOwnedResourceCount": 1,
+    "appleRemainingResourceCount": 0,
+    "joinedResult": "PASS",
+    "databaseRemoved": true,
+    "ownedServerClosed": true,
+    "ownedSimulatorDeleted": true,
+    "failedCleanupOperationCount": 0
+  },
+  "diagnosis": {
+    "hypothesis": "Later synchronous test graph mutations are hit-tested before a frame for the current graph.",
+    "status": "UNPROVEN_PENDING_FRESH_SOURCE_EXECUTION",
+    "correction": "Tests-only matched frame barriers per mutation within one shared original five-second setup deadline; strict identity assertions preserved.",
+    "historicalHomeFailure": "Separate unexplained historical failure remains preserved; not reproduced in this run."
+  },
+  "originals": [
+    {
+      "path": "apple-build/test-summary.json",
+      "sha256": "a218a199658b89192fca38ade45d664ed3af4d16ad10f3c30c1ac5d80bb98971"
+    },
+    {
+      "path": "apple-build/test-attachments/manifest.json",
+      "sha256": "19b41415f8872fd72adc9c89d24b88ced143408c947a143baa3e93894cd6c36b"
+    },
+    {
+      "path": "apple-build/cleanup.json",
+      "sha256": "f4e2f8ef2db0cae3b112abdc944477c081b191626901880b9bda308839bd19cb"
+    },
+    {
+      "path": "parallax-native-1792589838115/native-inspect.json",
+      "sha256": "4f8444be2a5e930d2203e6c6037ba39333548bd3eabfd6a91893ce0a4fb21471"
+    },
+    {
+      "path": "parallax-native-1792589838115/cleanup.json",
+      "sha256": "fcbc94a7f90647040673f2adae080a35f48272fae4e3b8308b2e86ed28f68d3f"
+    }
+  ]
+}

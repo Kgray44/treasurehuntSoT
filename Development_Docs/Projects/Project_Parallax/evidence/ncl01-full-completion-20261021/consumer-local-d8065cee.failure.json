@@ -1,0 +1,383 @@
+{
+  "version": 1,
+  "role": "LOCAL_WINDOWS_D806_DEVELOPMENT_DIAGNOSTIC_REVIEW",
+  "qualification": false,
+  "createdAt": "2026-10-22T02:12:09.509914+00:00",
+  "sourceSha": "d8065ceed41e3bff77b01838145afeb8e57f1b7f",
+  "sourceTree": "6b148c3ee070da924a8cd4412c9b501ba0444ca9",
+  "sourcePaths": [
+    {
+      "path": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+      "gitBlob": "65403d23099e82d704505b10502ce4e2b0eda32c",
+      "sha256": "cd1e40a36419f101438bd169cb5fc7f3be5a8a1a407427a3cc37fcccd8110e49"
+    },
+    {
+      "path": "src/animation/platform/RouteMotionBoundary.tsx",
+      "gitBlob": "ce1933aebb50ef8578fb761be2ed6dc409cc40e3",
+      "sha256": "15609902218ba335f892a2bbc63d9feef28a63f9fbbce43436d355a466107b44"
+    },
+    {
+      "path": "src/components/wakebook/WakebookVoyageDetail.tsx",
+      "gitBlob": "c7f290c94c6243f991c1c7b3d4cfcdaddc633cd0",
+      "sha256": "964c8748e0a670399f73d9ea936f69a2922422c7b4879827b0b6eeef99eae7bf"
+    },
+    {
+      "path": "src/components/wakebook/WakebookVoyageBook.tsx",
+      "gitBlob": "90ac70fb0836f9b0455919974957fa76785ca46d",
+      "sha256": "0d4f6cf00328ad5f7ad4e2f2f9dd3fa88ef8b6581239e12567829a408171895f"
+    }
+  ],
+  "environment": {
+    "platform": "win32",
+    "node": "v24.18.0",
+    "declaredNodeVersion": "24.19.0",
+    "browser": "locked Chromium1194 /141.0.7390.37",
+    "workers": 1,
+    "retries": 0,
+    "repeatEach": 1,
+    "runtime": "fresh owned detached worktree, physical dependencies, canonical synthetic database, ordinary production build and existing runBrowserAuthority",
+    "preparedManifestOrImmutableCopierUsed": false,
+    "minimumEachDriveReserveBytes": 32212254720,
+    "evidenceTier": "ordinary DEVELOPMENT diagnostic; not ProductExperience acceptance"
+  },
+  "setup": {
+    "ownedCommands": 7,
+    "passedCommands": 7,
+    "passedCleanup": 7,
+    "buildRegularFiles": 6073,
+    "buildRegularBytes": 509983506,
+    "sameOwnedBuildJunctions": 3,
+    "freshDatabase": true,
+    "warmNpmCacheReused": true
+  },
+  "actualExecution": {
+    "executed": 7,
+    "passed": 6,
+    "failed": 1,
+    "skipped": 0,
+    "flaky": 0,
+    "durationMs": 43739.346,
+    "cases": [
+      {
+        "declarationLine": 117,
+        "title": "anonymous account navigation exposes registration and its conventional sign-in return",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 133,
+        "title": "Player returns through account and real version-pinned private history",
+        "project": "chromium",
+        "result": "failed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 169,
+        "title": "Creator opens the actual owned draft and cancels creation without publishing",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 191,
+        "title": "Captain reads eligible editions and closes the real Voyage wizard without creating a Voyage",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 215,
+        "title": "Administrator uses the real privacy-preserving People empty state and returns to the same account",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 229,
+        "title": "isolated fixed Owner opens Sea Trials and follows the actual conventional return",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 248,
+        "title": "public Community and Chronicle discovery preserve private history through empty-state recovery",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  "positiveObservations": {
+    "administratorPeopleEmptyStateAndSameAccountReturn": "PASS",
+    "ownerAddedHomeAccountMenuPersonalHarborExactIdentityReturn": "PASS",
+    "profileAxeAssertion": "PASS",
+    "creatorCaptainPublicDiscoveryAnonymousCases": "PASS"
+  },
+  "demonstratedFailure": {
+    "caseDeclarationLine": 133,
+    "callerLine": 156,
+    "readinessAssertionLine": 50,
+    "category": "STALE_CAPTURED_EXPECTED_PATH",
+    "assertionTimeoutMs": 10000,
+    "capturedExpectedPathname": "/passport/history",
+    "actualSettledPathname": "/passport/history/<synthetic-history-record>",
+    "expectedPredicate": {
+      "boundaryCount": 1,
+      "state": "settled",
+      "layerCount": 1,
+      "currentPath": true,
+      "generationMatches": true,
+      "opacity": "1",
+      "interactive": true,
+      "outgoingCount": 0
+    },
+    "actualLastPredicate": {
+      "boundaryCount": 1,
+      "state": "settled",
+      "layerCount": 1,
+      "currentPath": false,
+      "generationMatches": true,
+      "opacity": "1",
+      "interactive": true,
+      "outgoingCount": 0
+    },
+    "retainedDetailPollObservations": 12,
+    "firstDetailPoll": {
+      "callId": "call@149",
+      "startMs": 23472.894,
+      "endMs": 23494.849,
+      "actual": {
+        "boundaryCount": 1,
+        "state": "preparing",
+        "layerCount": 2,
+        "currentPath": true,
+        "generationMatches": true,
+        "opacity": "1",
+        "interactive": false,
+        "outgoingCount": 1
+      }
+    },
+    "lastDetailPoll": {
+      "callId": "call@171",
+      "startMs": 32539.647,
+      "endMs": 32542.657,
+      "actual": {
+        "boundaryCount": 1,
+        "state": "settled",
+        "layerCount": 1,
+        "currentPath": false,
+        "generationMatches": true,
+        "opacity": "1",
+        "interactive": true,
+        "outgoingCount": 0
+      }
+    },
+    "lastRetainedRouteSnapshots": [
+      {
+        "snapshot": "before@call@151",
+        "timestampMs": 23626.514,
+        "pathname": "/passport/history/<synthetic-history-record>",
+        "routes": [
+          {
+            "class": "product-route-transition",
+            "data-route-active-generation": "7",
+            "data-route-state": "ready"
+          },
+          {
+            "class": "product-route-layer",
+            "data-route-generation": "7",
+            "data-route-role": "outgoing",
+            "data-route-interactive": "false",
+            "style": "opacity: 1; pointer-events: none;",
+            "data-route-layer": "/passport/history"
+          },
+          {
+            "class": "product-route-layer",
+            "data-route-generation": "7",
+            "data-route-role": "incoming",
+            "data-route-interactive": "true",
+            "style": "opacity: 0; transform: translateY(2.47645px); pointer-events: auto;",
+            "data-route-layer": "/passport/history/<synthetic-history-record>"
+          }
+        ]
+      },
+      {
+        "snapshot": "after@call@151",
+        "timestampMs": 23636.125,
+        "pathname": "/passport/history/<synthetic-history-record>",
+        "routes": [
+          {
+            "class": "product-route-transition",
+            "data-route-active-generation": "7",
+            "data-route-state": "ready"
+          },
+          {
+            "class": "product-route-layer",
+            "data-route-generation": "7",
+            "data-route-role": "incoming",
+            "data-route-interactive": "true",
+            "style": "opacity: 0; transform: translateY(1.24654px); pointer-events: auto;",
+            "data-route-layer": "/passport/history/<synthetic-history-record>"
+          }
+        ]
+      },
+      {
+        "snapshot": "before@call@153",
+        "timestampMs": 23906.978,
+        "pathname": "/passport/history/<synthetic-history-record>",
+        "routes": [
+          {
+            "class": "product-route-transition",
+            "data-route-active-generation": "7",
+            "data-route-state": "settled"
+          },
+          {
+            "class": "product-route-layer",
+            "data-route-generation": "7",
+            "data-route-role": "incoming",
+            "data-route-interactive": "true",
+            "style": "opacity: 1; transform: none; pointer-events: auto;",
+            "data-route-layer": "/passport/history/<synthetic-history-record>"
+          }
+        ]
+      }
+    ],
+    "actualGeneration": "7",
+    "causeEvidence": "The test froze the list pathname before clicked detail navigation committed; the retained final route is the detail pathname and meets every other strict readiness predicate.",
+    "playerDetailAxe": "NOT_RUN because readiness predicate timed out",
+    "laterPlayerReturnAndDenials": "NOT_REACHED",
+    "productionRouteLifecycleBugEstablished": false,
+    "repairRecommendation": "Witness the exact clicked projected detail href as the current URL before freezing expectedPath; preserve current generation, settled state, sole-layer, full opacity, interactivity and no-outgoing requirements. No sleeps, AXE retries or CSS overrides."
+  },
+  "runtimeOutcome": {
+    "failureCategory": "PRODUCT_FAILURE",
+    "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+    "cleanup": {
+      "browser": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": 1,
+        "elapsedMs": 5,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "fixture": {
+        "status": "NOT_STARTED",
+        "treeReaped": true,
+        "streamsClosed": true
+      },
+      "server": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": null,
+        "elapsedMs": 153,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "proxy": {
+        "status": "PASS"
+      },
+      "portsReleased": true,
+      "status": "PASS"
+    },
+    "timings": {
+      "serverPreparationMs": 9,
+      "serverReadinessMs": 2419,
+      "browserExecutionMs": 55666,
+      "infrastructureFailureWaitMs": 0,
+      "cleanupMs": 156
+    }
+  },
+  "sourceReuseScope": {
+    "base": "846ef70ebdcbe45c75dfeb6171f31f11d243a45c",
+    "positiveNonemptyIdenticalScopeCount": 11,
+    "scopes": [
+      {
+        "path": "src",
+        "unchangedGitObject": "e411c6ef5a4aca3e52a67917fdfeb23200655b5a"
+      },
+      {
+        "path": "native",
+        "unchangedGitObject": "e09204778f7cfe91039656e1e29efe89df25972e"
+      },
+      {
+        "path": "public",
+        "unchangedGitObject": "a51b84c67bd0b040b472b73037ca7ac3d30e035f"
+      },
+      {
+        "path": "prisma",
+        "unchangedGitObject": "78003b641cb139afb4ad965d5506451a671fefdf"
+      },
+      {
+        "path": "scripts/sounding-line",
+        "unchangedGitObject": "0d80234abed61c6898aa849e04e6b683a437d82b"
+      },
+      {
+        "path": "package.json",
+        "unchangedGitObject": "37b096381c2acaa747a24bccee901c62215b3577"
+      },
+      {
+        "path": "package-lock.json",
+        "unchangedGitObject": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2"
+      },
+      {
+        "path": "next.config.ts",
+        "unchangedGitObject": "76a78483839ff606b9706867a5c442857e7a2456"
+      },
+      {
+        "path": "playwright.config.ts",
+        "unchangedGitObject": "e43e9912bc263909c58a31ded843a25209761917"
+      },
+      {
+        "path": ".nvmrc",
+        "unchangedGitObject": "60ade1ae01e833a5c291c47883bf26fb031f7727"
+      },
+      {
+        "path": "tests/e2e/fixtures/ncl01-experience.ts",
+        "unchangedGitObject": "c6c222d120af1cee17e743720175954f665da2a0"
+      }
+    ],
+    "newBuildStillPerformed": true,
+    "fixtureDatabaseNotReused": true
+  },
+  "preservation": {
+    "trackedSourceUnchanged": true,
+    "originalFileCount": 72,
+    "originalBytes": 24253573,
+    "originalMapSha256": "7523c7ea581a38c0217aa61b404039b1343740ada686455bf598a457a3964f0c",
+    "originalReportSha256": "851b20d9bdf5a999557d49a2c58f4fd06a6e0bdee070ca8abfefde0b107bab2a",
+    "originalRuntimeSha256": "e804072ae00595ee0ec223b8a6d5b1e700b00e66252908bbd3009fc533c93c92",
+    "terminalSha256": "fc69acc9ea9f24e686764c918dd8a599ea452386652b17df184332c261e3db5d",
+    "launcherV3Sha256": "db59c94798eafbfc34877186582dcb9f6e19ccb2a2b5182cc5db35c60cdd6868",
+    "priorFailureOriginals": [
+      {
+        "priorSource": "b9b6956f",
+        "originalMapSha256": "f4c850d550326981a8633f23a5dcd0ca3247bbc5e67c5e3c91f6ae1ef553599c",
+        "originalFilesRehashedUnchanged": 47
+      },
+      {
+        "priorSource": "846ef70e",
+        "originalMapSha256": "594d8e988a66601829f1ad0bb419c29cd6911d69d8b0be1a97f7830a9dd90cb3",
+        "originalFilesRehashedUnchanged": 78
+      }
+    ],
+    "runtimeDatabaseAndGeneratedCredentialExcluded": true
+  },
+  "limits": [
+    "One actual d806 local execution; no retry or source edit.",
+    "All seven case results are directly reported; Player detail AXE and later Player assertions did not execute.",
+    "Source-equivalent prior846LinuxPASS remains separate; no Linux cause is inferred from this Windows result.",
+    "No ProductExperience, protected integration, native GPU, physical AR, owner acceptance or full seven-case PASS claim.",
+    "No raw DOM, auth secrets, cookies, synthetic record IDs, private media, database paths or local account metadata are exported."
+  ]
+}

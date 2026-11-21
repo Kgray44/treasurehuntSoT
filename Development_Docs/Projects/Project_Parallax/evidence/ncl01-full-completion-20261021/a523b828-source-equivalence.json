@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "role": "SOURCE_EQUIVALENCE_NOT_ACCEPTANCE",
+  "qualification": false,
+  "currentCommit": "a523b8287231b44c3cc30c5ebb6fba6954e6d95a",
+  "currentTree": "6e845da363d51dbae3ce79a7503d9b504e82b7eb",
+  "protectedMain": "e1a86f98e56d68e8e87e3704d17439489ff1a170",
+  "retainedSoftware": {
+    "testedCommit": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+    "receipt": "software-a86c3636.json",
+    "passed": 495,
+    "files": 39,
+    "unchangedSourceAndFixturePaths": [
+      "src",
+      ":(exclude)src/landfall/device-lab",
+      "package.json",
+      "package-lock.json",
+      "prisma",
+      "public",
+      "next.config.ts",
+      "tests/e2e/parallax-native-authority.spec.ts"
+    ]
+  },
+  "retainedAndroid": {
+    "testedCommit": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+    "runId": "39613042290",
+    "nativeAndCollectorPaths": [
+      "native/android",
+      ".agents/landfall-device-lab-hosted.yml",
+      "src/landfall/device-lab",
+      "tests/fixtures/parallax"
+    ],
+    "changedPaths": [],
+    "joinedRunnerDifference": "Only iOS-gated diagnostics and independent optional diagnostic retention; Android execution, input, canonical assertions, timeouts and cleanup unchanged."
+  },
+  "retainedBrowser": {
+    "testedCommit": "26da4135d851ee67a0c685a0726486739612d1e2",
+    "runId": "39607851877",
+    "changedPaths": []
+  },
+  "workingRepairChecksMatchFrozenGitBlobs": true,
+  "sourceFiles": [
+    {
+      "path": "native/ios/LandfallCompanion/ParallaxLocalRuntime.swift",
+      "gitBlob": "cae0bed47aeb5a9ad06a1275218653622d734b3d"
+    },
+    {
+      "path": "scripts/landfall/device-lab/parallax-native-run.ts",
+      "gitBlob": "d1963080fb673837c911ed4d11c66e1643306230"
+    }
+  ],
+  "historicalPreservation": {
+    "source": "cd597b1274bddad70118b77dd65b13969dd55a8d",
+    "unchangedOriginalBlobs": 658,
+    "originalEntriesSha256": "71421fa2da32beca7c8c9563034bbcdb0549cc5c6987bb5c65871e8d37521d93",
+    "officialArtworkUnchanged": true,
+    "originalGlbBytesUnchanged": true
+  },
+  "freshIosAndArchiveRequired": true,
+  "limits": [
+    "Development evidence reuse is scoped to unchanged source. No protected mainline decision, live browser provider, signed distribution or physical acceptance is inferred."
+  ]
+}

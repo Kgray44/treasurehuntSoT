@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_COMPILED_ICON_VISUAL_AND_SOURCE_REVIEW",
+  "qualification": false,
+  "runId": "39633902301",
+  "candidateSha": "2f8aa894959f8e363759b39f745e055ca899a9bf",
+  "candidateTree": "cadc8fd0815190f2d3c59b99b017a70d431e4bff",
+  "transportSha": "64fa864f1fe1cbdfcc8e4b58bfc4aafe9e06a4ed",
+  "transportChanges": [
+    ".github/workflows/ncl01-testflight.yml"
+  ],
+  "result": "PASS_COMPILED_ICON_ARTWORK_REVIEW",
+  "sourceAndProofBindingsVerified": true,
+  "releaseProofSha256": "e9439db013c6ed1f1a4fb496016da1a7f4b65d4ff9819702f7d762b8a73f58b0",
+  "approvedOfficialAndPreparedSourceSha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+  "retainedOriginalManifestFileCountVerified": 22,
+  "retainedOriginalManifestSha256": "2fbaa7cbf69a8fa6eee59b847443ae25cf84c2023557817b5709b5a16c2e710f",
+  "committedVerifierSha256": "ea5211be5c92cccfa59e8a5fcfde67760daa981c960ee776e18a0c35771228d7",
+  "icons": [
+    {
+      "resource": "AppIcon60x60@2x.png",
+      "dimensions": [
+        120,
+        120
+      ],
+      "compiledPngSha256": "60de95a4782ac64b3d3545aa4436cd0d777bd4fec71c8bfbf468cbe91a467cfb",
+      "previewSha256": "e0aae34457b46de7b8c484d1bc46bbf38449a7adf539b77c02263aef2cf9dea7",
+      "rgbaSha256": "5207415579749f1538c5c53022b73bff9b9648d551c335d5a2e7bb9f3defd060",
+      "rawBytesIdenticalToApprovedBeta7": true,
+      "independentPillowPreviewPixelsEqualRetainedApprovedPreview": true,
+      "opaque": true,
+      "visualFinding": "PASS: gold compass ring, diagonal needle, upper-right star and folded lower-right page remain recognizable and fully contained on the dark textured square; composition matches official master and retained approved preview."
+    },
+    {
+      "resource": "AppIcon76x76@2x~ipad.png",
+      "dimensions": [
+        152,
+        152
+      ],
+      "compiledPngSha256": "f7ba24a3aa6e9fc0e23ec92978a5d15cf9420e98d5d6c8d128597779e8164b0b",
+      "previewSha256": "2d37d6fccb2c71810b4fb4abe22414bda8a93a2ca5980493f7afd72d8cec623d",
+      "rgbaSha256": "f879873a21ce3d8cf8b298d3a731fa28dfc2ed9a7a57274eea64bab0b16e9928",
+      "rawBytesIdenticalToApprovedBeta7": true,
+      "independentPillowPreviewPixelsEqualRetainedApprovedPreview": true,
+      "opaque": true,
+      "visualFinding": "PASS: gold compass ring, diagonal needle, upper-right star and folded lower-right page remain recognizable and fully contained on the dark textured square; composition matches official master and retained approved preview."
+    }
+  ],
+  "reportedArchiveScan": {
+    "result": "PASS",
+    "scope": "KNOWN_DEBUG_ONLY_ENABLEMENT_STRINGS_ABSENT",
+    "executableSha256": "9aa73770560f7f5ef5ccf5fefa5559fa7bb1b01fd10cefeb295845ef08e7f15b",
+    "executableBytes": 503056,
+    "independentExecutableByteScanRepeated": false
+  },
+  "reportedCleanup": "PASS",
+  "uploadPerformed": false,
+  "physicalHomeScreenAppearanceProven": false,
+  "limits": [
+    "The reviewer visually inspected both actual 120px and 152px lossless previews, official 1024px master and both retained approved compiled previews. This is compiled artwork evidence, not physical Home Screen rendering.",
+    "Independent Pillow decoding verifies standard viewing-copy pixels and their identity to earlier approved previews; raw fresh CgBI bytes are exactly identical to the retained approved originals. No resize, arbitrary color tolerance or automatic cross-resolution artwork approval is used.",
+    "The actual Release binary remains private/not retained in the public artifact. Its known DEBUG enablement-literal absence is the source-bound Mac verifier result, not a second local executable scan or proof that all fixture code/protocol strings are absent.",
+    "This review does not qualify native tracking, joined Inspect, accepted browser provider, Crossdeck design, protected main or owner acceptance."
+  ]
+}

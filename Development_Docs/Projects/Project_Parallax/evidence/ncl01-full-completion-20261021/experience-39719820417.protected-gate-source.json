@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "role": "SOURCE_BOUND_PROTECTED_ORDINARY_GATE_FAILURE_ANALYSIS",
+  "qualification": false,
+  "source": {
+    "authorityCommit": "8e49351e62e1f32340109566557a824bfa74e14d",
+    "authorityTree": "856588ebd490a15bacbe9947763b35923fcf75ce",
+    "candidateCommit": "0dccf762799b03134aa9323ef0e2a7fc86af59eb",
+    "candidateTree": "54f226d6c0f73cb39af05591d094295be1ddc589",
+    "inputs": [
+      {
+        "path": "scripts/sounding-line/experience-exception.mjs",
+        "gitBlob": "b2205c9d8953228e282dcce336e6086f8120886c",
+        "byteLength": 135400,
+        "sha256": "95829caace6a29a3fca7ea2ab1ef4a4951b52b5f6b786607d04156d25fadac59",
+        "retainedOriginalName": "protected-experience-exception.original.mjs",
+        "retainedBytesMatch": true
+      },
+      {
+        "path": "scripts/sounding-line/experience-current-admission.mjs",
+        "gitBlob": "540ba2ea53d30535fc34c6d19dda578776cc9a11",
+        "byteLength": 92400,
+        "sha256": "5418df7a1028bb56d7736e5a411f08684b191615c76a708f9f7194a7510f2024",
+        "retainedOriginalName": "protected-experience-current-admission.original.mjs",
+        "retainedBytesMatch": true
+      },
+      {
+        "path": "scripts/sounding-line/experience-current-r26.mjs",
+        "gitBlob": "6d6de7a12e08dd1b578731a9d1bd86ed581c7100",
+        "byteLength": 23311,
+        "sha256": "c6475a1098f45d84fc231545b9a5505b8b0e209964423f77d76ad1cbcf0f772f",
+        "retainedOriginalName": "protected-experience-current-r26.original.mjs",
+        "retainedBytesMatch": true
+      },
+      {
+        "path": "testing/product-experience-exceptions.json",
+        "gitBlob": "089308bf475a2b22bfdc64ac46164996855e7010",
+        "byteLength": 10079573,
+        "sha256": "404670ce9f99e960b8805571dd4f463f4ca3ab6c61162b5d51e33d361d8e67d7",
+        "retainedOriginalName": "protected-product-experience-exceptions.original.json",
+        "retainedBytesMatch": true
+      },
+      {
+        "path": ".github/workflows/sounding-line-ordinary.yml",
+        "gitBlob": "cef69188292774c816e33e7a9aad467edadeff25",
+        "byteLength": 26468,
+        "sha256": "a086c2e4dfda1abd4bf0785ba0639abf62cd43b47386d0f144815fe3a3175c08",
+        "retainedOriginalName": "protected-ordinary-workflow.original.yml",
+        "retainedBytesMatch": true
+      }
+    ]
+  },
+  "observedRun": {
+    "runId": 39719820417,
+    "workflowConclusion": "failure",
+    "custodyJobId": 119630466576,
+    "error": "PRODUCT_EXPERIENCE_EXCEPTION_R26_RECORD_OR_EXPIRY_CHANGED",
+    "errorLoggedUtc": "2026-10-22T04:05:13.8084161Z",
+    "errorLogLine": 813,
+    "jobs": [
+      {
+        "id": 119630466576,
+        "name": "Sounding Line / Finite campaign custody",
+        "conclusion": "failure"
+      },
+      {
+        "id": 119632264612,
+        "name": "Sounding Line / Focused verification",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 119632265346,
+        "name": "Sounding Line / Mainline Decision",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 119632265358,
+        "name": "Sounding Line / Experience preparation (no mainline decision)",
+        "conclusion": "skipped"
+      }
+    ],
+    "artifactCount": 0
+  },
+  "isolatedClause": {
+    "path": "scripts/sounding-line/experience-current-r26.mjs",
+    "line": 314,
+    "expression": "now <= new Date(r.ownerApproval.executionDeadlineUtc)",
+    "executionDeadlineUtc": "2026-10-22T03:59:59Z",
+    "recordExpiresAtUtc": "2026-10-22T23:59:59Z",
+    "elapsedBeyondOwnerDeadlineAtErrorLogMs": 314808,
+    "registryExpiryStillFutureAtErrorLog": true,
+    "explanation": "The fixed owner execution deadline had elapsed; this is not expiry of record.expiresAt. The combined guard emits one error for several predicates, but frozen version/id/status/not-before/expiry fields satisfy the other predicates at the logged time. r26OriginalRecord spreads record and does not replace expiresAt.",
+    "citations": [
+      "testing/product-experience-exceptions.json:153896-153916",
+      "scripts/sounding-line/experience-current-r26.mjs:284-316",
+      "scripts/sounding-line/experience-current-r26.mjs:50"
+    ]
+  },
+  "callOrder": [
+    {
+      "step": 1,
+      "citation": "scripts/sounding-line/experience-exception.mjs:2920-2922",
+      "fact": "Custody main first evaluates trustedExceptions before invoking find(campaignRelated)."
+    },
+    {
+      "step": 2,
+      "citation": "scripts/sounding-line/experience-exception.mjs:724-725",
+      "fact": "R26 sentinel on protected base unconditionally selects requiredVersion26 registry validation; it is not scoped by requested PR first."
+    },
+    {
+      "step": 3,
+      "citation": "scripts/sounding-line/experience-current-admission.mjs:594-599",
+      "fact": "requiredVersion26 dispatches validateR26Registry with undefined now."
+    },
+    {
+      "step": 4,
+      "citation": "scripts/sounding-line/experience-current-r26.mjs:301-316,391-396",
+      "fact": "The undefined time uses new Date() in validateR26Record; the elapsed owner deadline throws before record selection completes."
+    },
+    {
+      "step": 5,
+      "citation": "scripts/sounding-line/experience-exception.mjs:2938,2974-2977",
+      "fact": "githubRequest, exceptionStore and reserveExceptionStage occur later and are not reached along this failing source path."
+    },
+    {
+      "step": 6,
+      "citation": ".github/workflows/sounding-line-ordinary.yml:112-128",
+      "fact": "Shared campaign-custody job invokes reserve operation; experience-preparation depends on that job and does not run when it fails."
+    }
+  ],
+  "applicability": {
+    "requestedPullRequest": 741,
+    "finiteRecordPullRequest": 721,
+    "globallyValidatedBeforeCampaignApplicability": true,
+    "campaignRelatedCitation": "scripts/sounding-line/experience-exception.mjs:751-790",
+    "campaignRelatedRule": "Explicit matching PR qualifies; remaining signals require additions between protected base and candidate. Accepted inherited Crossdeck history alone does not grant NCL use of R26.",
+    "candidateCampaignRelatedFunctionExecutedByThisAudit": false,
+    "noReservationReachedOnObservedFailingSourcePath": true,
+    "custodyLedgerIndependentlyQueried": false,
+    "limitation": "The workflow reserve operation name is not proof that a finite reservation write occurred. This review traces the failing path and retained log; it does not query remote custody state or establish a new finite grant."
+  },
+  "maintenanceBoundary": {
+    "scope": "Protected Sounding Line trusted-registry routing and applicability maintenance, separate from NCL product or independent visual acceptance.",
+    "actionsNotAuthorizedOrPerformed": [
+      "extend R26 deadline",
+      "edit or reactivate an exception record",
+      "consume PR721 finite grant for PR741",
+      "skip protected custody or evidence gates",
+      "dispatch a replacement workflow"
+    ],
+    "requirement": "Any future maintenance must preserve fail-closed applicable-campaign/successor validation and ordinary evidence obligations. No policy repair or authority transfer is proposed as an accomplished change."
+  },
+  "audit": {
+    "method": "Frozen Git object reads, retained source-byte equality, bounded retained log/metadata reads and SHA256 only.",
+    "testsOrValidatorExecuted": false,
+    "sourceOrPolicyChanged": false,
+    "networkOrCustodyRequestPerformed": false,
+    "captureOrIndependentVisualReviewPerformed": false
+  },
+  "originals": [
+    {
+      "name": "custody-job.original.log",
+      "byteLength": 90376,
+      "sha256": "02f6211349c847d5a7431d3ca366d557d22864a76252f22133fc758774bf7c29"
+    },
+    {
+      "name": "run.final.original.json",
+      "byteLength": 12727,
+      "sha256": "65358c24d08bfad938115f248ff81f10a83dee65430e3d514d6726fc6d32f632"
+    },
+    {
+      "name": "jobs.final.original.json",
+      "byteLength": 6395,
+      "sha256": "5b0d31d4eaf8ae815e314e3563431b7689f70b522abdbdc851f9e51ce0b47beb"
+    },
+    {
+      "name": "artifacts.final.original.json",
+      "byteLength": 32,
+      "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    }
+  ]
+}

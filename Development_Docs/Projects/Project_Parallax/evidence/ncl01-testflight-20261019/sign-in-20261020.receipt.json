@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-20T04:04:15.202Z",
+  "task": "NCL01",
+  "origin": "https://192.168.0.18:8449",
+  "credentialsPrinted": false,
+  "accountExists": true,
+  "accountIdMatchesFixture": true,
+  "accountStatus": "ACTIVE",
+  "profilePresent": true,
+  "storedPasswordMatchesFile": true,
+  "signInHttpStatus": 200,
+  "signInAccepted": true,
+  "signInError": null,
+  "secureSessionCookiePresent": true,
+  "sessionContextHttpStatus": 200,
+  "sessionAuthenticated": true,
+  "ownedSessionSignOutHttpStatus": 200,
+  "ownedSessionRevoked": true
+}

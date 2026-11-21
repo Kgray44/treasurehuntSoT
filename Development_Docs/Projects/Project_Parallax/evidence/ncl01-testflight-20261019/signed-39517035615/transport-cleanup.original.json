@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "kind": "EXACT_OWNED_WORKFLOW_TRANSPORT_REF_CLEANUP",
+  "runId": 39517035615,
+  "candidateSha": "fbd3c7402cec3ae3d374b73c218968bc07daa06a",
+  "branch": "codex/ncl01-testflight-upload-fbd3c7402cec-1792539906086",
+  "expectedTransportSha": "b59a7915fb615ff2e1d85059448610b3aaa04830",
+  "actualTransportShaBeforeDeletion": "b59a7915fb615ff2e1d85059448610b3aaa04830",
+  "forceWithLeaseUsed": true,
+  "remoteRefAbsentAfterDeletion": true,
+  "protectedMainTouched": false,
+  "pr741Merged": false,
+  "cleanedAt": "2026-10-20T23:53:17.6938798Z",
+  "result": "PASS"
+}

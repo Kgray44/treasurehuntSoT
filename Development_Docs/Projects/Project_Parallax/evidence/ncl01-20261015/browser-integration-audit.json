@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "READ_ONLY_BROWSER_PROVIDER_INTEGRATION_AUDIT",
+  "date": "2026-10-15",
+  "reviewer": "independent ncl01_review agent",
+  "nclCheckpoint": "b328c49a69b7179c54b0dd0608aba65ded6c368d",
+  "providerCandidate": "8d00278d1fb8f2ff1cab051c3cf9a4329df9d499",
+  "providerSources": [
+    {
+      "path": "src/parallax/browser-spatial-adapter.ts",
+      "gitBlob": "62faf647f161da80906df15a9b473897989fe24b",
+      "commitRelativeLines": {
+        "class": 19,
+        "planePlacementFalse": 23,
+        "sceneCameraRendererOwnership": 24,
+        "picking": 166,
+        "renderLoop": 206,
+        "anchorResolution": 238,
+        "entityRendering": 261,
+        "cleanup": 328
+      }
+    },
+    {
+      "path": "src/components/player/parallax/BrowserRoomView.tsx",
+      "gitBlob": "73681460ee69cbea2087bc4539532c50d8dd621e",
+      "commitRelativeLines": {
+        "roomFeatureRequirement": 100,
+        "availabilityGate": 127,
+        "adapterConstruction": 495,
+        "canonicalRuntimeOpen": 500
+      }
+    }
+  ],
+  "finding": "Provider source is absent from the NCL baseline; adapter-only copying is insufficient",
+  "prerequisites": [
+    "Source-bound shared integration baseline with active browser candidate",
+    "Reconcile BROWSER receipt semantics and existing external-camera ownership",
+    "Preserve canonical Environment room registration and calibration data",
+    "Resolve registration-based placement against v2 PLANE_PLACEMENT requirement",
+    "Authorize existing private tracking SDK for laptop origin",
+    "Discharge crossdeck.phase2.continuity governed experience-design prerequisite"
+  ],
+  "recommendedSeam": {
+    "renderScene": "Delegate actual graph loading to BrowserScenePresentation using the provider-owned scene and camera",
+    "picking": "Use presentation.pick with existing provider pointer rays",
+    "cleanup": "Dispose presentation before existing renderer teardown",
+    "authority": "Retain ParallaxLensRuntime and current canonical Player observation endpoint"
+  },
+  "providerBranchModified": false,
+  "privateInputsChanged": false,
+  "browserArExecutionProven": false,
+  "formalExperienceApproval": false,
+  "physicalAcceptance": false
+}

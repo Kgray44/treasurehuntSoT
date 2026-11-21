@@ -1,0 +1,452 @@
+{
+  "schemaVersion": 1,
+  "role": "ANONYMOUS_ACTUAL_BROWSER_PREVIEW_DELIVERY_DIAGNOSTIC",
+  "qualification": false,
+  "checkedAtUtc": "2026-10-21T17:06:58.697Z",
+  "client": "LOCKED_PLAYWRIGHT_DEFAULT_HEADLESS_CHROMIUM",
+  "playwrightVersion": "1.56.1",
+  "result": "PASS_DOCUMENT_AND_24_OBSERVED_ASSETS_WITH_ONE_UNFETCHED_REFERENCE",
+  "initialResponse": {
+    "origin": "https://ncl01.absoluterelativesystems.com",
+    "path": "/sign-in",
+    "hadQuery": false,
+    "status": 200,
+    "contentType": "text/html"
+  },
+  "finalDocumentStatus": 200,
+  "finalDocument": {
+    "readyState": "complete",
+    "documentTitleClass": "SIGN_IN_OR_VOYAGEWRIGHT",
+    "challengeTextObserved": false,
+    "challengeIframeObserved": false,
+    "passwordFieldCount": 1,
+    "formCount": 1,
+    "referencedCssJs": [
+      {
+        "path": "/_next/static/css/73f0cdc4ae157bcd.css",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/css/f433890a83f11201.css",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/css/1a2651c401bcdc00.css",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/css/697cca252382c351.css",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/css/3d3835e780b066ab.css",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/css/4e218e9e6d31e5c3.css",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/css/21698dc9dd19b11e.css",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/webpack-544dd9af3f5c13fd.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/605ecc53-43a5aa497d32e0a8.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/54638-488ce2b411e87ec4.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/main-app-8b19b70d87d11572.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/594d7194-0c62c9f8aade8ea3.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/96579-e60226a284936fa6.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/87041-3abccc9eaecae5af.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/54776-31cd8e403871b755.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/74052-ccdbf308f1a24b21.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/79291-c50fef18992eb9e8.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/51130-e691a111c5f098f0.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/33475-57a5ca16657a63e0.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/app/layout-1eae462a643b6375.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/96901-fdd87d18a6b284a8.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/app/sign-in/page-29a731d45396f608.js",
+        "hadQuery": false
+      },
+      {
+        "path": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
+        "hadQuery": false
+      }
+    ],
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.7390.37 Safari/537.36"
+  },
+  "errorCode": null,
+  "loadError": null,
+  "resources": [
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/sign-in",
+      "hadQuery": false,
+      "resourceType": "document",
+      "status": 200,
+      "contentType": "text/html"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/css/73f0cdc4ae157bcd.css",
+      "hadQuery": false,
+      "resourceType": "stylesheet",
+      "status": 200,
+      "contentType": "text/css"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/css/1a2651c401bcdc00.css",
+      "hadQuery": false,
+      "resourceType": "stylesheet",
+      "status": 200,
+      "contentType": "text/css"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/css/3d3835e780b066ab.css",
+      "hadQuery": false,
+      "resourceType": "stylesheet",
+      "status": 200,
+      "contentType": "text/css"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/css/21698dc9dd19b11e.css",
+      "hadQuery": false,
+      "resourceType": "stylesheet",
+      "status": 200,
+      "contentType": "text/css"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/css/f433890a83f11201.css",
+      "hadQuery": false,
+      "resourceType": "stylesheet",
+      "status": 200,
+      "contentType": "text/css"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/css/4e218e9e6d31e5c3.css",
+      "hadQuery": false,
+      "resourceType": "stylesheet",
+      "status": 200,
+      "contentType": "text/css"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/css/697cca252382c351.css",
+      "hadQuery": false,
+      "resourceType": "stylesheet",
+      "status": 200,
+      "contentType": "text/css"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/webpack-544dd9af3f5c13fd.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/54776-31cd8e403871b755.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/96579-e60226a284936fa6.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/594d7194-0c62c9f8aade8ea3.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/main-app-8b19b70d87d11572.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/605ecc53-43a5aa497d32e0a8.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/cdn-cgi/challenge-platform/<opaque-path-redacted>",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 302,
+      "contentType": "",
+      "opaquePathRedacted": true
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/74052-ccdbf308f1a24b21.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/cdn-cgi/challenge-platform/<opaque-path-redacted>",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript",
+      "opaquePathRedacted": true
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/app/sign-in/page-29a731d45396f608.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/87041-3abccc9eaecae5af.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/79291-c50fef18992eb9e8.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/96901-fdd87d18a6b284a8.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/33475-57a5ca16657a63e0.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/app/layout-1eae462a643b6375.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/51130-e691a111c5f098f0.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/54638-488ce2b411e87ec4.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/62918-88c7796e8373c70f.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/_next/static/chunks/63776-3e87c9135072d62d.js",
+      "hadQuery": false,
+      "resourceType": "script",
+      "status": 200,
+      "contentType": "application/javascript"
+    }
+  ],
+  "failedRequests": [
+    {
+      "origin": "https://static.cloudflareinsights.com",
+      "path": "<off-origin-path-redacted>",
+      "hadQuery": false,
+      "resourceType": "script",
+      "failureCode": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+      "opaquePathRedacted": true
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/cdn-cgi/challenge-platform/<opaque-path-redacted>",
+      "hadQuery": false,
+      "resourceType": "xhr",
+      "failureCode": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+      "opaquePathRedacted": true
+    }
+  ],
+  "blockedRequests": [
+    {
+      "origin": "https://static.cloudflareinsights.com",
+      "path": "<off-origin-path-redacted>",
+      "hadQuery": false,
+      "method": "GET",
+      "resourceType": "script",
+      "opaquePathRedacted": true
+    },
+    {
+      "origin": "https://ncl01.absoluterelativesystems.com",
+      "path": "/cdn-cgi/challenge-platform/<opaque-path-redacted>",
+      "hadQuery": false,
+      "method": "POST",
+      "resourceType": "xhr",
+      "opaquePathRedacted": true
+    }
+  ],
+  "unmatchedOrIncorrectTypeCssJs": [
+    {
+      "path": "<off-origin-path-redacted>",
+      "hadQuery": false,
+      "opaquePathRedacted": true
+    }
+  ],
+  "elapsedMs": 6212,
+  "cleanup": {
+    "operations": [
+      {
+        "resource": "context",
+        "result": "CLOSED"
+      },
+      {
+        "resource": "browserConnection",
+        "result": "CLOSED"
+      },
+      {
+        "resource": "browserServer",
+        "result": "CLOSED"
+      }
+    ],
+    "browserProcessCloseObserved": true,
+    "exitCode": 0,
+    "signal": null
+  },
+  "suppliedAuthentication": false,
+  "suppliedCookies": false,
+  "userAgentSpoofed": false,
+  "tlsOrProxyOverride": false,
+  "offOriginRequestsBlocked": true,
+  "noFormActions": true,
+  "htmlBodyOrCookieValuesRetained": false,
+  "strictInitialHarnessResultPreserved": "FAIL_ALL_REFERENCED_ASSETS_NOT_OBSERVED",
+  "coverage": {
+    "htmlDeclaredDistinctCssJs": 23,
+    "observedDistinctNextStaticCssJs": 24,
+    "observedCss": 7,
+    "observedJs": 17,
+    "observedAssetsStatus200AndCorrectTypes": 24,
+    "matchedHtmlReferences": 22,
+    "additionalDynamicChunks": 2,
+    "unrequestedReferenceCount": 1,
+    "unrequestedReference": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
+    "nomoduleAttributeCaptured": false,
+    "reasonForUnrequestedReferenceEstablished": false,
+    "allReferencedAssetsVerified": false,
+    "sameOriginApplicationAssetFailedRequests": 0
+  },
+  "cloudflareActivity": {
+    "interstitialTextOrIframeObserved": false,
+    "challengePlatformRequestObserved": true,
+    "challengePlatformPostBlockedByFixedReadOnlyScope": true,
+    "offOriginAnalyticsBlocked": true,
+    "challengeInteractionAttempted": false,
+    "causeOfPriorUrllib403Established": false
+  },
+  "ownerIdentifiedPreservedPreviewSourcePrefix": "47ff",
+  "currentCandidate2f8DeploymentProven": false,
+  "priorEvidence": {
+    "urllib403": "PRESERVED_UNCHANGED",
+    "originalBrowserMetadataSha256": "a69e8ab218d7ca58354e85934bbb402e6d7b1db6e673885aa78a3ab46afe64bc",
+    "initialBrowserDerivedReceiptSha256": "d4885aaa9b1bc4978f8d6300e7986e08d41d3fe53b1ba8b6e1c31b0ebe1a8357",
+    "originalsModified": false,
+    "countClarification": "The initial 22 matched-assets summary counted HTML references, not all observed responses. There are 24 actual successful static responses: 22 declared references plus two dynamic chunks."
+  },
+  "limits": [
+    "The actual default Chromium client reached a complete sign-in document over normal TLS. The earlier urllib403 remains an independent observed result; no proxy or Cloudflare causal explanation is established.",
+    "Exactly 24 requested application CSS/JS resources returned 200 with correct content types: 22 of 23 HTML references and two dynamic chunks. One polyfill reference was not requested; its nomodule attribute/reason was not captured. No all-reference asset-health claim is made.",
+    "Off-origin analytics GET and a same-origin Cloudflare challenge-platform POST were blocked by the fixed read-only scope. No challenge page/iframe or challenge interaction was observed. Opaque challenge paths are redacted in this derived receipt.",
+    "Fresh isolated context and default UA; no supplied authentication/cookies, custom headers, TLS/proxy changes, retries, form submission, service/database operation, HTML body, CSRF/cookie value publication or current candidate deployment claim.",
+    "Context, browser connection and creation-bound browser process closed; child exit 0 observed. Broader authenticated Journal, database, physical/native or protected acceptance health is not established."
+  ]
+}

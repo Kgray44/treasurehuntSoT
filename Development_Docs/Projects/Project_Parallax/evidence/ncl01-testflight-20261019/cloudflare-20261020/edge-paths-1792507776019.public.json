@@ -1,0 +1,71 @@
+{
+  "task": "NCL01_CLOUDFLARE_LOCAL_EDGE",
+  "timestamp": "2026-10-20T14:49:36.018Z",
+  "evidenceScope": "LOCAL_LOOPBACK_HTTP_ONLY",
+  "publicTlsVerified": false,
+  "publicRoutePublished": false,
+  "tests": [
+    {
+      "name": "sign-in",
+      "status": 200,
+      "expectedStatus": 200,
+      "passed": true
+    },
+    {
+      "name": "foreign-host",
+      "status": 403,
+      "expectedStatus": 403,
+      "passed": true
+    },
+    {
+      "name": "foreign-origin",
+      "status": 403,
+      "expectedStatus": 403,
+      "passed": true
+    },
+    {
+      "name": "http-upgrade-redirect",
+      "status": 308,
+      "expectedStatus": 308,
+      "fixedHttpsLocationMatches": true,
+      "passed": true
+    },
+    {
+      "name": "missing-forwarded-proto",
+      "status": 403,
+      "expectedStatus": 403,
+      "passed": true
+    },
+    {
+      "name": "animation-debug-denied",
+      "status": 404,
+      "expectedStatus": 404,
+      "passed": true
+    },
+    {
+      "name": "database-debug-denied",
+      "status": 404,
+      "expectedStatus": 404,
+      "passed": true
+    },
+    {
+      "name": "hmr-denied",
+      "status": 404,
+      "expectedStatus": 404,
+      "passed": true
+    },
+    {
+      "name": "encoded-debug-denied",
+      "status": 404,
+      "expectedStatus": 404,
+      "passed": true
+    },
+    {
+      "name": "crossdeck-public-origin-unauthenticated",
+      "status": 401,
+      "expectedStatus": 401,
+      "passed": true
+    }
+  ],
+  "allPassed": true
+}

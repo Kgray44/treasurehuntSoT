@@ -1,0 +1,94 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDebugBuildConfig
+> Task :app:javaPreCompileDebug
+> Task :app:checkDebugAarMetadata
+> Task :app:generateDebugResValues
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:mergeDebugResources
+> Task :app:packageDebugResources
+> Task :app:parseDebugLocalResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+
+> Task :app:compileDebugJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:dexBuilderDebug
+> Task :app:mergeDebugGlobalSynthetics
+> Task :app:processDebugJavaRes NO-SOURCE
+> Task :app:mergeDebugJavaResource
+> Task :app:checkDebugDuplicateClasses
+> Task :app:mergeExtDexDebug
+> Task :app:mergeLibDexDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeDebugJniLibFolders
+> Task :app:mergeDebugNativeLibs
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libarcore_sdk_c.so, libarcore_sdk_jni.so, libbarhopper_v3.so, libfilament-jni.so, libgltfio-jni.so, libimage_processing_util_jni.so, libsurface_util_jni.so.
+
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:processDebugAndroidTestManifest
+> Task :app:generateDebugAndroidTestBuildConfig
+> Task :app:javaPreCompileDebugAndroidTest
+> Task :app:checkDebugAndroidTestAarMetadata
+> Task :app:generateDebugAndroidTestResValues
+> Task :app:mapDebugAndroidTestSourceSetPaths
+> Task :app:generateDebugAndroidTestResources
+> Task :app:mergeDebugAndroidTestResources
+> Task :app:processDebugAndroidTestResources
+
+> Task :app:compileDebugAndroidTestJavaWithJavac FAILED
+C:\Users\kkids\.codex\worktrees\parallax-ncl01\Codex_TreasureHunt\native\android\app\src\androidTest\java\com\voyagewright\landfall\ParallaxModelRenderingFixture.java:321: error: cannot find symbol
+    byte[] rgba = new byte[buffer.capacity()]; buffer.duplicate().clear().get(rgba);
+                                                                         ^
+  symbol:   method get(byte[])
+  location: class Buffer
+Note: C:\Users\kkids\.codex\worktrees\parallax-ncl01\Codex_TreasureHunt\native\android\app\src\androidTest\java\com\voyagewright\landfall\ParallaxTests.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+1 error
+[Incubating] Problems report is available at: file:///D:/CodexTaskOutputs/ncl01-android-tools/build/LandfallCompanion/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugAndroidTestJavaWithJavac'.
+> Compilation failed; see the compiler output below.
+  Note: Recompile with -Xlint:deprecation for details.
+  Note: C:\Users\kkids\.codex\worktrees\parallax-ncl01\Codex_TreasureHunt\native\android\app\src\androidTest\java\com\voyagewright\landfall\ParallaxTests.java uses or overrides a deprecated API.
+  C:\Users\kkids\.codex\worktrees\parallax-ncl01\Codex_TreasureHunt\native\android\app\src\androidTest\java\com\voyagewright\landfall\ParallaxModelRenderingFixture.java:321: error: cannot find symbol
+      byte[] rgba = new byte[buffer.capacity()]; buffer.duplicate().clear().get(rgba);
+                                                                           ^
+    symbol:   method get(byte[])
+    location: class Buffer
+  1 error
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to get full insights.
+
+BUILD FAILED in 1m 32s
+46 actionable tasks: 46 executed

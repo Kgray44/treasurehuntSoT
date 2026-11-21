@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "LOCAL_COMPILE_AND_VALIDATOR_TESTS_ONLY",
+  "sourceBinding": "EXACT_WORKING_FILE_BYTES_NOT_FROZEN_CANDIDATE",
+  "parentCommit": "aecbf27d63aa6c2bf287fc840e679b92600d4ff8",
+  "sourceFiles": [
+    {
+      "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxModelRenderingFixture.java",
+      "sha256": "fd3188179705a9d4c49999e7e5d3bbfafa173860c0e26a9d341dec7670b6e459"
+    },
+    {
+      "path": "scripts/landfall/device-lab/android-test.ts",
+      "sha256": "f81ffd518e95512aeb2b966b3a616e1f589be5b01c8e306afc7cffb773a24d72"
+    },
+    {
+      "path": "src/landfall/device-lab/android-scene-rendering.ts",
+      "sha256": "7e2c330cf612a33813d50f91ee454ae465963dbc209c8382d1bbd1e48dc77ebd"
+    },
+    {
+      "path": "src/landfall/device-lab/android-scene-rendering.test.ts",
+      "sha256": "b0839f57352ccb1f6812e520274c5ae3db5f08732d27f2d647e20d0cccdb6063"
+    }
+  ],
+  "localBuild": {
+    "result": "PASS",
+    "tasks": [
+      ":app:assembleDebug",
+      ":app:assembleDebugAndroidTest"
+    ],
+    "maximumHeapMiB": 768,
+    "maximumMetaspaceMiB": 384,
+    "maximumWorkers": 1,
+    "offline": true,
+    "daemon": false,
+    "buildCacheTempDrive": "D:",
+    "firstFailure": "Android Buffer.clear returns Buffer; typed duplicate/clear/get correction compiled successfully",
+    "appSha256": "e5edfd137884ff5b08837285fcf443022c06da383b81d156ea7a15c90c2f36e6",
+    "testApkSha256": "9529dde3af9bde44fb4848449a957b7484889e9b32aee68dc8ae96029b67cf4b"
+  },
+  "validatorTests": {
+    "passed": 8,
+    "failed": 0
+  },
+  "eslint": "PASS",
+  "typescript": "PASS_FULL_PROJECT",
+  "prettier": "PASS",
+  "gitDiffCheck": "PASS",
+  "unchangedProductionSource": true,
+  "unchangedInstrumentationMethodCount": 16,
+  "nativeInstrumentationExecution": "NOT_RUN_LOCAL",
+  "independentSourceReview": "ACCEPTED",
+  "formalExperienceApproval": false,
+  "physicalTrackingProven": false,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "originalLogs": [
+    {
+      "path": "android-pick-build-first-failure.original.log",
+      "bytes": 4636,
+      "sha256": "c755a1794b4816a89ffac8c906a37b5b6b2b6d6a66750d13d093417874410f6d"
+    },
+    {
+      "path": "android-pick-build.original.log",
+      "bytes": 4428,
+      "sha256": "240b588b69feece0e0c491352f3f94c935a64be16ee3c6d2258edec52fa5586f"
+    },
+    {
+      "path": "android-pick-validator-tests.original.log",
+      "bytes": 637,
+      "sha256": "295a7088893cf680de37a8086673154d959b4069dca805772f8aa563cd35911a"
+    },
+    {
+      "path": "android-pick-eslint.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "android-pick-typecheck.original.log",
+      "bytes": 66,
+      "sha256": "87cbed0ffc784c19ac32b5eb5829e31eca5ebd6ea4b569718fa3d43d88a58e8d"
+    }
+  ],
+  "resourceObservation": {
+    "freeCBytes": 0,
+    "pagefileAllocatedMiB": 41030,
+    "pagefileCurrentMiB": 7779,
+    "allTaskBuildsAndChecksTerminal": true,
+    "diskGrowthCause": "NOT_ATTRIBUTED"
+  }
+}

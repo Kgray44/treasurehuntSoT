@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "kind": "READ_ONLY_FAILED_FIXTURE_DIAGNOSIS_AND_MINIMAL_PROPOSAL",
+  "runId": "38838018116",
+  "candidateSha": "2f2d55fd15743bc49d815dd4d9d2179debf52238",
+  "fixtureSha256": "817e6c8731fec53e539aa2282882d9696cdc7e68068732a82bd02f76b6665fd7",
+  "originalEvidence": {
+    "receipt": {
+      "path": "D:\\CodexWorktrees\\parallax-ncl01-physical-20261015\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\ncl01-20261015\\ios-hosted-38838018116.receipt.json",
+      "sha256": "cc0503fcff3334ed60147f2bc7231bb610b28bfeb26ffd56a182878a4bf3fea5"
+    },
+    "report": {
+      "path": "D:\\CodexWorktrees\\parallax-ncl01-physical-20261015\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\ncl01-20261015\\ios-hosted-38838018116\\test-attachments\\8F4E5EED-5FE5-419B-982D-D44A0C5A2D9E.json",
+      "sha256": "7c6f2085d4f1cafb37f95e217127de317546a6677b4502a097a164a3a7f0fe82"
+    },
+    "populatedPng": {
+      "path": "D:\\CodexWorktrees\\parallax-ncl01-physical-20261015\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\ncl01-20261015\\ios-hosted-38838018116\\test-attachments\\A9DA184D-3BD6-47AD-AE22-C901E6D08740.png",
+      "sha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381"
+    },
+    "previousAcceptedPngHasIdenticalBytes": true
+  },
+  "observed": {
+    "failure": "Actual rendered opaque interior did not hit original SceneKit geometry",
+    "viewport": [
+      0,
+      0,
+      256,
+      256
+    ],
+    "queryHitCounts": {
+      "background": 0,
+      "opaque": 0,
+      "transparentVerticalMirror": 1
+    },
+    "independentPngNeighborhoods": {
+      "opaquePixelCenter": {
+        "point": [
+          127.5,
+          166.5
+        ],
+        "minimumAlpha": 255,
+        "maximumAlpha": 255,
+        "pixels": 49
+      },
+      "transparentVerticalMirrorPixelCenter": {
+        "point": [
+          127.5,
+          89.5
+        ],
+        "minimumAlpha": 0,
+        "maximumAlpha": 0,
+        "pixels": 49
+      },
+      "backgroundPixelCenter": {
+        "point": [
+          3.5,
+          3.5
+        ],
+        "minimumAlpha": 0,
+        "maximumAlpha": 0,
+        "pixels": 49
+      }
+    },
+    "completedElapsedMs": 4234.811374999936,
+    "sealedElapsedMs": 4235.853791666614,
+    "modelPixelCount": 8301,
+    "bothObservedFrameCallbacksCompleted": true
+  },
+  "sourceReferences": {
+    "path": "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift",
+    "directOpaqueQueryLine": 302,
+    "directMirrorQueryLine": 303,
+    "worldProjectionLine": 309,
+    "removedQueriesLine": 328,
+    "transactionFlushLine": 381,
+    "renderLine": 383
+  },
+  "inference": {
+    "status": "SUPPORTED_FIXTURE_COORDINATE_ADAPTER_HYPOTHESIS_NOT_FRESH_PASS",
+    "statement": "The direct raw Metal readback row-to-SCNRenderer query mapping is contradicted by this asymmetric opaque miss and independently transparent vertical-mirror geometry hit. A single fixed Y conversion is the smallest correction consistent with the observed pair. The exact selected entity and roundtrip remain unproved until fresh execution.",
+    "alternativeAssessment": [
+      "A wholly absent or unprepared graph does not explain the actual mirror geometry hit.",
+      "The viewport assertion passed and the populated PNG is byte-identical to the preceding accepted raster run.",
+      "The completed render advanced the presentation hierarchy after SCNTransaction.flush; no animation/scene/camera replacement was introduced in this increment.",
+      "The failure alone does not prove a production touch-coordinate defect or any physical AR behavior."
+    ]
+  },
+  "minimalProposal": {
+    "scope": "Existing fixture only; no production renderer, mapper, contracts, test declarations or timing changes",
+    "mapping": "For the existing asserted origin-zero 256x256 target, rendererPoint = (readbackPixelCenter.x, viewport.height - readbackPixelCenter.y). Apply this fixed mapping exactly once to opaque, mirror, background and all removed queries. Never retry or choose mappings based on a hit.",
+    "roundtrip": "Compare projectPoint(hit.worldCoordinates) to the converted SceneKit query point, then apply the same involution back to Metal readback space and require correspondence with the original alpha-safe pixel.",
+    "report": "Retain raw readback pixel centers and add explicit SceneKit query centers plus mapping; preserve original PNG/report attachments and failed receipt.",
+    "keptAssertions": [
+      "Actual closest SCNRenderer geometry hit below entity root",
+      "Production entityId maps exact authored fixture-model ID distinct from asset ID",
+      "Opaque seven-by-seven alpha >=240, mirror/background alpha zero",
+      "Transparent mirror/background and all three removed-graph misses with retained old-root lookup",
+      "All existing geometry/material/pivot/matrix/width/scale/raster/clear/lifetime checks",
+      "One renderer, original six frames, original test identities and one 20-second deadline",
+      "No new GPU wait, ARSession, snapshot, fallback, render pass or retry"
+    ]
+  },
+  "primarySources": [
+    {
+      "url": "https://developer.apple.com/documentation/scenekit/scnscenerenderer/hittest(_:options:)",
+      "finding": "Query coordinates belong to the receiver screen/view/layer/GPU viewport space; method searches real scene geometry."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/scenekit/scnscenerenderer/projectpoint(_:)",
+      "finding": "Returned coordinates belong to the receiver screen/view/layer/GPU viewport space."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/metal/mtlviewport",
+      "finding": "Metal viewport originX/originY describe the upper-left corner. This does not separately guarantee that SCNRenderer query Y equals raw Metal readback row Y."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/scenekit/scnrenderer/render(attime:viewport:commandbuffer:passdescriptor:)",
+      "finding": "Rendering advances the presentation hierarchy at the supplied timestamp before drawing."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/scenekit/scnnode/presentation",
+      "finding": "Presentation properties describe currently displayed state; they must not be mutated."
+    }
+  ],
+  "sourceEdited": false,
+  "gitOrIndexMutated": false,
+  "jobDispatched": false,
+  "freshCorrectedExecutionObserved": false,
+  "physicalAcceptanceProven": false
+}

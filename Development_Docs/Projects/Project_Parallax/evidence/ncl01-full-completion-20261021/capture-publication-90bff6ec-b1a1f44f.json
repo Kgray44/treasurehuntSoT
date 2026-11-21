@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "engineering-evidence",
+  "role": "READ_ONLY_CAPTURE_PUBLICATION_REUSE_GUARD_SUPPLEMENT",
+  "qualification": false,
+  "observedAtUtc": "2026-10-22T12:57:29.427Z",
+  "source": {
+    "acceptedMain": "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+    "candidate": "b1a1f44f4b4b1f1bc3e66958f21f01f52dfc6d5f",
+    "candidateTree": "205efe8c7b32caf86b4385c23dd385f22776013c",
+    "path": "scripts/sounding-line/experience-paired.mjs",
+    "sha256": "68e7841c5fcdd27e4d19dec2cc1a3ed03ecd06559e81bc59e31056674a57791a",
+    "bytes": 18959
+  },
+  "primaryReview": {
+    "file": "review.public.json",
+    "sha256": "6c9335a7830978a08cc3129d69c848ee402997c6c927f8693b8d38c367f72342",
+    "unchanged": true
+  },
+  "scope": "Additional exact restriction on same-base publication reuse if the actual selected plan includes pairedEvidence; not a newly selected plan or capture result.",
+  "rules": [
+    {
+      "lines": "13,56-66",
+      "fact": "Only contracts crossdeck.phase2.continuity and crossdeck.refit.companion can select the existing paired evidence configuration. The actual fresh plan decides applicability."
+    },
+    {
+      "lines": "334-353",
+      "fact": "Reuse requires equal baseSha/sourceDigest/contractDigest/recordDigest, the immutable original executed candidate tree, executed candidate ancestry and no post-capture change outside pairedPublicationPathAllowed."
+    },
+    {
+      "lines": "320-331",
+      "fact": "Allowed publication changes are Development_Docs/**/*.md, docs/**/*.md, Development_Docs/Features/catalog/crossdeck.json, CHANGELOG.md, .agents/crossdeck-refit-checkpoint.md, Development_Docs/document-index.json, Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv, Development_Docs/Projects/Project_Crossdeck/evidence/**, and Development_Docs/Testing/Product_Experience/candidate-review.json or evidence/**."
+    }
+  ],
+  "nclImplication": {
+    "notBlanketAllowedAfterCapture": [
+      "new JSON under the NCL engineering evidence folder",
+      ".agents/ncl01-full-completion.md",
+      "an arbitrary Feature Catalog fragment",
+      "source/test/configuration changes"
+    ],
+    "preparation": "Freeze NCL automation, native/consumer source, catalog decisions and engineering evidence before capture; later normal capture/review publication must satisfy the installed allowlist. This note does not request or propose widening it.",
+    "baseAdvance": "Even source-equivalent new protected-base reconciliation still fails the ordinary generic capture base binding without fresh normal evidence. Explicit Crossdeck adoption is not available to NCL.",
+    "readiness": "This restriction does not prevent the current legitimate installed790 NCL capture attempt after publication; it governs admissible later reuse/publication."
+  },
+  "limits": {
+    "sourceReviewOnly": true,
+    "validatorOrPlannerNotExecuted": true,
+    "noCaptureOrDispatch": true,
+    "noPolicyOrSourceModification": true,
+    "noOriginalReviewOverwrite": true,
+    "noOwnerOrVisualOrPhysicalAcceptance": true
+  }
+}

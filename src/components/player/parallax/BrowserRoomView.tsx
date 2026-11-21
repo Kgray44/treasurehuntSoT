@@ -303,7 +303,9 @@ export function BrowserRoomView({
     browserRequested.current = false;
     setBusy(false);
     activeChanged(false);
-    await runtime()?.useGuidedView();
+    const lens = runtime();
+    if (lens?.read().state === "CLOSED") await lens.open();
+    else await lens?.useGuidedView();
   }
   async function tap(event: React.PointerEvent<HTMLDivElement>) {
     if (alignmentRef.current || busy || !feature || !host.current || !provider.current) return;
@@ -437,6 +439,8 @@ export function BrowserRoomView({
       );
       if (!ownsAttempt() || !host.current) return;
       renderer = new BrowserSpatialAdapter(host.current, sourceProvider, moment, fitted, select);
+      if (!renderer.supportsScene(moment.version))
+        throw new Error("This browser tracker cannot present this authored Scene. Use Guided View to continue.");
       adapter.current = renderer;
       record("Opening scene");
       await waitForTrackingOperation(
@@ -449,6 +453,8 @@ export function BrowserRoomView({
         return;
       }
       if (lens.read().state === "DEGRADED") throw new Error(lens.read().guidance);
+      if (lens.read().mode !== "BROWSER")
+        throw new Error("This browser tracker cannot present this authored Scene. Use Guided View to continue.");
       const current = provider.current?.read();
       // Match the UI to the same fresh snapshot admitted after asynchronous opening.
       // eslint-disable-next-line react-hooks/purity

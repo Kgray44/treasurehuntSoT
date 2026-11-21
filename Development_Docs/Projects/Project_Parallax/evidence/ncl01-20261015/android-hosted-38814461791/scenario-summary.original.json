@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "sourceSha": "53f5bb19262c1b2e0547396f6a7b696c8e0a6442",
+  "sourceTree": "ff9796801c4278fba5fca8068a1c65ef935361fd",
+  "sourceFingerprint": "f33945d8226da95efaeb1098c756c0de8ee85772dcce7f18427790da731cb6c8",
+  "dirty": false,
+  "target": "android-emulator",
+  "total": 1,
+  "passed": 1,
+  "failed": 0,
+  "unsupported": 0,
+  "notConfigured": 0,
+  "artifactDirectory": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T221110298Z-3779"
+}

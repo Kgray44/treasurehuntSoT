@@ -1,0 +1,37 @@
+{
+  "head": {
+    "text": "2b8809980e3c8d448a9de4739779cd6f5849d39a\n",
+    "bytes": 41,
+    "sha256": "a6cbdab494ce7bfe61bb27223761cf301e275fdc128968dff19f287b28533352"
+  },
+  "branch": {
+    "text": "refs/heads/codex/parallax-ncl01\n",
+    "bytes": 32,
+    "sha256": "85a9f9803e2928116ffee73d577544866e464b64f8bb7531abcd9e5be46a9f4b"
+  },
+  "status": {
+    "text": "",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "working": {
+    "text": "",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "staged": {
+    "text": "",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "gitCommonDir": {
+    "text": "C:/Users/kkids/Documents/Codex_TreasureHunt/.git\n",
+    "bytes": 49,
+    "sha256": "7b17fd10c20bec6f43b5146443823ab24c49f6d2af4b2d850320803eb431daf0"
+  },
+  "gitDir": {
+    "text": "C:/Users/kkids/Documents/Codex_TreasureHunt/.git/worktrees/Codex_TreasureHunt6\n",
+    "bytes": 79,
+    "sha256": "bdd81ced36cbf19e5d67db75ac388d4e81ed0b01238d85b3deb63143443c4bf9"
+  }
+}

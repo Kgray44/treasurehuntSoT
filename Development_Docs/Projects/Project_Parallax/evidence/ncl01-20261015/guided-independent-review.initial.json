@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "SUPPORTING_INDEPENDENT_RENDERED_REVIEW",
+  "reviewerContext": "/root/ncl01_visual_review",
+  "reviewedCandidate": "019030c3a88eeec3c7b07c5a3cc008b92128e7cb",
+  "evidenceDirectory": "browser-guided/after-readability-fix",
+  "disposition": "NO_BLOCKING_FINDING_MINOR_REPAIR_REQUESTED",
+  "findings": [
+    {
+      "id": "NCL-GUIDED-CLOSE",
+      "priority": "P3",
+      "issue": "Mobile Close scrolls away when reading the second object.",
+      "evidence": "mobile-inspect-chest-modal.png",
+      "requestedOutcome": "Keep header and Close visible during dialog scrolling.",
+      "repairCandidate": "58efbb24af8e7ec36ce9573fa8924525e9a75804",
+      "repairVerification": "PENDING_TARGETED_ACTUAL_CAPTURE"
+    }
+  ],
+  "observations": [
+    "Clue and object text are readable.",
+    "Compass/chest names and actions are distinct.",
+    "Inspect feedback and selected border identify the inspected object.",
+    "Captured evidence records unchanged progression and restored Journal focus."
+  ],
+  "formalProductExperienceApproval": false,
+  "physicalAcceptance": false,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

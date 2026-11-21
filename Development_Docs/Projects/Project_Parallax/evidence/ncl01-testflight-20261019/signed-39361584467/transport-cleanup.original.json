@@ -1,0 +1,7 @@
+{
+  "runId": 39361584467,
+  "branch": "codex/ncl01-testflight-upload-fe6624fb6210-1792464958578",
+  "expectedSha": "9cc85ee3ba6570bba8db82bb2d611ad53a717759",
+  "remoteBranchAbsent": true,
+  "cleanup": "PASS"
+}

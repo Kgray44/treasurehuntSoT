@@ -1,0 +1,44 @@
+[
+  {
+    "attachments": [
+      {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "93679EB0-F38F-4BDF-8B0B-CE76162F3CDB",
+        "deviceName": "landfall-owned-13253",
+        "exportedFileName": "D99ECC01-8894-4B0C-AA78-7B507FD6BACA.json",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "ncl01-scenekit-catalog_0_6BF47A75-D58B-4AAE-9E77-306E431770B6.json",
+        "timestamp": 1792103722.839
+      },
+      {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "93679EB0-F38F-4BDF-8B0B-CE76162F3CDB",
+        "deviceName": "landfall-owned-13253",
+        "exportedFileName": "A7723320-B125-48D8-A758-1ADC2E2C7B3F.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "treasure-chest-removed_0_76A7171C-2968-477F-A161-EBA220EAE9C2.png",
+        "timestamp": 1792103722.833
+      },
+      {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "93679EB0-F38F-4BDF-8B0B-CE76162F3CDB",
+        "deviceName": "landfall-owned-13253",
+        "exportedFileName": "E10A444C-41A8-447F-977D-7C055625974D.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "treasure-chest-populated_0_AFA588A4-8126-4E78-82B7-BD52C5E36F03.png",
+        "timestamp": 1792103722.832
+      },
+      {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "93679EB0-F38F-4BDF-8B0B-CE76162F3CDB",
+        "deviceName": "landfall-owned-13253",
+        "exportedFileName": "EF340C86-D139-4EFC-9D6B-B09F1B43399B.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "treasure-chest-empty_0_31C02ED7-BFE6-4889-BC1E-76D9C178A15B.png",
+        "timestamp": 1792103722.832
+      }
+    ],
+    "testIdentifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+    "testIdentifierURL": "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera"
+  }
+]

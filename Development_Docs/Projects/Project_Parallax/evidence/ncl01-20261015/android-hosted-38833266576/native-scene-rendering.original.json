@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "INSTRUMENTED_FILAMENT_GLTF_RENDERING_ONLY",
+  "renderer": "FILAMENT_1_75_1_OPENGL",
+  "fixtureUsesCamera": false,
+  "fixtureCreatesARCoreSession": false,
+  "physicalTrackingProven": false,
+  "engineDisposed": true,
+  "assets": [
+    {
+      "assetId": "brass-compass",
+      "entityId": "fixture-model-brass-compass",
+      "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "renderables": 4,
+      "materialInstances": 4,
+      "originalWorldBoundsMeters": [
+        -0.08,
+        0,
+        -0.095000006,
+        0.08,
+        0.045,
+        0.095
+      ],
+      "rootTransformAndBottomPivotVerified": true,
+      "renderedNontransparentPixels": 4386,
+      "clearedNontransparentPixels": 0,
+      "renderedFrame": {
+        "fileName": "ncl01-filament-brass-compass-populated.png",
+        "width": 256,
+        "height": 256,
+        "bytes": 20285,
+        "sha256": "ac9c33a8c86f65a854c92fd28fdc63227e6466fa0a2635ce6610019831968d3c",
+        "rgbaSha256": "fd23ab487b0cb1c7c5fc8c0333e6dc144306ba686e35c4837fe2525025c98597",
+        "nontransparentPixels": 4386,
+        "rgbaOrigin": "TOP_LEFT",
+        "pngRowTransform": "NONE_FILAMENT_ALREADY_TOP_LEFT",
+        "pickCoordinateSpace": "ANDROID_VIEW_TOP_LEFT",
+        "sharedBudgetMs": 10000,
+        "readbackElapsedMs": 3976,
+        "artifactPublishedElapsedMs": 5007,
+        "picks": [
+          {
+            "kind": "MODEL_HIT",
+            "x": 128,
+            "y": 128,
+            "viewPickX": 128,
+            "viewPickY": 127,
+            "neighborhoodRadius": 3,
+            "expectedEntityId": "fixture-model-brass-compass",
+            "observedEntityId": "fixture-model-brass-compass",
+            "callbackElapsedMs": 4815,
+            "callbackCount": 1
+          },
+          {
+            "kind": "BACKGROUND_MISS",
+            "x": 10,
+            "y": 229,
+            "viewPickX": 10,
+            "viewPickY": 26,
+            "neighborhoodRadius": 3,
+            "expectedEntityId": null,
+            "observedEntityId": null,
+            "callbackElapsedMs": 4731,
+            "callbackCount": 1
+          }
+        ]
+      },
+      "clearedFrame": {
+        "fileName": "ncl01-filament-brass-compass-cleared.png",
+        "width": 256,
+        "height": 256,
+        "bytes": 10150,
+        "sha256": "df5c0b1b4a75c7c4a96d15363a45fb3690ff2f4d27f9e052098608d25f4bacc9",
+        "rgbaSha256": "382981ab454ec06aa84ae5153725951173375f4cf5dc1d968b4e1d804a7d6136",
+        "nontransparentPixels": 0,
+        "rgbaOrigin": "TOP_LEFT",
+        "pngRowTransform": "NONE_FILAMENT_ALREADY_TOP_LEFT",
+        "pickCoordinateSpace": "ANDROID_VIEW_TOP_LEFT",
+        "sharedBudgetMs": 10000,
+        "readbackElapsedMs": 59,
+        "artifactPublishedElapsedMs": 297,
+        "picks": [
+          {
+            "kind": "CLEARED_MISS",
+            "x": 251,
+            "y": 47,
+            "viewPickX": 251,
+            "viewPickY": 208,
+            "neighborhoodRadius": 3,
+            "expectedEntityId": null,
+            "observedEntityId": null,
+            "callbackElapsedMs": 269,
+            "callbackCount": 1
+          }
+        ]
+      },
+      "assetDisposed": true
+    },
+    {
+      "assetId": "treasure-chest",
+      "entityId": "fixture-model-treasure-chest",
+      "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "renderables": 7,
+      "materialInstances": 4,
+      "originalWorldBoundsMeters": [
+        -0.4,
+        0,
+        -0.25,
+        0.4,
+        0.61,
+        0.25
+      ],
+      "rootTransformAndBottomPivotVerified": true,
+      "renderedNontransparentPixels": 10976,
+      "clearedNontransparentPixels": 0,
+      "renderedFrame": {
+        "fileName": "ncl01-filament-treasure-chest-populated.png",
+        "width": 256,
+        "height": 256,
+        "bytes": 26614,
+        "sha256": "ff88402ca4ba8903c1554ca744613b52d5a1713a466199efd28b74465a8e6808",
+        "rgbaSha256": "3ee409316c4f08c8a51b49b26cb78c9f97d1ec127d773f23d57200329fdaa291",
+        "nontransparentPixels": 10976,
+        "rgbaOrigin": "TOP_LEFT",
+        "pngRowTransform": "NONE_FILAMENT_ALREADY_TOP_LEFT",
+        "pickCoordinateSpace": "ANDROID_VIEW_TOP_LEFT",
+        "sharedBudgetMs": 10000,
+        "readbackElapsedMs": 362,
+        "artifactPublishedElapsedMs": 802,
+        "picks": [
+          {
+            "kind": "MODEL_HIT",
+            "x": 128,
+            "y": 128,
+            "viewPickX": 128,
+            "viewPickY": 127,
+            "neighborhoodRadius": 3,
+            "expectedEntityId": "fixture-model-treasure-chest",
+            "observedEntityId": "fixture-model-treasure-chest",
+            "callbackElapsedMs": 670,
+            "callbackCount": 1
+          },
+          {
+            "kind": "BACKGROUND_MISS",
+            "x": 40,
+            "y": 250,
+            "viewPickX": 40,
+            "viewPickY": 5,
+            "neighborhoodRadius": 3,
+            "expectedEntityId": null,
+            "observedEntityId": null,
+            "callbackElapsedMs": 668,
+            "callbackCount": 1
+          }
+        ]
+      },
+      "clearedFrame": {
+        "fileName": "ncl01-filament-treasure-chest-cleared.png",
+        "width": 256,
+        "height": 256,
+        "bytes": 10031,
+        "sha256": "0b1bf4a9c1fa3e13557d32c3a48cdca24eaabe3e0aa65aa95bd9f1a8b379d98d",
+        "rgbaSha256": "24aa7abb99f3aee2c1c7384ea2d2c4a97d47da3aa99054515dfe5ed1be92b688",
+        "nontransparentPixels": 0,
+        "rgbaOrigin": "TOP_LEFT",
+        "pngRowTransform": "NONE_FILAMENT_ALREADY_TOP_LEFT",
+        "pickCoordinateSpace": "ANDROID_VIEW_TOP_LEFT",
+        "sharedBudgetMs": 10000,
+        "readbackElapsedMs": 206,
+        "artifactPublishedElapsedMs": 563,
+        "picks": [
+          {
+            "kind": "CLEARED_MISS",
+            "x": 20,
+            "y": 247,
+            "viewPickX": 20,
+            "viewPickY": 8,
+            "neighborhoodRadius": 3,
+            "expectedEntityId": null,
+            "observedEntityId": null,
+            "callbackElapsedMs": 444,
+            "callbackCount": 1
+          }
+        ]
+      },
+      "assetDisposed": true
+    }
+  ]
+}

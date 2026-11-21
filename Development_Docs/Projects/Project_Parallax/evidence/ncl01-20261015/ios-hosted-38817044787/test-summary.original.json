@@ -1,0 +1,52 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "93679EB0-F38F-4BDF-8B0B-CE76162F3CDB",
+        "deviceName" : "landfall-owned-13253",
+        "modelName" : "iPhone 17e",
+        "osBuildNumber" : "23F77",
+        "osVersion" : "26.5",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 1,
+      "passedTests" : 23,
+      "skippedTests" : 1,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "LandfallCompanion · Built with macOS 26.6.2",
+  "expectedFailures" : 0,
+  "failedTests" : 1,
+  "finishTime" : 1792103871.89,
+  "passedTests" : 23,
+  "result" : "Failed",
+  "skippedTests" : 1,
+  "startTime" : 1792103581.405,
+  "statistics" : [
+    {
+      "subtitle" : "1 test run",
+      "title" : "1 test collected performance metrics"
+    }
+  ],
+  "testFailures" : [
+    {
+      "failureText" : "XCTAssertEqual failed: (\"Optional(\"FAIL\")\") is not equal to (\"Optional(\"PASS\")\") - Removed SceneKit model retained old pixels",
+      "targetName" : "LandfallCompanionTests",
+      "testIdentifier" : 14,
+      "testIdentifierString" : "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera",
+      "testName" : "testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()"
+    }
+  ],
+  "title" : "Test - LandfallCompanion",
+  "topInsights" : [
+
+  ],
+  "totalTestCount" : 25
+}

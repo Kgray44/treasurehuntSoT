@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_BOUNDED_ARTIFACT_REVIEW",
+  "runId": "39613376449",
+  "sourceCommit": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+  "transportCommit": "c797815315196e2332186a3fc1fbfdd34c519570",
+  "result": "AGGREGATE_FAILURE_PRESERVED",
+  "tests": {
+    "result": "Failed",
+    "passed": 28,
+    "failed": 1,
+    "skipped": 1,
+    "soleFailedMethod": "testCameraFreeOverlayKeepsEscapeVisibleWithLargeTextAndRotation",
+    "failureText": "XCTAssertGreaterThanOrEqual failed: (\"64.66666666666666\") is less than (\"83.33333333333334\") - Escape title must not clip at the declared Dynamic Type size",
+    "productionMeshInputAndAccessibilityPassed": true,
+    "atomicGraphReplacementPassed": true,
+    "homeFailureObserved": false
+  },
+  "viewportFrameBarriers": {
+    "phaseCount": 7,
+    "sharedSetupBudgetSeconds": 5,
+    "allFrameCallbacksObserved": true,
+    "allWithinSharedDeadline": true,
+    "phases": [
+      {
+        "attachedToOwnedWindow": true,
+        "evidenceClass": "SIMULATOR_TEST_VIEWPORT_SETUP_ONLY",
+        "ownedWindowKey": true,
+        "phase": "inspect-only",
+        "pointOfViewAssigned": true,
+        "projectedCenter": [200, 400, 0.9900990128517151],
+        "renderCallbackObserved": true,
+        "sharedSetupBudgetSeconds": 5,
+        "viewportHeight": 800,
+        "viewportWidth": 400,
+        "withinSharedSetupDeadline": true
+      },
+      {
+        "attachedToOwnedWindow": true,
+        "evidenceClass": "SIMULATOR_TEST_VIEWPORT_SETUP_ONLY",
+        "ownedWindowKey": true,
+        "phase": "no-actions",
+        "pointOfViewAssigned": true,
+        "projectedCenter": [200, 400, 0.9900990128517151],
+        "renderCallbackObserved": true,
+        "sharedSetupBudgetSeconds": 5,
+        "viewportHeight": 800,
+        "viewportWidth": 400,
+        "withinSharedSetupDeadline": true
+      },
+      {
+        "attachedToOwnedWindow": true,
+        "evidenceClass": "SIMULATOR_TEST_VIEWPORT_SETUP_ONLY",
+        "ownedWindowKey": true,
+        "phase": "revoked-selection",
+        "pointOfViewAssigned": true,
+        "projectedCenter": [200, 400, 0.9900990128517151],
+        "renderCallbackObserved": true,
+        "sharedSetupBudgetSeconds": 5,
+        "viewportHeight": 800,
+        "viewportWidth": 400,
+        "withinSharedSetupDeadline": true
+      },
+      {
+        "attachedToOwnedWindow": true,
+        "evidenceClass": "SIMULATOR_TEST_VIEWPORT_SETUP_ONLY",
+        "ownedWindowKey": true,
+        "phase": "closer-unrelated-mesh",
+        "pointOfViewAssigned": true,
+        "projectedCenter": [200, 400, 0.9900990128517151],
+        "renderCallbackObserved": true,
+        "sharedSetupBudgetSeconds": 5,
+        "viewportHeight": 800,
+        "viewportWidth": 400,
+        "withinSharedSetupDeadline": true
+      },
+      {
+        "attachedToOwnedWindow": true,
+        "evidenceClass": "SIMULATOR_TEST_VIEWPORT_SETUP_ONLY",
+        "ownedWindowKey": true,
+        "phase": "hidden",
+        "pointOfViewAssigned": true,
+        "projectedCenter": [200, 400, 0.9900990128517151],
+        "renderCallbackObserved": true,
+        "sharedSetupBudgetSeconds": 5,
+        "viewportHeight": 800,
+        "viewportWidth": 400,
+        "withinSharedSetupDeadline": true
+      },
+      {
+        "attachedToOwnedWindow": true,
+        "evidenceClass": "SIMULATOR_TEST_VIEWPORT_SETUP_ONLY",
+        "ownedWindowKey": true,
+        "phase": "rejected-replacement",
+        "pointOfViewAssigned": true,
+        "projectedCenter": [200, 400, 0.9900990128517151],
+        "renderCallbackObserved": true,
+        "sharedSetupBudgetSeconds": 5,
+        "viewportHeight": 800,
+        "viewportWidth": 400,
+        "withinSharedSetupDeadline": true
+      },
+      {
+        "attachedToOwnedWindow": true,
+        "evidenceClass": "SIMULATOR_TEST_VIEWPORT_SETUP_ONLY",
+        "ownedWindowKey": true,
+        "phase": "initial-input",
+        "pointOfViewAssigned": true,
+        "projectedCenter": [200, 400, 0.9900990128517151],
+        "renderCallbackObserved": true,
+        "sharedSetupBudgetSeconds": 5,
+        "viewportHeight": 800,
+        "viewportWidth": 400,
+        "withinSharedSetupDeadline": true
+      }
+    ]
+  },
+  "graphics": {
+    "result": "PASS",
+    "evidenceClass": "INSTRUMENTED_SCENEKIT_GLTF_RENDERING_ONLY",
+    "originalBudgetSeconds": 20,
+    "sealElapsedMilliseconds": 866.0369166667579,
+    "assets": [
+      {
+        "assetId": "treasure-chest",
+        "geometryNodes": 7,
+        "materialInstances": 4,
+        "emptyPixels": 0,
+        "renderedPixels": 8301,
+        "removedPixels": 0,
+        "bottomCenterPivotPreserved": true,
+        "modelDetachedFromScene": true
+      },
+      {
+        "assetId": "brass-compass",
+        "geometryNodes": 4,
+        "materialInstances": 4,
+        "emptyPixels": 0,
+        "renderedPixels": 2509,
+        "removedPixels": 0,
+        "bottomCenterPivotPreserved": true,
+        "modelDetachedFromScene": true
+      }
+    ],
+    "selectionHitCounts": {
+      "background": 0,
+      "opaque": 1,
+      "transparentVerticalMirror": 0
+    },
+    "cleanup": "SCENE_DETACHED_AND_FIXTURE_OWNERS_RELEASED",
+    "originalReportSha256": "d733b30bff136efe017d7574754f2f5d148cdb31fbf5653befc67810de31c26e",
+    "physicalTrackingProven": false,
+    "physicalInspectProven": false,
+    "gpuDriverMemoryReleaseProven": false
+  },
+  "joined": {
+    "result": "FAIL",
+    "reportedStage": "PREPARE_OWNED_LAB",
+    "stageIsGranularForIOS": false,
+    "failureCode": "PARALLAX_NATIVE_LAB_OBSERVATION_FAILED",
+    "clientReadyObserved": false,
+    "clientFailedObserved": false,
+    "completedActionCount": 0,
+    "uiTestStartedObserved": true,
+    "appLaunchedAndQuiescedObserved": true,
+    "resultBundleFinalized": false,
+    "cause": "UNRESOLVED_WEB_CLIENT_READINESS_AFTER_NATIVE_APP_LAUNCH",
+    "canonicalObservationOrProgressionAssertionCompleted": false,
+    "physicalTrackingProven": false,
+    "diagnosticLimits": "ready is latched only by /lab/client-ready. Existing /lab/os/ready route does not latch an observation, so OS-driver readiness cannot be inferred. Original staging runner/app logs retained privately; no final joined test or interaction receipt exists.",
+    "clientReadyEndpoint": "/lab/client-ready",
+    "osReadyObservation": "UNKNOWN_ROUTE_NOT_LATCHED"
+  },
+  "cleanup": {
+    "appleResult": "PASS",
+    "appleOwnedResourceCount": 1,
+    "appleRemainingResourceCount": 0,
+    "joinedResult": "PASS",
+    "databaseRemoved": true,
+    "ownedServerClosed": true,
+    "ownedSimulatorDeleted": true,
+    "failedCleanupOperationCount": 0
+  },
+  "diagnosis": {
+    "dynamicTypeHypothesis": "Fixed Return vertical compression priority750 competes with preferred scroll height750 after added control increases content demand.",
+    "boundedCandidateCorrection": "Required vertical compression resistance for fixed escape; all original no-clipping/containment/minimum-height/font assertions preserved.",
+    "candidateVerification": "PENDING_FRESH_SOURCE_HOSTED_EXECUTION",
+    "priorMeshFailure": "Not reproduced after per-mutation frame barriers; strict identity assertions pass in this source.",
+    "historicalHomeFailure": "Separate historical failure remains preserved; no Home failure observed in this run."
+  },
+  "originals": [
+    {
+      "path": "apple-build/test-summary.json",
+      "sha256": "afe6226b4ef52577c36259b12aefbe24b73d632340029434ceca4f51ff2edb3d"
+    },
+    {
+      "path": "apple-build/test-attachments/manifest.json",
+      "sha256": "06f2ce71c649cf845036a84b12d2b6dcf06d3b1d8ced999920b8510ea027a796"
+    },
+    {
+      "path": "apple-build/cleanup.json",
+      "sha256": "918b4dff7ce2b7de5af19e2897511564b8598369d0fb2d13e381e44eb8700f8e"
+    },
+    {
+      "path": "parallax-native-1792592514089/execution-failure.json",
+      "sha256": "b2a36aa7419a867308ab9f38d7e88b2eee6f820284584251b36b50c33d048001"
+    },
+    {
+      "path": "parallax-native-1792592514089/cleanup.json",
+      "sha256": "fea9c6711df661b4db58031cc00597d3f716f0c32f8fbd5e49fa350e01a0cace"
+    }
+  ],
+  "supersedes": {
+    "path": "ios-39613376449.independent-review.json",
+    "sha256": "1f79edd1a0d6995ff93b83ec11b23fbb51fb1bdb187a4d860e2b1e259491cffc",
+    "reason": "Corrects readiness endpoint attribution; original artifact facts and aggregate failure unchanged."
+  }
+}

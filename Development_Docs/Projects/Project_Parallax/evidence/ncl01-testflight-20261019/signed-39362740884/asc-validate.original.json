@@ -1,0 +1,14 @@
+{
+  "jsonResponseParsed": true,
+  "messages": [
+    {
+      "code": "90778",
+      "message": "Invalid entitlement for core nfc framework. The sdk version '26.5' and min OS version '16.0' are not compatible for the entitlement 'com.apple.developer.nfc.readersession.formats' because 'NDEF is disallowed'."
+    },
+    {
+      "code": "90778",
+      "message": "Invalid entitlement for core nfc framework. The sdk version '26.5' and min OS version '16.0' are not compatible for the entitlement 'com.apple.developer.nfc.readersession.formats' because 'TAG is missing in the entitlement'."
+    }
+  ],
+  "exitCode": 1
+}

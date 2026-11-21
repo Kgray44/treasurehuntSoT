@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_COMMITTED_PREFLIGHT_SOURCE_BINDING_NOT_EXECUTION",
+  "qualification": false,
+  "result": "PASS_SOURCE_BINDING_ONLY",
+  "baseline": {
+    "commit": "a8208aa038d989b8aee17f1494bd37a44e5b1b9b",
+    "tree": "d64a3d8ab705e54d82f2d139c533f6b4fade5ae8"
+  },
+  "candidate": {
+    "commit": "80a3f2ff5d0e226c4a3c1a2e5623de6f74e49e63",
+    "tree": "18c80b53c9bac43a291e9241aaf7e3f803650ec2",
+    "descendantOfBaseline": true
+  },
+  "retainedReviews": {
+    "security": {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/testflight-readonly-preflight.security.json",
+      "sha256": "411378da026c5819908b03617ba044b7a4d6fc1316235e68852168fcf45ef015",
+      "bytes": 6777
+    },
+    "focused": {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/testflight-readonly-preflight.focused.json",
+      "sha256": "818946f66a4bd79a12841ab5b9e4f40db1d78f27c9b3391ec3a4f7debf63c027",
+      "bytes": 5651,
+      "declaredTests": {
+        "total": 42,
+        "passed": 42,
+        "failed": 0
+      },
+      "originalTestStreamsRereadByThisBinding": false
+    },
+    "committedReceiptBytesExactlyEqualOriginals": true
+  },
+  "sourceBindings": [
+    {
+      "path": "scripts/landfall/testflight/dispatch.mjs",
+      "workingBytesSha256": "b4932d711692dbdaa69bc19ccc238006bb77ecdb32d253d5e9bee6a5fff14324",
+      "workingByteLength": 5087,
+      "committedGitBlob": "2c688278ba9ec38ca977614e457fa259dc688141",
+      "committedBytesSha256": "b4932d711692dbdaa69bc19ccc238006bb77ecdb32d253d5e9bee6a5fff14324",
+      "committedByteLength": 5087,
+      "relation": "EXACT_BYTES",
+      "normalizedLfSha256": "b4932d711692dbdaa69bc19ccc238006bb77ecdb32d253d5e9bee6a5fff14324"
+    },
+    {
+      "path": "scripts/landfall/testflight/dispatch.test.mjs",
+      "workingBytesSha256": "36d7bae3c1ae9ee81eba73d1519922719ab71650dfbf4c48a2b9f9363b29c895",
+      "workingByteLength": 3698,
+      "committedGitBlob": "b06b9818c9bd5b39de0f3dcb8d8f56a7bb580059",
+      "committedBytesSha256": "36d7bae3c1ae9ee81eba73d1519922719ab71650dfbf4c48a2b9f9363b29c895",
+      "committedByteLength": 3698,
+      "relation": "EXACT_BYTES",
+      "normalizedLfSha256": "36d7bae3c1ae9ee81eba73d1519922719ab71650dfbf4c48a2b9f9363b29c895"
+    },
+    {
+      "path": "scripts/landfall/testflight/runner.py",
+      "workingBytesSha256": "a1922ac0838730c55c52dc91b71672fc95f4d9896041f28f9c712958563a0d40",
+      "workingByteLength": 42399,
+      "committedGitBlob": "36e4f1c39406930920790c18eb75b55d489905b3",
+      "committedBytesSha256": "a1922ac0838730c55c52dc91b71672fc95f4d9896041f28f9c712958563a0d40",
+      "committedByteLength": 42399,
+      "relation": "EXACT_BYTES",
+      "normalizedLfSha256": "a1922ac0838730c55c52dc91b71672fc95f4d9896041f28f9c712958563a0d40"
+    },
+    {
+      "path": "scripts/landfall/testflight/test_runner.py",
+      "workingBytesSha256": "bcf5fe2cb270f3ed3df543d80dc2e937755dd020c661de11ac2c7cd05b330d2a",
+      "workingByteLength": 35272,
+      "committedGitBlob": "562cbd6f11c98cd1b3e4d80de1d607bec4f5001b",
+      "committedBytesSha256": "bcf5fe2cb270f3ed3df543d80dc2e937755dd020c661de11ac2c7cd05b330d2a",
+      "committedByteLength": 35272,
+      "relation": "EXACT_BYTES",
+      "normalizedLfSha256": "bcf5fe2cb270f3ed3df543d80dc2e937755dd020c661de11ac2c7cd05b330d2a"
+    },
+    {
+      "path": ".agents/ncl01-testflight-hosted.yml",
+      "workingBytesSha256": "9e04245a62e55e65010c503bf257c38f526fb4735adb6bf87f59b9fdddf860a3",
+      "workingByteLength": 5145,
+      "committedGitBlob": "1c352e591460455d5a5b5872b5bd3066dfc08c19",
+      "committedBytesSha256": "9e04245a62e55e65010c503bf257c38f526fb4735adb6bf87f59b9fdddf860a3",
+      "committedByteLength": 5145,
+      "relation": "EXACT_BYTES",
+      "normalizedLfSha256": "9e04245a62e55e65010c503bf257c38f526fb4735adb6bf87f59b9fdddf860a3"
+    },
+    {
+      "path": ".agents/ncl01-testflight.md",
+      "workingBytesSha256": "528e608632a3889f20755f1d75f7c4af31786e658ecbea05c0659894a21eb493",
+      "workingByteLength": 29416,
+      "committedGitBlob": "7639068624e6a230a76136259da01f1fded9579d",
+      "committedBytesSha256": "528e608632a3889f20755f1d75f7c4af31786e658ecbea05c0659894a21eb493",
+      "committedByteLength": 29416,
+      "relation": "EXACT_BYTES",
+      "normalizedLfSha256": "528e608632a3889f20755f1d75f7c4af31786e658ecbea05c0659894a21eb493"
+    }
+  ],
+  "unchangedInputs": [
+    {
+      "path": "src",
+      "kind": "tree",
+      "baselineObject": "e411c6ef5a4aca3e52a67917fdfeb23200655b5a",
+      "committedObject": "e411c6ef5a4aca3e52a67917fdfeb23200655b5a",
+      "identical": true,
+      "requested": true
+    },
+    {
+      "path": "native",
+      "kind": "tree",
+      "baselineObject": "e09204778f7cfe91039656e1e29efe89df25972e",
+      "committedObject": "e09204778f7cfe91039656e1e29efe89df25972e",
+      "identical": true,
+      "requested": true
+    },
+    {
+      "path": "public",
+      "kind": "tree",
+      "baselineObject": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+      "committedObject": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+      "identical": true,
+      "requested": true
+    },
+    {
+      "path": "prisma",
+      "kind": "tree",
+      "baselineObject": "78003b641cb139afb4ad965d5506451a671fefdf",
+      "committedObject": "78003b641cb139afb4ad965d5506451a671fefdf",
+      "identical": true,
+      "requested": true
+    },
+    {
+      "path": "scripts/sounding-line/owned-process.mjs",
+      "kind": "blob",
+      "baselineObject": "d2051a5f5809e634c1b2c1a99a052edbcd060c3d",
+      "committedObject": "d2051a5f5809e634c1b2c1a99a052edbcd060c3d",
+      "identical": true,
+      "requested": true
+    },
+    {
+      "path": "scripts/sounding-line/browser-authority.mjs",
+      "kind": "blob",
+      "baselineObject": "2f27a5ac5b47ca07ad8737e9b8b394c7e46835b9",
+      "committedObject": "2f27a5ac5b47ca07ad8737e9b8b394c7e46835b9",
+      "identical": true,
+      "requested": true
+    },
+    {
+      "path": "scripts/sounding-line/develop-browser-suite.mjs",
+      "kind": "blob",
+      "baselineObject": "0b5fa3e62d7da95d7ed42a02eb4692262c5d4371",
+      "committedObject": "0b5fa3e62d7da95d7ed42a02eb4692262c5d4371",
+      "identical": true,
+      "requested": true
+    },
+    {
+      "path": "scripts/sounding-line/browser-suite-profiles.mjs",
+      "kind": "blob",
+      "baselineObject": "dff446c5d211fbbb477e64c8720da0e93baaf1df",
+      "committedObject": "dff446c5d211fbbb477e64c8720da0e93baaf1df",
+      "identical": true,
+      "requested": true
+    },
+    {
+      "path": "scripts/sounding-line/experience-browser.mjs",
+      "kind": "blob",
+      "baselineObject": "066670df21a5764f4778d6e11cb42de72c360956",
+      "committedObject": "066670df21a5764f4778d6e11cb42de72c360956",
+      "identical": true,
+      "requested": false
+    }
+  ],
+  "completeCommittedDelta": [
+    {
+      "status": "M",
+      "path": ".agents/ncl01-full-completion.md"
+    },
+    {
+      "status": "M",
+      "path": ".agents/ncl01-testflight-hosted.yml"
+    },
+    {
+      "status": "M",
+      "path": ".agents/ncl01-testflight.md"
+    },
+    {
+      "status": "M",
+      "path": "CHANGELOG.md"
+    },
+    {
+      "status": "M",
+      "path": "Development_Docs/Engineering/Repository_Operations/product-status/current-status.md"
+    },
+    {
+      "status": "M",
+      "path": "Development_Docs/Engineering/Repository_Operations/reference/feature-status.md"
+    },
+    {
+      "status": "M",
+      "path": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv"
+    },
+    {
+      "status": "M",
+      "path": "Development_Docs/Projects/Project_Parallax/NCL01_Post_Crossdeck_Integration_20261021.md"
+    },
+    {
+      "status": "A",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/testflight-readonly-preflight.focused.json"
+    },
+    {
+      "status": "A",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/testflight-readonly-preflight.security.json"
+    },
+    {
+      "status": "M",
+      "path": "Development_Docs/document-index.json"
+    },
+    {
+      "status": "M",
+      "path": "docs/product/features.md"
+    },
+    {
+      "status": "M",
+      "path": "scripts/landfall/testflight/dispatch.mjs"
+    },
+    {
+      "status": "M",
+      "path": "scripts/landfall/testflight/dispatch.test.mjs"
+    },
+    {
+      "status": "M",
+      "path": "scripts/landfall/testflight/runner.py"
+    },
+    {
+      "status": "M",
+      "path": "scripts/landfall/testflight/test_runner.py"
+    }
+  ],
+  "limits": {
+    "anySourceChangeBeyondLineEndingNormalizationInReviewedSixFiles": false,
+    "testsExecutedByThisBinding": false,
+    "realCredentialsRead": false,
+    "appleRequestsMade": false,
+    "signingProfileKeychainArchiveOrUploadExecuted": false,
+    "workflowDispatched": false,
+    "productOrPhysicalAcceptanceClaimed": false,
+    "localBrowserRunOutcomeAssessed": false,
+    "meaning": "Binds the prior uncommitted six-file review and separate focused-test source hashes to exact committed blobs. It is not a new test, Apple credential/API validation, cancellation result, or runtime qualification."
+  }
+}

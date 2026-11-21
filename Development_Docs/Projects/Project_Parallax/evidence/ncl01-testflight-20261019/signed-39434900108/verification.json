@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "kind": "UPLOAD_ACCEPTED_PROCESSING_VALID_INTERNAL_GROUP_ATTACHED",
+  "runId": 39434900108,
+  "candidateSha": "3ac0dafc0174f4a7b7b5fb63c91aa49b01694730",
+  "transportSha": "e651956db73a995b2ebca9438c916e006ce03eb6",
+  "origin": "https://155.42.98.171:8449",
+  "version": "0.1.0",
+  "build": "3",
+  "deviceArchiveValidated": true,
+  "appTargetSigningSettingsValidated": true,
+  "appStoreExportSucceeded": true,
+  "ipaBytes": 1975077,
+  "ipaSha256": "64d406c0b8a9e1fd468a3d605be995d0263c2211c01af2312f03fea0341801b8",
+  "ipaRetainedInOwnedArtifactDirectory": true,
+  "exportedIpaMetadataResourceChecksPassed": 13,
+  "credentialCleanup": "PASS",
+  "appleValidatePassed": true,
+  "appleUploadPassed": true,
+  "uploadAccepted": true,
+  "appleProcessing": "VALID",
+  "appleBuildId": "fdb879e6-ac3c-49a5-9728-6634bf8b0a1f",
+  "pipelineResult": "PASS",
+  "internalGroupAttached": true,
+  "internalBuildState": "IN_BETA_TESTING",
+  "usesNonExemptEncryption": false,
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "privacyScan": "PASS_NO_PRIVATE_KEY_CERTIFICATE_JWT_OR_RAW_KEY_BODY_FOUND",
+  "emailScan": "PASS_NO_EMAIL_OUTSIDE_BYTE_IDENTICAL_OFFICIAL_TOOL_HELP",
+  "files": [
+    {
+      "path": "altool-help.original.log",
+      "bytes": 8183,
+      "sha256": "088129dcdb14c95951f4fa267c86bcf6b5341e40206321a883d0ee9e4d377752"
+    },
+    {
+      "path": "appstore-export.original.log",
+      "bytes": 373,
+      "sha256": "5fd3b58e644a032aa643b76940eee818153f7a0e52eb1d007a224964eec5dfd0"
+    },
+    {
+      "path": "asc-upload.original.json",
+      "bytes": 68,
+      "sha256": "1aa85e05ea2335c79fb99fdeabde221ce3ff107edb9f5e988d0dae0b10bd5eb7"
+    },
+    {
+      "path": "asc-validate.original.json",
+      "bytes": 68,
+      "sha256": "1aa85e05ea2335c79fb99fdeabde221ce3ff107edb9f5e988d0dae0b10bd5eb7"
+    },
+    {
+      "path": "device-archive.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dispatch.original.json",
+      "bytes": 561,
+      "sha256": "7a6bddaf639ceba4bcdfcf68f161e90e105955a72d2a1f3c8cb8f3468b8e8278"
+    },
+    {
+      "path": "github-run.original.json",
+      "bytes": 271,
+      "sha256": "4d0ca94ce58e61ba4d4858f20173b147c8f2c13fff29df743fb9a65482cbc2a7"
+    },
+    {
+      "path": "ipa-metadata-verification.json",
+      "bytes": 785,
+      "sha256": "d1464368f3ff1b35df4ec9b952a55877afbc1a5b95345f7a82a2045acb90490c"
+    },
+    {
+      "path": "project-generation.original.log",
+      "bytes": 195,
+      "sha256": "a54854f2c9443ced13a946a0750746b2629b98e378f2818801eeb1460fe24167"
+    },
+    {
+      "path": "receipt.original.json",
+      "bytes": 1200,
+      "sha256": "378010c09fe723a7676172b22b402e384e2087a7461f6b3a3322fb5380c626fa"
+    },
+    {
+      "path": "transport-cleanup.original.json",
+      "bytes": 189,
+      "sha256": "9eeaf709ce5b383769737e0eab4509c274bf0ae97dcab67698a55eb0de431c38"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "PREVIEW_RUNTIME_REPLACEMENT_AND_ANONYMOUS_HEALTH",
+  "result": "PASS",
+  "sourceCommit": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+  "routerSha256": "0fc89520c59ce30230cb76637f66c232ea66f5daea1af04ffa1b9df93739663a",
+  "runtimeReplacement": true,
+  "normalApplicationBuildAndSecurityConfigurationChanged": false,
+  "runtimeStateAndTempOnC": true,
+  "identityClauseCount": 16,
+  "identityClausesPassed": true,
+  "ownedCreationBoundConsoleHosts": 1,
+  "unknownDescendants": 0,
+  "protectedNeighborCreationIdentitiesUnchanged": true,
+  "outerLaunchObserver": {
+    "laterActualHelperReady": true,
+    "result": "INCOMPLETE",
+    "budgetMs": 45000,
+    "runtimeKilledByOuterObserver": false
+  },
+  "anonymousHealth": {
+    "localHttp11": {
+      "schemaVersion": 1,
+      "evidenceClass": "ANONYMOUS_LOOPBACK_HTTP11_ONLY",
+      "observedAt": "2026-10-21T14:46:51.697Z",
+      "ok": true,
+      "status": 200,
+      "byteLength": 18010,
+      "bodySha256": "aaee31d76e0a94dcad342e9d7c5e5e43fdca188405bc409317e1e1f6e75af778",
+      "contentType": "text/html",
+      "elapsedMs": 26,
+      "exactFixedHostAndHttpsForwardedProtoConfigured": true,
+      "authenticationAttempted": false,
+      "authDataHealthClaimed": false,
+      "requestOrResponseHeadersLogged": false
+    },
+    "firstFetchLoopbackStatus": 403,
+    "publicAssetPass": 8,
+    "publicNormalTls": {
+      "ok": true,
+      "status": 200,
+      "contentType": "text/html",
+      "byteLength": 18948,
+      "bodySha256": "dd1dd9b732794e83f5b0c8a36ed8931c5aa7e8fbca40ecab4c98e82cae3affee",
+      "elapsedMs": 842
+    },
+    "publicAssetChecks": 8,
+    "firstFetchGuardCauseProved": false,
+    "firstFetchLoopback403Retained": true
+  },
+  "previousFailures": {
+    "controlledAttemptExpectedWindowsConsoleObserved": true,
+    "failedRuntimeAndExpectedConsoleExitVerified": true,
+    "failedPort3158ReleasedVerified": true,
+    "controlledAttemptFailingClause": "noChildren",
+    "originalCompositeFailureCause": "UNPROVED"
+  },
+  "futureProcedures": {
+    "edgeDerivative": "loopback-edge-owned-state.mjs",
+    "productionStart": "Start-OwnedProduction.ps1",
+    "edgeDerivativeSelfTest": "PASS",
+    "edgeStarter": "Start-OwnedEdge.ps1",
+    "healthyCurrentEdgeRestarted": false,
+    "consoleVerifier": "Owned-Preview-Console.ps1",
+    "edgeStartExecuted": false,
+    "oldDWholeStackStartStopMetadata": "STALE_DO_NOT_INVOKE_BLINDLY",
+    "productionStop": "Stop-OwnedProduction.ps1"
+  },
+  "authenticatedDataHealthClaimed": false,
+  "databaseDirectlyReadOrModifiedByHelpers": false,
+  "zeroDWritesClaimed": false,
+  "capacityLimitation": "Normal application/database remain on D. D was full during these checks; any later cache relocation is separate evidence and does not qualify authenticated data health.",
+  "scope": "Anonymous sign-in/static assets only; not native AR, physical hardware, authenticated data, or owner acceptance.",
+  "observedAt": "2026-10-21T14:57:10.0299054Z"
+}

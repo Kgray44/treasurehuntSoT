@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "measurementClass": "NATIVE_SENSOR_ADAPTER_INSTRUMENTATION",
+  "api": 36,
+  "sampleCount": 3,
+  "physicalEnergyProven": false,
+  "budgets": {
+    "activeCpuMsPerTwoSecondInterval": 1000,
+    "processPssKiB": 262144,
+    "incrementalPssKiB": 32768
+  },
+  "samples": [
+    {
+      "baselineElapsedMs": 1000,
+      "baselineCpuMs": 1,
+      "baselinePssKiB": 90895,
+      "activeElapsedMs": 2000,
+      "activeCpuMs": 15,
+      "activePssKiB": 90832,
+      "pssDeltaKiB": -63,
+      "callbacks": 22,
+      "stopVerified": true
+    },
+    {
+      "baselineElapsedMs": 1000,
+      "baselineCpuMs": 0,
+      "baselinePssKiB": 90816,
+      "activeElapsedMs": 2000,
+      "activeCpuMs": 12,
+      "activePssKiB": 90661,
+      "pssDeltaKiB": -155,
+      "callbacks": 22,
+      "stopVerified": true
+    },
+    {
+      "baselineElapsedMs": 1001,
+      "baselineCpuMs": 0,
+      "baselinePssKiB": 90619,
+      "activeElapsedMs": 2000,
+      "activeCpuMs": 11,
+      "activePssKiB": 90451,
+      "pssDeltaKiB": -168,
+      "callbacks": 23,
+      "stopVerified": true
+    }
+  ]
+}
