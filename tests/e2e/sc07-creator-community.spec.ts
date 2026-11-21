@@ -592,7 +592,16 @@ test("Chapter template rejection stays private and installation rechecks the cur
   await refresh.press("Enter");
   const currentReview = installerPage.getByRole("region", { name: "Install this saved Creator item" });
   await expect(currentReview.getByText(/release 3\.0\.0 by Synthetic owner Creator/)).toBeInViewport({ ratio: 1 });
-  await expect(currentReview.getByRole("heading", { name: "Install this saved Creator item" })).toBeFocused();
+  const reviewHeading = currentReview.getByRole("heading", { name: "Install this saved Creator item" });
+  await expect(reviewHeading).toBeFocused();
+  const districtNav = installerPage.getByRole("navigation", { name: "Community Harbor districts" });
+  await expect
+    .poll(async () => {
+      const heading = await reviewHeading.boundingBox();
+      const navigation = await districtNav.boundingBox();
+      return heading !== null && navigation !== null && heading.y >= navigation.y + navigation.height;
+    })
+    .toBe(true);
   await expect(currentReview.getByText(/An updated fictional harbor introduction/)).toBeInViewport({ ratio: 1 });
   await expect(currentReview.getByText(/License: Synthetic reuse/)).toBeInViewport({ ratio: 1 });
   await expect(currentReview.getByText("Credits: Synthetic owner Creator", { exact: true })).toBeInViewport({

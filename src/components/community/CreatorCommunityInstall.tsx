@@ -114,7 +114,7 @@ export function CreatorCommunityInstall({
         id={reviewHeadingId}
         ref={reviewHeadingRef}
         tabIndex={-1}
-        style={{ scrollMarginBlockStart: "calc(var(--shell-header-height, 4.75rem) + 1rem)" }}
+        style={{ scrollMarginBlockStart: "var(--community-detail-nav-offset)" }}
       >
         {itemType === "CHRONICLE" ? "Copy this Chronicle privately" : "Install this saved Creator item"}
       </h3>
