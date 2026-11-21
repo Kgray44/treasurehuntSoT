@@ -55,11 +55,15 @@ export function CreatorPublicationConsole() {
   const [preflight, setPreflight] = useState<Preflight | null>(null);
   const [receipt, setReceipt] = useState<Receipt | null>(null);
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<{ message: string; moveFocus?: true } | null>(null);
   const receiptRef = useRef<HTMLParagraphElement>(null);
+  const errorRef = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
     if (receipt) receiptRef.current?.focus();
   }, [receipt]);
+  useEffect(() => {
+    if (error?.moveFocus) errorRef.current?.focus();
+  }, [error]);
   useEffect(() => {
     let cancelled = false;
     void fetch("/api/community/creator-publication/options", { cache: "no-store" })
@@ -72,7 +76,7 @@ export function CreatorPublicationConsole() {
         if (!cancelled) setOptions(data);
       })
       .catch((cause) => {
-        if (!cancelled) setError(cause instanceof Error ? cause.message : "Options are unavailable.");
+        if (!cancelled) setError({ message: cause instanceof Error ? cause.message : "Options are unavailable." });
       });
     return () => {
       cancelled = true;
@@ -111,12 +115,12 @@ export function CreatorPublicationConsole() {
   const resetReview = () => {
     setPreflight(null);
     setReceipt(null);
-    setError("");
+    setError(null);
   };
   const review = async () => {
     if (!publication || !rightsAcknowledged || (source?.type === "CHRONICLE" && !spoilersAcknowledged)) return;
     setBusy(true);
-    setError("");
+    setError(null);
     setPreflight(null);
     try {
       const response = await fetch(`/api/community/${route}/preflight`, {
@@ -128,7 +132,7 @@ export function CreatorPublicationConsole() {
       if (!response.ok) throw new Error(data.error ?? "This saved source is not eligible for Community publication.");
       setPreflight(data as Preflight);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Review could not finish.");
+      setError({ message: cause instanceof Error ? cause.message : "Review could not finish.", moveFocus: true });
     } finally {
       setBusy(false);
     }
@@ -136,7 +140,7 @@ export function CreatorPublicationConsole() {
   const publish = async () => {
     if (!publication || !preflight) return;
     setBusy(true);
-    setError("");
+    setError(null);
     try {
       const sessionResponse = await fetch("/api/player/session", { cache: "no-store" });
       if (!sessionResponse.ok) throw new Error("Your Creator session expired. Sign in and try again.");
@@ -151,7 +155,7 @@ export function CreatorPublicationConsole() {
       if (!response.ok) throw new Error(data.error ?? "The release could not be submitted.");
       setReceipt(data as Receipt);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Submission could not finish.");
+      setError({ message: cause instanceof Error ? cause.message : "Submission could not finish.", moveFocus: true });
     } finally {
       setBusy(false);
     }
@@ -367,7 +371,11 @@ export function CreatorPublicationConsole() {
           <Link href={receipt.listingUrl}>View its Community address</Link>.
         </p>
       )}
-      {error && <p role="alert">{error}</p>}
+      {error && (
+        <p ref={errorRef} role="alert" tabIndex={error.moveFocus ? -1 : undefined}>
+          {error.message}
+        </p>
+      )}
     </section>
   );
 }

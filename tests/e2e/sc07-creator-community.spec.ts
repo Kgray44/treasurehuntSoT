@@ -254,9 +254,10 @@ test("Studio explains why an unsupported dependency blocks Creator submission", 
   const response = await reviewed;
   expect(response.status()).toBe(400);
   expect(await response.json()).toMatchObject({ code: "COMMUNITY_DEPENDENCY_UNSUPPORTED" });
-  await expect(
-    page.getByRole("alert").filter({ hasText: "cannot yet be packaged with verified rights" }),
-  ).toBeVisible();
+  const refusal = page.getByRole("alert").filter({ hasText: "cannot yet be packaged with verified rights" });
+  await expect(refusal).toBeInViewport({ ratio: 1 });
+  await expect(refusal).toBeFocused();
+  await page.screenshot({ path: test.info().outputPath("unsupported-dependency-refusal.png") });
   await expect(page.getByRole("button", { name: "Submit for moderation" })).toHaveCount(0);
   expect(await db.communityListing.count({ where: { slug } })).toBe(0);
 });
