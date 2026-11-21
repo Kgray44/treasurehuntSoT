@@ -1,0 +1,71 @@
+import assert from "node:assert/strict";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve, sep } from "node:path";
+import { PrismaClient } from "D:/CodexWorktrees/treasurehunt-admiralty-ai-economics-20261014/node_modules/@prisma/client/index.js";
+import { aiEconomicsOverview } from "D:/CodexWorktrees/treasurehunt-admiralty-ai-economics-20261014/src/parallax/ai-economics.ts";
+import { reserveAIUsage, markAIDispatched, settleAIUsage, AI_CONTROL_ID } from "D:/CodexWorktrees/treasurehunt-admiralty-ai-economics-20261014/src/parallax/ai-ledger.ts";
+import { beginAIProviderRetry, reconcileAIProviderAttempt } from "D:/CodexWorktrees/treasurehunt-admiralty-ai-economics-20261014/src/parallax/ai-attempts.ts";
+import { defaultAIGlobalPolicy } from "D:/CodexWorktrees/treasurehunt-admiralty-ai-economics-20261014/src/parallax/ai-policy.ts";
+async function main() {
+const sandbox = mkdtempSync(join(tmpdir(), "admiralty-reviewer-account-search-"));
+const store = new PrismaClient({ datasources: { db: { url: "file:" + join(sandbox,"ledger.sqlite").replaceAll("\\","/") } } });
+const now = new Date("2026-10-14T16:00:00Z");
+const person = "cohortpersonselected9";
+const excluded = "unselectedperson8";
+const usage = {inputTokens:1000,cachedInputTokens:0,cacheWriteTokens:0,outputTokens:700,reasoningTokens:0};
+try {
+for (const migration of ["20261011180000_parallax_a1_ai_quotas","20261011210000_parallax_a1_application_receipt","20261015010000_admiralty_ai_economics"])
+for (const sql of readFileSync(resolve("prisma/migrations",migration,"migration.sql"),"utf8").split(";").map(value=>value.trim()).filter(Boolean))
+await store.$executeRawUnsafe(sql);
+await store.$executeRawUnsafe('CREATE TABLE "UserAccount" ("id" TEXT PRIMARY KEY)');
+await store.$executeRawUnsafe('CREATE TABLE "PlayerProfile" ("id" TEXT PRIMARY KEY,"accountId" TEXT UNIQUE,"displayName" TEXT)');
+for (const id of [person,excluded]) {
+await store.$executeRawUnsafe('INSERT INTO "UserAccount" ("id") VALUES (?)',id);
+await store.$executeRawUnsafe('INSERT INTO "PlayerProfile" ("id","accountId","displayName") VALUES (?,?,?)',"profile-"+id,id,"Synthetic "+id);
+}
+await store.aIQuotaControl.create({data:{id:AI_CONTROL_ID,policy:JSON.stringify({...defaultAIGlobalPolicy,enabled:true})}});
+let serial=0;
+async function add(accountId:string,room:boolean,retry:boolean) {
+const requestId="reviewer-request-"+(++serial);
+const admitted=await reserveAIUsage({accountId,requestId,idempotencyKey:"synthetic-key-"+serial,fingerprint:"synthetic-fingerprint-"+serial,definitionId:"synthetic-owned-room",operationCategory:room?"ROOM_RECONSTRUCTION":"AUTHORING",mode:"STANDARD"},store,now);
+assert(!admitted.record.id.includes(person) && !requestId.includes(person));
+await markAIDispatched(admitted.record.id,store,now);
+await settleAIUsage(admitted.record.id,{usage,providerResponseId:"first-"+serial,...(retry?{result:{status:"FAILED",code:"INCOMPLETE_OUTPUT"}}:{})},store,now);
+if(retry) {
+const next=await beginAIProviderRetry(admitted.record.id,store,new Date(now.getTime()+61000));
+await reconcileAIProviderAttempt(next.id,{usage,providerResponseId:"retry-"+serial},store,now);
+}
+await store.aIUsageLedger.update({where:{id:admitted.record.id},data:room?{outcome:"ACCEPTED",acceptedAt:now,acceptedResourceId:"synthetic-owned-room-"+accountId}:{outcome:"APPLIED",appliedAt:now}});
+}
+await add(person,true,false);
+await add(person,true,false);
+await add(person,false,true);
+await add(excluded,true,false);
+await add(excluded,false,false);
+const filter={from:new Date("2026-10-01T00:00:00Z"),to:new Date("2026-11-01T00:00:00Z"),search:person};
+const selected=await aiEconomicsOverview(filter,store);
+const rooms=selected.capabilities.find(item=>item.id==="ROOM_RECONSTRUCTION")!;
+const edits=selected.capabilities.find(item=>item.id==="GROUNDED_ASSISTANT_EDIT")!;
+assert.equal(selected.totals.operations,3);
+assert.equal(selected.totals.providerAttempts,4);
+assert.equal(selected.people.length,1);
+assert.equal(selected.people[0].accountId,person);
+assert.equal(rooms.requests,2);
+assert.equal(rooms.usefulResults,1);
+assert.equal(rooms.providerAttempts,2);
+assert.equal(rooms.operationsPerUsefulResult,2);
+assert.equal(rooms.providerAttemptsPerUsefulResult,2);
+assert.equal(edits.requests,1);
+assert.equal(edits.usefulResults,1);
+assert.equal(edits.providerAttempts,2);
+assert.equal(edits.operationsPerUsefulResult,1);
+assert.equal(edits.providerAttemptsPerUsefulResult,2);
+console.log(JSON.stringify({status:"PASS",sourceCandidate:"4a185cbf6ba04c25564dcb5d031f03ef588de3c4",search:person,accountIdAbsentFromOperationAndRequestIds:true,totalOperations:selected.totals.operations,totalProviderAttempts:selected.totals.providerAttempts,selectedPeople:selected.people.map(item=>item.accountId),rooms:{operations:rooms.requests,usefulResults:rooms.usefulResults,providerAttempts:rooms.providerAttempts,operationsPerUsefulResult:rooms.operationsPerUsefulResult,providerAttemptsPerUsefulResult:rooms.providerAttemptsPerUsefulResult},edits:{operations:edits.requests,usefulResults:edits.usefulResults,providerAttempts:edits.providerAttempts,operationsPerUsefulResult:edits.operationsPerUsefulResult,providerAttemptsPerUsefulResult:edits.providerAttemptsPerUsefulResult}},null,2));
+} finally {
+await store.$disconnect();
+if(resolve(sandbox).startsWith(resolve(tmpdir())+sep)) rmSync(sandbox,{recursive:true,force:true});
+}
+}
+main().catch(error=>{console.error(error);process.exitCode=1;});
+

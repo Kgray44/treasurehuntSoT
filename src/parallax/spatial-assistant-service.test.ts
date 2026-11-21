@@ -6,12 +6,15 @@ import { PrismaClient } from "@prisma/client";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { createSpatialDraft, draftSchema } from "./authoring";
 import { canonicalChecksum } from "@/drydock/canonical";
-import { AI_CONTROL_ID } from "./ai-ledger";
+import { AI_CONTROL_ID, reserveAIUsage, markAIDispatched, settleAIUsage } from "./ai-ledger";
 import { defaultAIGlobalPolicy } from "./ai-policy";
 import { requestSpatialAssistant } from "./spatial-assistant-service";
-import { spatialItemKind } from "./library-service";
+import { spatialItemKind, saveSpatialDraftInTransaction } from "./library-service";
 import { prepareSpatialAssistantApplication, applySpatialAssistant } from "./spatial-assistant-application";
-import { assistantProposalSchema } from "./spatial-assistant";
+import { assistantProposalSchema, assistantSceneDigest } from "./spatial-assistant";
+import { applyRoomPerception, type RoomPerceptionProposal } from "./room-perception-service";
+import { createRoomEnvironment } from "./environment-authoring";
+import { simulationEnvironments } from "./studio-validation";
 import { readAssistantConversation } from "./assistant-conversation";
 import { aiQuotaUsageHistory } from "./ai-quota-projections";
 
@@ -75,7 +78,9 @@ beforeAll(async () => {
   const sql =
     readFileSync(resolve("prisma/migrations/20261011180000_parallax_a1_ai_quotas/migration.sql"), "utf8") +
     "\n" +
-    readFileSync(resolve("prisma/migrations/20261011210000_parallax_a1_application_receipt/migration.sql"), "utf8");
+    readFileSync(resolve("prisma/migrations/20261011210000_parallax_a1_application_receipt/migration.sql"), "utf8") +
+    "\n" +
+    readFileSync(resolve("prisma/migrations/20261015010000_admiralty_ai_economics/migration.sql"), "utf8");
   for (const statement of sql
     .split(";")
     .map((part) => part.trim())
@@ -131,6 +136,8 @@ describe("Spatial Assistant atomic canonical Apply", () => {
       applicationChecksum: canonicalChecksum(saved.draft),
     });
     expect(ledger.appliedAt).toBeInstanceOf(Date);
+    expect(ledger.outcome).toBe("APPLIED");
+    expect(JSON.parse(ledger.outcomeEvidence!).authority).toBe("PARALLAX_CANONICAL_APPLY");
     const freshServer = new PrismaClient({
       datasources: { db: { url: `file:${join(root, "fixture.sqlite").replaceAll("\\", "/")}` } },
     });
@@ -216,6 +223,96 @@ describe("Spatial Assistant atomic canonical Apply", () => {
     });
     expect((await store.aIUsageLedger.findFirstOrThrow()).applicationKey).toBeNull();
     expect((await store.reusableAuthoringItemVersion.findFirstOrThrow()).checksum).toBe(canonicalChecksum(draft));
+  });
+});
+
+describe("Room acceptance accounting uses the real canonical save", () => {
+  async function generatedRoom() {
+    await store.aIQuotaControl.update({
+      where: { id: AI_CONTROL_ID },
+      data: {
+        policy: JSON.stringify({
+          ...defaultAIGlobalPolicy,
+          enabled: true,
+          maximumRequestSpendNano: 1_000_000_000,
+        }),
+      },
+    });
+    const proposal: RoomPerceptionProposal = {
+      schemaVersion: 1,
+      requestId: "synthetic-room-request",
+      definitionId: draft.content.definitionId,
+      sceneRevision: 1,
+      editorGeneration: 0,
+      sceneDigest: await assistantSceneDigest(draft),
+      room: createRoomEnvironment(simulationEnvironments[0]),
+      warnings: [],
+    };
+    const admission = await reserveAIUsage(
+      {
+        accountId,
+        requestId: proposal.requestId,
+        definitionId: draft.content.definitionId,
+        operationCategory: "ROOM_RECONSTRUCTION",
+        mode: "STANDARD",
+        fingerprint: "synthetic-generated-room",
+        idempotencyKey: "synthetic-room-idempotency",
+      },
+      store,
+    );
+    await markAIDispatched(admission.record.id, store);
+    await settleAIUsage(
+      admission.record.id,
+      {
+        providerResponseId: "synthetic-room-provider",
+        usage: {
+          inputTokens: 1000,
+          cachedInputTokens: 0,
+          cacheWriteTokens: 0,
+          outputTokens: 200,
+          reasoningTokens: 0,
+        },
+        result: { status: "PROPOSED", proposal },
+      },
+      store,
+    );
+    return { proposal, ledgerId: admission.record.id };
+  }
+  it("records acceptance only with an owned saved room, then tracks canonical editing", async () => {
+    const { proposal, ledgerId } = await generatedRoom();
+    expect((await store.aIUsageLedger.findUniqueOrThrow({ where: { id: ledgerId } })).outcome).toBe("GENERATED");
+    await expect(
+      applyRoomPerception("foreign-owner", { draft, revision: 1, editorGeneration: 0, proposal }, store),
+    ).rejects.toThrow();
+    const saved = await applyRoomPerception(accountId, { draft, revision: 1, editorGeneration: 0, proposal }, store);
+    expect(saved.revision).toBe(2);
+    const accepted = await store.aIUsageLedger.findUniqueOrThrow({ where: { id: ledgerId } });
+    expect(accepted).toMatchObject({ outcome: "ACCEPTED", acceptedResourceId: draft.content.definitionId });
+    expect(JSON.parse(accepted.outcomeEvidence!)).toMatchObject({
+      authority: "PARALLAX_ROOM_ACCEPT_AND_SAVE",
+      revision: 2,
+    });
+    const edited = structuredClone(saved.draft);
+    edited.content.studio!.environment!.width += 0.25;
+    await store.$transaction((tx) => saveSpatialDraftInTransaction(accountId, edited, 2, tx));
+    expect((await store.aIUsageLedger.findUniqueOrThrow({ where: { id: ledgerId } })).outcome).toBe(
+      "ACCEPTED_THEN_EDITED",
+    );
+  });
+  it("rolls back the room save if the authoritative acceptance receipt fails", async () => {
+    const { proposal, ledgerId } = await generatedRoom();
+    await store.$executeRawUnsafe(
+      "CREATE TRIGGER synthetic_room_receipt_failure BEFORE UPDATE ON \"AIUsageLedger\" WHEN NEW.\"outcome\" = 'ACCEPTED' BEGIN SELECT RAISE(ABORT, 'synthetic receipt failure'); END",
+    );
+    try {
+      await expect(
+        applyRoomPerception(accountId, { draft, revision: 1, editorGeneration: 0, proposal }, store),
+      ).rejects.toThrow();
+      expect((await store.reusableAuthoringItem.findFirstOrThrow()).currentVersionNumber).toBe(1);
+      expect((await store.aIUsageLedger.findUniqueOrThrow({ where: { id: ledgerId } })).outcome).toBe("GENERATED");
+    } finally {
+      await store.$executeRawUnsafe("DROP TRIGGER synthetic_room_receipt_failure");
+    }
   });
 });
 describe("Spatial Assistant owner-bound server orchestration", () => {

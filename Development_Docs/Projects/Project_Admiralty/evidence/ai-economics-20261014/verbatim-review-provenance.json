@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "Generated engineering provenance and verbatim review records",
+  "method": "Original review/packet bytes are preserved as .json.raw. JSON representations are normalized with repository Prettier; this does not change product, captures or original review claims. The final independent reviewer rebinds the formatted final packet explicitly.",
+  "records": [
+    {
+      "formattedRepresentation": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/review-packet-initial.json",
+      "verbatimOriginal": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/review-packet-initial.json.raw",
+      "originalSha256": "5789ea47c6097eb92ec54132ba6cabf1bb609bcb829ba1cbda83723460518d8d"
+    },
+    {
+      "formattedRepresentation": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/independent-review-initial.json",
+      "verbatimOriginal": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/independent-review-initial.json.raw",
+      "originalSha256": "94ccae9b9f30fe4f83c80a86e24c17abde1ea5e057e3222a018b6effc69225da"
+    },
+    {
+      "formattedRepresentation": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/review-packet-final.json",
+      "verbatimOriginal": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/review-packet-final.json.raw",
+      "originalSha256": "f10b0a6c8220935c95d9379322783d6d146e3de79a5e7e351abe374d478732c6"
+    },
+    {
+      "formattedRepresentation": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/independent-review-final.json",
+      "verbatimOriginal": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/independent-review-final.json.raw",
+      "originalSha256": "2c6298705bb35be3140ece6545385f828bebbbb7c874eb847ad0c45b3041346e"
+    }
+  ]
+}

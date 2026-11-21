@@ -1,1716 +1,908 @@
 {
   "version": 1,
-  "baseSha": "3f1eddb1f990ecad9b5a119236d73bdd0c9ecdbd",
-  "sourceDigest": "fccf3692c9e0ada306b6a564cc7831e76e35a7909bebadadc64bfead9358137c",
-  "contractDigest": "155d1bf5382c99427bb690cb29b937e57131795c227b2af09d10ed8e018924f2",
+  "baseSha": "4053d4ee5833bc6130f91a0b8d2cd11d1ce0b97f",
+  "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a",
+  "sourceDigest": "98caced89db055993f57b2949f4a2f374ae1e30f35e9101a449b6fc9f729aab7",
+  "contractDigest": "25489906967d57b287028bb4d0f7dff81ca9c45bb9b6fe2b7b3a6b8edf362478",
   "ownerAcceptance": "NOT_CLAIMED",
   "artifacts": [
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0.png",
-      "sha256": "a8fe21d09d9a894def0527b42ae5272d521702dda172bce7e1686a7b616b5390",
+      "id": "initial/allowance-applied-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/allowance-applied-desktop.png",
+      "sha256": "a38d7cbb3b12626633ce3661d0d1f7294013d4480e7033cc97e2260c5bae1885",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "WORKSPACES_READY",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2.png",
-      "sha256": "df134a4f9e21ac136d6e580972f4804d14ef50ff64e6297c1eada686bc54f27d",
+      "id": "initial/allowance-applied-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/allowance-applied-mobile.png",
+      "sha256": "88416c7231f5e74aac643faf120e99ebb91656e0b73b2734d8b60550189fff17",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CREATOR_READABLE",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4.png",
-      "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
+      "id": "initial/allowance-effective-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/allowance-effective-desktop.png",
+      "sha256": "a6e60f969937ff11891e194230bea4b519775269c281c0085dd61275512f1df1",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CREATION_CHOICES_READABLE",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-5",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-5.png",
-      "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
+      "id": "initial/allowance-effective-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/allowance-effective-mobile.png",
+      "sha256": "079dda28588956a452a9eb0b543082ac88b052f0099569c1df6eb0940707983a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CREATION_CHOICES_READABLE",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-6",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-6.png",
-      "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
+      "id": "initial/allowance-preview-320-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/allowance-preview-320-mobile.png",
+      "sha256": "4998fd4268c67f8331bbcf25d8cb2e4d0fd5d7b767dc85f64243b4508909f3e2",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CREATION_CHOICES_READABLE",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-7",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-7.png",
-      "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
+      "id": "initial/allowance-preview-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/allowance-preview-desktop.png",
+      "sha256": "db473944c1a3896e7b3ec79d38c506ea2cc854d36b235635af7db60d2bc8b648",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CREATION_CHOICES_READABLE",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-8",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-8.png",
-      "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
+      "id": "initial/allowance-preview-detail-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/allowance-preview-detail-mobile.png",
+      "sha256": "67bec2a8f774bd12f54d8c7ed9cc4205bad03e007299c3b17678df4360901bb4",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CREATION_CHOICES_READABLE",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_RETURNED-10",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_RETURNED-10.png",
-      "sha256": "df134a4f9e21ac136d6e580972f4804d14ef50ff64e6297c1eada686bc54f27d",
+      "id": "initial/allowance-preview-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/allowance-preview-mobile.png",
+      "sha256": "a623fed873d48f4a13b49160b60b327ab797a6f4c760dff5bc4b0ac0317b77a9",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CREATOR_RETURNED",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14.png",
-      "sha256": "c14f654b3d0184f2e2ece410ebbfe5d47513760c3ee44e8d45b893e1c17df5e0",
+      "id": "initial/attempt-coverage-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/attempt-coverage-mobile.png",
+      "sha256": "14a33b7b5f7de561dc278249f6b9145bf47636c314c11c559f691c11d2e7437a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CAPTAIN_READABLE",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19.png",
-      "sha256": "74b1ed88eab31a036771e8812896e143fecd2fdf1f1ab1affda2b442afbb8f92",
+      "id": "initial/attempt-ratios-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/attempt-ratios-desktop.png",
+      "sha256": "1a66168964f09e7f5def28b167093c7e11a9b756226428646919bf4d09e4059e",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "PLAYER_READABLE",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_RETURNED-22.png",
-      "sha256": "62e88a2dad1b35a19fe522a1e7a11d0056bb43d1677489ce0ed9b265dc8825f0",
+      "id": "initial/attempt-ratios-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/attempt-ratios-mobile.png",
+      "sha256": "5e8e493676d4c8f3b25f2f7eb54e3fb00e1abf5be5b3469db7ba27ba90bbe389",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "WORKSPACES_RETURNED",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED.trace.zip",
-      "sha256": "f795462810df59bff0b5ebd7e25cc44d92a7f750bd135c7c60e28c3ca11f6509",
-      "type": "trace",
+      "id": "initial/capabilities-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/capabilities-desktop.png",
+      "sha256": "fb93f9234057c2a50556880d94f1671b3eb090fd30b76d54721c2467c72e9aa2",
+      "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/286c0f0a19debfddeaa3f7c0761f1cca.webm",
-      "sha256": "ea020eefbb25fb363daf7a898bbc102d4fd51557f5896eccc53ae4107cea2877",
+      "id": "initial/capabilities-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/capabilities-mobile.png",
+      "sha256": "3e14332b41cdb9e2ec5c4b33ef15614df989c1aebabc1908b6c2885aaaa43bd5",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/comparison-scroll-keyboard-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/comparison-scroll-keyboard-mobile.png",
+      "sha256": "f114ea487d224dca5e800fcf905669f9122846984bdda54875fe9e161f033a4a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/configuration-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/configuration-desktop.png",
+      "sha256": "373bea76bf233363f428d86d463abe99b48cddec3c608f8e0b422bde40fa333c",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/daily-fallback-keyboard-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/daily-fallback-keyboard-desktop.png",
+      "sha256": "a842c545c45d6cd098d46e60e9f25ac6bd29eaa7acfb79505ab5b9a6ec040f7a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/empty-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/empty-mobile.png",
+      "sha256": "5dc16b0eef0f418e3c7eb1fe0aa50e74cdd24496b00ab2735c352a7521bc6698",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/error-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/error-mobile.png",
+      "sha256": "901cdb9d969c7a2a21e88a43392907d050939a3964c0130dea6d0d7d3eaf3161",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/history-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/history-mobile.png",
+      "sha256": "c1c7ff3ba7f99226ba76d95663b13b98c83dd05d0c9bfc48613af22547383fd4",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/investigation-history-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/investigation-history-desktop.png",
+      "sha256": "f78b9d7855901bd9cf2994941c113aca03ea245c7c6e4cc2907cda9ea5efa94b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/loading-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/loading-mobile.png",
+      "sha256": "21cdc081046869a2ac5f317ce88d57778dd7102b608917b791e77296a4a846ab",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/operation-inspector.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/operation-inspector.png",
+      "sha256": "987aff702b195bbc101ff728e9cda978dc59bed43c475f734b813cbffa5cfb47",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/overview-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/overview-desktop.png",
+      "sha256": "325fb628674af44036aa4ca7fe7308a2b1eb4c2ff56eacb5ee51aa8a2281ab45",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/overview-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/overview-mobile.png",
+      "sha256": "ccc18135d1e2c71f36024f0af8404953d50ac9c63a4fb262cb3132d5669152b2",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/people-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/people-desktop.png",
+      "sha256": "131cc3d5ca5dfc5afd45931b561131af7155812cc586d96730f1f6ce377cf685",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/quality-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/quality-desktop.png",
+      "sha256": "9f0d21452b23da0643b5004b4086ff4544073a05045b73752ce0033180572350",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/quality-keyboard-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/quality-keyboard-desktop.png",
+      "sha256": "7bdedf9a623c58e60be900b058106682aa68b6c1713f7ef3257f2d6c68eca2be",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/quality-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/quality-mobile.png",
+      "sha256": "05257e1dd9f66d50536e94d4049c521429b09b5a791ab9ec9868d9df8d7db59e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/quality-trend-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/quality-trend-desktop.png",
+      "sha256": "bade2fd7d6dda47e5cec5b4197f78a2d3c87a8c631f39708764c02480ad2a88e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/quality-trend-keyboard-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/quality-trend-keyboard-desktop.png",
+      "sha256": "a9ab9ffc3b8609ee4f6b236abcdaab295697c343ed5dbc298a685b1f50a0927f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/quality-trend-keyboard-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/quality-trend-keyboard-mobile.png",
+      "sha256": "66f93d01827c24ee080bba8f84255e14eb759ec31f2137e915953edb7bd58fb0",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/quality-trend-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/quality-trend-mobile.png",
+      "sha256": "eeaf00c03aebfbb9a57fa95e95cdc55ac3bb4bd27cb3d91c80dc77643d019be7",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/recovered-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/recovered-mobile.png",
+      "sha256": "eeaf00c03aebfbb9a57fa95e95cdc55ac3bb4bd27cb3d91c80dc77643d019be7",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
+    },
+    {
+      "id": "initial/video.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/initial/video.webm",
+      "sha256": "ec9cbeec1fd5763f629cf0d1419743acb34a3b9adbfbf009c1ab677cf1aa2aea",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "9cac11acaa72cefd08c76781553e27e7a522fcf7"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0.png",
-      "sha256": "b5b21c67ee580ebddda3fec0265543069ec92f74b3e9db1f5d59d35a5b63a296",
+      "id": "reviewed/allowance-applied-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/allowance-applied-desktop.png",
+      "sha256": "fcba019036c41160f47ae6c54a0530a78928d9332159f12d305c78b8659fa0b7",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "WORKSPACES_READY",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2.png",
-      "sha256": "081729e53e800e74a0c3f3ccdaab79cb6f89cb9e37fb4afe4981931d20cad681",
+      "id": "reviewed/allowance-applied-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/allowance-applied-mobile.png",
+      "sha256": "132e2375115d4845ea501f9e767dfa53adc80faf302dbed02b01cb09988af0d5",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CREATOR_READABLE",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4.png",
-      "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
+      "id": "reviewed/allowance-effective-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/allowance-effective-desktop.png",
+      "sha256": "52da0cc8c6b7d3e941d8597733bedc9285fe6741dd890dc563ffde8905eded5e",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CREATION_CHOICES_READABLE",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-5",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-5.png",
-      "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
+      "id": "reviewed/allowance-effective-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/allowance-effective-mobile.png",
+      "sha256": "4b9cd5738b741e9e31170b5902fd5578be9ed190477368fcd5767af653fa4436",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CREATION_CHOICES_READABLE",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-6",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-6.png",
-      "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
+      "id": "reviewed/allowance-preview-320-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/allowance-preview-320-mobile.png",
+      "sha256": "ac2ada090c344ec05fd4e3d98e5d170b74bd84c607ef533e9345bed9e5d9efb1",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CREATION_CHOICES_READABLE",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-7",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-7.png",
-      "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
+      "id": "reviewed/allowance-preview-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/allowance-preview-desktop.png",
+      "sha256": "26c336c7fb9dc9feeae704103d92d7e496a57a66721dc5211c0fcc2cc6ca11bd",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CREATION_CHOICES_READABLE",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-8",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-8.png",
-      "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
+      "id": "reviewed/allowance-preview-detail-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/allowance-preview-detail-mobile.png",
+      "sha256": "7bf312559832083600b9b78131adbdc01d498c9d62909ee383fa549559a8a25c",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CREATION_CHOICES_READABLE",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_RETURNED-10",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_RETURNED-10.png",
-      "sha256": "65bd0700dbd4abc1f9733fbfa08606a5bee3beb48133e3496260b5a51732fde4",
+      "id": "reviewed/allowance-preview-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/allowance-preview-mobile.png",
+      "sha256": "b84c426f2303133939f84544d3f67f41bf1913b962471f1ee0872b75990ee464",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CREATOR_RETURNED",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14.png",
-      "sha256": "0dac05e019f378baad73db73fa367851b0232e1cd406d56f57fb51b298f07c20",
+      "id": "reviewed/attempt-coverage-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/attempt-coverage-mobile.png",
+      "sha256": "14a33b7b5f7de561dc278249f6b9145bf47636c314c11c559f691c11d2e7437a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "CAPTAIN_READABLE",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19.png",
-      "sha256": "80d06bbd201236f6916d16ad8a506d570955b5426ce6e05d41b872bab513ae74",
+      "id": "reviewed/attempt-ratios-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/attempt-ratios-desktop.png",
+      "sha256": "1a66168964f09e7f5def28b167093c7e11a9b756226428646919bf4d09e4059e",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "PLAYER_READABLE",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22.png",
-      "sha256": "aacd324819a63c7caf8469cf2582dc5734d977b19361daa0c81d9124689f1a0a",
+      "id": "reviewed/attempt-ratios-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/attempt-ratios-mobile.png",
+      "sha256": "5e8e493676d4c8f3b25f2f7eb54e3fb00e1abf5be5b3469db7ba27ba90bbe389",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "state": "WORKSPACES_RETURNED",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED.trace.zip",
-      "sha256": "e92a1e06bc86b3480ae225d4eaa9679b81c1647a0e5dc02617ca4d4e03178702",
-      "type": "trace",
+      "id": "reviewed/capabilities-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/capabilities-desktop.png",
+      "sha256": "0834996c4672c73024c1fc77fb1bc2996d104d5fd24a121eae72e77a4e042d96",
+      "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
     },
     {
-      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/821adbc0c1f94c4503ca1dd70d316bdc.webm",
-      "sha256": "45c5f551c86e8247e0de764464766ab163d348b9067bf6c60882823201ad487b",
+      "id": "reviewed/capabilities-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/capabilities-mobile.png",
+      "sha256": "08e161b1a5741e27c7cdc758dfef2e00364cd4a8297d001f5b2be3d1a480a419",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/comparison-scroll-keyboard-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/comparison-scroll-keyboard-mobile.png",
+      "sha256": "f114ea487d224dca5e800fcf905669f9122846984bdda54875fe9e161f033a4a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/configuration-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/configuration-desktop.png",
+      "sha256": "373bea76bf233363f428d86d463abe99b48cddec3c608f8e0b422bde40fa333c",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/daily-fallback-keyboard-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/daily-fallback-keyboard-desktop.png",
+      "sha256": "a842c545c45d6cd098d46e60e9f25ac6bd29eaa7acfb79505ab5b9a6ec040f7a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/empty-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/empty-mobile.png",
+      "sha256": "5dc16b0eef0f418e3c7eb1fe0aa50e74cdd24496b00ab2735c352a7521bc6698",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/error-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/error-mobile.png",
+      "sha256": "901cdb9d969c7a2a21e88a43392907d050939a3964c0130dea6d0d7d3eaf3161",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/history-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/history-mobile.png",
+      "sha256": "f1f355143f005fdfd372131be13987a970033857903ff6cfecfd7dc86128e3c6",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/investigation-history-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/investigation-history-desktop.png",
+      "sha256": "cd6d6363fbbf8a2b3f2abc1ff506472be9fa45809a7fd281ec2c3b7981fba72b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/loading-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/loading-mobile.png",
+      "sha256": "21cdc081046869a2ac5f317ce88d57778dd7102b608917b791e77296a4a846ab",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/operation-inspector-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/operation-inspector-mobile.png",
+      "sha256": "d2768a1ed263fa43d67492655f6646c7465724f0c5f61a3d1bbad81c2baefb8b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/operation-inspector.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/operation-inspector.png",
+      "sha256": "13ea9c914189e28d4d0692aa1fd3935c97a33685b7cba97525c46529c8d5adaf",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/overview-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/overview-desktop.png",
+      "sha256": "325fb628674af44036aa4ca7fe7308a2b1eb4c2ff56eacb5ee51aa8a2281ab45",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/overview-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/overview-mobile.png",
+      "sha256": "ccc18135d1e2c71f36024f0af8404953d50ac9c63a4fb262cb3132d5669152b2",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/people-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/people-desktop.png",
+      "sha256": "131cc3d5ca5dfc5afd45931b561131af7155812cc586d96730f1f6ce377cf685",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/quality-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/quality-desktop.png",
+      "sha256": "9f0d21452b23da0643b5004b4086ff4544073a05045b73752ce0033180572350",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/quality-keyboard-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/quality-keyboard-desktop.png",
+      "sha256": "7bdedf9a623c58e60be900b058106682aa68b6c1713f7ef3257f2d6c68eca2be",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/quality-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/quality-mobile.png",
+      "sha256": "05257e1dd9f66d50536e94d4049c521429b09b5a791ab9ec9868d9df8d7db59e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/quality-trend-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/quality-trend-desktop.png",
+      "sha256": "bade2fd7d6dda47e5cec5b4197f78a2d3c87a8c631f39708764c02480ad2a88e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/quality-trend-keyboard-desktop.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/quality-trend-keyboard-desktop.png",
+      "sha256": "a9ab9ffc3b8609ee4f6b236abcdaab295697c343ed5dbc298a685b1f50a0927f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/quality-trend-keyboard-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/quality-trend-keyboard-mobile.png",
+      "sha256": "66f93d01827c24ee080bba8f84255e14eb759ec31f2137e915953edb7bd58fb0",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/quality-trend-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/quality-trend-mobile.png",
+      "sha256": "eeaf00c03aebfbb9a57fa95e95cdc55ac3bb4bd27cb3d91c80dc77643d019be7",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/recovered-mobile.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/recovered-mobile.png",
+      "sha256": "eeaf00c03aebfbb9a57fa95e95cdc55ac3bb4bd27cb3d91c80dc77643d019be7",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
+    },
+    {
+      "id": "reviewed/video.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/admiralty-725-20261121/reviewed/video.webm",
+      "sha256": "92c35745378a9876d91daaf578b5d639ca95e76eea3ddf3a252bba6e941fb255",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1.png",
-      "sha256": "db939ca7153c92cdb9f4c992489c091db693aeeb336d5c4b3605d8966b3431e9",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "CHOICES_READY",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2.png",
-      "sha256": "db939ca7153c92cdb9f4c992489c091db693aeeb336d5c4b3605d8966b3431e9",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "CHOICES_READY",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-4",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-4.png",
-      "sha256": "0153240d67d5db6c20163ded941c3bd600ef23e2fd34b6915a49c9a921997260",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "RETURNED",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-6",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-6.png",
-      "sha256": "5a51971e05f4277e4ad0ccae0e85aabf4cbd03835b7e5142e443b76c9922263f",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "CHOICES_READY",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8.png",
-      "sha256": "9e752779347be2bbcc5a30e66c2851e714a3425f01cb4009140e0feedc84e2a6",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "EDITOR_READY",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15.png",
-      "sha256": "8822866a651636ff6e9bf8f8c26de6c2bc5b0d802bb363782baf4848a7d54096",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "DETAILS_SAVED",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18.png",
-      "sha256": "426f70287622e3157701689b42b1e494aea12efdcf784614b3a06d1a023897ef",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "LIBRARY_RETURNED",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-20",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-20.png",
-      "sha256": "db939ca7153c92cdb9f4c992489c091db693aeeb336d5c4b3605d8966b3431e9",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "RETURNED",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL.trace.zip",
-      "sha256": "596f14c1e45097aea6c81569078f72c9ace085a83f6f6d533a629f72e6a2776a",
-      "type": "trace",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/1f8d1555bcf3aeb376fdca676795e84a.webm",
-      "sha256": "0f13137425dddd6a6812de242afa59f421bf99c4e7700360d15d5c5a6672785d",
-      "type": "recording",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-1",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-1.png",
-      "sha256": "8f2496159ee67e4b1176dfb969c04abf876db0d1e03cb1f7bddd39590dc8b650",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "CHOICES_READY",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-2",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-2.png",
-      "sha256": "8f2496159ee67e4b1176dfb969c04abf876db0d1e03cb1f7bddd39590dc8b650",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "CHOICES_READY",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-4",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-4.png",
-      "sha256": "27aa4d0757be232ac4c4b70f525f73e1908f8015a9800ee59aec3e2500c476d5",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "RETURNED",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-6",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-6.png",
-      "sha256": "8f2496159ee67e4b1176dfb969c04abf876db0d1e03cb1f7bddd39590dc8b650",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "CHOICES_READY",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-EDITOR_READY-8",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-EDITOR_READY-8.png",
-      "sha256": "b45f35b4266711863c7684674b09eac1fbd0c3c27f1d6aa25032c59a22d8e6a7",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "EDITOR_READY",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15.png",
-      "sha256": "26c085014ce9b00d7de0b7b2a35b7504f864b72ccee4888d978c118b2c2ac24b",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "DETAILS_SAVED",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-LIBRARY_RETURNED-18",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-LIBRARY_RETURNED-18.png",
-      "sha256": "828c78e6ae81c0fce81348912ce6cd89c5870eaf45eb8abc9e7ffff37bff6925",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "LIBRARY_RETURNED",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-20",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-20.png",
-      "sha256": "d44d1f8b904db7a3602f6d512486d65bbca854df0500c76b0b3bf65eab4f43ad",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "RETURNED",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-trace",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED.trace.zip",
-      "sha256": "c98f7a528d7d338c33cd8065b7b3b97874648a38230aa9cb938bcf2eea18b8e6",
-      "type": "trace",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/d20f845e1dea4b27540520602defbb7e.webm",
-      "sha256": "632cd613ac14006fac9dd82109f290fde2a202479e6281a8a8590e0f56d21909",
-      "type": "recording",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1.png",
-      "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "CHOICES_READY",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-2",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-2.png",
-      "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "CHOICES_READY",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-4",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-4.png",
-      "sha256": "bf111d1c6ae9797d34c2566ae9130b1a1ee538034b6aa4a4b1edb8d49e76431a",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "RETURNED",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-6",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-6.png",
-      "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "CHOICES_READY",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8.png",
-      "sha256": "c6f45fe942c78a5422aa0593730a36820912139d5b14d78062d52fc607d63ebb",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "EDITOR_READY",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15.png",
-      "sha256": "b8cbbf2dce48d1e20711ed548ed96eea96c8970854246c635b91e6c397c09fc5",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "DETAILS_SAVED",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18.png",
-      "sha256": "a28ecc122e0efe88c3ef1a75e722441a18d3cdf8fc2298ba42dee07bfe4c0002",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "LIBRARY_RETURNED",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-20",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-20.png",
-      "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "RETURNED",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-trace",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL.trace.zip",
-      "sha256": "df8d69ecb6f94a83316df1245826256b41a10f48eaaac5019898a5eca9514cc0",
-      "type": "trace",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/1238521c133f3c9063e90bd0664da7e6.webm",
-      "sha256": "7ef9be1a53463d271fb31d7aeb79fa78694504aec80da3fe463339be284dad8c",
-      "type": "recording",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "NORMAL"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1.png",
-      "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "CHOICES_READY",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-2",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-2.png",
-      "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "CHOICES_READY",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-4",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-4.png",
-      "sha256": "a28ecc122e0efe88c3ef1a75e722441a18d3cdf8fc2298ba42dee07bfe4c0002",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "RETURNED",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-6",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-6.png",
-      "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "CHOICES_READY",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8.png",
-      "sha256": "74af27948807a076ead210568569b0481e728b2886ccf9bfd0ccdd364561fa52",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "EDITOR_READY",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15.png",
-      "sha256": "60728ee6cedcc88ff8e710f9dd2087b2df97c99830680dabe2153a69b9528d00",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "DETAILS_SAVED",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18.png",
-      "sha256": "5c9353dc97c37233bba0861f04dbd5922b04a87e7312c593033d6a0125aea1ca",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "LIBRARY_RETURNED",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-20",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-20.png",
-      "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
-      "type": "screenshot",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "state": "RETURNED",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED.trace.zip",
-      "sha256": "2d8de307b4584de4c8670c7ae6983650622c116297972b9b09465d14b3b62db5",
-      "type": "trace",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
-    },
-    {
-      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/136aee45ec8c2639ad78595993394dc0.webm",
-      "sha256": "416d4a7749b71ca5d48f1083f8865583b9d950b4c82b7f52f3a1515528ebae64",
-      "type": "recording",
-      "origin": "ACTUAL_APPLICATION",
-      "contractId": "chronicle.creation",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED"
+      "contractId": "admiralty.ai-economics",
+      "role": "ADMINISTRATOR",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a"
     }
   ],
   "journeys": [
     {
-      "id": "canonical-three-workspace-and-creation-return",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED",
-      "entryPoint": "/account/roles",
-      "outcome": "One canonical account previews four Chronicle creation intentions, returns across the existing three workspaces without creating a Chronicle, and cannot acquire another owner's private Chronicle.",
-      "observations": [
-        {
-          "step": 2,
-          "meaning": "A real canonical capability opens the existing owner-scoped Creator library.",
-          "role": "heading",
-          "name": "Voyagewright Studio",
-          "text": "Voyagewright Studio"
-        },
-        {
-          "step": 4,
-          "meaning": "The Chronicle creation entry presents four named intentions without creating or publishing a record.",
-          "role": "heading",
-          "name": "Create a Chronicle",
-          "text": "Create a Chronicle"
-        },
-        {
-          "step": 14,
-          "meaning": "The existing Captain capability opens the live-Voyage workspace without turning a private draft into a published Chronicle.",
-          "role": "heading",
-          "name": "Captain's Console",
-          "text": "Captain's Console"
-        },
-        {
-          "step": 19,
-          "meaning": "The same session enters its Player library while preserving owner identity and independent capability boundaries.",
-          "role": "heading",
-          "name": "My Chronicle Library",
-          "text": "My Chronicle Library"
-        }
-      ],
-      "visibleActions": 12,
-      "returnPathVerified": true,
-      "status": "PASS",
-      "continuity": [
-        {
-          "id": "visible-account-identity",
-          "before": "d2a2831f53ca86e4c66589930145a92f1ad45528a3514ea16e56db7287d48dcc",
-          "atOutcomes": [
-            "d2a2831f53ca86e4c66589930145a92f1ad45528a3514ea16e56db7287d48dcc",
-            "d2a2831f53ca86e4c66589930145a92f1ad45528a3514ea16e56db7287d48dcc",
-            "d2a2831f53ca86e4c66589930145a92f1ad45528a3514ea16e56db7287d48dcc",
-            "d2a2831f53ca86e4c66589930145a92f1ad45528a3514ea16e56db7287d48dcc"
-          ],
-          "after": "d2a2831f53ca86e4c66589930145a92f1ad45528a3514ea16e56db7287d48dcc"
-        }
-      ],
-      "feedbackMs": 0,
-      "measurement": null,
-      "accessibility": {
-        "keyboard": true,
-        "focus": true,
-        "reducedMotion": true,
-        "motionPreferenceVerified": true,
-        "overflow": false,
-        "states": [
-          {
-            "state": "WORKSPACES_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CREATOR_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CREATION_CHOICES_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CREATION_CHOICES_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CREATION_CHOICES_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CREATION_CHOICES_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CREATION_CHOICES_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CREATOR_RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CAPTAIN_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "PLAYER_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "WORKSPACES_RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          }
-        ],
-        "axeSerious": []
-      },
-      "roleVerified": true
-    },
+      "contractId": "admiralty.ai-economics",
+      "journeyId": "economics-capability-quality-and-return",
+      "observed": "Production Chromium passed natural entry, economics filters, operation history, keyboard drill-down and return, and the empty, loading, error, and recovery states.",
+      "evidenceIds": [
+        "reviewed/overview-desktop.png",
+        "reviewed/history-mobile.png",
+        "reviewed/operation-inspector-mobile.png",
+        "reviewed/recovered-mobile.png",
+        "reviewed/video.webm"
+      ]
+    }
+  ],
+  "additionalBrowserChecks": [
     {
-      "id": "canonical-three-workspace-and-creation-return",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED",
-      "entryPoint": "/account/roles",
-      "outcome": "One canonical account previews four Chronicle creation intentions, returns across the existing three workspaces without creating a Chronicle, and cannot acquire another owner's private Chronicle.",
-      "observations": [
-        {
-          "step": 2,
-          "meaning": "A real canonical capability opens the existing owner-scoped Creator library.",
-          "role": "heading",
-          "name": "Voyagewright Studio",
-          "text": "Voyagewright Studio"
-        },
-        {
-          "step": 4,
-          "meaning": "The Chronicle creation entry presents four named intentions without creating or publishing a record.",
-          "role": "heading",
-          "name": "Create a Chronicle",
-          "text": "Create a Chronicle"
-        },
-        {
-          "step": 14,
-          "meaning": "The existing Captain capability opens the live-Voyage workspace without turning a private draft into a published Chronicle.",
-          "role": "heading",
-          "name": "Captain's Console",
-          "text": "Captain's Console"
-        },
-        {
-          "step": 19,
-          "meaning": "The same session enters its Player library while preserving owner identity and independent capability boundaries.",
-          "role": "heading",
-          "name": "My Chronicle Library",
-          "text": "My Chronicle Library"
-        }
-      ],
-      "visibleActions": 12,
-      "returnPathVerified": true,
-      "status": "PASS",
-      "continuity": [
-        {
-          "id": "visible-account-identity",
-          "before": "d2a2831f53ca86e4c66589930145a92f1ad45528a3514ea16e56db7287d48dcc",
-          "atOutcomes": [
-            "d2a2831f53ca86e4c66589930145a92f1ad45528a3514ea16e56db7287d48dcc",
-            "d2a2831f53ca86e4c66589930145a92f1ad45528a3514ea16e56db7287d48dcc",
-            "d2a2831f53ca86e4c66589930145a92f1ad45528a3514ea16e56db7287d48dcc",
-            "d2a2831f53ca86e4c66589930145a92f1ad45528a3514ea16e56db7287d48dcc"
-          ],
-          "after": "d2a2831f53ca86e4c66589930145a92f1ad45528a3514ea16e56db7287d48dcc"
-        }
-      ],
-      "feedbackMs": 0,
-      "measurement": null,
-      "accessibility": {
-        "keyboard": true,
-        "focus": true,
-        "reducedMotion": true,
-        "motionPreferenceVerified": true,
-        "overflow": false,
-        "states": [
-          {
-            "state": "WORKSPACES_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CREATOR_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CREATION_CHOICES_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CREATION_CHOICES_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CREATION_CHOICES_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CREATION_CHOICES_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CREATION_CHOICES_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CREATOR_RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CAPTAIN_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "PLAYER_READABLE",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "WORKSPACES_RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          }
-        ],
-        "axeSerious": []
-      },
-      "roleVerified": true
-    },
-    {
-      "id": "creation-and-inline-details",
-      "contractId": "chronicle.creation",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "NORMAL",
-      "entryPoint": "/studio/library",
-      "outcome": "Creator inspects all creation choices without creating a draft, then authors and saves a real named draft in the editor and returns to the Library and creation entry",
-      "observations": [
-        {
-          "step": 1,
-          "meaning": "The natural creation entry shows the four-choice experience without requiring metadata.",
-          "role": "heading",
-          "name": "Create a Chronicle",
-          "text": "Create a Chronicle"
-        },
-        {
-          "step": 18,
-          "meaning": "The Creator saved a real named Chronicle through the editor and returns to the same authenticated Library.",
-          "role": "heading",
-          "name": "Voyagewright Studio",
-          "text": "Voyagewright Studio"
-        }
-      ],
-      "visibleActions": 11,
-      "returnPathVerified": true,
-      "status": "PASS",
-      "continuity": [],
-      "feedbackMs": 123.98428699999931,
-      "measurement": "Measure visible selection and saved-draft return feedback after keyboard activation in normal and reduced-motion contexts.",
-      "accessibility": {
-        "keyboard": true,
-        "focus": true,
-        "reducedMotion": false,
-        "motionPreferenceVerified": true,
-        "overflow": false,
-        "states": [
-          {
-            "state": "CHOICES_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CHOICES_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CHOICES_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "EDITOR_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "DETAILS_SAVED",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "LIBRARY_RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          }
-        ],
-        "axeSerious": []
-      },
-      "roleVerified": true
-    },
-    {
-      "id": "creation-and-inline-details",
-      "contractId": "chronicle.creation",
-      "device": "DESKTOP",
-      "role": "CREATOR",
-      "motionMode": "REDUCED",
-      "entryPoint": "/studio/library",
-      "outcome": "Creator inspects all creation choices without creating a draft, then authors and saves a real named draft in the editor and returns to the Library and creation entry",
-      "observations": [
-        {
-          "step": 1,
-          "meaning": "The natural creation entry shows the four-choice experience without requiring metadata.",
-          "role": "heading",
-          "name": "Create a Chronicle",
-          "text": "Create a Chronicle"
-        },
-        {
-          "step": 18,
-          "meaning": "The Creator saved a real named Chronicle through the editor and returns to the same authenticated Library.",
-          "role": "heading",
-          "name": "Voyagewright Studio",
-          "text": "Voyagewright Studio"
-        }
-      ],
-      "visibleActions": 11,
-      "returnPathVerified": true,
-      "status": "PASS",
-      "continuity": [],
-      "feedbackMs": 95.12471200000437,
-      "measurement": "Measure visible selection and saved-draft return feedback after keyboard activation in normal and reduced-motion contexts.",
-      "accessibility": {
-        "keyboard": true,
-        "focus": true,
-        "reducedMotion": true,
-        "motionPreferenceVerified": true,
-        "overflow": false,
-        "states": [
-          {
-            "state": "CHOICES_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CHOICES_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CHOICES_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "EDITOR_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "DETAILS_SAVED",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "LIBRARY_RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          }
-        ],
-        "axeSerious": []
-      },
-      "roleVerified": true
-    },
-    {
-      "id": "creation-and-inline-details",
-      "contractId": "chronicle.creation",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "NORMAL",
-      "entryPoint": "/studio/library",
-      "outcome": "Creator inspects all creation choices without creating a draft, then authors and saves a real named draft in the editor and returns to the Library and creation entry",
-      "observations": [
-        {
-          "step": 1,
-          "meaning": "The natural creation entry shows the four-choice experience without requiring metadata.",
-          "role": "heading",
-          "name": "Create a Chronicle",
-          "text": "Create a Chronicle"
-        },
-        {
-          "step": 18,
-          "meaning": "The Creator saved a real named Chronicle through the editor and returns to the same authenticated Library.",
-          "role": "heading",
-          "name": "Voyagewright Studio",
-          "text": "Voyagewright Studio"
-        }
-      ],
-      "visibleActions": 11,
-      "returnPathVerified": true,
-      "status": "PASS",
-      "continuity": [],
-      "feedbackMs": 152.05559800000628,
-      "measurement": "Measure visible selection and saved-draft return feedback after keyboard activation in normal and reduced-motion contexts.",
-      "accessibility": {
-        "keyboard": true,
-        "focus": true,
-        "reducedMotion": false,
-        "motionPreferenceVerified": true,
-        "overflow": false,
-        "states": [
-          {
-            "state": "CHOICES_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CHOICES_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CHOICES_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "EDITOR_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "DETAILS_SAVED",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "LIBRARY_RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          }
-        ],
-        "axeSerious": []
-      },
-      "roleVerified": true
-    },
-    {
-      "id": "creation-and-inline-details",
-      "contractId": "chronicle.creation",
-      "device": "MOBILE",
-      "role": "CREATOR",
-      "motionMode": "REDUCED",
-      "entryPoint": "/studio/library",
-      "outcome": "Creator inspects all creation choices without creating a draft, then authors and saves a real named draft in the editor and returns to the Library and creation entry",
-      "observations": [
-        {
-          "step": 1,
-          "meaning": "The natural creation entry shows the four-choice experience without requiring metadata.",
-          "role": "heading",
-          "name": "Create a Chronicle",
-          "text": "Create a Chronicle"
-        },
-        {
-          "step": 18,
-          "meaning": "The Creator saved a real named Chronicle through the editor and returns to the same authenticated Library.",
-          "role": "heading",
-          "name": "Voyagewright Studio",
-          "text": "Voyagewright Studio"
-        }
-      ],
-      "visibleActions": 11,
-      "returnPathVerified": true,
-      "status": "PASS",
-      "continuity": [],
-      "feedbackMs": 90.37999100000889,
-      "measurement": "Measure visible selection and saved-draft return feedback after keyboard activation in normal and reduced-motion contexts.",
-      "accessibility": {
-        "keyboard": true,
-        "focus": true,
-        "reducedMotion": true,
-        "motionPreferenceVerified": true,
-        "overflow": false,
-        "states": [
-          {
-            "state": "CHOICES_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CHOICES_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "CHOICES_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "EDITOR_READY",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "DETAILS_SAVED",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "LIBRARY_RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          },
-          {
-            "state": "RETURNED",
-            "axeSerious": [],
-            "overflow": false
-          }
-        ],
-        "axeSerious": []
-      },
-      "roleVerified": true
+      "scenario": "Capability allowance from the People dossier",
+      "observed": "Production Chromium passed allowance review and audited apply, including the readable proposed and effective policy origins.",
+      "evidenceIds": [
+        "reviewed/allowance-preview-320-mobile.png",
+        "reviewed/allowance-applied-mobile.png"
+      ]
     }
   ],
   "reviews": [
     {
-      "builderContext": "sc00a-builder:/root",
-      "reviewerContext": "independent-subagent:/root/sc00a_protected_experience_review",
+      "contractId": "admiralty.ai-economics",
+      "builderContext": "admiralty-725-builder:/root",
+      "reviewerContext": "independent-subagent:/root/admiralty_experience_review",
       "independence": "SEPARATE_CONTEXT",
       "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
-      "sourceDigest": "fccf3692c9e0ada306b6a564cc7831e76e35a7909bebadadc64bfead9358137c",
-      "baseSha": "3f1eddb1f990ecad9b5a119236d73bdd0c9ecdbd",
-      "candidateSha": "a72d3503440470ff3cbcd5193a2ff7f17512b94a",
-      "captureArtifactId": "13101790692",
-      "iterations": 1,
+      "sourceDigest": "98caced89db055993f57b2949f4a2f374ae1e30f35e9101a449b6fc9f729aab7",
+      "baseSha": "4053d4ee5833bc6130f91a0b8d2cd11d1ce0b97f",
+      "candidateSha": "d974b2c8fc5bf561dbb4504707646a044f15cb7a",
+      "iterations": 2,
       "status": "ACCEPTED",
       "ownerAcceptance": "NOT_CLAIMED",
-      "contractId": "chronicle.creation",
-      "packetDigest": "5f5cc4f59d0aa73af511fc9834c5878114449d7106f4f7c8381e96bed75b9858",
+      "packetDigest": "a2fccdd6e56325335151703f436c99756a4bc6d723597183ebcd17abaa1fbe43",
       "dimensions": {
         "composition": {
-          "observation": "The creation page places four large intention cards in a balanced desktop grid and a vertical mobile sequence; the editor retains distinct work regions.",
+          "observation": "Desktop cards and charts group spending, outcomes, and reserved exposure.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8"
+            "initial/overview-desktop.png"
           ]
         },
         "hierarchy": {
-          "observation": "A prominent creation heading and gold manual cue lead directly to the draft title and Chronicle Details controls in the real editor.",
+          "observation": "Economics views are distinct. The expanded Stations menu precedes the title on the captured phone.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8"
+            "initial/overview-mobile.png"
           ]
         },
         "typography": {
-          "observation": "Serif headings and sans-serif instructions remain legible at both captured widths; the small editor toolbar labels are still discernible.",
+          "observation": "Capability percentages scan well. The narrow preview now wraps policy origins at word boundaries.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-EDITOR_READY-8"
+            "initial/attempt-ratios-mobile.png",
+            "reviewed/allowance-preview-320-mobile.png"
           ]
         },
         "spacing": {
-          "observation": "The choice cards have generous padding, and the narrow editor wraps its action buttons into separated rows without visible collision.",
+          "observation": "The comparison at 320px keeps the current and proposed values separate and in frame.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8"
+            "reviewed/allowance-preview-320-mobile.png"
           ]
         },
         "controls": {
-          "observation": "The manual card, title rename, Details, Save details, and Studio return are named and visually actionable; unavailable choices are marked Coming soon.",
+          "observation": "The filter controls are labeled and each mobile history result now exposes Inspect.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-trace",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15"
+            "initial/overview-desktop.png",
+            "reviewed/history-mobile.png"
           ]
         },
         "contrast": {
-          "observation": "Cream headings, muted explanatory copy, and gold active actions remain readable on the dark teal cards and editor surfaces.",
+          "observation": "Primary text, gold accents, and the focus outline are visibly distinct in the captured states.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15"
+            "initial/comparison-scroll-keyboard-mobile.png",
+            "reviewed/operation-inspector-mobile.png"
           ]
         },
         "consistency": {
-          "observation": "The shared Studio shell, account control, dark palette, and draft terminology persist from choice entry through editor and Library return.",
+          "observation": "The Chartroom shell and card styling carry across economics and People.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18"
+            "initial/capabilities-desktop.png",
+            "initial/allowance-effective-mobile.png"
           ]
         },
         "states": {
-          "observation": "Fresh media shows choice entry, untitled draft editor, renamed and saved Details, then a named private draft card in the Creator Library.",
+          "observation": "Empty, loading, and error views distinguish requested filters from the last loaded period.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15",
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18"
+            "initial/empty-mobile.png",
+            "initial/loading-mobile.png",
+            "initial/error-mobile.png"
           ]
         },
         "responsive": {
-          "observation": "The mobile choice cards stack, editor controls wrap, and Save details plus Saved at stay within the mobile normal and reduced viewports.",
+          "observation": "The mobile operation cards contain the outcome, cost basis, attempt count, operation identifier, and Inspect action without horizontal scrolling.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15"
+            "reviewed/history-mobile.png"
           ]
         },
         "keyboard": {
-          "observation": "All four protected Chronicle traces activate the route with Tab and Enter; the same traces show a long forward-only focus sequence after save.",
+          "observation": "The daily and model comparison fallbacks show keyboard focus and horizontal scrolling. The repaired history journey uses Enter to open the inspector.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-trace",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-trace",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace"
+            "initial/daily-fallback-keyboard-desktop.png",
+            "initial/comparison-scroll-keyboard-mobile.png",
+            "reviewed/operation-inspector-mobile.png"
           ]
         },
         "focus": {
-          "observation": "Outlines make the current title and controls visible; trace navigation reaches Close Details and Studio, while this protected run does not exercise Escape.",
+          "observation": "The selected heading, focused inspector, and Close are visible. The browser assertion verifies focus restoration on close.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace"
+            "reviewed/operation-inspector-mobile.png"
           ]
         },
         "feedback": {
-          "observation": "Saved at is visibly placed beneath or beside Save details in all four desktop/mobile and normal/reduced saved screenshots; transition measurements are under 153 ms.",
+          "observation": "Retry restores the populated range. Applying the allowance shows revision 1 and an audit receipt.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15",
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15"
+            "initial/recovered-mobile.png",
+            "reviewed/allowance-applied-mobile.png"
           ]
         },
         "motion": {
-          "observation": "Normal and reduced WebM samples and trace frames reach stable editor, saved, and returned states without an observed disruptive transition.",
+          "observation": "Sampled recording frames cover natural entry, trend, allowance, and recovery. Full-page capture resizing limits timing and continuity judgments.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-recording",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-recording",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording"
+            "initial/video.webm"
           ]
         },
         "continuity": {
-          "observation": "Manual selection opens an owned untitled editor; the same named private Chronicle and saved description appear on return to Library.",
+          "observation": "Investigation sets a person filter. A failed refresh preserves the prior range. Closing the inspector returns to the originating control.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18"
+            "initial/investigation-history-desktop.png",
+            "initial/error-mobile.png",
+            "reviewed/operation-inspector-mobile.png"
           ]
         },
         "complexity": {
-          "observation": "The manual path asks for no preliminary metadata, although the full editor presents many controls after entry; primary actions remain separated.",
+          "observation": "Disclosures keep summaries compact. The inspector groups attempt data and receipt details under the selected operation.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8"
+            "initial/operation-inspector.png",
+            "reviewed/operation-inspector-mobile.png"
           ]
         },
         "role-outcomes": {
-          "observation": "The Creator can start manually, edit title and details, save, and see a private unpublished draft with the new description in Library.",
+          "observation": "The operator sees calculated, estimated, unconfirmed, and reserved amounts, and can apply the reviewed capability allowance of 3.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18"
+            "initial/overview-desktop.png",
+            "initial/attempt-ratios-mobile.png",
+            "reviewed/allowance-applied-mobile.png"
           ]
         },
         "fallbacks": {
-          "observation": "AI, Adapt a Story, and Start from a Template are fully shown as Coming soon in the desktop recording while manual creation remains operational.",
+          "observation": "Exact daily tables support chart reading. Missing provider-attempt coverage yields an unavailable ratio.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1"
+            "initial/daily-fallback-keyboard-desktop.png",
+            "initial/attempt-coverage-mobile.png"
           ]
         }
       },
       "findings": [
         {
-          "id": "SC00A-FORWARD-FOCUS-ROUTE-LONG-41350661707",
-          "classification": "MINOR_POLISH",
-          "contractId": "chronicle.creation",
-          "observation": "After Save details, the captured forward-only keyboard route traverses over 100 Tab stops to Close Details and about 100 more toward Studio. This capture does not exercise the coded Escape shortcut.",
+          "id": "ADM-HISTORY-INSPECTION",
+          "classification": "MAJOR_EXPERIENCE_DEFECT",
+          "contractId": "admiralty.ai-economics",
+          "disposition": "RESOLVED",
+          "observation": "The initial phone table hid the Inspect control and opening the inspector left keyboard focus in the result list.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace"
-          ]
-        }
-      ],
-      "limits": [
-        "The protected journey returns to the Library but does not freshly reload, reopen, or re-edit the saved draft.",
-        "The six protected traces use Tab and Enter; Escape and reverse-Tab behavior are not demonstrated by this capture. Matching candidate source was inspected only after media and contains an Escape close handler and trigger focus restoration; source is supporting evidence, not an observed interaction.",
-        "Zero reported serious axe findings and visible skip links do not establish screen-reader speech.",
-        "Visual ownership labels do not alone prove canonical identity or privacy isolation.",
-        "This is a fresh media pass in the same reviewer task path, which had prior task history; prior judgments were not reused. No physical device or owner acceptance is claimed."
-      ]
-    },
-    {
-      "builderContext": "sc00a-builder:/root",
-      "reviewerContext": "independent-subagent:/root/sc00a_protected_experience_review",
-      "independence": "SEPARATE_CONTEXT",
-      "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
-      "sourceDigest": "fccf3692c9e0ada306b6a564cc7831e76e35a7909bebadadc64bfead9358137c",
-      "baseSha": "3f1eddb1f990ecad9b5a119236d73bdd0c9ecdbd",
-      "candidateSha": "a72d3503440470ff3cbcd5193a2ff7f17512b94a",
-      "captureArtifactId": "13101790692",
-      "iterations": 1,
-      "status": "ACCEPTED",
-      "ownerAcceptance": "NOT_CLAIMED",
-      "contractId": "homeport.owner-correction.round1.workspaces",
-      "packetDigest": "fcb007493e88413a8e2b9f4908ae1ed1fd1f8c4e11853f61158de1bdfb8b6222",
-      "dimensions": {
-        "composition": {
-          "observation": "All Workspaces presents three balanced desktop capability cards that become a readable single-column mobile route.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0"
+            "initial/history-mobile.png",
+            "initial/operation-inspector.png"
+          ],
+          "repairEvidenceIds": [
+            "reviewed/history-mobile.png",
+            "reviewed/operation-inspector-mobile.png"
           ]
         },
-        "hierarchy": {
-          "observation": "The shared account message leads to Player, Captain, and Creator entry actions; each destination foregrounds its own primary task.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
-          ]
-        },
-        "typography": {
-          "observation": "Large destination headings, card names, and empty-state explanations remain legible at desktop and mobile capture sizes.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
-          ]
-        },
-        "spacing": {
-          "observation": "Capability cards have ample room and mobile controls wrap; focused destination heading outlines sit close to the next descriptive line.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14"
-          ]
-        },
-        "controls": {
-          "observation": "Enter actions, account disclosure, Captain tabs, and Chronicle choice cards have discernible labels and active or unavailable states.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
-          ]
-        },
-        "contrast": {
-          "observation": "Gold primary actions, light labels, and muted supporting copy remain readable against dark workspace and destination backgrounds.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
-          ]
-        },
-        "consistency": {
-          "observation": "The same Voyagewright frame and synthetic account indicator persist through Creator, Captain, Player, and return to All Workspaces.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22"
-          ]
-        },
-        "states": {
-          "observation": "The captured journey includes available workspace entry, empty Creator and Captain states, creation choices, Player empty state, and final return.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
-          ]
-        },
-        "responsive": {
-          "observation": "Workspace cards stack on mobile and Captain tabs wrap without a visible horizontal scroll or clipped primary action.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14"
-          ]
-        },
-        "keyboard": {
-          "observation": "The desktop and mobile reduced-motion traces record Tab and Enter activation through Creator, account menu, Captain, Player, and return.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
-          ]
-        },
-        "focus": {
-          "observation": "A visible focus outline and Skip to main content link appear during keyboard traversal; a few large heading outlines closely touch body copy.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
-          ]
-        },
-        "feedback": {
-          "observation": "Available badges, no-content guidance, and Player server-confirmed state explain each observed capability and empty-state outcome.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
-          ]
-        },
-        "motion": {
-          "observation": "Both reduced-motion recordings and traces move among the shared destinations without an observed animation-dependent step.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-recording",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-recording"
-          ]
-        },
-        "continuity": {
-          "observation": "The synthetic account remains visible at entry and each role destination, then returns to the same All Workspaces screen.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22"
-          ]
-        },
-        "complexity": {
-          "observation": "Three role cards and task-specific empty states keep entry understandable; the account menu offers a direct All Workspaces return.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
-          ]
-        },
-        "role-outcomes": {
-          "observation": "The same account reaches Creator Library, previews the creation intentions, then reaches Captain and Player before returning.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22"
-          ]
-        },
-        "fallbacks": {
-          "observation": "Empty workspaces provide next actions, while AI, adaptation, and template intentions visibly say Coming soon in scrolled trace frames.",
-          "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
-          ]
-        }
-      },
-      "findings": [
         {
-          "id": "HOMEPORT-HEADING-OUTLINE-SPACING-41350661707",
-          "classification": "MINOR_POLISH",
-          "contractId": "homeport.owner-correction.round1.workspaces",
-          "observation": "Focused Creator, Captain, and Player headings have outlines that nearly meet the following description line on mobile; the text remains readable and navigation succeeds.",
+          "id": "ADM-ALLOWANCE-ORIGIN",
+          "classification": "VISUAL_NONCONFORMITY",
+          "contractId": "admiralty.ai-economics",
+          "disposition": "RESOLVED",
+          "observation": "Raw origin enums split mid-word in the narrow comparison and carried into the applied allowance.",
           "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
+            "initial/allowance-preview-320-mobile.png",
+            "initial/allowance-applied-mobile.png"
+          ],
+          "repairEvidenceIds": [
+            "reviewed/allowance-preview-320-mobile.png",
+            "reviewed/allowance-applied-mobile.png"
+          ]
+        },
+        {
+          "id": "ADM-MOBILE-STATIONS-AND-COMPARISONS",
+          "classification": "MINOR_POLISH",
+          "contractId": "admiralty.ai-economics",
+          "observation": "The expanded Stations menu precedes the content on phones. Comparison tables can pan away from the column that identifies each row.",
+          "evidenceIds": [
+            "initial/overview-mobile.png",
+            "initial/comparison-scroll-keyboard-mobile.png"
           ]
         }
       ],
       "limits": [
-        "The visible account indicator does not itself prove canonical account IDs, capability isolation, or another owner private-resource exclusion.",
-        "This capture samples empty workspace navigation, not a live Voyage or physical-device use.",
-        "The Homeport contract is reduced-motion only in this packet; normal-motion Homeport behavior was not captured.",
-        "No owner acceptance is claimed."
+        "The reviewed administrator journeys used a production Chromium build and persisted synthetic fixtures. The initial and repair captures identify their exact source commits.",
+        "The fresh review covered the mobile history and inspector, allowance comparison at 320px and 390px, and the applied allowance receipt. It used the browser assertion for closing focus.",
+        "Screen-reader speech, reduced motion, contrast ratios, continuous recording playback on the repair, physical devices, live provider invoices, and product-owner acceptance remain unverified."
       ]
     }
   ],
-  "captureArtifactId": 13101790692,
-  "completionClaims": [
-    "chronicle.creation",
-    "homeport.owner-correction.round1.workspaces"
-  ],
-  "reviewArtifactId": 13102538249,
   "subsequentSourceBoundReviews": [
     {
       "contractId": "crossdeck.phase2.continuity",

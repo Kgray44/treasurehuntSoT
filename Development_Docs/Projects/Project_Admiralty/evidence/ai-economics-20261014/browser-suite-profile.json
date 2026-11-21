@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": ["tests/e2e/admiralty-ai-economics.spec.ts", "--repeat-each=2", "--workers=1"],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

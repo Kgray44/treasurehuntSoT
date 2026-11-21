@@ -53,6 +53,19 @@ export function RoomPhotoPanel({
     return () => thumbnails.forEach((url) => URL.revokeObjectURL(url));
   }, [thumbnails]);
   const [busy, setBusy] = useState(false);
+  function reportOutcome(requestId: string, decision: "PREVIEWED" | "REJECTED") {
+    void fetch("/api/studio/parallax", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken() },
+      body: JSON.stringify({ action: "AI_OUTCOME", requestId, decision }),
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("Feedback not recorded");
+      })
+      .catch(() =>
+        setError("Your scene is unchanged. This review decision could not be recorded for usage analytics."),
+      );
+  }
   const [processing, setProcessing] = useState(false);
   useEffect(() => {
     onBusyChanged?.(busy);
@@ -178,6 +191,7 @@ export function RoomPhotoPanel({
         );
       if (result.status === "PROPOSED") {
         setProposal({ base, value: result.proposal });
+        if (wizard) reportOutcome(result.proposal.requestId, "PREVIEWED");
         if (wizard) {
           onPreview({
             ...base.draft,
@@ -449,6 +463,7 @@ export function RoomPhotoPanel({
               onClick={() => {
                 if (previewing) clearPreview();
                 else {
+                  reportOutcome(proposal.value.requestId, "PREVIEWED");
                   onPreview({
                     ...proposal.base.draft,
                     content: {
@@ -493,6 +508,7 @@ export function RoomPhotoPanel({
             type="button"
             disabled={busy}
             onClick={() => {
+              reportOutcome(proposal.value.requestId, "REJECTED");
               clearPreview();
               setProposal(null);
               setPhase("Proposal discarded. Your scene is unchanged.");

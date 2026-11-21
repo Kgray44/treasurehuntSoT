@@ -1,0 +1,740 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "INDEPENDENT_SOURCE_BOUND_LOCAL_PRODUCT_EXPERIENCE_REVIEW",
+  "reviewIteration": 3,
+  "disposition": "VERIFY_FINAL_EVIDENCE",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "acceptance": "LOCAL_EXPERIENCE_EVIDENCE_SUPPORTED_WITH_NONBLOCKING_DEBT",
+  "reviewerContext": {
+    "identity": "Codex independent reviewer /root/experience_final_review",
+    "context": "Separate reviewer subagent context assigned the human objective, bounded packet, required dimensions and review instructions; no builder rationale was included.",
+    "builderRationaleReceived": false,
+    "independentOfBuilder": true,
+    "experienceInspectedBeforeSource": true,
+    "productionSourceEdited": false,
+    "repairHandoffsReceived": true,
+    "method": "Read only the bounded packet initially. Inspected accepted visual references and all first-cohort captures/frame sequence before implementation source. Inspected all 25 replacement final captures and all seven final decoded video frames, including original-resolution capability/policy views and lossless inspection crops of long mobile dossier images. Read only necessary implementation, capture-test and regression source after visual inspection. Independently reproduced the legacy mismatch and ran its final isolated regression. No independent live-browser interaction or continuous video playback is claimed."
+  },
+  "objective": "An Administrator understands AI capabilities, cost and uncertainty, per-person allowances, and useful outcomes through the actual Admiralty interface.",
+  "packet": {
+    "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/review-packet-final.json",
+    "sha256": "6fb877a8e5c84beb122b10ae79b4ca81f7398acd2eadd8fc983aa70b2f7024bb",
+    "base": "a5eeb5b42561042cea7e799a3b0d54c1b03c1006",
+    "protectedBase": "602f83efdb16b7ea75980f07fa3a3d976c496860",
+    "candidate": "cfd78948301e86531d45a12f79b0f3f2f37e192d",
+    "sourceState": "COMMITTED_DEPENDENT_CANDIDATE",
+    "contractRegistryPath": "testing/contracts.json",
+    "contractRegistrySha256": "dc9e584f0ab1011c2cfc622ff427cc0fb7e0e4475b98dbce4b2100768b2f5971"
+  },
+  "verification": {
+    "packetDigestMatched": true,
+    "headMatchedCandidate": true,
+    "sourceBindingsVerified": 47,
+    "sourceBindingMismatches": [],
+    "screenshotsVerified": 25,
+    "screenshotMismatches": [],
+    "recordingsVerified": 2,
+    "recordingMismatches": [],
+    "decodedFramesVerified": 7,
+    "decodedFrameMismatches": [],
+    "browserProfileReceipt": "PASS",
+    "browserJourneys": 2,
+    "browserExecutionLog": "2 passed (44.2s)",
+    "reviewerFocusedRegression": "1 passed, 10 skipped",
+    "sourceBindingScope": "File hashes and HEAD were checked against the packet. Engineering/publication changes outside the 47 product/test bindings do not extend this review to new product source."
+  },
+  "contracts": [
+    {
+      "id": "admiralty.phase1.registry",
+      "objective": "Compare daily requests and costs, then inspect a user allowance through the normal People search",
+      "accessibility": "A labeled keyboard-operable metric selector and exact daily table preserve access beyond visual bars, with visible focus and narrow-screen overflow contained.",
+      "scopeNote": "Daily keyboard selection and exact fallback plus canonical dossier continuity are supported here; the complete existing ordinary People-search and all metric journeys remain separate protected replay obligations."
+    },
+    {
+      "id": "admiralty.ai-economics",
+      "objective": "Understand resource consumption and genuinely useful AI outcomes, investigate poor experience, and configure governed allowances",
+      "accessibility": "Semantic figures and exact daily data, labeled filters, visible focus, keyboard-reachable contained tables, responsive cards and explicit loading/error/recovery feedback.",
+      "scopeNote": "The final local synthetic Administrator economics, investigation, configuration and governed allowance evidence supports this contract's reviewed objective."
+    }
+  ],
+  "inspectedReferences": [
+    {
+      "path": "Experience_Images/Contact_Sheets/Area_Admiralty_Desktop_01.png",
+      "acceptanceClass": "Supplied accepted visual reference; acceptance authority is not re-granted by this local review"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+      "acceptanceClass": "Supplied accepted visual reference; acceptance authority is not re-granted by this local review"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+      "acceptanceClass": "Supplied accepted visual reference; acceptance authority is not re-granted by this local review"
+    }
+  ],
+  "inspectedArtifacts": [
+    {
+      "id": "AE-EV-overview-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/overview-desktop.png",
+      "sha256": "7a55211f815d9ed40085323d70c1dc4baf2d85c3a246b765e2118daec17a6e07",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-daily-fallback-keyboard-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/daily-fallback-keyboard-desktop.png",
+      "sha256": "49d626d5b9777dd3fa6681c98598d6f196574a94eea881ca58da2895ab854f1b",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-quality-keyboard-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/quality-keyboard-desktop.png",
+      "sha256": "71b4917f1e98d214e0604aa27ba83becaa288702fe7ff7e18284c2287729a49d",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-quality-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/quality-desktop.png",
+      "sha256": "44f31dcc17e929fc33174aff7f0af1f7a6a2ca2e9e98b089b40a1444391a041b",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-investigation-history-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/investigation-history-desktop.png",
+      "sha256": "07c0022ace801c0331c98bbebf7feaffda545cd99742a5cc24add47a61315638",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-operation-inspector",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/operation-inspector.png",
+      "sha256": "732893a08268e2262a9698cbb6ab6fa67c1ffe0af1a41434067817aad909066d",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-people-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/people-desktop.png",
+      "sha256": "209de3229fd086e061b9825af6de02ee98f0dfa8a96ac2474da11683ebd43ece",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-allowance-effective-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/allowance-effective-desktop.png",
+      "sha256": "ed2c56e2aafec960b6bfb83818e5d7fdac2c858e90dbc20e6b5542de1900c324",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-allowance-effective-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/allowance-effective-mobile.png",
+      "sha256": "72e7e89bef514885d80b5d04db83481cb8db7383651f37edba256b762dc9ad50",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-allowance-preview-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/allowance-preview-mobile.png",
+      "sha256": "3ebb27a5ba5286ee585631edaf456d363afa54945bfc41a6fc648b9cbe961530",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-allowance-preview-detail-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/allowance-preview-detail-mobile.png",
+      "sha256": "4bcd709337c89cec1b7c890f749e53a71109e5384f8370c7bb3ccd6098aebf48",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-allowance-preview-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/allowance-preview-desktop.png",
+      "sha256": "4eaa1cd29ad4964032a1fe498869b2e6e173838db4e2612e24e47f9cb843a0d3",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-allowance-applied-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/allowance-applied-mobile.png",
+      "sha256": "daf76ec3e451e1ff9b1e4eb0b3d2621c8b0bb90159a90289daf96b7737b58cda",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-allowance-applied-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/allowance-applied-desktop.png",
+      "sha256": "7778400d1651f6c834c909d4676ea868decb37806db4390f68430d7318f6ca44",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-configuration-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/configuration-desktop.png",
+      "sha256": "55c3237de28667e04a1290fab3b6c359091298cc6f135355a6d6fc90eef9fb94",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-capabilities-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/capabilities-desktop.png",
+      "sha256": "520ca61735f2a872f3c4351b9b5d566893c35d9afc25b00ed49e00fd5fba3abf",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-capabilities-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/capabilities-mobile.png",
+      "sha256": "528542a78a20a6db587b61e2a6e1c793f9ca9a75ff5b27b0ba71e156aed58628",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-history-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/history-mobile.png",
+      "sha256": "06f2cab17087f23ff517a53ff19b20d4ee3f5fd16ceaddedde79b3d1d830f2a4",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-overview-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/overview-mobile.png",
+      "sha256": "7d2b9020983ba5fd648c66ff85d6d71ed563f5f31c9be7b0f19af7e2aa6d272b",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-comparison-scroll-keyboard-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/comparison-scroll-keyboard-mobile.png",
+      "sha256": "93def991f20bb5c27ae56d378b809ec12810bb60133f95fa8200650c72f6f9bd",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-quality-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/quality-mobile.png",
+      "sha256": "657062aa4aaf74111010eec88bc784bb11eb0b561e3ed596de3e859d994ad80d",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-empty-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/empty-mobile.png",
+      "sha256": "2799fe79670bd2e035dd23ba9282180cc8f7831b15d3ed209e91191acb19ad25",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-loading-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/loading-mobile.png",
+      "sha256": "1c7f386544e550c19e56e2cce75ab2db4006c639cc2683f09842ec1d53b8619e",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-error-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/error-mobile.png",
+      "sha256": "f11d6a1658a2041f747758f61e6bd89004b9fd5b8b5d91da3f58f7b7b53c4229",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-recovered-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/recovered-mobile.png",
+      "sha256": "657062aa4aaf74111010eec88bc784bb11eb0b561e3ed596de3e859d994ad80d",
+      "device": "MOBILE"
+    }
+  ],
+  "inspectedRecordingFrames": [
+    {
+      "id": "AE-VID-000",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-000s.png",
+      "seconds": 0,
+      "sha256": "a319944fee807edf277813730144fed8f9733bfefc1ab64ef81c0a35a463a102"
+    },
+    {
+      "id": "AE-VID-002",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-002s.png",
+      "seconds": 2,
+      "sha256": "c207440fefb8a7678f4312d5a56a9baa00139bab6825f6e29583967442bde39c"
+    },
+    {
+      "id": "AE-VID-004",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-004s.png",
+      "seconds": 4,
+      "sha256": "f98e2d223efdd514226cb9fd14dbd7424561917a71d8e006b511d7f8eb86034c"
+    },
+    {
+      "id": "AE-VID-006",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-006s.png",
+      "seconds": 6,
+      "sha256": "c346e91d7b33d47166736e595fea250291287bc00e11097b7ddfa956d4f9564e"
+    },
+    {
+      "id": "AE-VID-008",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-008s.png",
+      "seconds": 8,
+      "sha256": "fc09034cacf10d95d8ad7e26184a11f0ee01fb46d78115fbc0c62cc88b680209"
+    },
+    {
+      "id": "AE-VID-010",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-010s.png",
+      "seconds": 10,
+      "sha256": "2059a5a16cda6a3ec887046ee204670fe13b406bcb39ec9e48944f4dd9831d17"
+    },
+    {
+      "id": "AE-VID-012",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-012s.png",
+      "seconds": 12,
+      "sha256": "ab971a7f3c16a578accd04c1d1ee810e4df47d25905b9f5022ae6d6555f7b847"
+    }
+  ],
+  "recordings": [
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/journey.webm",
+      "sha256": "146e1f8590efc22fce962d276b04609ba9cc1fcc5d1374e14d563ff63ef85ce0"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/capture-journey.webm",
+      "sha256": "2e265883ad1fcc94f2e536ffbc597ae4c36baec0a35e18e26eac2df354a0bb02",
+      "purpose": "First journey containing screenshot-capture viewport resize artifacts; retained for provenance."
+    }
+  ],
+  "recordingAssessment": {
+    "primaryDurationSeconds": 13.6,
+    "modes": {
+      "screenshots": "First complete journey; full-page screenshots may resize its recorded viewport.",
+      "continuity": "Second complete journey repeats every product assertion without invoking screenshot capture. journey.webm is this uninterrupted viewport recording."
+    },
+    "observations": "Primary sampled frames are decoded without media-player chrome. The second run does not invoke screenshot capture, avoiding the first recording's tall-full-page resize artifacts. Mobile viewport footage has gray padding inside the fixed recording canvas. Two-second sampling does not show every rapid operation, and automated replay pace cannot establish human reading time.",
+    "reviewerCoverage": "All seven declared decoded primary-video frames; the complete video bytes were hash-verified. Continuous playback was not independently performed."
+  },
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "status": "SUPPORTED",
+      "observation": "The desktop workspace uses four summary cards followed by paired cost panels, evidence coverage and model comparison. Mobile stacks these panels without page-width overflow. The established station shell and dossier remain visually recognizable.",
+      "evidence": ["AE-EV-overview-desktop", "AE-EV-overview-mobile", "AE-EV-allowance-effective-desktop"],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": []
+    },
+    {
+      "dimension": "hierarchy",
+      "status": "SUPPORTED_WITH_NONBLOCKING_OBSERVATIONS",
+      "observation": "The display title, compact filter form, selected local view, summary figures and progressively detailed cards establish a clear order. Quality gives capability-specific rates and denominators before investigation actions. The repeated introduction and expanded mobile station list retain the prior height debt.",
+      "evidence": ["AE-EV-overview-desktop", "AE-EV-quality-mobile"],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": ["AE-PX-O01"]
+    },
+    {
+      "dimension": "typography",
+      "status": "SUPPORTED_WITH_NONBLOCKING_OBSERVATIONS",
+      "observation": "Cream serif headings and sans-serif labels follow the accepted Admiralty family. Body text wraps legibly at 390px. Small table metadata and long exact fractions require deliberate reading; the existing precision observation is retained.",
+      "evidence": ["AE-EV-quality-desktop", "AE-EV-quality-mobile", "AE-EV-overview-mobile"],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": ["AE-PX-O02"]
+    },
+    {
+      "dimension": "spacing",
+      "status": "SUPPORTED",
+      "observation": "Card padding, field gaps and row rules consistently separate summary, evidence and policy areas. Narrow views stack labels and long values rather than overlapping them. The full account dossier is long because allowance controls remain inside the existing canonical dossier.",
+      "evidence": ["AE-EV-people-desktop", "AE-EV-capabilities-mobile", "AE-EV-allowance-preview-desktop"],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": []
+    },
+    {
+      "dimension": "controls",
+      "status": "SUPPORTED_WITH_NONBLOCKING_OBSERVATIONS",
+      "observation": "Date, capability, model and history filters are labeled. Applying economics filters is explicit. Current view and configuration disclosure are distinguishable. The policy preview compares named changed settings in Current and Proposed columns before privileged verification and confirmation. The final Capabilities capture shows gpt-6.1-sol for Room Reconstruction under a persisted legacy policy that omits roomModel; AE-PX-006 was resolved through the canonical policy projection.",
+      "evidence": ["AE-EV-operation-inspector", "AE-EV-configuration-desktop", "AE-EV-allowance-preview-desktop"],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": ["AE-PX-006", "AE-PX-O04"]
+    },
+    {
+      "dimension": "contrast",
+      "status": "SUPPORTED",
+      "observation": "Cream primary text, muted secondary labels, brass actions and teal surfaces remain distinguishable in the inspected captures. The Quality and mobile comparison controls have cyan focus outlines; the daily disclosure has a visible gold outline. Scoped axe evidence supports the economics region only; this review does not certify every shared-shell contrast ratio.",
+      "evidence": ["AE-EV-overview-mobile", "AE-EV-quality-desktop"],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": []
+    },
+    {
+      "dimension": "consistency",
+      "status": "SUPPORTED",
+      "observation": "Dark teal surfaces, brass borders, serif display type, grouped station navigation and card hierarchy match the Admiralty contact sheet and the public references' shell family. Capability names and outcome meanings remain consistent across overview, quality, registry and dossier.",
+      "evidence": ["AE-EV-overview-desktop", "AE-EV-capabilities-desktop", "AE-EV-allowance-effective-desktop"],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": []
+    },
+    {
+      "dimension": "states",
+      "status": "SUPPORTED",
+      "observation": "The populated view distinguishes calculated cost, unavailable provider confirmation, unresolved exposure and useful results. The empty period uses Unavailable outcomes and honest zero counts. Loading identifies the pending request; failure names the last successful period and says filter changes were not applied; Retry returns to the populated composition.",
+      "evidence": ["AE-EV-empty-mobile", "AE-EV-loading-mobile", "AE-EV-error-mobile", "AE-EV-recovered-mobile"],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": []
+    },
+    {
+      "dimension": "responsive",
+      "status": "SUPPORTED_WITH_NONBLOCKING_OBSERVATIONS",
+      "observation": "The 390px layout stacks metrics, quality and capability cards, keeps filter controls inside the viewport and uses contained horizontal tables for comparisons and policy review. The mobile table scroll cue explicitly identifies all six columns. The mobile policy preview still clips the Proposed heading and long origin values at its initial horizontal position; AE-PX-O04 retains this bounded readability debt.",
+      "evidence": ["AE-EV-overview-mobile", "AE-EV-capabilities-mobile", "AE-EV-history-mobile"],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": ["AE-PX-O04"]
+    },
+    {
+      "dimension": "keyboard",
+      "status": "SUPPORTED_FOR_DEMONSTRATED_CONTROLS",
+      "observation": "Actual keyboard input changes the daily metric and opens its exact-table fallback, and Enter activates Quality while focus remains on that control. On mobile, 15 ArrowRight key presses scroll the focused Model cost comparison region until Accounted exposure is in the viewport. The final test no longer assigns scrollLeft to prove forward access; its later assignment only restores the initial position. This is scoped keyboard evidence, not a full keyboard-only navigation or screen-reader certification.",
+      "evidence": [
+        "AE-EV-daily-fallback-keyboard-desktop",
+        "AE-EV-quality-keyboard-desktop",
+        "AE-EV-comparison-scroll-keyboard-mobile"
+      ],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": []
+    },
+    {
+      "dimension": "focus",
+      "status": "SUPPORTED_FOR_DEMONSTRATED_CONTROLS",
+      "observation": "The daily-table summary has a visible outline with the table open. Quality has a cyan outline distinct from the selected-view border. The mobile comparison region has a full cyan outline around the displayed right-hand columns. These controls are visible below the sticky masthead in the replacement captures, unlike the superseded offscreen focus evidence.",
+      "evidence": [
+        "AE-EV-daily-fallback-keyboard-desktop",
+        "AE-EV-quality-keyboard-desktop",
+        "AE-EV-comparison-scroll-keyboard-mobile"
+      ],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": []
+    },
+    {
+      "dimension": "feedback",
+      "status": "SUPPORTED",
+      "observation": "Applied UTC boundaries are visible beneath filters. The failed refresh distinguishes the retained January period from requested October controls. Policy application reports revision and audit receipt, updates the effective Room Reconstruction allowance to 3, and preserves existing consumption.",
+      "evidence": ["AE-EV-error-mobile", "AE-EV-allowance-preview-desktop", "AE-EV-allowance-applied-desktop"],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": []
+    },
+    {
+      "dimension": "motion",
+      "status": "SUPPORTED_WITH_RECORDING_LIMITS",
+      "observation": "The final primary recording is the second full automated journey with screenshot capture skipped; all product assertions still execute. Seven decoded frames contain no media-player controls and show real viewport transitions, a dossier loading skeleton and mobile policy/navigation views. Mobile economics captures follow reduced-motion emulation. Gray side padding around a narrower viewport is recording framing, not page overflow. The 13.6-second automated replay is too fast to establish human reading time, and I inspected its sampled frame sequence rather than claiming independent continuous playback.",
+      "evidence": ["AE-VID-000", "AE-VID-002", "AE-VID-004", "AE-VID-006", "AE-VID-008", "AE-VID-010", "AE-VID-012"],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": []
+    },
+    {
+      "dimension": "continuity",
+      "status": "SUPPORTED_WITH_CONTRACT_SCOPE_LIMIT",
+      "observation": "The browser test enters /admin and follows the normal AI Usage & Quotas link, investigates the quality signal in History, opens the canonical People dossier from the consumer table, previews and applies an allowance with privileged assurance, and returns via the existing AI Usage & Quotas link to configuration and economics views. The captures show that canonical dossier and return surface. This economics suite does not separately replay the registry contract's ordinary People-search journey or every historical daily metric; those protected contract obligations remain intact and are not newly attested by this report.",
+      "evidence": [
+        "AE-EV-investigation-history-desktop",
+        "AE-EV-people-desktop",
+        "AE-EV-allowance-effective-mobile",
+        "AE-EV-allowance-preview-detail-mobile",
+        "AE-EV-allowance-applied-mobile",
+        "AE-EV-configuration-desktop"
+      ],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": []
+    },
+    {
+      "dimension": "complexity",
+      "status": "SUPPORTED",
+      "observation": "Separate Overview, Quality, People, Capabilities and History views let the operator move from summary to investigation. Operation metadata and provider attempts are disclosed progressively; private photographs, prompts and generated scene content are explicitly excluded. Versioned pricing and complete policy snapshots remain secondary disclosures.",
+      "evidence": ["AE-EV-overview-desktop", "AE-EV-operation-inspector", "AE-EV-configuration-desktop"],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": []
+    },
+    {
+      "dimension": "role-outcomes",
+      "status": "SUPPORTED",
+      "observation": "The Administrator can distinguish 75 logical operations from 76 provider attempts, 12 accepted rooms from 21 applied grounded edits, and 2 unresolved operations from confirmed spending. Room acceptance is 12/50 (24%); grounded useful operations are 21/24 (87.5%). The one-operation Advanced Assistant rate carries a small-sample warning, and no-outcome observations stay Unavailable.",
+      "evidence": ["AE-EV-overview-desktop", "AE-EV-quality-desktop", "AE-EV-quality-mobile"],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": []
+    },
+    {
+      "dimension": "fallbacks",
+      "status": "SUPPORTED",
+      "observation": "Textual metric values and semantic figures supplement bars. The daily chart provides an exact-table disclosure, unknown usage is not converted to zero cost, and the empty period does not invent spending. Provider-unconfigured behavior and historical gaps remain explicit limitations rather than implied success.",
+      "evidence": ["AE-EV-overview-desktop", "AE-EV-empty-mobile", "AE-EV-operation-inspector"],
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "AE-PX-001",
+      "priority": "P1",
+      "blocking": false,
+      "status": "RESOLVED_FOR_REVIEWED_CAPTURES",
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "title": "Floating capture chrome no longer obscures the reviewed composition",
+      "observation": "Full-page captures now begin with the settled masthead at the top, without the initial mid-page header and overlapping skip links. Focused viewport captures show the actual target below the sticky header. No shared-shell regression is established from the superseded images.",
+      "evidence": [
+        "AE-EV-overview-desktop",
+        "AE-EV-quality-desktop",
+        "AE-EV-overview-mobile",
+        "AE-EV-quality-keyboard-desktop"
+      ],
+      "repair": "Capture restores top scroll and removes transient heading focus for full-page images; target-specific viewport captures center focused controls. Shared-shell skip-link behavior outside these demonstrated controls is not certified."
+    },
+    {
+      "id": "AE-PX-002",
+      "priority": "P1",
+      "blocking": false,
+      "status": "RESOLVED_FOR_LOCAL_OBJECTIVE_EVIDENCE",
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "title": "Capabilities, dossier allowance, loading and recovery evidence is now present",
+      "observation": "The final packet includes desktop/mobile Capabilities, consumer handoff to the real People dossier, inherited/effective rights, per-capability fields, current/proposed review, mobile privileged confirmation/application feedback, loading, error and recovered views, and an opened daily-table fallback.",
+      "evidence": [
+        "AE-EV-capabilities-desktop",
+        "AE-EV-capabilities-mobile",
+        "AE-EV-people-desktop",
+        "AE-EV-allowance-effective-desktop",
+        "AE-EV-allowance-effective-mobile",
+        "AE-EV-allowance-preview-desktop",
+        "AE-EV-allowance-preview-detail-mobile",
+        "AE-EV-allowance-applied-mobile",
+        "AE-EV-loading-mobile",
+        "AE-EV-recovered-mobile",
+        "AE-EV-daily-fallback-keyboard-desktop"
+      ],
+      "repair": "Expanded actual-application capture coverage and two source-bound browser journeys close the local objective gap. Full ordinary People-search, assistive-technology and protected attestation obligations are not inferred."
+    },
+    {
+      "id": "AE-PX-003",
+      "priority": "P1",
+      "blocking": false,
+      "status": "RESOLVED",
+      "contractIds": ["admiralty.ai-economics"],
+      "title": "Failed refresh identifies retained data and unapplied filter changes",
+      "observation": "The alert explicitly names the last successfully loaded January 2030 period and states that requested changes were not applied, while the October draft filters remain visible. Retry returns to the populated October composition and removes the alert.",
+      "evidence": ["AE-EV-error-mobile", "AE-EV-recovered-mobile"],
+      "repair": "Retained-result explanation binds the error to the applied period rather than silently presenting stale results as the requested cohort."
+    },
+    {
+      "id": "AE-PX-004",
+      "priority": "P2",
+      "blocking": false,
+      "status": "RESOLVED",
+      "contractIds": ["admiralty.ai-economics"],
+      "title": "Inclusive Through date and exclusive applied boundary agree",
+      "observation": "The final initial controls show Through 2026-10-15 and the applied summary ends 2026-10-16 exclusive. The empty-period controls show Through 2030-01-02 and summary 2030-01-03 exclusive. Source initializes Through from one millisecond before the exclusive upper bound and adds one UTC day on submission.",
+      "evidence": ["AE-EV-overview-desktop", "AE-EV-empty-mobile"],
+      "repair": "Initial and submitted filter semantics now use the same inclusive Through-date convention."
+    },
+    {
+      "id": "AE-PX-005",
+      "priority": "P2",
+      "blocking": false,
+      "status": "RESOLVED_FOR_SINGLE_DAY_CASE",
+      "contractIds": ["admiralty.ai-economics"],
+      "title": "Populated one-day cost series has a visible datum",
+      "observation": "Observed cost over time now contains a visible gold point on both desktop and mobile, with a one-recorded-day caption and observed run-rate text. It no longer looks identical to an empty chart. Exact economics daily amounts remain in the named disclosure; a multi-day economics series was not part of these captures.",
+      "evidence": ["AE-EV-overview-desktop", "AE-EV-overview-mobile"],
+      "repair": "A single observation is drawn as a centered marker instead of an invisible one-point polyline. This is bounded single-day verification."
+    },
+    {
+      "id": "AE-PX-006",
+      "priority": "P2",
+      "blocking": false,
+      "status": "RESOLVED_ON_CFD78948",
+      "contractIds": ["admiralty.ai-economics"],
+      "title": "Legacy reconstruction configuration now agrees with canonical admission",
+      "identifiedBy": "Parent final requirement audit; independently confirmed by this reviewer after visual inspection.",
+      "observation": "The prior source used policy.roomModel ?? policy.standardModel in the registry, while effectiveAIUserPolicy uses global.roomModel ?? gpt-6.1-sol. roomModel is optional and readAIPolicy parses stored policy without merging defaults, so a persisted legacy policy could display Luna while admitting Sol. The prior explicit-roomModel visual cohort could not prove this case.",
+      "independentReproduction": {
+        "method": "Pure evaluation of actual ai-policy schema and policy functions with default policy enabled and roomModel omitted; no application database or provider was used.",
+        "result": {
+          "omittedRoomModel": true,
+          "previousProjection": "gpt-6-luna",
+          "canonicalRoomModel": "gpt-6.1-sol",
+          "admittedRoomModel": "gpt-6.1-sol"
+        }
+      },
+      "repair": "The final projection calls effectiveAIUserPolicy(policy, null).roomModel. The browser fixture omits roomModel and asserts the Room Reconstruction card's Sol profile. A real isolated-SQLite regression compares the projected model with reserveAIUsage admission.",
+      "verification": {
+        "command": "node node_modules/vitest/vitest.mjs run src/parallax/ai-economics.test.ts -t 'shows the canonical reconstruction model for a legacy policy without roomModel'",
+        "reviewerExecuted": true,
+        "result": "PASS: 1 test passed, 10 skipped; one test file passed",
+        "durationSeconds": 4.31
+      },
+      "evidence": [
+        "AE-EV-capabilities-desktop",
+        "AE-EV-capabilities-mobile",
+        "src/parallax/ai-economics.ts:231",
+        "src/parallax/ai-economics.test.ts:70",
+        "tests/e2e/admiralty-ai-economics.spec.ts:29"
+      ]
+    }
+  ],
+  "nonblockingObservations": [
+    {
+      "id": "AE-PX-O01",
+      "priority": "P3",
+      "blocking": false,
+      "status": "RETAINED_OPEN",
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "observation": "Expanded station navigation takes roughly the first mobile viewport before the title, and a second large introductory heading repeats the page introduction. The canonical dossier is also very long. This is inherited composition debt, not a new obstruction or a reason to replace canonical navigation.",
+      "evidence": ["AE-EV-overview-mobile", "AE-EV-quality-mobile", "AE-EV-allowance-effective-mobile"],
+      "accountableOwner": "Admiralty experience integration with Homeport for shared navigation",
+      "repairPath": "A separately scoped mobile-shell/hierarchy refinement may reduce initial station height and repeated introductory height while preserving navigation obligations."
+    },
+    {
+      "id": "AE-PX-O02",
+      "priority": "P3",
+      "blocking": false,
+      "status": "RETAINED_OPEN",
+      "contractIds": ["admiralty.ai-economics"],
+      "observation": "Mean and per-useful-result amounts expose many fractional digits. These exact values are legible but slow quick comparisons. The calculated/estimated wording appropriately limits certainty.",
+      "evidence": ["AE-EV-overview-mobile", "AE-EV-quality-mobile"],
+      "accountableOwner": "Admiralty AI economics experience integration",
+      "repairPath": "Consider concise approximate defaults with exact nanodollar-derived figures in an accessible disclosure; do not erase precision or cost-basis labels."
+    },
+    {
+      "id": "AE-PX-O03",
+      "priority": "P3",
+      "blocking": false,
+      "status": "RESOLVED",
+      "contractIds": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+      "observation": "The comparison now includes an explicit all-six-columns horizontal-scroll cue and keyboard instructions. The initial mobile view shows capability/provider/model, operations and observed cost; the focused ArrowRight capture shows useful operations, cost per useful operation and accounted exposure.",
+      "evidence": ["AE-EV-overview-mobile", "AE-EV-comparison-scroll-keyboard-mobile"],
+      "accountableOwner": "Admiralty AI economics experience integration",
+      "repairPath": "No further repair required for the demonstrated comparison-column access."
+    },
+    {
+      "id": "AE-PX-O04",
+      "priority": "P3",
+      "blocking": false,
+      "status": "OPEN_BOUNDED_READABILITY_DEBT",
+      "contractIds": ["admiralty.ai-economics"],
+      "observation": "On mobile, the policy-change table shows the 500-to-3 allowance change but clips the Proposed heading and longer proposed origin values at its initial horizontal position. The effective-allowance table also places remaining/model columns offscreen. These are contained, named focusable scroll regions in source, and the mobile policy flow completes, but they lack the comparison table's explicit scroll cue. I do not claim all policy-table columns are simultaneously readable or that horizontal policy-table keyboard access was demonstrated.",
+      "evidence": [
+        "AE-EV-allowance-effective-mobile",
+        "AE-EV-allowance-preview-detail-mobile",
+        "AE-EV-allowance-applied-mobile"
+      ],
+      "accountableOwner": "Admiralty allowance experience integration",
+      "repairPath": "In a bounded follow-up, add a visible horizontal-scroll cue or a stacked Current/Proposed presentation and exercise both horizontal positions without weakening confirmation."
+    }
+  ],
+  "specialAssessments": {
+    "policyCurrentProposed": {
+      "status": "SUPPORTED_DESKTOP_AND_MOBILE_WITH_P3_LIMITATION",
+      "observation": "The desktop review clearly names Setting, Current and Proposed, displays Room Reconstruction allowance 500 to 3, and compares origin changes. Complete snapshots remain secondary. Mobile shows the numerical change, privileged-assurance controls and successful revision/receipt, while AE-PX-O04 records clipped headings/origins at the initial table position.",
+      "evidence": [
+        "AE-EV-allowance-preview-desktop",
+        "AE-EV-allowance-preview-detail-mobile",
+        "AE-EV-allowance-applied-mobile"
+      ]
+    },
+    "dailyChartFilterScope": {
+      "status": "EXPLICIT_AND_INDEPENDENT",
+      "observation": "Daily AI activity explicitly says Current UTC month 2026-10 and that it is independent of economics/history filters. In the January 2030 empty/error economics states it deliberately continues showing October activity, with that scope visible. This is not misrepresented as the filtered economics cohort.",
+      "evidence": ["AE-EV-overview-mobile", "AE-EV-empty-mobile", "AE-EV-error-mobile"]
+    },
+    "mobileSixComparisonColumns": {
+      "status": "SUPPORTED",
+      "observation": "Left-side overview plus right-side focused viewport expose all six headers/values. Actual ArrowRight input moves the contained region and the final test asserts focus, positive scrollLeft and Accounted exposure in the viewport.",
+      "evidence": ["AE-EV-overview-mobile", "AE-EV-comparison-scroll-keyboard-mobile"]
+    },
+    "actualKeyboardFocus": {
+      "status": "SUPPORTED_FOR_SPECIFIED_CONTROLS",
+      "observation": "Visible focus and actual keyboard actions are demonstrated for the daily disclosure, Quality button and mobile comparison. The tests use programmatic focus to establish the start position; a full Tab-from-entry traversal and assistive-technology session remain unproved.",
+      "evidence": [
+        "AE-EV-daily-fallback-keyboard-desktop",
+        "AE-EV-quality-keyboard-desktop",
+        "AE-EV-comparison-scroll-keyboard-mobile"
+      ]
+    }
+  },
+  "repairHistory": [
+    {
+      "packetSha256": "93ca613ae84b8c8f0c8d24338e5f434708fc5e090f408bab65af9190dcff9efe",
+      "candidate": "4b1e0fcda1847a4a34a4110c064214073c523f15",
+      "preservedLocallyAt": "artifacts/admiralty-economics/superseded-4b1e0fcd-evidence",
+      "observation": "First source-bound cohort had offscreen desktop focus captures, an offscreen mobile comparison after End plus forced scrollLeft, no mobile allowance captures, and media-player overlays/full-page resize artifacts in sampled recording evidence.",
+      "resolution": "Capture-only repair supplied centered focus targets, actual ArrowRight scrolling, mobile allowance states, decoded frames and a second uninterrupted viewport recording."
+    },
+    {
+      "packetSha256": "938930a81c833684b779858f966d9c8e5be25f886a05d4805b515aec77f39e8a",
+      "candidate": "10b62d382d2021c9505c056718914ac567d48b48",
+      "preservedLocallyAt": "artifacts/admiralty-economics/superseded-10b62d38-evidence",
+      "observation": "Visual review supported the explicit-roomModel synthetic experience with P3 debt. A separate final source audit then identified AE-PX-006; this cohort did not prove omitted-roomModel behavior.",
+      "resolution": "Narrow canonical projection correction, isolated admission regression and recapture with legacy roomModel omitted produced the final cfd78948 packet. The prior visual result has not been relabeled as proof of the later source."
+    }
+  ],
+  "sourceInspectedAfterExperience": [
+    {
+      "path": "src/components/admiralty/AIEconomicsConsole.tsx",
+      "purpose": "Resolve period/error/single-day chart semantics, disclosure and comparison access."
+    },
+    {
+      "path": "src/components/admiralty/AIEconomicsConsole.module.css",
+      "purpose": "Resolve contained overflow, responsive cards and focus styling."
+    },
+    {
+      "path": "src/components/admiralty/AIPolicyChangeSummary.tsx",
+      "purpose": "Resolve named current/proposed differences and complete snapshot fallback."
+    },
+    {
+      "path": "src/components/admiralty/AIQuotaConsole.tsx",
+      "purpose": "Confirm independent current-UTC-month chart scope."
+    },
+    {
+      "path": "src/components/admiralty/AIQuotaConsole.module.css",
+      "purpose": "Confirm named focusable policy table overflow and snapshot wrapping."
+    },
+    {
+      "path": "tests/e2e/admiralty-ai-economics.spec.ts",
+      "purpose": "Distinguish real input/assertions, screenshot capture, second replay, assurance/application and legacy fixture scope."
+    },
+    {
+      "path": "src/parallax/ai-economics.ts",
+      "purpose": "Independently confirm and verify repair of legacy reconstruction configuration projection."
+    },
+    {
+      "path": "src/parallax/ai-policy.ts",
+      "purpose": "Confirm optional roomModel schema and canonical effective/admission fallback."
+    },
+    {
+      "path": "src/parallax/ai-ledger.ts",
+      "purpose": "Confirm persisted policy parsing does not silently merge defaults."
+    },
+    {
+      "path": "src/parallax/ai-economics.test.ts",
+      "purpose": "Inspect and independently execute the real isolated-SQLite projection/admission regression."
+    },
+    {
+      "path": "src/parallax/ai-policy.test.ts",
+      "purpose": "Inspect existing reconstruction routing semantics."
+    },
+    {
+      "path": "src/parallax/ai-quota-projections.ts",
+      "purpose": "Confirm dossier usage projection remains attached to canonical policy service."
+    }
+  ],
+  "baselineDebt": {
+    "retainedObservationIds": ["AE-PX-O01", "AE-PX-O02", "AE-PX-O04"],
+    "protectedPrerequisite": {
+      "status": "REPORTED_BLOCK_RETAINED",
+      "canonicalDebtIdProvidedInPacket": false,
+      "source": "review-packet-final.json acceptanceBoundary",
+      "observation": "Independent local experience review only. Protected-base planning fails a prerequisite Crossdeck experience-design obligation. Protected capture/review artifact attestation, Mainline Decision, integration, production billing, physical devices and owner acceptance are not claimed.",
+      "accountableOwner": "Existing Crossdeck experience obligation and Sounding Line qualification authority",
+      "repairPath": "Use the existing protected workflow and prerequisite owner; this local report cannot discharge or bypass it."
+    }
+  },
+  "evidenceLimits": [
+    "Local actual-application synthetic evidence only; no production invoice, provider billing audit or real private content was used.",
+    "Browser profile receipts and inspected test source support two successful task-owned journeys; the reviewer did not independently rerun the entire browser suite or all reported focused tests.",
+    "The reviewer independently ran only the final legacy reconstruction projection/admission regression; full focused-test totals are the builder's separate validation evidence.",
+    "Scoped axe evidence does not certify shared-shell chrome, screen-reader behavior, full keyboard-only navigation, real mobile devices or every contrast ratio.",
+    "Reference acceptance classes are supplied by the contract; local visual inspection does not create owner acceptance or reissue a protected reference decision.",
+    "Complete video bytes were verified and every declared sampled primary frame inspected; independent continuous playback and human-paced journey usability are not claimed.",
+    "The existing registry People-search and complete daily metric journeys remain protected contract obligations outside this economics suite's explicit replay.",
+    "Protected capture/review artifact attestation, Mainline Decision, parent PR #722 qualification, integration, production readiness and owner PRODUCT_ACCEPTED remain unclaimed."
+  ],
+  "acceptanceBoundary": "Independent local experience review only. Protected-base planning fails a prerequisite Crossdeck experience-design obligation. Protected capture/review artifact attestation, Mainline Decision, integration, production billing, physical devices and owner acceptance are not claimed.",
+  "protectedAttestation": false,
+  "mainlineDecision": false,
+  "ownerAcceptance": false,
+  "unresolvedBlockingFindings": [],
+  "nextAction": "Verify and commit this final local evidence through the existing documentation and artifact-integrity workflow. Preserve the P3 debt and protected prerequisite block. Seek ordinary protected Sounding Line qualification separately when its prerequisite permits; do not claim integration or owner acceptance from this report.",
+  "publicationNormalization": {
+    "kind": "WHITESPACE_ONLY_JSON_PUBLICATION_NORMALIZATION",
+    "provenancePath": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/verbatim-review-provenance.json",
+    "verbatimPacketPath": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/review-packet-final.json.raw",
+    "verbatimPacketSha256": "f10b0a6c8220935c95d9379322783d6d146e3de79a5e7e351abe374d478732c6",
+    "verbatimReviewPath": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/independent-review-final.json.raw",
+    "verbatimReviewSha256": "2c6298705bb35be3140ece6545385f828bebbbb7c874eb847ad0c45b3041346e",
+    "formattedPacketSha256": "6fb877a8e5c84beb122b10ae79b4ca81f7398acd2eadd8fc983aa70b2f7024bb",
+    "packetParsedEqualityVerified": true,
+    "sourceBindingsReverified": 47,
+    "screenshotsReverified": 25,
+    "recordingsReverified": 2,
+    "decodedFramesReverified": 7,
+    "bindingMismatches": [],
+    "reviewContentScope": "Only the packet digest and this publication-normalization metadata changed semantically. Product source, captures, findings, limitations and review disposition remain unchanged. The report is formatted with repository Prettier."
+  },
+  "documentClassification": "Engineering evidence under Development_Docs; JSON review record rather than a current human guide."
+}

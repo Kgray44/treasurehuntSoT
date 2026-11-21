@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "kind": "BUILDER_SOURCE_AND_ARTIFACT_INTEGRITY_CHECK",
+  "status": "VERIFIED",
+  "candidate": "ca670ddad1418f8de581cdb0701309683c21968d",
+  "packetSha256": "9fe2c069fc35f2c828219445e814be908127da9b6510268ff137b6b36083bd0a",
+  "reviewSha256": "c201845a8daf1bc584c084ad10af688c6689dcb075e30224e5862db831d8ebcf",
+  "sourceBindings": 47,
+  "screenshots": 29,
+  "recordings": 2,
+  "frames": 12,
+  "boundary": "Byte integrity only; grants no protected qualification, integration or owner acceptance."
+}

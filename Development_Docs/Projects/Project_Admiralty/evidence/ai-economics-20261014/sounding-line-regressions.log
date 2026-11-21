@@ -1,0 +1,195 @@
+✔ only protected-base, authenticated workflow artifacts establish capture provenance (1.3335ms)
+✔ candidate workflow cannot attest itself (0.799ms)
+✔ untrusted actor cannot submit review (0.2674ms)
+✔ ordinary PR cannot self-authorize review (0.1778ms)
+✔ another workflow is not an acceptance authority (0.1728ms)
+✔ expired artifact is not reusable evidence (0.0803ms)
+✔ artifact without immutable digest is rejected (0.135ms)
+✔ failed submission is not accepted (0.0824ms)
+✔ another source capture cannot be relabeled (0.1778ms)
+✔ reviewed artifact metadata and journey claims must match trusted capture (1.4727ms)
+✔ mandatory trusted attestation cannot be silently disabled by a missing policy (0.1521ms)
+✔ ordinary classification ignores retired generated state and rejects active control-plane edits (2.2227ms)
+✔ Admiralty-style package scripts remain ordinary-admissible (0.4632ms)
+✔ Drydock-style declarative registrations remain ordinary-admissible and self-validate (0.5116ms)
+✔ Confluence-style project guidance remains ordinary-admissible (0.1668ms)
+✔ global authority paths remain release-only (0.1366ms)
+✔ Sounding Line package authority mutations remain release-only (0.1328ms)
+✔ ordinary admission distinguishes the field candidates from release authority mutations (9615.5304ms)
+✔ ordinary selection finds Harborlight browser proof structurally (0.3432ms)
+✔ ordinary selection routes Passport navigation to its focused Homeport and Wakebook browser proof (0.1318ms)
+✔ ordinary selection keeps Phase 3 preference-runtime repairs on their exact browser journey (0.1216ms)
+✔ Homeport Phase 3 declares the same isolated fixture contract consumed by its preparer (0.1913ms)
+✔ ordinary selection ignores documentation vocabulary when scoping product browser proof (0.0725ms)
+✔ trusted browser provisioning follows the unchanged ordinary selection and fails closed (1611.5648ms)
+✔ direct browser proof prevents unrelated browser suites from widening the candidate (0.301ms)
+✔ docs and catalog candidates keep directly changed static tests without selecting product browser suites (0.1052ms)
+✔ Windows-safe Vitest chunks preserve the complete ordered unit selection as one obligation (3.1274ms)
+✔ directly changed browser specs run even without a product path change (0.1072ms)
+✔ non-product unknown impact skips browser proof while unknown product impact widens (0.0692ms)
+✔ release mode remains exhaustive (0.0364ms)
+✔ candidate binding requires distinct exact commit and tree identities (0.0969ms)
+✔ ordinary generic browser proof uses the task-owned Chromium suite (0.179ms)
+✔ typecheck generates the SQLite client before checking source (0.0462ms)
+✔ browser proof keeps SQLite client generation after the production build (0.2376ms)
+✔ Tideglass browser proof uses its dedicated isolated harness (0.2467ms)
+✔ Admiralty Phase 2 browser proof uses its dedicated isolated harness (0.1481ms)
+✔ Admiralty Phase 1 browser proof uses its dedicated fixture and build harness (0.1089ms)
+✔ Admiralty Phase 2 and Phase 3 use their dedicated fixture and build harnesses (0.1438ms)
+✔ Homeport Phase 4 and Phase 7 browser proof use portable dedicated fixtures (0.3017ms)
+✔ Homeport fixture preflight provisions only declared journey dependencies (0.0569ms)
+✔ Homeport correction commands receive their dedicated task roots (0.1972ms)
+✔ fixture-aware suite dispatch groups established fixture contracts without credential bleed (0.2053ms)
+✔ task-owned cookie adaptation is nonce-gated to the isolated Phase 3 runtime (0.1447ms)
+✔ task-owned browser suites configure a task-owned synthetic email adapter (0.6888ms)
+✔ only a task-owned Sounding Line build embeds its synthetic email adapter (0.1966ms)
+✔ an unresolved fixture profile fails closed before browser authority is launched (68.8558ms)
+✔ Homeport Sounding Line roots reject invalid source evidence before execution (116.9791ms)
+✔ Admiralty Phase 2 dedicated harness failures fail verification normally (0.4133ms)
+✔ SQLite bootstrap preserves quoted semicolons while ignoring migration comments (0.214ms)
+✔ migration rehearsal changes receive schema validation (0.0781ms)
+✔ database verification is candidate-isolated when the environment has no URL (0.0858ms)
+✔ changed migration rehearsals run as focused migration proof (0.0834ms)
+✔ application source changes receive a production build (0.0633ms)
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.start","utc":"2026-10-15T03:39:43.846Z","elapsedMs":1.135}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.result","utc":"2026-10-15T03:39:43.847Z","elapsedMs":1.483}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.start","utc":"2026-10-15T03:39:43.847Z","elapsedMs":1.58}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.launched","utc":"2026-10-15T03:39:43.847Z","elapsedMs":1.868}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.failure","utc":"2026-10-15T03:39:43.848Z","elapsedMs":2.194,"failureCategory":"INFRASTRUCTURE_RUNTIME_FAILURE","failureCode":"SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:SERVER_EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.start","utc":"2026-10-15T03:39:43.848Z","elapsedMs":2.256}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.exit","utc":"2026-10-15T03:39:43.848Z","elapsedMs":2.569,"exitCode":0,"signal":null}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.result","utc":"2026-10-15T03:39:43.848Z","elapsedMs":2.658,"exitCode":0,"signal":null,"outcome":"EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.failure","utc":"2026-10-15T03:39:43.848Z","elapsedMs":2.766,"failureCategory":"INFRASTRUCTURE_RUNTIME_FAILURE","failureCode":"SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:SERVER_EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.start","utc":"2026-10-15T03:39:43.848Z","elapsedMs":2.8}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.result","utc":"2026-10-15T03:39:43.848Z","elapsedMs":2.826,"exitCode":0,"signal":null,"outcome":"EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.start","utc":"2026-10-15T03:39:43.848Z","elapsedMs":2.841}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.result","utc":"2026-10-15T03:39:43.848Z","elapsedMs":2.873,"outcome":"NOT_STARTED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.start","utc":"2026-10-15T03:39:43.848Z","elapsedMs":2.886}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.result","utc":"2026-10-15T03:39:43.848Z","elapsedMs":2.898,"exitCode":1,"signal":null,"outcome":"EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.result","utc":"2026-10-15T03:39:43.848Z","elapsedMs":2.948,"failureCategory":"INFRASTRUCTURE_RUNTIME_FAILURE","failureCode":"SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:SERVER_EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.start","utc":"2026-10-15T03:39:43.849Z","elapsedMs":0.201}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.result","utc":"2026-10-15T03:39:43.849Z","elapsedMs":0.257}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"fixture.start","utc":"2026-10-15T03:39:43.849Z","elapsedMs":0.265}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"fixture.launched","utc":"2026-10-15T03:39:43.849Z","elapsedMs":0.422}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"fixture.exit","utc":"2026-10-15T03:39:43.849Z","elapsedMs":0.489,"exitCode":1,"signal":null}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.failure","utc":"2026-10-15T03:39:43.849Z","elapsedMs":0.547,"failureCategory":"PRODUCT_FAILURE","failureCode":"SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_FIXTURE_EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.start","utc":"2026-10-15T03:39:43.849Z","elapsedMs":0.585}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.result","utc":"2026-10-15T03:39:43.849Z","elapsedMs":0.604,"outcome":"NOT_STARTED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.start","utc":"2026-10-15T03:39:43.849Z","elapsedMs":0.611}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.result","utc":"2026-10-15T03:39:43.849Z","elapsedMs":0.621,"outcome":"NOT_STARTED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.start","utc":"2026-10-15T03:39:43.849Z","elapsedMs":0.629}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.result","utc":"2026-10-15T03:39:43.849Z","elapsedMs":0.687,"exitCode":0,"signal":null,"outcome":"EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.result","utc":"2026-10-15T03:39:43.849Z","elapsedMs":0.7,"failureCategory":"PRODUCT_FAILURE","failureCode":"SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_FIXTURE_EXITED"}
+✔ generic browser proof builds before the production server starts (818.2119ms)
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.start","utc":"2026-10-15T03:39:43.864Z","elapsedMs":1.721}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.result","utc":"2026-10-15T03:39:43.864Z","elapsedMs":1.807}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"proxy.start","utc":"2026-10-15T03:39:43.864Z","elapsedMs":1.818}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"proxy.result","utc":"2026-10-15T03:39:43.865Z","elapsedMs":2.737}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.proxy.start","utc":"2026-10-15T03:39:43.865Z","elapsedMs":2.765}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.proxy.result","utc":"2026-10-15T03:39:43.865Z","elapsedMs":2.795}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"fixture.start","utc":"2026-10-15T03:39:43.865Z","elapsedMs":2.801}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"fixture.launched","utc":"2026-10-15T03:39:43.865Z","elapsedMs":2.822}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"fixture.exit","utc":"2026-10-15T03:39:43.865Z","elapsedMs":2.865,"exitCode":0,"signal":null}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.start","utc":"2026-10-15T03:39:43.865Z","elapsedMs":2.874}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.launched","utc":"2026-10-15T03:39:43.865Z","elapsedMs":2.883}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.exit","utc":"2026-10-15T03:39:43.865Z","elapsedMs":2.903,"exitCode":0,"signal":null}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.start","utc":"2026-10-15T03:39:43.865Z","elapsedMs":2.912}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.result","utc":"2026-10-15T03:39:43.865Z","elapsedMs":2.919,"exitCode":0,"signal":null,"outcome":"EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.start","utc":"2026-10-15T03:39:43.865Z","elapsedMs":2.924}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.result","utc":"2026-10-15T03:39:43.866Z","elapsedMs":3.285,"outcome":"CLOSED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.start","utc":"2026-10-15T03:39:43.866Z","elapsedMs":3.324}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.result","utc":"2026-10-15T03:39:43.866Z","elapsedMs":3.455,"exitCode":0,"signal":null,"outcome":"EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.result","utc":"2026-10-15T03:39:43.866Z","elapsedMs":3.485,"failureCategory":null,"failureCode":null}
+✔ generic browser configuration starts the built server without webpack dev (0.5997ms)
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.start","utc":"2026-10-15T03:39:43.868Z","elapsedMs":0.586}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.result","utc":"2026-10-15T03:39:43.868Z","elapsedMs":0.623}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"proxy.start","utc":"2026-10-15T03:39:43.868Z","elapsedMs":0.631}
+✔ task-owned Unix cleanup signals the full server process group (0.1896ms)
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"proxy.result","utc":"2026-10-15T03:39:43.869Z","elapsedMs":1.133}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.proxy.start","utc":"2026-10-15T03:39:43.869Z","elapsedMs":1.151}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.proxy.result","utc":"2026-10-15T03:39:43.869Z","elapsedMs":1.171}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"fixture.start","utc":"2026-10-15T03:39:43.869Z","elapsedMs":1.176}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"fixture.launched","utc":"2026-10-15T03:39:43.869Z","elapsedMs":1.189}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"fixture.exit","utc":"2026-10-15T03:39:43.869Z","elapsedMs":1.211,"exitCode":1,"signal":null}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.failure","utc":"2026-10-15T03:39:43.869Z","elapsedMs":1.256,"failureCategory":"PRODUCT_FAILURE","failureCode":"SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_FIXTURE_EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.start","utc":"2026-10-15T03:39:43.869Z","elapsedMs":1.266}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.result","utc":"2026-10-15T03:39:43.869Z","elapsedMs":1.272,"outcome":"NOT_STARTED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.start","utc":"2026-10-15T03:39:43.869Z","elapsedMs":1.277}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.result","utc":"2026-10-15T03:39:43.869Z","elapsedMs":1.419,"outcome":"CLOSED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.start","utc":"2026-10-15T03:39:43.869Z","elapsedMs":1.429}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.result","utc":"2026-10-15T03:39:43.869Z","elapsedMs":1.496,"exitCode":0,"signal":null,"outcome":"EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.result","utc":"2026-10-15T03:39:43.869Z","elapsedMs":1.509,"failureCategory":"PRODUCT_FAILURE","failureCode":"SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_FIXTURE_EXITED"}
+✔ dead governed browser server interrupts the browser immediately with infrastructure attribution (3.4102ms)
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.failure","utc":"2026-10-15T03:39:43.870Z","elapsedMs":0.043,"failureCategory":"INVALID_SERVER_TOPOLOGY","failureCode":"SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:PRODUCTION_BROWSER_AUTHORITY_REQUIRES_NEXT_START"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.start","utc":"2026-10-15T03:39:43.870Z","elapsedMs":0.069}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.result","utc":"2026-10-15T03:39:43.870Z","elapsedMs":0.091,"outcome":"NOT_STARTED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.start","utc":"2026-10-15T03:39:43.870Z","elapsedMs":0.096}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.result","utc":"2026-10-15T03:39:43.870Z","elapsedMs":0.104,"outcome":"NOT_STARTED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.start","utc":"2026-10-15T03:39:43.870Z","elapsedMs":0.109}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.result","utc":"2026-10-15T03:39:43.870Z","elapsedMs":0.115,"outcome":"NOT_STARTED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.result","utc":"2026-10-15T03:39:43.870Z","elapsedMs":0.125,"failureCategory":"INVALID_SERVER_TOPOLOGY","failureCode":"SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:PRODUCTION_BROWSER_AUTHORITY_REQUIRES_NEXT_START"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.start","utc":"2026-10-15T03:39:43.871Z","elapsedMs":0.347}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.result","utc":"2026-10-15T03:39:43.871Z","elapsedMs":0.423}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.start","utc":"2026-10-15T03:39:43.871Z","elapsedMs":0.435}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.launched","utc":"2026-10-15T03:39:43.871Z","elapsedMs":0.592}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.exit","utc":"2026-10-15T03:39:43.871Z","elapsedMs":0.665,"exitCode":0,"signal":null}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.start","utc":"2026-10-15T03:39:43.871Z","elapsedMs":0.68}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.result","utc":"2026-10-15T03:39:43.871Z","elapsedMs":0.688,"exitCode":0,"signal":null,"outcome":"EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.start","utc":"2026-10-15T03:39:43.871Z","elapsedMs":0.693}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.result","utc":"2026-10-15T03:39:43.871Z","elapsedMs":0.7,"outcome":"NOT_STARTED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.start","utc":"2026-10-15T03:39:43.871Z","elapsedMs":0.705}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.result","utc":"2026-10-15T03:39:43.871Z","elapsedMs":0.763,"exitCode":0,"signal":null,"outcome":"EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.result","utc":"2026-10-15T03:39:43.871Z","elapsedMs":0.777,"failureCategory":null,"failureCode":null}
+✔ fixture product failure stops product browser execution with truthful attribution (0.8589ms)
+✔ isolated cookie adapter is removed after successful and failed browser execution (20.2786ms)
+✔ task-owned cookie proxy force-closes its own lingering connections before shutdown (0.1416ms)
+✔ invalid production and development output topology fails before browser launch (0.1919ms)
+✔ slow but live governed browser server retains its readiness budget (0.8985ms)
+✔ browser runtime receipts have a deterministic sanitized shape (0.1393ms)
+✔ browser authority flushes its decision before ending a task-owned process (0.3453ms)
+✔ ordinary admission has no orchestration or generated-state prerequisites (24.1146ms)
+✔ trusted PR routing produces one strict decision for ordinary and control-plane candidates (0.4265ms)
+✔ v1.4 evidence reconciliation preserves, invalidates, falls back, and finalizes complete ordinary closure (6820.3921ms)
+✔ v1.4 evidence rebinds a browser obligation across an unrelated base advance and keeps release exhaustive (3490.6299ms)
+✔ generic browser credentials are ephemeral and restricted to the isolated profile (0.6358ms)
+✔ representative complete cross-project experience passes required outcome and review gate (10.5555ms)
+✔ A: persisted role without promised Lens (4.6007ms)
+✔ B: ordinary workflow hidden behind account setup (4.3333ms)
+✔ C: API succeeds but no accessible product realization (0.4734ms)
+✔ D: screenshot-only compliance (0.2183ms)
+✔ E: producer and consumer disconnected (6.834ms)
+✔ F: detected hand mislabeled undetected when pointing ineligible (6.2195ms)
+✔ G: selectable mode does not deliver advertised result (4.6568ms)
+✔ review in builder context (4.815ms)
+✔ source identity missing (0.362ms)
+✔ source identity stale (0.1955ms)
+✔ rendered artifact rewritten (0.1432ms)
+✔ review rubber stamp (3.7292ms)
+✔ recording absent for cross-project flow (5.4492ms)
+✔ mobile failure state missing (6.4673ms)
+✔ owner acceptance inferred (3.8087ms)
+✔ H: backend-only work selects no screenshots and preserves focused validation (1.4017ms)
+✔ shared service changes select transitive UI consumers and complete integration contract (0.4993ms)
+✔ removed import on candidate cannot hide a base consumer (0.154ms)
+✔ HTTP projection changes select consuming UI (0.267ms)
+✔ repair loop consumes blocking findings and stops when progress is absent (0.1268ms)
+✔ baseline debt is accountable and cannot excuse a completion claim or new regression (26.3538ms)
+✔ trusted base classification and contracts survive candidate exemption edits (1270.0019ms)
+✔ fresh tasks automatically discover workflow and governing authority (0.9115ms)
+✔ stable but disconnected desktop and phone Voyages fail cross-context continuity (4.7507ms)
+✔ consumer destination identity must match even when the return restores the original Voyage (5.221ms)
+✔ experience DB provisioning matches the existing owned isolation contract (1.6578ms)
+✔ adding roles preserves their verifiable setup without replacing trusted setup (0.5008ms)
+✔ baseline scope includes used assets and side-effect styles, while unused assets stay unrelated (0.7805ms)
+✔ unused public assets and backend paths inside UI ownership do not force visual proof (0.2877ms)
+✔ HTTP endpoint selection distinguishes dynamic sibling endpoints (0.2427ms)
+✔ fresh automated replay rechecks accessibility, timing and consumer continuity (11.8227ms)
+✔ dynamic HTTP actions select plausible static endpoints without unrelated suffix widening (0.7285ms)
+ℹ tests 102
+ℹ suites 0
+ℹ pass 102
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22857.0304

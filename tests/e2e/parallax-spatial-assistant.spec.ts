@@ -232,7 +232,21 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   expect(ledger.status).toBe("SETTLED");
   expect(ledger.applicationRevision).toBe(saved.revision);
   expect(ledger.applicationKey).toBe(savedResponse.request().postDataJSON().idempotencyKey);
-  expect(ledger.settledCostNano).toBe(BigInt(150000));
+  // The synthetic provider reports 500 input and 200 output tokens. It omits
+  // cache writes, so the estimate uses the highest applicable input rate.
+  expect(ledger).toMatchObject({
+    inputTokens: 500,
+    outputTokens: 200,
+    cacheWriteTokens: null,
+    costBasis: "ESTIMATED",
+    settledCostNano: BigInt(162500),
+  });
+  expect(
+    await db.aIProviderAttempt.findMany({
+      where: { operationId: ledger.id },
+      select: { sequence: true, status: true, costBasis: true, costNano: true },
+    }),
+  ).toEqual([{ sequence: 1, status: "COMPLETED", costBasis: "ESTIMATED", costNano: BigInt(162500) }]);
   await capture(page, "apply-confirmation");
   await assistant.getByRole("button", { name: "Undo", exact: true }).click();
   await expect(mapButton).toHaveCount(0);

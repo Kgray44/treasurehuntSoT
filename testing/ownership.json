@@ -385,7 +385,10 @@
         "src/app/admin/**/*.test.*",
         "src/navigation/navigation.test.ts",
         "tests/e2e/admiralty-phase1.spec.ts",
-        "tests/e2e/admiralty-phase2.spec.ts"
+        "tests/e2e/admiralty-phase2.spec.ts",
+        "src/parallax/ai-economics.test.ts",
+        "src/app/api/admin/ai-economics/route.test.ts",
+        "tests/e2e/admiralty-ai-economics.spec.ts"
       ],
       "contractIds": [
         "admiralty.phase1.identity",
@@ -403,7 +406,8 @@
         "admiralty.phase2.community-operations-providers",
         "admiralty.phase2.audit-investigation",
         "admiralty.phase2.registry-activation",
-        "admiralty.phase2.responsive-accessibility"
+        "admiralty.phase2.responsive-accessibility",
+        "admiralty.ai-economics"
       ]
     },
     {

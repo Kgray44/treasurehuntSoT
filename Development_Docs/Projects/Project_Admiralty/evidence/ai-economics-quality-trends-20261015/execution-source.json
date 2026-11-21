@@ -1,0 +1,12 @@
+{
+  "candidate": "ca670ddad1418f8de581cdb0701309683c21968d",
+  "buildId": "uLdYjfBXTS0FIqP2s4rzF",
+  "buildCompletedAt": "2026-10-15T04:38:53.967Z",
+  "sourceState": "COMMITTED_CLEAN_AT_CAPTURE",
+  "screenshots": 29,
+  "passedBrowserJourneys": 2,
+  "focusedDevelopmentTests": 137,
+  "finalEconomicsCases": 14,
+  "soundingLineRegressions": 102,
+  "packetSha256": "9fe2c069fc35f2c828219445e814be908127da9b6510268ff137b6b36083bd0a"
+}
