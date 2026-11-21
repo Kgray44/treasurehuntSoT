@@ -103,6 +103,7 @@ async function main() {
   let executionStage = "PREPARE_OWNED_LAB";
   let observedControl: Parameters<typeof nativeLensControl>[1] | null = null;
   let lastAndroidHierarchy: string | null = null;
+  let inspectTapAttempts = 0;
   const wait = async (condition: () => boolean, timeout: number) => {
     const until = Date.now() + timeout;
     while (!condition()) {
@@ -463,6 +464,7 @@ async function main() {
       const tap = async (control: "SCENE" | "INSPECT") => {
         const target = await observe(control);
         await adb(["shell", "input", "tap", String(target.x), String(target.y)]);
+        return target;
       };
       const capture = async (file: "native-selected.png" | "canonical-rejection.png" | "same-voyage-return.png") => {
         const screenshot = await labBinaryTool(host.android.adb!, [
@@ -500,9 +502,31 @@ async function main() {
       results.set(1, "PASS");
       await capture("native-selected.png");
       executionStage = "ANDROID_INSPECT_INTENT";
-      await tap("INSPECT");
-      executionStage = "ANDROID_CANONICAL_REJECTION";
+      inspectTapAttempts = 1;
+      const initialInspect = await tap("INSPECT");
       const rejectionDeadline = Date.now() + 20000;
+      const currentHierarchy = await hierarchy();
+      // Inspect disables itself as soon as the native overlay acknowledges it.
+      // Replay a dropped tap once if the same control is still enabled at the
+      // same observed location and the canonical endpoint has seen no Inspect.
+      const target = (() => {
+        try {
+          return nativeLensControl(currentHierarchy, "INSPECT");
+        } catch {
+          return null;
+        }
+      })();
+      if (
+        target &&
+        target.x === initialInspect.x &&
+        target.y === initialInspect.y &&
+        Date.now() < rejectionDeadline &&
+        !evidence.some((item) => item.interactionType === "INSPECT")
+      ) {
+        inspectTapAttempts++;
+        await adb(["shell", "input", "tap", String(target.x), String(target.y)]);
+      }
+      executionStage = "ANDROID_CANONICAL_REJECTION";
       await lens
         .getByText(
           "Camera-free simulation cannot record a real native observation. Your Voyage progress has not changed.",
@@ -529,6 +553,7 @@ async function main() {
         .waitFor({ state: "visible" });
       results.set(3, "PASS");
       await wait(() => evidence.some((item) => item.interactionType === "INSPECT"), 15000);
+      assert.equal(evidence.filter((item) => item.interactionType === "INSPECT").length, 1);
       assert.ok(
         evidence.every(
           (item) => item.entityId === "fixture-native-chest" && item.disposition === "SIMULATION_REJECTED",
@@ -609,6 +634,7 @@ async function main() {
       }
       executionStage = "IOS_VERIFY_CANONICAL_REJECTION";
       await wait(() => evidence.some((item) => item.interactionType === "INSPECT"), 15000);
+      assert.equal(evidence.filter((item) => item.interactionType === "INSPECT").length, 1);
       assert.ok(
         evidence.every(
           (item) => item.entityId === "fixture-native-chest" && item.disposition === "SIMULATION_REJECTED",
@@ -643,6 +669,7 @@ async function main() {
           canonicalProgressionEventsAdded: 0,
           observationRowsAdded: 0,
           actions: [...results],
+          ...(android && !preflight ? { inspectTapAttempts } : {}),
           evidence,
           screenshots,
         },
@@ -695,6 +722,7 @@ async function main() {
               }
             : null,
           completedActions: [...results],
+          inspectTapAttempts,
           privateHierarchy: hierarchyBytes
             ? {
                 retained: preserveHierarchy,
