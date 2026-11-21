@@ -22,43 +22,21 @@
             "kind": "PARCHMENT",
             "content": "The next bearing is written in the stars. Look for the northern light.",
             "widthMeters": 0.16,
+            "opacity": 1,
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
             "anchorId": "desk-anchor",
             "authoredTransform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
-            "interactions": [
-              "PICK",
-              "INSPECT",
-              "PLACE"
-            ],
+            "interactions": ["PICK", "INSPECT", "PLACE"],
             "visible": true,
             "selectable": true,
-            "opacity": 1,
             "element": {
               "enabled": true,
               "kind": "PHYSICAL_ASSET",
@@ -84,29 +62,14 @@
             "kind": "LOCAL_WORLD",
             "frameId": "local-session",
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": -1
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": -1 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             }
           }
         ],
-        "requirements": [
-          "MODEL_GLB",
-          "WORLD_TRACKING"
-        ],
-        "presentation": {
-          "elapsedMs": 0,
-          "reducedMotion": false
-        },
+        "requirements": ["MODEL_GLB", "WORLD_TRACKING"],
+        "presentation": { "elapsedMs": 0, "reducedMotion": false },
         "fallback": {
           "mode": "GUIDED",
           "narrative": "The Captain’s note is ready to read here. Its clue is the same in every view.",
@@ -134,43 +97,21 @@
             "kind": "PARCHMENT",
             "content": "The next bearing is written in the stars. Look for the northern light.",
             "widthMeters": 0.16,
+            "opacity": 1,
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
             "anchorId": "desk-anchor",
             "authoredTransform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
-            "interactions": [
-              "PICK",
-              "INSPECT",
-              "PLACE"
-            ],
+            "interactions": ["PICK", "INSPECT", "PLACE"],
             "visible": true,
             "selectable": true,
-            "opacity": 1,
             "element": {
               "enabled": true,
               "kind": "PHYSICAL_ASSET",
@@ -197,29 +138,14 @@
             "kind": "LOCAL_WORLD",
             "frameId": "local-session",
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": -1
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": -1 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             }
           }
         ],
-        "requirements": [
-          "MODEL_GLB",
-          "WORLD_TRACKING"
-        ],
-        "presentation": {
-          "elapsedMs": 0,
-          "reducedMotion": false
-        },
+        "requirements": ["MODEL_GLB", "WORLD_TRACKING"],
+        "presentation": { "elapsedMs": 0, "reducedMotion": false },
         "fallback": {
           "mode": "GUIDED",
           "narrative": "The Captain’s note is ready to read here. Its clue is the same in every view.",
@@ -247,43 +173,21 @@
             "kind": "PARCHMENT",
             "content": "The next bearing is written in the stars. Look for the northern light.",
             "widthMeters": 0.16,
+            "opacity": 1,
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
             "anchorId": "desk-anchor",
             "authoredTransform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
-            "interactions": [
-              "PICK",
-              "INSPECT",
-              "PLACE"
-            ],
+            "interactions": ["PICK", "INSPECT", "PLACE"],
             "visible": true,
             "selectable": true,
-            "opacity": 1,
             "element": {
               "enabled": true,
               "kind": "PHYSICAL_ASSET",
@@ -309,29 +213,14 @@
             "kind": "LOCAL_WORLD",
             "frameId": "local-session",
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": -1
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": -1 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             }
           }
         ],
-        "requirements": [
-          "MODEL_GLB",
-          "WORLD_TRACKING"
-        ],
-        "presentation": {
-          "elapsedMs": 0,
-          "reducedMotion": false
-        },
+        "requirements": ["MODEL_GLB", "WORLD_TRACKING"],
+        "presentation": { "elapsedMs": 0, "reducedMotion": false },
         "fallback": {
           "mode": "GUIDED",
           "narrative": "The Captain’s note is ready to read here. Its clue is the same in every view.",
@@ -359,43 +248,21 @@
             "kind": "PARCHMENT",
             "content": "The next bearing is written in the stars. Look for the northern light.",
             "widthMeters": 0.16,
+            "opacity": 1,
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
             "anchorId": "desk-anchor",
             "authoredTransform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
-            "interactions": [
-              "PICK",
-              "INSPECT",
-              "PLACE"
-            ],
+            "interactions": ["PICK", "INSPECT", "PLACE"],
             "visible": true,
             "selectable": true,
-            "opacity": 1,
             "element": {
               "enabled": true,
               "kind": "PHYSICAL_ASSET",
@@ -421,29 +288,14 @@
             "kind": "LOCAL_WORLD",
             "frameId": "local-session",
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": -1
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": -1 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             }
           }
         ],
-        "requirements": [
-          "MODEL_GLB",
-          "WORLD_TRACKING"
-        ],
-        "presentation": {
-          "elapsedMs": 0,
-          "reducedMotion": false
-        },
+        "requirements": ["MODEL_GLB", "WORLD_TRACKING"],
+        "presentation": { "elapsedMs": 0, "reducedMotion": false },
         "fallback": {
           "mode": "GUIDED",
           "narrative": "The Captain’s note is ready to read here. Its clue is the same in every view.",
@@ -471,43 +323,21 @@
             "kind": "PARCHMENT",
             "content": "The next bearing is written in the stars. Look for the northern light.",
             "widthMeters": 0.16,
+            "opacity": 1,
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
             "anchorId": "desk-anchor",
             "authoredTransform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
-            "interactions": [
-              "PICK",
-              "INSPECT",
-              "PLACE"
-            ],
+            "interactions": ["PICK", "INSPECT", "PLACE"],
             "visible": true,
             "selectable": true,
-            "opacity": 1,
             "element": {
               "enabled": true,
               "kind": "PHYSICAL_ASSET",
@@ -533,29 +363,14 @@
             "kind": "LOCAL_WORLD",
             "frameId": "local-session",
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": -1
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": -1 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             }
           }
         ],
-        "requirements": [
-          "MODEL_GLB",
-          "WORLD_TRACKING"
-        ],
-        "presentation": {
-          "elapsedMs": 0,
-          "reducedMotion": false
-        },
+        "requirements": ["MODEL_GLB", "WORLD_TRACKING"],
+        "presentation": { "elapsedMs": 0, "reducedMotion": false },
         "fallback": {
           "mode": "GUIDED",
           "narrative": "The Captain’s note is ready to read here. Its clue is the same in every view.",
@@ -583,43 +398,21 @@
             "kind": "PARCHMENT",
             "content": "The next bearing is written in the stars. Look for the northern light.",
             "widthMeters": 0.16,
+            "opacity": 1,
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
             "anchorId": "desk-anchor",
             "authoredTransform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
-            "interactions": [
-              "PICK",
-              "INSPECT",
-              "PLACE"
-            ],
+            "interactions": ["PICK", "INSPECT", "PLACE"],
             "visible": true,
             "selectable": true,
-            "opacity": 1,
             "element": {
               "enabled": true,
               "kind": "PHYSICAL_ASSET",
@@ -645,26 +438,14 @@
             "kind": "LOCAL_WORLD",
             "frameId": "local-session",
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": -1
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": -1 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             }
           }
         ],
         "requirements": [],
-        "presentation": {
-          "elapsedMs": 0,
-          "reducedMotion": false
-        },
+        "presentation": { "elapsedMs": 0, "reducedMotion": false },
         "fallback": {
           "mode": "GUIDED",
           "narrative": "The Captain’s note is ready to read here. Its clue is the same in every view.",
@@ -692,43 +473,21 @@
             "kind": "PARCHMENT",
             "content": "The next bearing is written in the stars. Look for the northern light.",
             "widthMeters": 0.16,
+            "opacity": 1,
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
             "anchorId": "desk-anchor",
             "authoredTransform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
-            "interactions": [
-              "PICK",
-              "INSPECT",
-              "PLACE"
-            ],
+            "interactions": ["PICK", "INSPECT", "PLACE"],
             "visible": true,
             "selectable": true,
-            "opacity": 1,
             "element": {
               "enabled": true,
               "kind": "PHYSICAL_ASSET",
@@ -752,43 +511,21 @@
             "kind": "PARCHMENT",
             "content": "The next bearing is written in the stars. Look for the northern light.",
             "widthMeters": 0.16,
+            "opacity": 1,
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
             "anchorId": "desk-anchor",
             "authoredTransform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             },
-            "interactions": [
-              "PICK",
-              "INSPECT",
-              "PLACE"
-            ],
+            "interactions": ["PICK", "INSPECT", "PLACE"],
             "visible": true,
             "selectable": true,
-            "opacity": 1,
             "element": {
               "enabled": true,
               "kind": "PHYSICAL_ASSET",
@@ -814,29 +551,14 @@
             "kind": "LOCAL_WORLD",
             "frameId": "local-session",
             "transform": {
-              "position": {
-                "x": 0,
-                "y": 0,
-                "z": -1
-              },
-              "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
+              "position": { "x": 0, "y": 0, "z": -1 },
+              "rotation": { "x": 0, "y": 0, "z": 0, "w": 1 },
               "scale": 1
             }
           }
         ],
-        "requirements": [
-          "MODEL_GLB",
-          "WORLD_TRACKING"
-        ],
-        "presentation": {
-          "elapsedMs": 0,
-          "reducedMotion": false
-        },
+        "requirements": ["MODEL_GLB", "WORLD_TRACKING"],
+        "presentation": { "elapsedMs": 0, "reducedMotion": false },
         "fallback": {
           "mode": "GUIDED",
           "narrative": "The Captain’s note is ready to read here. Its clue is the same in every view.",

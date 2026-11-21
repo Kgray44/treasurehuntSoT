@@ -242,12 +242,15 @@ export class ParallaxLensRuntime {
     ];
     if (candidate?.mode === "SIMULATED" && this.context.environment !== "DEVICE_LAB")
       throw new Error("PARALLAX_SIMULATION_FORBIDDEN");
-    this.adapter =
+    const supportsScene =
       candidate &&
       (!candidate.supportsScene || candidate.supportsScene(this.moment.version)) &&
-      (!this.moment.version.entities.some((e) => e.element?.enabled) || !!candidate.renderScene) &&
-      (candidate.mode === "SIMULATED" ||
-        (["NATIVE", "BROWSER"].includes(candidate.mode) && candidate.worldTracking && this.usableCamera()))
+      (!this.moment.version.entities.some((entity) => entity.element?.enabled) || !!candidate.renderScene);
+    this.adapter =
+      candidate?.mode === "BROWSER" ||
+      (supportsScene &&
+        (candidate.mode === "SIMULATED" ||
+          (candidate.mode === "NATIVE" && candidate.worldTracking && this.usableCamera())))
         ? candidate
         : new GuidedSpatialAdapter();
     this.update({
@@ -260,6 +263,10 @@ export class ParallaxLensRuntime {
     try {
       if (this.adapter.mode === "BROWSER" && (!this.adapter.worldTracking || !this.usableCamera()))
         throw new Error("Browser AR requires an active authorized camera and world-tracking provider.");
+      if (this.adapter.mode === "BROWSER" && !supportsScene)
+        throw new Error(
+          "Browser AR does not yet render these authored element types. Choose Guided View explicitly to continue.",
+        );
       await this.adapter.start({
         signal: this.abort.signal,
         sceneIdentity: { versionChecksum: this.moment.version.checksum, instanceId: this.instanceId },

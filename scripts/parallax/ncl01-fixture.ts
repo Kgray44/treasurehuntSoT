@@ -1,4 +1,5 @@
 import { mkdir, writeFile } from "node:fs/promises";
+import { format, resolveConfig } from "prettier";
 import { syntheticSpatialMoment } from "../../src/parallax/fixtures";
 import { identityTransform } from "../../src/parallax/contracts";
 import { materializeSpatialVersion } from "../../src/parallax/publication";
@@ -72,9 +73,13 @@ async function main() {
   }
   const output = "tests/fixtures/parallax/native-delivery-v2.json";
   await mkdir("tests/fixtures/parallax", { recursive: true });
+  const options = await resolveConfig(output);
   await writeFile(
     output,
-    `${JSON.stringify({ schemaVersion: 1, evidenceClass: "D0_SYNTHETIC_CONTRACT_ONLY", sceneCases }, null, 2)}\n`,
+    await format(JSON.stringify({ schemaVersion: 1, evidenceClass: "D0_SYNTHETIC_CONTRACT_ONLY", sceneCases }), {
+      ...options,
+      filepath: output,
+    }),
   );
   console.log(output);
 }

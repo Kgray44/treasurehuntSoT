@@ -1116,17 +1116,20 @@ function ChronicleJournalSessionIdentity({
   const currentObjective = objectiveOf(currentBlock);
   const historical = state.journal.mode === "historical";
   // Runtime pages are imperative clones. Lens controls/modal stay on the live React surface.
-  const spatialBlocks = [
-    ...new Map(
-      [
-        currentBlock,
-        ...pages.slice(currentPage, currentPage + 2).map((page) => page.block),
-        ...[...contextBlocks].reverse(),
-      ]
-        .filter((block): block is PlayerJournalBlock => Boolean(block?.presentation.spatialMoment))
-        .map((block) => [block.id, block]),
-    ).values(),
-  ];
+  const spatialBlocks =
+    connection === "revoked"
+      ? []
+      : [
+          ...new Map(
+            [
+              currentBlock,
+              ...pages.slice(currentPage, currentPage + 2).map((page) => page.block),
+              ...[...contextBlocks].reverse(),
+            ]
+              .filter((block): block is PlayerJournalBlock => Boolean(block?.presentation.spatialMoment))
+              .map((block) => [block.id, block]),
+          ).values(),
+        ];
 
   return (
     <LandfallJournalProvider
