@@ -909,6 +909,12 @@
       "candidateSha": "fa3bc2843b599bae09b1ade422e7f81cf9dfd10f",
       "sourceDigest": "9bb0473ad4e43957db989c93d556bcdbefcf5bd0e0b5720441fbc8f92cad23b4",
       "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/candidate-review.json"
+    },
+    {
+      "contractId": "harborlight.sc07.creator-community.experience",
+      "candidateSha": "5ef6fcbdae46e63155bda7aa28f2b6a4ec952e7b",
+      "sourceDigest": "4966b49860451a3b67f7c64a0360e7c906133024ace14a7bc7787cce30d54c93",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-creator-community-20261121/candidate-review.json"
     }
   ]
 }
