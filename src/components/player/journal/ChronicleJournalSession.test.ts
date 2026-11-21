@@ -36,6 +36,11 @@ vi.mock("next/link", async () => {
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 
+// The isolated Journal fixture has no account preference loaded.
+vi.mock("@/components/auth/CurrentUserProvider", () => ({
+  useCurrentUser: () => ({ state: { status: "loading", authenticated: false } }),
+}));
+
 vi.mock("@/components/crossdeck/CrossdeckCompanion", async () => {
   const React = await import("react");
   return {
