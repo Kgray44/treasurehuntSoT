@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "contractId": "harborlight.sc07.creator-community.experience",
+  "baseSha": "383c45ee2e4934f6aae2e697f2e93bc7f9cea1b3",
+  "candidateSha": "5f2217412df6572412a35be9a5665676313ae3b8",
+  "sourceDigest": "7ea74db1bd6e1e3d50946fba3efb94f3a9d5aeac5b98198314e48804b28a8eea",
+  "contractDigest": "5012bf71403e5bcd9fe89a24cd823c8500a07bdb8f40ddae644e38c73240d608",
+  "packetDigest": "5643613ede2c9d203abe45c5b6090d5060466048c757adf71aec5c87cbb6ee38",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "status": "NO_BLOCKING_FINDINGS_OBSERVED",
+  "builderContext": "01a1ff87-99cc-7ca0-8b77-b9ef2505fae2",
+  "reviewerContext": "/root/sc07_experience_review",
+  "description": "An installer reviewing a superseded Chapter template sees why the stale install failed, reviews the current version, and chooses whether to install it privately.",
+  "artifacts": [
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-creator-community-20261121/outdated-install-review.png",
+      "sha256": "52e45bf266b4a4d2bf0fc2894bfc7b74c75f59de75406b8fee53bead77efcd3b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-creator-community-20261121/current-install-review.png",
+      "sha256": "2c6b970e33b3fff2e362f9e9cc23a67193df436f0eeea88efb29b2000c6f8e40",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-creator-community-20261121/superseded-review-installer.webm",
+      "sha256": "b233982b6a28524d438315ef61e840fe3553705290184b6a6e7a3f803d1aa3fa",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION"
+    }
+  ],
+  "finding": {
+    "disposition": "RESOLVED",
+    "observation": "The original stale response left only the unusable install action. The first recovery reload returned to the page hero. Anchoring that reload initially put the review heading behind the sticky navigation.",
+    "repair": "A stale install swaps the old action for a focused review action. The reloaded page focuses the current review heading below both navigation rows.",
+    "reviewedResult": "The stale reason and recovery action are visible. The refreshed review shows version 3.0.0, updated description, license and original Creator credit before installation. The exact-source refreshed screenshot matches the independently accepted image."
+  },
+  "verification": {
+    "spec": "tests/e2e/sc07-creator-community.spec.ts",
+    "result": "6_PASSED",
+    "behavior": "Production Chromium submitted the old installation after a real new approval. The API refused the outdated review. Neither release was installed before the renewed Install action. The private destination records the current release and source version."
+  },
+  "limits": [
+    "The independent media review covers this desktop recovery transition. Whole-plan qualification remains open."
+  ]
+}
