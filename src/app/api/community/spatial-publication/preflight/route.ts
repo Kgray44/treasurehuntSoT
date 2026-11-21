@@ -8,7 +8,10 @@ export async function POST(request: Request) {
   const actor = await requireStudioWorkspace(request);
   if (actor?.account.profile?.status !== "ACTIVE" || !(await verifyPlayerCsrf(request.headers.get("x-csrf-token"))))
     return NextResponse.json(
-      { code: "COMMUNITY_ACCESS_DENIED", error: "Creator access and CSRF verification required." },
+      {
+        code: "COMMUNITY_ACCESS_DENIED",
+        error: "Active Creator access and a valid session are required. Your saved source is preserved.",
+      },
       { status: 403 },
     );
   try {
