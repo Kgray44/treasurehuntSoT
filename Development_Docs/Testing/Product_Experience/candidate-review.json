@@ -905,6 +905,12 @@
   ],
   "subsequentSourceBoundReviews": [
     {
+      "contractId": "crossdeck.refit.published-lens",
+      "candidateSha": "693f2ebb5e01d848faa3b454105d9a3d55f8fab6",
+      "sourceDigest": "aa7200e64826ec7662ecdcc5325571bec7b15e5549a95e44a561fc1d7fa3d670",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/candidate-review.json"
+    },
+    {
       "contractId": "crossdeck.phase2.continuity",
       "candidateSha": "fa3bc2843b599bae09b1ade422e7f81cf9dfd10f",
       "sourceDigest": "9bb0473ad4e43957db989c93d556bcdbefcf5bd0e0b5720441fbc8f92cad23b4",
