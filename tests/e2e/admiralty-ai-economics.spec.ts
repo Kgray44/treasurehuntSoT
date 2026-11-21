@@ -204,7 +204,9 @@ test("Administrator investigates AI economics and changes capability allowances 
   await page.setViewportSize({ width: 320, height: 720 });
   await expect.poll(() => changes.evaluate((element) => element.scrollWidth <= element.clientWidth + 1)).toBe(true);
   await expect(mobileChange.getByText("3", { exact: true })).toBeVisible();
-  await expect(changes.getByText("Person capability override", { exact: true }).first()).toBeVisible();
+  await expect(
+    changes.getByRole("listitem").getByText("Person capability override", { exact: true }).first(),
+  ).toBeVisible();
   await capture("allowance-preview-320-mobile", changes);
   await page.setViewportSize({ width: 1440, height: 900 });
   await capture("allowance-preview-desktop");
