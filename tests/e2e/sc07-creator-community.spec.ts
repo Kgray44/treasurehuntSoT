@@ -478,7 +478,7 @@ test("second Creator edits an installed Chronicle through private Studio", async
   await expect(ownerPage.getByRole("heading", { name: "Chronicle access unavailable" })).toBeVisible();
 });
 
-test("rejected Chapter template stays private after its approved replacement is reused", async ({ request }) => {
+test("Chapter template rejection stays private and installation rechecks the current release", async ({ request }) => {
   test.setTimeout(75_000);
   const suffix = randomUUID().slice(0, 8);
   const slug = `sc07-template-${suffix}`;
@@ -545,7 +545,63 @@ test("rejected Chapter template stays private after its approved replacement is 
   expect(await rejectedRelease.json()).toMatchObject({ code: "COMMUNITY_RELEASE_NOT_FOUND" });
   await installerPage.goto("/community/templates");
   await installerPage.locator(listingLink).first().press("Enter");
-  await installerPage.getByRole("button", { name: "Install to my reusable Library" }).press("Enter");
+  const install = installerPage.getByRole("button", { name: "Install to my reusable Library" });
+  await expect(installerPage.getByText(/release 2\.0\.0 by Synthetic owner Creator/)).toBeVisible();
+  const { checksum: _checksum, ...original } = envelope;
+  const updated = { ...original, versionId: randomUUID(), description: "An updated fictional harbor introduction." };
+  const checksum = checksumReusableEnvelope(updated);
+  await db.$transaction([
+    db.reusableAuthoringItemVersion.create({
+      data: {
+        id: updated.versionId,
+        itemId: updated.itemId,
+        versionNumber: 2,
+        envelope: JSON.stringify({ ...updated, checksum }),
+        checksum,
+      },
+    }),
+    db.reusableAuthoringItem.update({
+      where: { id: updated.itemId },
+      data: { currentVersionNumber: 2, description: updated.description },
+    }),
+  ]);
+  await submitTemplate(listing.id);
+  await openTemplateReview(listing.id);
+  await moderatorPage.getByRole("button", { name: "Approve and publish release" }).press("Enter");
+  await expect(moderatorPage.getByText("Release approved.")).toBeVisible();
+  const replacement = await db.communityListing.findUniqueOrThrow({
+    where: { slug },
+    include: { currentRelease: true },
+  });
+  expect(replacement.currentRelease?.semanticVersion).toBe("3.0.0");
+  const staleInstall = installerPage.waitForResponse(
+    (response) => new URL(response.url()).pathname === "/api/community/creator-reuse/install/commit",
+  );
+  await install.press("Enter");
+  const staleResponse = await staleInstall;
+  expect(staleResponse.status()).toBe(400);
+  expect(await staleResponse.json()).toMatchObject({ code: "COMMUNITY_REVIEW_STALE" });
+  const staleAlert = installerPage.getByRole("alert").filter({ hasText: "The release changed" });
+  await expect(staleAlert).toBeVisible();
+  const refresh = installerPage.getByRole("button", { name: "Review current release" });
+  await expect(refresh).toBeFocused();
+  await expect(refresh).toBeInViewport();
+  await expect(staleAlert).toBeInViewport();
+  await expect(install).toHaveCount(0);
+  await installerPage.screenshot({ path: test.info().outputPath("outdated-install-review.png") });
+  await refresh.press("Enter");
+  await expect(installerPage.getByText(/release 3\.0\.0 by Synthetic owner Creator/)).toBeVisible();
+  await expect(installerPage.getByText(/An updated fictional harbor introduction/)).toBeVisible();
+  expect(
+    await db.communityInstallation.count({
+      where: {
+        accountId: installer.accountId,
+        releaseId: { in: [approved.currentReleaseId!, replacement.currentReleaseId!] },
+      },
+    }),
+  ).toBe(0);
+  await installerPage.screenshot({ path: test.info().outputPath("current-install-review.png") });
+  await install.press("Enter");
   await installerPage.getByRole("link", { name: "View my installed item" }).press("Enter");
   const installed = installerPage.getByRole("listitem").filter({ hasText: "Harbor opening" });
   await expect(installed.getByText("Credits: Synthetic owner Creator.")).toBeVisible();
@@ -575,10 +631,10 @@ test("rejected Chapter template stays private after its approved replacement is 
       return usage ? JSON.parse(usage.provenance) : null;
     })
     .toMatchObject({
-      sourceReleaseId: approved.currentReleaseId,
+      sourceReleaseId: replacement.currentReleaseId,
       sourceOwnerId: owner.accountId,
       sourceItemId: envelope.itemId,
-      sourceVersionId: envelope.versionId,
+      sourceVersionId: updated.versionId,
       license: "SC07_TEST_REUSE",
       modified: true,
     });

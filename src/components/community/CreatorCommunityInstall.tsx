@@ -30,9 +30,14 @@ export function CreatorCommunityInstall({
   const [review, setReview] = useState<Review | null>(null);
   const [error, setError] = useState("");
   const [authRequired, setAuthRequired] = useState(false);
+  const [staleReview, setStaleReview] = useState(false);
   const [busy, setBusy] = useState(false);
   const [opened, setOpened] = useState<string | null>(null);
   const requestId = useRef<string>(crypto.randomUUID());
+  const refreshReviewRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (staleReview) refreshReviewRef.current?.focus();
+  }, [staleReview]);
   useEffect(() => {
     let cancelled = false;
     void fetch(`/api/community/${path}/install/review?listingId=${encodeURIComponent(listingId)}`, {
@@ -77,8 +82,12 @@ export function CreatorCommunityInstall({
           requestId: requestId.current,
         }),
       });
-      const result = (await response.json()) as { error?: string; studioUrl?: string };
-      if (!response.ok) throw new Error(result.error ?? "The private installation could not finish.");
+      const result = (await response.json()) as { code?: string; error?: string; studioUrl?: string };
+      if (!response.ok) {
+        if (result.code === "COMMUNITY_REVIEW_STALE" || result.code === "COMMUNITY_LISTING_NOT_FOUND")
+          setStaleReview(true);
+        throw new Error(result.error ?? "The private installation could not finish.");
+      }
       setOpened(
         result.studioUrl ?? (itemType === "CHRONICLE" ? "/studio/library" : "/studio/exchange#installed-community"),
       );
@@ -102,7 +111,7 @@ export function CreatorCommunityInstall({
           this release for private reuse.
         </p>
       )}
-      {review && (
+      {review && !staleReview && (
         <>
           <p>
             {review.title} · release {review.semanticVersion} by {review.creator}. The copy stays pinned to this
@@ -138,7 +147,22 @@ export function CreatorCommunityInstall({
           )}
         </>
       )}
-      {error && <p role="alert">{error}</p>}
+      {error && (
+        <p id="creator-install-error" role="alert">
+          {error}
+        </p>
+      )}
+      {staleReview && (
+        <button
+          ref={refreshReviewRef}
+          className="community-button community-button--primary"
+          type="button"
+          aria-describedby="creator-install-error"
+          onClick={() => window.location.reload()}
+        >
+          Review current release
+        </button>
+      )}
     </section>
   );
 }
