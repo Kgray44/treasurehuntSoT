@@ -7,6 +7,7 @@ import { journalPresentationSchema } from "@/chronicle/journal-contract";
 import type { JsonObject, StudioDraftInput } from "@/chronicle/types";
 import { parseJsonObject, parsePublishedSnapshot } from "@/chronicle/types";
 import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
+import { parseReusableEnvelope } from "@/studio/reusable-content";
 import { studioRegistryFromDrydock } from "@/drydock/contracts/registry";
 import { parseStoredLandfallDefinition, validateLandfallDefinition } from "@/landfall/definition";
 
@@ -496,9 +497,23 @@ export async function saveStudioDraft(
         throw new Error("Reusable content provenance must refer only to Passages and Chapters in this saved draft.");
       const version = await tx.reusableAuthoringItemVersion.findFirst({
         where: { id: usage.versionId, itemId: usage.itemId, item: { ownerAccountId: userId, archivedAt: null } },
-        select: { id: true },
+        select: { checksum: true, envelope: true },
       });
       if (!version) throw new Error("The reusable source version is not available to this Creator.");
+      const source = parseReusableEnvelope(JSON.parse(version.envelope));
+      if (
+        source.itemId !== usage.itemId ||
+        source.versionId !== usage.versionId ||
+        source.ownerId !== userId ||
+        source.checksum !== version.checksum
+      )
+        throw new Error("The reusable source version could not be verified.");
+      const provenance = {
+        ...source.attribution,
+        sourceItemId: source.attribution.sourceItemId ?? source.itemId,
+        sourceVersionId: source.attribution.sourceVersionId ?? source.versionId,
+        modified: true,
+      };
       await tx.reusableAuthoringUsage.create({
         data: {
           draftId: draft.id,
@@ -507,7 +522,7 @@ export async function saveStudioDraft(
           sourceKind: usage.sourceKind,
           insertedBlockIds: json(usage.insertedBlockIds),
           insertedChapterIds: json(usage.insertedChapterIds),
-          provenance: json(usage.provenance),
+          provenance: json(provenance),
         },
       });
     }

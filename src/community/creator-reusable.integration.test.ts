@@ -1,13 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import { db } from "@/lib/db";
-import {
-  checksumReusableEnvelope,
-  parseReusableEnvelope,
-  planReusableInsertion,
-  applyReusableInsertion,
-  type ReusableContentEnvelope,
-} from "@/studio/reusable-content";
+import { createReusableFixtureEnvelope } from "../../tests/fixtures/sc07-reusable";
+import { parseReusableEnvelope, planReusableInsertion, applyReusableInsertion } from "@/studio/reusable-content";
 import { createReusableAuthoringItem, getReusableAuthoringItemVersion } from "@/studio/reusable-library-service";
 import type { DraftState } from "@/components/studio/studio-types";
 import { decideCreatorReusablePublication, reviewCreatorReusablePublication } from "./creator-reusable-moderation";
@@ -18,47 +13,6 @@ import { getHomeportListingDetail } from "./homeport";
 import { listCreatorInstalledCommunityItems } from "./creator-installed-library";
 
 const isolated = /^file:.*validation-isolated-sc07-[^/\\]*\.db$/i.test(process.env.DATABASE_URL ?? "");
-
-function savedEnvelope(ownerId: string, kind: "PRESET" | "CHAPTER_TEMPLATE") {
-  const blockId = randomUUID();
-  const chapterId = randomUUID();
-  const unsigned = {
-    envelopeType: "voyagewright.reusable-authoring" as const,
-    envelopeVersion: 1 as const,
-    itemId: randomUUID(),
-    versionId: randomUUID(),
-    kind,
-    name: kind === "PRESET" ? "Harbor welcome" : "Harbor opening",
-    description: "A fictional introduction for another Creator.",
-    tags: ["intro"],
-    ownerId,
-    blocks: [
-      {
-        id: blockId,
-        blockType: "narrative",
-        title: "Welcome",
-        configuration: { body: "Welcome to the fictional harbor." },
-        presentation: {},
-        completion: {},
-        isEnabled: true,
-        schemaVersion: 1,
-      },
-    ],
-    chapters:
-      kind === "CHAPTER_TEMPLATE"
-        ? [{ id: chapterId, title: "Opening", isOptional: false, metadata: {}, blockIds: [blockId] }]
-        : [],
-    entryPorts: [],
-    exitPorts: [],
-    parameters: [],
-    dependencies: { assetIds: [], artifactIds: [], locationIds: [], providerIds: [] },
-    accessibilityObligations: [],
-    attribution: { sourceOwnerId: ownerId, modified: false },
-    lineage: [],
-    compatibility: { minimumReaderVersion: 1, blockContractVersions: { narrative: 1 } },
-  };
-  return { ...unsigned, checksum: checksumReusableEnvelope(unsigned) } satisfies ReusableContentEnvelope;
-}
 
 const destination: DraftState = {
   tale: {
@@ -118,7 +72,7 @@ describe.skipIf(!isolated)("SC-07 Creator reusable Community journey", () => {
         },
         update: {},
       });
-      const source = savedEnvelope(ownerId, kind);
+      const source = createReusableFixtureEnvelope(ownerId, kind);
       await createReusableAuthoringItem(ownerId, source);
       const input = {
         source: { itemId: source.itemId, versionId: source.versionId },
@@ -129,6 +83,14 @@ describe.skipIf(!isolated)("SC-07 Creator reusable Community journey", () => {
         licenseKey: "SC07_TEST_REUSE",
         rightsAcknowledged: true as const,
       };
+      const invalid = createReusableFixtureEnvelope(ownerId, kind, "");
+      await createReusableAuthoringItem(ownerId, invalid);
+      await expect(
+        preflightCreatorReusablePublication(ownerId, {
+          ...input,
+          source: { itemId: invalid.itemId, versionId: invalid.versionId },
+        }),
+      ).rejects.toMatchObject({ code: "COMMUNITY_PASSAGE_CONTRACT_INVALID" });
       const review = await preflightCreatorReusablePublication(ownerId, input);
       expect(review.included.checksum).toBe(source.checksum);
       const pending = await submitCreatorReusablePublication(ownerId, input, review.reviewDigest);

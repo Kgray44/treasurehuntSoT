@@ -3,6 +3,8 @@ import { mkdirSync } from "node:fs";
 import path from "node:path";
 import bcrypt from "bcryptjs";
 import { createChronicleFixture } from "../fixtures/sc07-chronicle";
+import { createReusableFixtureEnvelope } from "../fixtures/sc07-reusable";
+import { createStudioTale } from "../../src/chronicle/studio-service";
 import { expect, test, type Browser, type BrowserContext, type Page } from "@playwright/test";
 import { db } from "../../src/lib/db";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
@@ -62,7 +64,7 @@ async function actor(browser: Browser, label: string): Promise<Actor> {
     },
   });
   await activateWorkspaceCapability(account.id, "CREATOR");
-  const videoDir = path.resolve("artifacts/sc07-browser-video");
+  const videoDir = path.join(test.info().project.outputDir, "role-recordings");
   mkdirSync(videoDir, { recursive: true });
   const context = await browser.newContext({ recordVideo: { dir: videoDir } });
   const session = await createAccountSession(account.id, "Synthetic SC-07 Creator browser proof");
@@ -118,11 +120,11 @@ test.beforeAll(async ({ browser }) => {
         id: randomUUID(),
         blockType: "narrative",
         title: "Welcome",
-        configuration: { body: "A synthetic harbor greeting for another Creator." },
+        configuration: { heading: "Welcome", body: "A synthetic harbor greeting for another Creator." },
         presentation: {},
-        completion: {},
+        completion: { mode: "playerConfirmation" },
         isEnabled: true,
-        schemaVersion: 1,
+        schemaVersion: 2,
       },
     ],
     chapters: [],
@@ -133,7 +135,7 @@ test.beforeAll(async ({ browser }) => {
     accessibilityObligations: [],
     attribution: { sourceOwnerId: owner.accountId, modified: false },
     lineage: [],
-    compatibility: { minimumReaderVersion: 1, blockContractVersions: { narrative: 1 } },
+    compatibility: { minimumReaderVersion: 1, blockContractVersions: { narrative: 2 } },
   };
   const envelope = { ...unsigned, checksum: checksumReusableEnvelope(unsigned) } satisfies ReusableContentEnvelope;
   sourceId = envelope.itemId;
@@ -150,7 +152,7 @@ test.afterAll(async () => {
     if (!participant) continue;
     const video = participant.page.video();
     await participant.context.close();
-    if (video) await video.saveAs(path.resolve(`artifacts/sc07-browser-video/${name}.webm`));
+    if (video) await video.saveAs(path.join(test.info().project.outputDir, "role-recordings", `${name}.webm`));
   }
   await db.$disconnect();
 });
@@ -298,4 +300,106 @@ test("second Creator edits an installed Chronicle through private Studio", async
   });
   await ownerPage.goto(`/studio/tales/${installedId}`);
   await expect(ownerPage.getByRole("heading", { name: "Chronicle access unavailable" })).toBeVisible();
+});
+
+test("rejected Chapter template remains private until a replacement is approved and reused", async () => {
+  test.setTimeout(75_000);
+  const suffix = randomUUID().slice(0, 8);
+  const slug = `sc07-template-${suffix}`;
+  const envelope = createReusableFixtureEnvelope(owner.accountId, "CHAPTER_TEMPLATE");
+  await createReusableAuthoringItem(owner.accountId, envelope);
+  const ownerPage = owner.page;
+  const moderatorPage = moderator.page;
+  const installerPage = installer.page;
+  await installerPage.setViewportSize({ width: 1280, height: 800 });
+  const listingLink = `a[href="/community/${slug}"]`;
+
+  async function submitTemplate(replaceListingId?: string) {
+    await ownerPage.goto("/studio/exchange");
+    await ownerPage.getByLabel("Saved source").selectOption(`CHRONICLE_TEMPLATE:${envelope.itemId}`);
+    if (replaceListingId) await ownerPage.getByLabel("Publication destination").selectOption(replaceListingId);
+    else await ownerPage.getByLabel("Community address").fill(slug);
+    await ownerPage.getByLabel("Preview-safe description").fill("A fictional Chapter template for other Creators.");
+    await ownerPage.getByLabel("License").selectOption("SC07_TEST_REUSE");
+    await ownerPage.getByLabel("I own or have permission to distribute every included item.").check();
+    await ownerPage.getByRole("button", { name: "Review exact package" }).press("Enter");
+    await ownerPage.getByRole("button", { name: "Submit for moderation" }).press("Enter");
+    await expect(ownerPage.getByText(/Submitted for independent moderation/)).toBeVisible();
+  }
+
+  async function openTemplateReview(templateListingId: string) {
+    await moderatorPage.goto(`/admin/community/${templateListingId}`);
+    await moderatorPage.getByText("Inspect every included field", { exact: true }).press("Enter");
+    await expect(moderatorPage.getByText(/Welcome to the fictional harbor/)).toBeVisible();
+    const password = moderatorPage.getByLabel("Confirm current password for privileged assurance");
+    if (await password.isVisible()) {
+      await password.fill(moderatorPassword);
+      await moderatorPage.getByRole("button", { name: "Verify identity" }).press("Enter");
+    }
+    await moderatorPage.getByLabel(/I reviewed the exact content, ownership declaration/).check();
+  }
+
+  await submitTemplate();
+  const listing = await db.communityListing.findUniqueOrThrow({ where: { slug } });
+  const rejectedId = listing.currentReleaseId!;
+  await openTemplateReview(listing.id);
+  await moderatorPage.getByLabel("Rejection reason for the moderation record").fill("Clarify the preview description.");
+  await moderatorPage.getByRole("button", { name: "Reject release" }).press("Enter");
+  await expect(moderatorPage.getByText("Release rejected. It remains private.")).toBeVisible();
+  await installerPage.goto("/community/templates");
+  await expect(installerPage.locator(listingLink)).toHaveCount(0);
+  await installerPage.goto(`/community/${slug}`);
+  await expect(installerPage.getByText(/Welcome to the fictional harbor/)).toHaveCount(0);
+  await expect(installerPage.getByRole("button", { name: "Install to my reusable Library" })).toHaveCount(0);
+
+  await submitTemplate(listing.id);
+  await openTemplateReview(listing.id);
+  await moderatorPage.getByRole("button", { name: "Approve and publish release" }).press("Enter");
+  await expect(moderatorPage.getByText("Release approved.")).toBeVisible();
+  const approved = await db.communityListing.findUniqueOrThrow({ where: { slug }, include: { currentRelease: true } });
+  expect(approved.currentRelease?.semanticVersion).toBe("2.0.0");
+  expect(approved.currentReleaseId).not.toBe(rejectedId);
+  await installerPage.goto("/community/templates");
+  await installerPage.locator(listingLink).first().press("Enter");
+  await installerPage.getByRole("button", { name: "Install to my reusable Library" }).press("Enter");
+  await installerPage.getByRole("link", { name: "View my installed item" }).press("Enter");
+  const installed = installerPage.getByRole("listitem").filter({ hasText: "Harbor opening" });
+  await expect(installed.getByText("Credits: Synthetic owner Creator.")).toBeVisible();
+  await expect(installed).toContainText("Synthetic reuse");
+
+  const draft = await createStudioTale({
+    creatorId: installer.accountId,
+    title: "Private Chapter destination",
+    slug: `sc07-private-${suffix}`,
+  });
+  await installerPage.getByRole("link", { name: "Open a Chronicle to reuse an installed item" }).press("Enter");
+  const draftCard = installerPage
+    .getByRole("article")
+    .filter({ has: installerPage.getByRole("heading", { name: "Private Chapter destination" }) });
+  await draftCard.getByRole("link", { name: "Edit Chronicle" }).press("Enter");
+  await expect(installerPage).toHaveURL(`/studio/tales/${draft.id}`);
+  await installerPage.getByRole("tab", { name: "Reuse" }).press("Enter");
+  await installerPage
+    .getByRole("listitem")
+    .filter({ hasText: "Harbor opening" })
+    .getByRole("button", { name: "Insert as new Chapter" })
+    .press("Enter");
+  await installerPage.getByRole("button", { name: "Insert reusable content" }).press("Enter");
+  await expect
+    .poll(async () => {
+      const usage = await db.reusableAuthoringUsage.findFirst({ where: { draftId: draft.draftId } });
+      return usage ? JSON.parse(usage.provenance) : null;
+    })
+    .toMatchObject({
+      sourceReleaseId: approved.currentReleaseId,
+      sourceOwnerId: owner.accountId,
+      sourceItemId: envelope.itemId,
+      sourceVersionId: envelope.versionId,
+      license: "SC07_TEST_REUSE",
+      modified: true,
+    });
+  await installerPage.screenshot({
+    path: test.info().outputPath("chapter-template-private-reuse.png"),
+    fullPage: true,
+  });
 });

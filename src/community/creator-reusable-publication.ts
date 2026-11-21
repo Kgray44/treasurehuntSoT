@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { parseDrydockBlock } from "@/drydock/contracts/parser";
 import { assertReusableCaptureSafe, parseReusableEnvelope, checksumReusableEnvelope } from "@/studio/reusable-content";
 import { assertPublishingAllowed, CommunityError, listingInputSchema, stableJson } from "./domain";
 import { resolveCreatorPublicationTarget, stageCreatorPublicationListing } from "./creator-publication-target";
@@ -23,6 +24,16 @@ export const creatorReusablePublicationSchema = z.strictObject({
 });
 
 type PublicationInput = z.infer<typeof creatorReusablePublicationSchema>;
+
+function assertReusablePassageContracts(envelope: ReturnType<typeof parseReusableEnvelope>) {
+  for (const block of envelope.blocks) {
+    if (!parseDrydockBlock(block).success)
+      throw new CommunityError(
+        "COMMUNITY_PASSAGE_CONTRACT_INVALID",
+        "A saved Passage cannot be reused. Fix its configuration or update it to a supported version in Studio, then review the package again.",
+      );
+  }
+}
 
 async function loadSource(accountId: string, source: PublicationInput["source"]) {
   const item = await db.reusableAuthoringItem.findFirst({
@@ -86,6 +97,7 @@ async function loadSource(accountId: string, source: PublicationInput["source"])
     visit(chapter.coverAssetId, "coverAssetId");
     visit(chapter.metadata);
   });
+  assertReusablePassageContracts(envelope);
   const itemType = item.kind === "PRESET" ? "STORY_BLOCK_PRESET" : "CHRONICLE_TEMPLATE";
   return { item, version, envelope, itemType };
 }
@@ -368,6 +380,7 @@ export function verifyCreatorReusablePackage(input: {
       "The pinned Creator package failed integrity verification.",
     );
   const envelope = parseReusableEnvelope(JSON.parse(input.itemMetadata));
+  assertReusablePassageContracts(envelope);
   if (
     envelope.itemId !== releaseManifest.sourceId ||
     envelope.versionId !== releaseManifest.sourceVersionId ||
