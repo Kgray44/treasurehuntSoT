@@ -62,6 +62,11 @@ describe.skipIf(!isolated)("SC-07 Chronicle Community journey", () => {
       rightsAcknowledged: true as const,
       spoilersAcknowledged: true as const,
     };
+    const external = await createChronicleFixture(ownerId, `${suffix}-external`, { withLocation: true });
+    await expect(
+      preflightCreatorChroniclePublication(ownerId, { ...input, publishedVersionId: external.version.id }),
+    ).rejects.toMatchObject({ code: "COMMUNITY_DEPENDENCY_UNSUPPORTED" });
+    expect(await db.communityListing.count({ where: { slug: input.slug } })).toBe(0);
     const review = await preflightCreatorChroniclePublication(ownerId, input);
     expect(review.sourceChecksum).toBe(checksum);
     const pending = await submitCreatorChroniclePublication(ownerId, input, review.reviewDigest);

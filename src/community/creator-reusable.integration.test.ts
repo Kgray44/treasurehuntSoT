@@ -21,7 +21,7 @@ import type { DraftState } from "@/components/studio/studio-types";
 import { decideCreatorReusablePublication, reviewCreatorReusablePublication } from "./creator-reusable-moderation";
 import { installCreatorReusableRelease, reviewCreatorReusableInstallation } from "./creator-reusable-installation";
 import { preflightCreatorReusablePublication, submitCreatorReusablePublication } from "./creator-reusable-publication";
-import { getPublicListingBySlug } from "./services";
+import { deprecateRelease, getPublicListingBySlug } from "./services";
 import { getHomeportListingDetail } from "./homeport";
 import { listCreatorInstalledCommunityItems } from "./creator-installed-library";
 
@@ -293,6 +293,16 @@ describe.skipIf(!isolated)("SC-07 Creator reusable Community journey", () => {
           /upstream Community rights and credit/,
         );
       }
+      await deprecateRelease({ accountId: ownerId }, pending.releaseId);
+      await expect(reviewCreatorReusableInstallation(installerId, pending.listingId)).rejects.toMatchObject({
+        code: "COMMUNITY_LISTING_NOT_FOUND",
+      });
+      await expect(
+        installCreatorReusableRelease({ ...installInput, requestId: `sc07-${randomUUID()}` }),
+      ).rejects.toMatchObject({ code: "COMMUNITY_LISTING_NOT_FOUND" });
+      expect(await listCreatorInstalledCommunityItems(installerId)).toContainEqual(
+        expect.objectContaining({ itemId: installed.itemId, releaseId: pending.releaseId }),
+      );
     },
   );
 });

@@ -4,7 +4,11 @@ import { createStudioTale, getStudioTale, saveStudioDraft } from "../../src/chro
 import { publishedSourceChecksum, snapshotFromStudio } from "../../src/chronicle/snapshot";
 
 // Seed only the saved Chronicle and its synthetic Drydock evidence. Publication still runs through the product.
-export async function createChronicleFixture(ownerId: string, suffix: string) {
+export async function createChronicleFixture(
+  ownerId: string,
+  suffix: string,
+  options: { withLocation?: boolean } = {},
+) {
   const source = await createStudioTale({
     creatorId: ownerId,
     title: "Synthetic Harbor Tale",
@@ -38,6 +42,10 @@ export async function createChronicleFixture(ownerId: string, suffix: string) {
     },
     ownerId,
   );
+  if (options.withLocation)
+    await db.taleLocation.create({
+      data: { taleId: source.id, name: "Synthetic harbor location", slug: "synthetic-harbor-location" },
+    });
   const version = await freezeChronicleFixture(source.id, ownerId, suffix);
   return { source, version };
 }

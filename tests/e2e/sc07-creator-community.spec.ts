@@ -231,6 +231,36 @@ test("only the owner with Creator access submits the exact saved item for modera
   });
 });
 
+test("Studio explains why an unsupported dependency blocks Creator submission", async () => {
+  const { checksum: _checksum, ...fixture } = createReusableFixtureEnvelope(owner.accountId, "PRESET");
+  const source = {
+    ...fixture,
+    name: "Welcome with an external asset",
+    dependencies: { ...fixture.dependencies, assetIds: [randomUUID()] },
+  };
+  await createReusableAuthoringItem(owner.accountId, { ...source, checksum: checksumReusableEnvelope(source) });
+  const slug = `sc07-blocked-${randomUUID().slice(0, 8)}`;
+  const page = owner.page;
+  await page.goto("/studio/exchange");
+  await page.getByLabel("Saved source").selectOption(`STORY_BLOCK_PRESET:${source.itemId}`);
+  await page.getByLabel("Community address").fill(slug);
+  await page.getByLabel("Preview-safe description").fill("A fictional preset with an unverified reference.");
+  await page.getByLabel("License").selectOption("SC07_TEST_REUSE");
+  await page.getByLabel("I own or have permission to distribute every included item.").check();
+  const reviewed = page.waitForResponse(
+    (response) => new URL(response.url()).pathname === "/api/community/creator-reuse/preflight",
+  );
+  await page.getByRole("button", { name: "Review exact package" }).press("Enter");
+  const response = await reviewed;
+  expect(response.status()).toBe(400);
+  expect(await response.json()).toMatchObject({ code: "COMMUNITY_DEPENDENCY_UNSUPPORTED" });
+  await expect(
+    page.getByRole("alert").filter({ hasText: "cannot yet be packaged with verified rights" }),
+  ).toBeVisible();
+  await expect(page.getByRole("button", { name: "Submit for moderation" })).toHaveCount(0);
+  expect(await db.communityListing.count({ where: { slug } })).toBe(0);
+});
+
 test("second Creator installs the approved Passage preset and applies it in private Studio", async () => {
   const reviewPage = moderator.page;
   await reviewPage.setViewportSize({ width: 390, height: 844 });
