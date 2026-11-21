@@ -1,0 +1,257 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "INDEPENDENT_PREPARATORY_PRODUCT_EXPERIENCE_REVIEW",
+  "disposition": "REPAIR_AND_RECAPTURE",
+  "acceptance": "SIGNIFICANT_EXPERIENCE_ACCEPTANCE_BLOCKED",
+  "reviewerContext": {
+    "identity": "Codex independent reviewer /root/experience_review",
+    "context": "Separate subagent context assigned only the human objective, bounded packet, review dimensions, and review instructions.",
+    "builderRationaleReceived": false,
+    "independentOfBuilder": true,
+    "experienceInspectedBeforeSource": true,
+    "method": "Inspected the reference contact sheet and all seven packet screenshots with view_image. Reopened all mobile captures at original resolution. Read limited implementation and capture-test source only after image inspection to resolve observed issues.",
+    "productionSourceEdited": false
+  },
+  "packet": {
+    "path": "artifacts/admiralty-economics/review-packet.json",
+    "sha256": "5789ea47c6097eb92ec54132ba6cabf1bb609bcb829ba1cbda83723460518d8d",
+    "base": "a5eeb5b42561042cea7e799a3b0d54c1b03c1006",
+    "sourceState": "PREPARATORY_WORKTREE_SNAPSHOT",
+    "frozenSourceAcceptance": false
+  },
+  "objective": "An Administrator understands AI capabilities, cost and uncertainty, per-person allowances, and useful outcomes through the actual Admiralty interface.",
+  "inspectedArtifacts": [
+    "Experience_Images/Contact_Sheets/Area_Admiralty_Desktop_01.png",
+    "artifacts/admiralty-economics/browser/overview-desktop.png",
+    "artifacts/admiralty-economics/browser/quality-desktop.png",
+    "artifacts/admiralty-economics/browser/operation-inspector.png",
+    "artifacts/admiralty-economics/browser/overview-mobile.png",
+    "artifacts/admiralty-economics/browser/quality-mobile.png",
+    "artifacts/admiralty-economics/browser/empty-mobile.png",
+    "artifacts/admiralty-economics/browser/error-mobile.png"
+  ],
+  "dimensions": [
+    {
+      "dimension": "objective",
+      "status": "PARTIAL",
+      "observation": "Overview and Quality make cost, uncertainty and useful outcomes understandable. Capabilities and per-person allowances are promised by navigation but never visually shown in the packet.",
+      "evidence": ["overview-desktop.png", "quality-desktop.png"],
+      "findings": ["AE-PX-002", "AE-PX-003", "AE-PX-004"]
+    },
+    {
+      "dimension": "visual hierarchy",
+      "status": "REPAIR_REQUIRED",
+      "observation": "The large page title, gold accents, four summary metrics, and progressively detailed panels form a readable hierarchy. Several captures contain a floating global masthead and two overlapping skip links through the middle of headings or filters, preventing a clean review of those areas.",
+      "evidence": ["overview-desktop.png", "quality-desktop.png", "overview-mobile.png", "empty-mobile.png"],
+      "findings": ["AE-PX-001"],
+      "observations": ["AE-PX-O01", "AE-PX-O02"]
+    },
+    {
+      "dimension": "Admiralty coherence",
+      "status": "SUPPORTED_WITH_CAPTURE_LIMITATION",
+      "observation": "Dark teal surfaces, brass borders, serif display headings, operator identity, grouped station navigation and compact data cards agree with the Admiralty contact sheet. The global-shell intrusion is inconsistent with the otherwise settled reference compositions.",
+      "evidence": ["Area_Admiralty_Desktop_01.png", "overview-desktop.png", "quality-desktop.png"],
+      "findings": ["AE-PX-001"]
+    },
+    {
+      "dimension": "mobile readability",
+      "status": "REPAIR_AND_ADDITIONAL_EVIDENCE_REQUIRED",
+      "observation": "At 390px the metric and outcome cards stack, body copy wraps, tabs remain distinct and controls stay inside the page. The model table exposes only its left columns without a visible scroll cue. The expanded station list occupies roughly the first screen before the task title. Allowance editing has no mobile capture.",
+      "evidence": ["overview-mobile.png", "quality-mobile.png"],
+      "findings": ["AE-PX-001", "AE-PX-002"],
+      "observations": ["AE-PX-O01", "AE-PX-O03"]
+    },
+    {
+      "dimension": "navigation",
+      "status": "PARTIAL",
+      "observation": "The current global station and current local view are visibly identified, and the outcome investigation has a clear Inspect action. The actual consumer table, dossier handoff, allowance flow and return continuity are absent from the visual evidence.",
+      "evidence": ["overview-desktop.png", "quality-mobile.png", "operation-inspector.png"],
+      "findings": ["AE-PX-002"]
+    },
+    {
+      "dimension": "accounting clarity",
+      "status": "REPAIR_REQUIRED",
+      "observation": "Observed cost is split into provider-confirmed versus calculated/estimated; unresolved exposure is explicitly reserved risk, not spending; operations and provider attempts are distinct. The summary shows a settled sample and historical coverage. However the initial period control disagrees with the applied period, failed refresh leaves stale results unlabeled, and the one-day trend has no visible datum.",
+      "evidence": ["overview-desktop.png", "overview-mobile.png", "error-mobile.png"],
+      "findings": ["AE-PX-003", "AE-PX-004", "AE-PX-005"],
+      "observations": ["AE-PX-O02"]
+    },
+    {
+      "dimension": "outcome semantics",
+      "status": "SUPPORTED",
+      "observation": "Room acceptance and applied edits have separate useful-result labels. Rates include their operation denominators; provider completion is not presented as owner acceptance. A one-operation 100% sample receives an explicit small-sample warning, zero observations are Unavailable, and investigation copy avoids causal or product-quality claims.",
+      "evidence": ["quality-desktop.png", "quality-mobile.png", "empty-mobile.png", "operation-inspector.png"],
+      "findings": []
+    },
+    {
+      "dimension": "loading and recovery",
+      "status": "REPAIR_AND_ADDITIONAL_EVIDENCE_REQUIRED",
+      "observation": "The empty state gives a concrete next step and avoids invented usage. The error has a Retry action, but simultaneously retains the prior empty-period result without calling it stale. No loading or successfully recovered screenshot is provided. The capture test includes recovery assertions; that supports behavior but does not show the recovered composition.",
+      "evidence": ["empty-mobile.png", "error-mobile.png", "tests/e2e/admiralty-ai-economics.spec.ts"],
+      "findings": ["AE-PX-002", "AE-PX-003"]
+    },
+    {
+      "dimension": "accessible fallback",
+      "status": "PARTIAL",
+      "observation": "Labels, textual metric values, disclosures for definitions/daily amounts, and source-confirmed focusable named scroll regions offer alternatives to the charts. The packet reports scoped axe without serious/critical findings; the scope excludes shell chrome. The overlapping skip links need viewport/keyboard verification, and the disclosures' open states, keyboard flow and assistive-technology announcements were not demonstrated.",
+      "evidence": [
+        "overview-mobile.png",
+        "quality-mobile.png",
+        "tests/e2e/admiralty-ai-economics.spec.ts",
+        "src/components/admiralty/AIEconomicsConsole.tsx"
+      ],
+      "findings": ["AE-PX-001", "AE-PX-002"],
+      "observations": ["AE-PX-O03"]
+    },
+    {
+      "dimension": "privacy",
+      "status": "SUPPORTED_FOR_VISIBLE_SYNTHETIC_EVIDENCE",
+      "observation": "All visible people are synthetic. The operation inspector shows accounting/outcome metadata and explicitly excludes private photographs, prompts and generated scene content. No private payload is visible in the supplied images. Screenshots alone cannot prove server-side exclusion, authorization, retention or that undisclosed usage dimensions contain no private content.",
+      "evidence": ["quality-desktop.png", "operation-inspector.png"],
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "AE-PX-001",
+      "priority": "P1",
+      "blocking": true,
+      "kind": "CAPTURE_OR_SHELL_RENDERING_UNRESOLVED",
+      "title": "Floating global chrome and overlapping skip links obscure the reviewed experience",
+      "artifacts": [
+        "quality-desktop.png",
+        "operation-inspector.png",
+        "overview-mobile.png",
+        "quality-mobile.png",
+        "empty-mobile.png",
+        "error-mobile.png"
+      ],
+      "observation": "The Voyagewright global masthead appears across the middle of the page. Two gold skip links overlap each other above it. They obscure the secondary heading on desktop and capability/model filters or the page title on mobile. overview-desktop.png is clear, so this may be dependent on scroll/capture state rather than a stable product defect.",
+      "impact": "The packet cannot establish an unobstructed control layout or usable keyboard escape on the captured states.",
+      "recommendation": "First recapture settled viewport images at the top and relevant scrolled positions with scroll/focus state recorded, plus a deliberate keyboard skip-link sequence. Ensure full-page capture does not relocate sticky/fixed chrome into content. Change shared shell source only if actual viewport inspection reproduces the obstruction; otherwise fix capture setup and replace the affected evidence.",
+      "sourceResolution": "ProductShell has a sticky global header and a fixed skip link; AdmiraltyShell supplies a second fixed skip link. The capture sequence switches views without explicitly restoring page scroll before full-page screenshots. This is not enough evidence to identify a new shell-source regression."
+    },
+    {
+      "id": "AE-PX-002",
+      "priority": "P1",
+      "blocking": true,
+      "kind": "OBJECTIVE_EVIDENCE_GAP",
+      "title": "Capabilities, individual allowances and completed recovery have no visual evidence",
+      "artifacts": [
+        "review-packet.json",
+        "overview-desktop.png",
+        "overview-mobile.png",
+        "tests/e2e/admiralty-ai-economics.spec.ts"
+      ],
+      "observation": "The seven referenced images cover Overview, Quality, one operation inspector, and empty/error Quality states. None shows Capabilities, People & Allowances, effective/inherited rights, capability/model restrictions, preview/assurance/confirm, successful policy application, or the recovered view.",
+      "impact": "Two central parts of the human objective and the allowance journey cannot receive independent visual acceptance from this packet. The successful visible-control test is supporting functional evidence, not inspection of those surfaces.",
+      "recommendation": "Capture the actual Capabilities view and the consumer-to-People-dossier allowance journey on desktop and mobile. Include effective/inherited restrictions, per-capability limits, preview, privileged confirmation, success/error feedback and return continuity. Add recovered and loading states and an opened daily-table/definition fallback. Re-review those artifacts independently.",
+      "sourceResolution": "The existing test exercises a canonical per-person allowance preview, password assurance and confirm, but takes no screenshots of those stages and never opens the Capabilities tab."
+    },
+    {
+      "id": "AE-PX-003",
+      "priority": "P1",
+      "blocking": true,
+      "kind": "PRODUCT_ACCOUNTING_AND_RECOVERY",
+      "title": "A failed refresh leaves an unlabeled previous-period result beside new filter values",
+      "artifacts": ["error-mobile.png", "empty-mobile.png"],
+      "observation": "error-mobile.png shows October 2026 controls and a service-interruption alert, while the period text still says January 2030 and the prior 'No AI operations in this period' and zero-result cards remain. There is no 'last successful result' or stale-data notice.",
+      "impact": "An administrator can read a failed query as no usage or no useful outcomes for the newly requested period. This undermines the cost and uncertainty objective.",
+      "recommendation": "Track the applied query separately from draft filters and pending requests. On failure, either withhold result conclusions or prominently mark retained results as the last successful period and state that the requested period failed to load. Retry should clearly recover that requested query.",
+      "sourceResolution": "AIEconomicsConsole refresh sets data only after a successful read; run stores the error while old data stays rendered. Empty/result sections render unconditionally from the retained data."
+    },
+    {
+      "id": "AE-PX-004",
+      "priority": "P2",
+      "blocking": true,
+      "kind": "PRODUCT_PERIOD_SEMANTICS",
+      "title": "The initial Through date includes a day that the initial dataset excludes",
+      "artifacts": ["overview-desktop.png", "overview-mobile.png"],
+      "observation": "The initial filter reads Through date 10/15/2026, but the visible period summary ends at 2026-10-15 exclusive. In empty-mobile.png, Through date 01/02/2030 instead corresponds to 01/03 exclusive. The same label therefore has different effective semantics before and after apply.",
+      "impact": "Applying unchanged initial filters changes the time cohort and potentially totals, comparison and forecast without an apparent filter change.",
+      "recommendation": "Convert the exclusive initial upper boundary to the corresponding inclusive Through date, or consistently label and use an exclusive End date. Keep the visible summary and request construction aligned and verify an unchanged initial submission preserves the dataset boundary.",
+      "sourceResolution": "AIEconomicsConsole initializes to from initial.to.slice(0,10), then parameters adds one UTC day to to for submitted requests."
+    },
+    {
+      "id": "AE-PX-005",
+      "priority": "P2",
+      "blocking": true,
+      "kind": "PRODUCT_DATA_VISUALIZATION",
+      "title": "A populated one-day cost chart looks empty",
+      "artifacts": ["overview-desktop.png", "overview-mobile.png"],
+      "observation": "Observed cost over time shows only a baseline even though its caption states one recorded UTC day and a nonzero run rate. No plotted date, value or datum is visible.",
+      "impact": "The graph's visual empty state contradicts the populated accounting state and does not let the administrator see the one-day observation.",
+      "recommendation": "Render a visible marker with a date/value for a single observation, and date/value labels or an explicit one-day summary. Keep the exact daily table accessible and recapture both single-day and multi-day states.",
+      "sourceResolution": "The chart renders a polyline with one coordinate for one recorded day; a one-point polyline has no visible segment."
+    }
+  ],
+  "nonblockingObservations": [
+    {
+      "id": "AE-PX-O01",
+      "priority": "P3",
+      "artifacts": ["overview-mobile.png", "quality-mobile.png"],
+      "observation": "Expanded station navigation takes approximately the first viewport before the task title, and the page-level introduction is repeated by a second large introductory heading.",
+      "recommendation": "Consider starting the mobile station disclosure collapsed when a destination is already selected, and reduce repeated introductory height while preserving the accepted navigation contract."
+    },
+    {
+      "id": "AE-PX-O02",
+      "priority": "P3",
+      "artifacts": ["overview-desktop.png", "quality-mobile.png"],
+      "observation": "Default mean and per-useful-result amounts expose up to nine decimal places. Exact fractions are valuable for this domain but make quick comparison harder and imply more certainty than the calculated/estimated basis suggests.",
+      "recommendation": "Consider a concise approximate default amount with exact nanodollar-derived values available in a disclosure; retain the existing explicit cost-basis wording."
+    },
+    {
+      "id": "AE-PX-O03",
+      "priority": "P3",
+      "artifacts": ["overview-mobile.png"],
+      "observation": "The provider comparison visibly clips the observed-cost column and hides accounted exposure inside a horizontal scroll region without an on-screen scroll hint.",
+      "recommendation": "Add a visible horizontal-scroll cue or a compact stacked comparison on narrow screens. Preserve the named focusable region and keyboard access."
+    }
+  ],
+  "sourceInspectedAfterExperience": [
+    {
+      "path": "src/components/admiralty/AIEconomicsConsole.tsx",
+      "purpose": "Resolve observed period mismatch, stale error results, single-day chart and fallback affordances."
+    },
+    {
+      "path": "src/components/admiralty/AIEconomicsConsole.module.css",
+      "purpose": "Resolve visible mobile table overflow and responsive composition."
+    },
+    {
+      "path": "tests/e2e/admiralty-ai-economics.spec.ts",
+      "purpose": "Identify capture sequence and distinguish allowance/recovery assertions from visual evidence."
+    },
+    {
+      "path": "src/components/shell/ProductShell.tsx",
+      "purpose": "Identify the global masthead and first skip link visible over content."
+    },
+    {
+      "path": "src/components/admiralty/AdmiraltyShell.tsx",
+      "purpose": "Identify the second skip link and native Admiralty shell."
+    },
+    {
+      "path": "src/styles/shell.css",
+      "purpose": "Resolve sticky/fixed behavior behind the observed chrome intrusion."
+    },
+    {
+      "path": "src/styles/admiralty.css",
+      "purpose": "Resolve second fixed skip-link behavior."
+    },
+    {
+      "path": "testing/contracts.json",
+      "purpose": "Identify existing Admiralty registry experience obligations for daily metrics, exact-table fallback and canonical People allowance continuity."
+    }
+  ],
+  "contractBinding": {
+    "existingContractId": "admiralty.phase1.registry",
+    "note": "The existing experience contract specifies selectable daily metrics, exact-table fallback, contained mobile overflow and canonical People continuity. This packet has no explicit revised economics contract identity or digest; the final source-bound packet must include its applicable final contract and preserve protected-base obligations."
+  },
+  "evidenceLimits": [
+    "No independent live-browser interaction or video inspection was performed; only the artifacts named in the packet were visually inspected.",
+    "The packet's browserProof is a supplied claim. Test source and the attempt2 runtime receipt support its scope but do not constitute a fresh reviewer rerun.",
+    "No loading, recovered, allowance, capability, opened fallback, reduced-motion, keyboard or screen-reader sequence is visually present.",
+    "Physical mobile behavior, assistive-technology experience, real provider invoices, private-data server authorization and owner acceptance are unproved.",
+    "This is a preparatory worktree snapshot. The verdict does not qualify a frozen candidate or authorize integration, and must not be relabeled as final exact-source acceptance."
+  ],
+  "repairRecommendation": "Repair AE-PX-003 through AE-PX-005 in the smallest supported product scope. Resolve AE-PX-001 as capture versus actual viewport behavior. Supply AE-PX-002 evidence, recapture affected states, and obtain independent re-review before claiming visual completion."
+}

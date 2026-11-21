@@ -1,0 +1,917 @@
+{
+  "schemaVersion": 1,
+  "objective": "An Administrator understands AI capabilities, cost and uncertainty, per-person allowances, and useful outcomes through the actual Admiralty interface.",
+  "source": {
+    "base": "a5eeb5b42561042cea7e799a3b0d54c1b03c1006",
+    "protectedBase": "602f83efdb16b7ea75980f07fa3a3d976c496860",
+    "candidate": "cfd78948301e86531d45a12f79b0f3f2f37e192d",
+    "state": "COMMITTED_DEPENDENT_CANDIDATE",
+    "bindings": [
+      {
+        "path": "prisma/migrations/20261015010000_admiralty_ai_economics/migration.sql",
+        "sha256": "22416a117389e6c546add2a9d569772f6f962f0753b8ab3b25a8061b3857f96d"
+      },
+      {
+        "path": "prisma/mysql-migrations/20261015010000_admiralty_ai_economics/migration.sql",
+        "sha256": "9419180afc36b929652392f930059dcff25b1c020409c2286792c90cb9f8e160"
+      },
+      {
+        "path": "prisma/schema.prisma",
+        "sha256": "83fbab8154a44e056cc7a9e3f1aa333e50d04a2b44e73084c24af1a5ab96ba22"
+      },
+      {
+        "path": "prisma/schema.sqlite.prisma",
+        "sha256": "1d0d80a47408d62238328f2867ea2e2c0350eaf07f6ac07162a31ad6e3393fd5"
+      },
+      {
+        "path": "scripts/admiralty/ai-economics-fixture.ts",
+        "sha256": "2194b12a0f4f49be58d52c913926ca02ef78dd6386c4a2f0e68442ff1d15abda"
+      },
+      {
+        "path": "src/app/admin/ai-usage/page.tsx",
+        "sha256": "12e6af21dad14468638245f9e0841fd38cc79cc64f3953ed69551440e9da02fa"
+      },
+      {
+        "path": "src/app/admin/people/[accountId]/page.tsx",
+        "sha256": "aea2e37e3464ee7a2318506400114f53e755231984913f86ee27003c472da746"
+      },
+      {
+        "path": "src/app/api/admin/ai-economics/route.test.ts",
+        "sha256": "c9742d8b927d3c6e7283c72f4ace0bc066f47431cc56395275a5e38bd1de712b"
+      },
+      {
+        "path": "src/app/api/admin/ai-economics/route.ts",
+        "sha256": "367d5a63965ae1daddae99d4647cd323cb089b8b6e69eca1750058208572def9"
+      },
+      {
+        "path": "src/app/api/studio/parallax/route.ts",
+        "sha256": "616a52f7a2d3cf65c5e2e92167a36cbcb0bc18b9a70a8e9ebda78a8566713268"
+      },
+      {
+        "path": "src/components/admiralty/AICapabilityPolicyFields.tsx",
+        "sha256": "6ce8a2990f45001897d8dd1416e9bdbf70ea66f592d942f924d4379e91d76a18"
+      },
+      {
+        "path": "src/components/admiralty/AIEconomicsConsole.module.css",
+        "sha256": "5f3a95cfef3627ce1a45f8d6efb8b86fa2cee1b821148630b6c8e8989bd3a239"
+      },
+      {
+        "path": "src/components/admiralty/AIEconomicsConsole.tsx",
+        "sha256": "57eed09376512a7e88fae2801097c8281b7835c8b82e7f64414d5b8b2f1b497f"
+      },
+      {
+        "path": "src/components/admiralty/AIPolicyChangeSummary.tsx",
+        "sha256": "34c001d3a8ae9aad1febaf328c40d8643058412bda0097aa06b0bf6e41388b27"
+      },
+      {
+        "path": "src/components/admiralty/AIQuotaConsole.tsx",
+        "sha256": "780b2fc13ff149aedb9c2d7df3a823ed678451d476e9e9ac4568ea0da45bcd7d"
+      },
+      {
+        "path": "src/components/admiralty/AIQuotaUserPanel.test.tsx",
+        "sha256": "7ff97be6bf625c52f130af4738ba3612ff4c343d38d506029f77ddc66bbcb9e4"
+      },
+      {
+        "path": "src/components/admiralty/AIQuotaUserPanel.tsx",
+        "sha256": "ee8f0710d9c7951ee00fc417c7c3e72dae88bb4f3f8b2734555118dc834eac57"
+      },
+      {
+        "path": "src/components/studio/parallax/RoomPhotoPanel.tsx",
+        "sha256": "f9dcf5aee34c201b2c3e58988165e59cf0500678ff18a5a694751e28d472d3fb"
+      },
+      {
+        "path": "src/components/studio/parallax/SpatialAssistant.tsx",
+        "sha256": "4d3a0d8dc07da89199a69ba5b10e4325dcf13e6dfea797a5695a431af31f386d"
+      },
+      {
+        "path": "src/components/studio/parallax/spatial-assistant-port.ts",
+        "sha256": "52da354aa88a5592df348a34bb3a2b7e2d4a17821dbff00a5db492072f1bd32b"
+      },
+      {
+        "path": "src/parallax/ai-attempts.ts",
+        "sha256": "c181fde340d631b029b4cb971151c405ba7f179660aefa976b657ec177bc481b"
+      },
+      {
+        "path": "src/parallax/ai-capabilities.ts",
+        "sha256": "6493c41b152abe9ffc078e6d5497134d9c344873a21682dfd1bd103f1890f033"
+      },
+      {
+        "path": "src/parallax/ai-economics.test.ts",
+        "sha256": "428f38d626eff6274502c539ff3d9cb0a95b3af1c43ec15fb5567c111215373c"
+      },
+      {
+        "path": "src/parallax/ai-economics.ts",
+        "sha256": "d97d4cdb303741c94db50ba815fc39487fd1615057a08fb705a8aa46d24524b8"
+      },
+      {
+        "path": "src/parallax/ai-ledger.test.ts",
+        "sha256": "be775a6dd1b774d1c0b132b59d9f72eb891966ef28d04987ac2a84d801c3b09d"
+      },
+      {
+        "path": "src/parallax/ai-ledger.ts",
+        "sha256": "7cf1c801904711655aa72a2608eeb2be98c2e2149165f62a1efb67fa8d0bffe5"
+      },
+      {
+        "path": "src/parallax/ai-outcomes.ts",
+        "sha256": "50ed2ef943b33f0505da6fb1228e883d2d03bc564434f3c79a179a1a6009bfbd"
+      },
+      {
+        "path": "src/parallax/ai-policy.test.ts",
+        "sha256": "acf4b14c74d26f93a2a878c1cc30f6c03c53d861a8333e356259d92f82bbc2f8"
+      },
+      {
+        "path": "src/parallax/ai-policy.ts",
+        "sha256": "9a1314472d12a4c4e3d126b197e7a86f25071436a2558b78bea5e1da5d661968"
+      },
+      {
+        "path": "src/parallax/ai-quota-commands.test.ts",
+        "sha256": "eadc838b1209d418e0c9b966c92374021a29aa385718ae30632ed061466adbe8"
+      },
+      {
+        "path": "src/parallax/ai-quota-commands.ts",
+        "sha256": "c42d7b97ff0af461d5c1986edac3461770fa30e39afbf0fe87896b56eaf5b6a9"
+      },
+      {
+        "path": "src/parallax/ai-quota-projections.ts",
+        "sha256": "f5dff634adeafa37011f6d42229d923320a8686299f80ea177c20469a294b646"
+      },
+      {
+        "path": "src/parallax/library-lifecycle-service.test.ts",
+        "sha256": "e95ccdfe29c884665774fd2d3cee86e6873bd90f01621e55aa5ce5bb8fd1961f"
+      },
+      {
+        "path": "src/parallax/library-lifecycle-service.ts",
+        "sha256": "ee7baec757fb53ab14a3dbae4ecf175a21493d6b8491be448de112b1db545056"
+      },
+      {
+        "path": "src/parallax/library-service.test.ts",
+        "sha256": "2c102076fbbf4a53808c1925499fdd4e9ffaff49ed9ad116edeab2c86d512820"
+      },
+      {
+        "path": "src/parallax/library-service.ts",
+        "sha256": "1bfe8d59eb6cac841026cb34c496b89db71c6e9a2ff378970479574920d52b39"
+      },
+      {
+        "path": "src/parallax/openai-provider.ts",
+        "sha256": "0e9dc14949916be2e8c0f3ce55cf4639196f15b1fe60952caeb32d52c994d20a"
+      },
+      {
+        "path": "src/parallax/room-perception-service.ts",
+        "sha256": "22a7893226a33d8aa1de401b74e12f898a3135112107acf8b6ea978be54e7a2f"
+      },
+      {
+        "path": "src/parallax/spatial-assistant-application.ts",
+        "sha256": "86819c4f96212128fe580b2bd74ea006e91f485b90b28a4724c44d9f8b144b67"
+      },
+      {
+        "path": "src/parallax/spatial-assistant-service.test.ts",
+        "sha256": "cfae6b02aa590cd97c1f38ede95d52a558556282c0abf2eae3ac3d8ed4f14641"
+      },
+      {
+        "path": "src/parallax/spatial-assistant-service.ts",
+        "sha256": "2b89c0f35ddd17ee16d6fc29ff491d281596dc2ae827c96c62ca863f6453e522"
+      },
+      {
+        "path": "testing/contracts.json",
+        "sha256": "dc9e584f0ab1011c2cfc622ff427cc0fb7e0e4475b98dbce4b2100768b2f5971"
+      },
+      {
+        "path": "testing/impact-map.json",
+        "sha256": "301d7a9949786ef62bd351fa1bd4a48572221d97d3cbfdc2e765fed3a14c0424"
+      },
+      {
+        "path": "testing/ownership.json",
+        "sha256": "96ee0a2f0a387b9c8b733764e48b04a037fedc91a84d9ef1016ecac2e50481ca"
+      },
+      {
+        "path": "testing/suites.json",
+        "sha256": "02c366eea6d27f888b104eb22fc945083dd56f7def2a52480a8de7bac5954073"
+      },
+      {
+        "path": "tests/e2e/admiralty-ai-economics.spec.ts",
+        "sha256": "5690672c191dcaad6dd90e818c2a475db9e20186867b3537ad9399ed0b231b38"
+      },
+      {
+        "path": "tests/e2e/parallax-ai-quotas.spec.ts",
+        "sha256": "85d58c0fbffd5453f9e5361c73726ab7c766d6eb80eb049a90d9e58e850e115f"
+      }
+    ]
+  },
+  "contractRegistry": {
+    "path": "testing/contracts.json",
+    "sha256": "dc9e584f0ab1011c2cfc622ff427cc0fb7e0e4475b98dbce4b2100768b2f5971",
+    "contracts": [
+      {
+        "id": "admiralty.phase1.registry",
+        "name": "Living capability-floor registry",
+        "authority": "project-admiralty",
+        "owners": ["project-admiralty"],
+        "critical": true,
+        "experience": {
+          "persona": "An authorized Admiralty operator observing daily AI spending and existing account allowances",
+          "objective": "Compare daily requests and costs, then inspect a user allowance through the normal People search",
+          "visibleOutcome": "A selectable daily chart distinguishes requests, settled cost and accounted exposure; per-user controls remain in the existing People dossier",
+          "integrationOwner": "Admiralty AI usage experience integration",
+          "systems": ["project-admiralty"],
+          "sourcePaths": [
+            "src/components/admiralty/AIQuotaConsole.tsx",
+            "src/components/admiralty/AIQuotaConsole.module.css",
+            "src/components/admiralty/AIQuotaUserPanel.tsx",
+            "src/app/admin/ai-usage",
+            "src/app/admin/people"
+          ],
+          "projectionPaths": ["src/parallax/ai-quota-projections.ts"],
+          "entryPoint": "/admin/ai-usage",
+          "states": ["SETTLED_CHART", "ACCOUNTED_CHART", "RETURNED", "DOSSIER_READY", "PEOPLE_RETURNED"],
+          "devices": ["DESKTOP", "MOBILE"],
+          "roles": ["ADMINISTRATOR"],
+          "accessibility": "A labeled keyboard-operable metric selector and exact daily table preserve access beyond visual bars, with visible focus and narrow-screen overflow contained.",
+          "fallback": "An empty month reports honest zero activity, missing provider credentials remain safely diagnosed, and read-only observation never changes quota policy.",
+          "navigation": "AI Usage & Quotas opens its existing chart; the canonical People navigation searches one account and returns through existing navigation.",
+          "designTarget": "Keep the accepted Admiralty card hierarchy and visual family, adding compact daily metrics, a clearly labeled chart selector, truthful zero bars, UTC labels and distinct settled versus reserved amounts.",
+          "references": [
+            {
+              "family": "Gateway / public entry",
+              "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+              "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+              "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+              "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+              "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+            },
+            {
+              "family": "Gateway / public entry",
+              "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+              "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+              "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+              "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+              "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+            }
+          ],
+          "homeportScreenIds": ["screen-page-admin", "screen-page-admin-people"],
+          "homeportJourneyIds": ["B"],
+          "browserTests": ["tests/e2e/parallax-owner-refinements.spec.ts", "tests/e2e/parallax-ai-quotas.spec.ts"],
+          "fixtureProfile": "generic",
+          "recordingRequired": true,
+          "limitations": [
+            "Isolated synthetic ledger figures exercise the actual projection and controls; they do not audit a real provider invoice or claim owner product acceptance."
+          ],
+          "roleSetup": {
+            "ADMINISTRATOR": {
+              "entryPoint": "/sign-in?returnTo=%2Fadmin%2Fai-usage",
+              "steps": [
+                {
+                  "action": "fill",
+                  "role": "textbox",
+                  "name": "Email or Player name",
+                  "value": "parallax-review-operator@example.test"
+                },
+                {
+                  "action": "fill",
+                  "role": "textbox",
+                  "name": "Password",
+                  "value": "Synthetic-Parallax-Review-2026!"
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Sign in"
+                }
+              ],
+              "witness": {
+                "role": "heading",
+                "name": "AI Usage & Quotas",
+                "text": "AI Usage & Quotas"
+              }
+            }
+          },
+          "journeys": [
+            {
+              "id": "daily-chart-metrics",
+              "roles": ["ADMINISTRATOR"],
+              "outcome": "An operator compares daily requests with settled and accounted costs, then restores the request chart without policy mutation",
+              "steps": [
+                {
+                  "action": "click",
+                  "role": "combobox",
+                  "name": "Chart shows"
+                },
+                {
+                  "action": "keyboard",
+                  "key": "Home"
+                },
+                {
+                  "action": "keyboard",
+                  "key": "ArrowDown"
+                },
+                {
+                  "action": "keyboard",
+                  "key": "Enter"
+                },
+                {
+                  "action": "assert",
+                  "role": "figure",
+                  "name": "Settled cost per day by UTC day",
+                  "text": "Settled cost per day",
+                  "path": "/admin/ai-usage",
+                  "state": "SETTLED_CHART",
+                  "kind": "outcome",
+                  "meaning": "Choosing settled cost changes the displayed daily monetary metric while keeping exact canonical request-day accounting available."
+                },
+                {
+                  "action": "click",
+                  "role": "combobox",
+                  "name": "Chart shows"
+                },
+                {
+                  "action": "keyboard",
+                  "key": "End"
+                },
+                {
+                  "action": "keyboard",
+                  "key": "Enter"
+                },
+                {
+                  "action": "assert",
+                  "role": "figure",
+                  "name": "Accounted spending per day by UTC day",
+                  "text": "Accounted spending per day",
+                  "path": "/admin/ai-usage",
+                  "state": "ACCOUNTED_CHART",
+                  "kind": "outcome",
+                  "meaning": "Choosing accounted spending distinguishes pending reservations and unresolved usage from settled costs."
+                },
+                {
+                  "action": "click",
+                  "role": "combobox",
+                  "name": "Chart shows"
+                },
+                {
+                  "action": "keyboard",
+                  "key": "Home"
+                },
+                {
+                  "action": "keyboard",
+                  "key": "Enter"
+                },
+                {
+                  "action": "assert",
+                  "role": "figure",
+                  "name": "Requests per day by UTC day",
+                  "text": "Requests per day",
+                  "path": "/admin/ai-usage",
+                  "state": "RETURNED",
+                  "returnPath": true
+                }
+              ]
+            },
+            {
+              "id": "canonical-people-allowance",
+              "roles": ["ADMINISTRATOR"],
+              "outcome": "The ordinary People search opens the existing account allowance controls and returns without adding a separate AI user search",
+              "steps": [
+                {
+                  "action": "click",
+                  "role": "link",
+                  "name": "People"
+                },
+                {
+                  "action": "fill",
+                  "role": "textbox",
+                  "name": "Search",
+                  "value": "parallax-review-creator@example.test"
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Search"
+                },
+                {
+                  "action": "click",
+                  "role": "link",
+                  "name": "Synthetic Parallax Creator"
+                },
+                {
+                  "action": "assert",
+                  "role": "main",
+                  "name": "",
+                  "text": "AI usage & quotas",
+                  "path": "/admin/people/00000000-0000-4000-8000-00000000a101",
+                  "state": "DOSSIER_READY",
+                  "kind": "outcome",
+                  "meaning": "The selected canonical account dossier contains its real inherited AI allowance and governed per-user override controls."
+                },
+                {
+                  "action": "click",
+                  "role": "link",
+                  "name": "People"
+                },
+                {
+                  "action": "assert",
+                  "role": "main",
+                  "name": "",
+                  "text": "Start with a known clue",
+                  "path": "/admin/people",
+                  "state": "PEOPLE_RETURNED",
+                  "returnPath": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "admiralty.ai-economics",
+        "name": "Capability-aware AI economics and canonical useful outcomes",
+        "authority": "project-admiralty",
+        "owners": ["project-admiralty"],
+        "critical": true,
+        "experience": {
+          "persona": "An authenticated Administrator managing AI quality, spending and individual capability rights",
+          "objective": "Understand resource consumption and genuinely useful AI outcomes, investigate poor experience, and configure governed allowances",
+          "visibleOutcome": "Capability-aware economics distinguish provider attempts, logical operations, applied edits, accepted rooms, and uncertain cost; person controls use the canonical dossier and audited policy service",
+          "integrationOwner": "Admiralty AI economics experience integration",
+          "systems": ["project-admiralty"],
+          "sourcePaths": [
+            "src/components/admiralty/AIEconomicsConsole.tsx",
+            "src/components/admiralty/AIEconomicsConsole.module.css",
+            "src/components/admiralty/AIPolicyChangeSummary.tsx",
+            "src/components/admiralty/AICapabilityPolicyFields.tsx",
+            "src/components/admiralty/AIQuotaUserPanel.tsx",
+            "src/app/admin/ai-usage"
+          ],
+          "projectionPaths": [
+            "src/parallax/ai-economics.ts",
+            "src/parallax/ai-quota-projections.ts",
+            "src/app/api/admin/ai-economics"
+          ],
+          "entryPoint": "/admin",
+          "states": [
+            "ADMIN_ENTRY",
+            "ECONOMICS_READY",
+            "QUALITY_READY",
+            "CAPABILITIES_READY",
+            "HISTORY_READY",
+            "ECONOMICS_RETURNED"
+          ],
+          "devices": ["DESKTOP", "MOBILE"],
+          "roles": ["ADMINISTRATOR"],
+          "accessibility": "Semantic figures and exact daily data, labeled filters, visible focus, keyboard-reachable contained tables, responsive cards and explicit loading/error/recovery feedback.",
+          "fallback": "No operations reports an honest empty period. Missing usage retains unknown dimensions and unresolved exposure. A failed refresh identifies the last loaded period and provides Retry.",
+          "navigation": "Enter through existing Admiralty navigation; move among economics views and the canonical People dossier; reveal existing governed configuration through its visible disclosure.",
+          "designTarget": "Preserve the Admiralty Chartroom visual family with a compact hierarchy, readable monetary precision, explicit evidence coverage, progressive operation inspection and per-capability outcome semantics.",
+          "references": [
+            {
+              "family": "Gateway / public entry",
+              "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+              "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+              "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+              "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+              "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+            },
+            {
+              "family": "Gateway / public entry",
+              "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+              "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+              "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+              "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+              "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+            }
+          ],
+          "homeportScreenIds": ["screen-page-admin", "screen-page-admin-people"],
+          "homeportJourneyIds": ["B"],
+          "browserTests": ["tests/e2e/admiralty-ai-economics.spec.ts"],
+          "fixtureProfile": "generic",
+          "recordingRequired": true,
+          "limitations": [
+            "Synthetic isolated fixtures do not verify provider invoices, real private media, production deployment, prerequisite acceptance, or owner product acceptance."
+          ],
+          "roleSetup": {
+            "ADMINISTRATOR": {
+              "entryPoint": "/sign-in?returnTo=%2Fadmin%2Fai-usage",
+              "steps": [
+                {
+                  "action": "fill",
+                  "role": "textbox",
+                  "name": "Email or Player name",
+                  "value": "parallax-review-operator@example.test"
+                },
+                {
+                  "action": "fill",
+                  "role": "textbox",
+                  "name": "Password",
+                  "value": "Synthetic-Parallax-Review-2026!"
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Sign in"
+                }
+              ],
+              "witness": {
+                "role": "heading",
+                "name": "AI Usage & Quotas",
+                "text": "AI Usage & Quotas"
+              }
+            }
+          },
+          "journeys": [
+            {
+              "id": "economics-capability-quality-and-return",
+              "roles": ["ADMINISTRATOR"],
+              "outcome": "An Administrator naturally opens economics, distinguishes outcomes, inspects capability semantics and operation history, and returns to the overview.",
+              "steps": [
+                {
+                  "action": "click",
+                  "role": "link",
+                  "name": "Overview"
+                },
+                {
+                  "action": "assert",
+                  "role": "heading",
+                  "name": "Platform Overview",
+                  "text": "Platform Overview",
+                  "path": "/admin",
+                  "state": "ADMIN_ENTRY",
+                  "kind": "outcome",
+                  "meaning": "The ordinary Admiralty entry remains available."
+                },
+                {
+                  "action": "click",
+                  "role": "link",
+                  "name": "AI Usage & Quotas"
+                },
+                {
+                  "action": "assert",
+                  "role": "region",
+                  "name": "AI economics workspace",
+                  "text": "Observed AI cost",
+                  "path": "/admin/ai-usage",
+                  "state": "ECONOMICS_READY",
+                  "kind": "outcome",
+                  "meaning": "Observed cost and unresolved exposure are distinct in the actual administrative workspace."
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Quality & Outcomes"
+                },
+                {
+                  "action": "assert",
+                  "role": "region",
+                  "name": "AI economics workspace",
+                  "text": "Does the spending produce useful results?",
+                  "path": "/admin/ai-usage",
+                  "state": "QUALITY_READY",
+                  "kind": "outcome",
+                  "meaning": "The operator sees capability-specific acceptance and Apply denominators and sample limitations."
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Capabilities"
+                },
+                {
+                  "action": "assert",
+                  "role": "region",
+                  "name": "AI economics workspace",
+                  "text": "Capability registry",
+                  "path": "/admin/ai-usage",
+                  "state": "CAPABILITIES_READY",
+                  "kind": "outcome",
+                  "meaning": "Capability ownership and useful-outcome semantics are inspectable without exposing private scene content."
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Operation History"
+                },
+                {
+                  "action": "assert",
+                  "role": "region",
+                  "name": "AI economics workspace",
+                  "text": "Trace an operation",
+                  "path": "/admin/ai-usage",
+                  "state": "HISTORY_READY",
+                  "kind": "outcome",
+                  "meaning": "Bounded operation records and filters are available for investigation."
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Overview"
+                },
+                {
+                  "action": "assert",
+                  "role": "region",
+                  "name": "AI economics workspace",
+                  "text": "Cost and evidence coverage",
+                  "path": "/admin/ai-usage",
+                  "state": "ECONOMICS_RETURNED",
+                  "kind": "outcome",
+                  "meaning": "The operator returns to the cost overview without mutating policies.",
+                  "returnPath": true
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "references": [
+    "Experience_Images/Contact_Sheets/Area_Admiralty_Desktop_01.png",
+    "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+    "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png"
+  ],
+  "artifacts": [
+    {
+      "id": "AE-EV-overview-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/overview-desktop.png",
+      "sha256": "7a55211f815d9ed40085323d70c1dc4baf2d85c3a246b765e2118daec17a6e07",
+      "bytes": 718368,
+      "capturedAt": "2026-10-15T04:03:19.446Z",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-daily-fallback-keyboard-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/daily-fallback-keyboard-desktop.png",
+      "sha256": "49d626d5b9777dd3fa6681c98598d6f196574a94eea881ca58da2895ab854f1b",
+      "bytes": 80779,
+      "capturedAt": "2026-10-15T04:03:20.606Z",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-quality-keyboard-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/quality-keyboard-desktop.png",
+      "sha256": "71b4917f1e98d214e0604aa27ba83becaa288702fe7ff7e18284c2287729a49d",
+      "bytes": 242053,
+      "capturedAt": "2026-10-15T04:03:21.757Z",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-quality-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/quality-desktop.png",
+      "sha256": "44f31dcc17e929fc33174aff7f0af1f7a6a2ca2e9e98b089b40a1444391a041b",
+      "bytes": 690825,
+      "capturedAt": "2026-10-15T04:03:22.095Z",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-investigation-history-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/investigation-history-desktop.png",
+      "sha256": "07c0022ace801c0331c98bbebf7feaffda545cd99742a5cc24add47a61315638",
+      "bytes": 925425,
+      "capturedAt": "2026-10-15T04:03:22.775Z",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-operation-inspector",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/operation-inspector.png",
+      "sha256": "732893a08268e2262a9698cbb6ab6fa67c1ffe0af1a41434067817aad909066d",
+      "bytes": 729769,
+      "capturedAt": "2026-10-15T04:03:23.882Z",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-people-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/people-desktop.png",
+      "sha256": "209de3229fd086e061b9825af6de02ee98f0dfa8a96ac2474da11683ebd43ece",
+      "bytes": 704168,
+      "capturedAt": "2026-10-15T04:03:25.505Z",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-allowance-effective-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/allowance-effective-desktop.png",
+      "sha256": "ed2c56e2aafec960b6bfb83818e5d7fdac2c858e90dbc20e6b5542de1900c324",
+      "bytes": 1957876,
+      "capturedAt": "2026-10-15T04:03:26.789Z",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-allowance-effective-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/allowance-effective-mobile.png",
+      "sha256": "72e7e89bef514885d80b5d04db83481cb8db7383651f37edba256b762dc9ad50",
+      "bytes": 1327161,
+      "capturedAt": "2026-10-15T04:03:27.488Z",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-allowance-preview-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/allowance-preview-mobile.png",
+      "sha256": "3ebb27a5ba5286ee585631edaf456d363afa54945bfc41a6fc648b9cbe961530",
+      "bytes": 1412471,
+      "capturedAt": "2026-10-15T04:03:29.723Z",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-allowance-preview-detail-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/allowance-preview-detail-mobile.png",
+      "sha256": "4bcd709337c89cec1b7c890f749e53a71109e5384f8370c7bb3ccd6098aebf48",
+      "bytes": 71568,
+      "capturedAt": "2026-10-15T04:03:29.861Z",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-allowance-preview-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/allowance-preview-desktop.png",
+      "sha256": "4eaa1cd29ad4964032a1fe498869b2e6e173838db4e2612e24e47f9cb843a0d3",
+      "bytes": 2344551,
+      "capturedAt": "2026-10-15T04:03:30.961Z",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-allowance-applied-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/allowance-applied-mobile.png",
+      "sha256": "daf76ec3e451e1ff9b1e4eb0b3d2621c8b0bb90159a90289daf96b7737b58cda",
+      "bytes": 1335920,
+      "capturedAt": "2026-10-15T04:03:34.045Z",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-allowance-applied-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/allowance-applied-desktop.png",
+      "sha256": "7778400d1651f6c834c909d4676ea868decb37806db4390f68430d7318f6ca44",
+      "bytes": 2126149,
+      "capturedAt": "2026-10-15T04:03:34.946Z",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-configuration-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/configuration-desktop.png",
+      "sha256": "55c3237de28667e04a1290fab3b6c359091298cc6f135355a6d6fc90eef9fb94",
+      "bytes": 959037,
+      "capturedAt": "2026-10-15T04:03:36.070Z",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-capabilities-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/capabilities-desktop.png",
+      "sha256": "520ca61735f2a872f3c4351b9b5d566893c35d9afc25b00ed49e00fd5fba3abf",
+      "bytes": 759324,
+      "capturedAt": "2026-10-15T04:03:36.686Z",
+      "device": "DESKTOP"
+    },
+    {
+      "id": "AE-EV-capabilities-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/capabilities-mobile.png",
+      "sha256": "528542a78a20a6db587b61e2a6e1c793f9ca9a75ff5b27b0ba71e156aed58628",
+      "bytes": 451491,
+      "capturedAt": "2026-10-15T04:03:37.418Z",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-history-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/history-mobile.png",
+      "sha256": "06f2cab17087f23ff517a53ff19b20d4ee3f5fd16ceaddedde79b3d1d830f2a4",
+      "bytes": 525630,
+      "capturedAt": "2026-10-15T04:03:38.456Z",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-overview-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/overview-mobile.png",
+      "sha256": "7d2b9020983ba5fd648c66ff85d6d71ed563f5f31c9be7b0f19af7e2aa6d272b",
+      "bytes": 428758,
+      "capturedAt": "2026-10-15T04:03:39.068Z",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-comparison-scroll-keyboard-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/comparison-scroll-keyboard-mobile.png",
+      "sha256": "93def991f20bb5c27ae56d378b809ec12810bb60133f95fa8200650c72f6f9bd",
+      "bytes": 57859,
+      "capturedAt": "2026-10-15T04:03:39.424Z",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-quality-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/quality-mobile.png",
+      "sha256": "657062aa4aaf74111010eec88bc784bb11eb0b561e3ed596de3e859d994ad80d",
+      "bytes": 459345,
+      "capturedAt": "2026-10-15T04:03:40.460Z",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-empty-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/empty-mobile.png",
+      "sha256": "2799fe79670bd2e035dd23ba9282180cc8f7831b15d3ed209e91191acb19ad25",
+      "bytes": 464462,
+      "capturedAt": "2026-10-15T04:03:41.204Z",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-loading-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/loading-mobile.png",
+      "sha256": "1c7f386544e550c19e56e2cce75ab2db4006c639cc2683f09842ec1d53b8619e",
+      "bytes": 468199,
+      "capturedAt": "2026-10-15T04:03:41.713Z",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-error-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/error-mobile.png",
+      "sha256": "f11d6a1658a2041f747758f61e6bd89004b9fd5b8b5d91da3f58f7b7b53c4229",
+      "bytes": 501108,
+      "capturedAt": "2026-10-15T04:03:42.902Z",
+      "device": "MOBILE"
+    },
+    {
+      "id": "AE-EV-recovered-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser/recovered-mobile.png",
+      "sha256": "657062aa4aaf74111010eec88bc784bb11eb0b561e3ed596de3e859d994ad80d",
+      "bytes": 459345,
+      "capturedAt": "2026-10-15T04:03:46.413Z",
+      "device": "MOBILE"
+    }
+  ],
+  "recordings": [
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/journey.webm",
+      "sha256": "146e1f8590efc22fce962d276b04609ba9cc1fcc5d1374e14d563ff63ef85ce0"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/capture-journey.webm",
+      "sha256": "2e265883ad1fcc94f2e536ffbc597ae4c36baec0a35e18e26eac2df354a0bb02",
+      "purpose": "First journey containing screenshot-capture viewport resize artifacts; retained for provenance."
+    }
+  ],
+  "browserEvidence": {
+    "profileReceipt": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser-suite-profile.json",
+    "runtimeReceipt": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser-runtime.json",
+    "executionLog": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser-execution.log",
+    "syntheticFixture": "scripts/admiralty/ai-economics-fixture.ts",
+    "passedJourneys": 2
+  },
+  "requiredDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "priorReview": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/independent-review-initial.json",
+  "priorArtifactMapping": {
+    "from": "artifacts/admiralty-economics/browser/",
+    "to": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/initial-browser/"
+  },
+  "acceptanceBoundary": "Independent local experience review only. Protected-base planning fails a prerequisite Crossdeck experience-design obligation. Protected capture/review artifact attestation, Mainline Decision, integration, production billing, physical devices and owner acceptance are not claimed.",
+  "recordingModes": {
+    "screenshots": "First complete journey; full-page screenshots may resize its recorded viewport.",
+    "continuity": "Second complete journey repeats every product assertion without invoking screenshot capture. journey.webm is this uninterrupted viewport recording."
+  },
+  "recordingFrames": {
+    "manifest": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames.json",
+    "method": "Unaltered frames decoded from the actual browser recording in Chromium, sampled every two seconds. Frame sequence supplements the complete recording and visible-journey assertions.",
+    "durationSeconds": 13.6,
+    "frames": [
+      {
+        "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-000s.png",
+        "seconds": 0,
+        "sha256": "a319944fee807edf277813730144fed8f9733bfefc1ab64ef81c0a35a463a102"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-002s.png",
+        "seconds": 2,
+        "sha256": "c207440fefb8a7678f4312d5a56a9baa00139bab6825f6e29583967442bde39c"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-004s.png",
+        "seconds": 4,
+        "sha256": "f98e2d223efdd514226cb9fd14dbd7424561917a71d8e006b511d7f8eb86034c"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-006s.png",
+        "seconds": 6,
+        "sha256": "c346e91d7b33d47166736e595fea250291287bc00e11097b7ddfa956d4f9564e"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-008s.png",
+        "seconds": 8,
+        "sha256": "fc09034cacf10d95d8ad7e26184a11f0ee01fb46d78115fbc0c62cc88b680209"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-010s.png",
+        "seconds": 10,
+        "sha256": "2059a5a16cda6a3ec887046ee204670fe13b406bcb39ec9e48944f4dd9831d17"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-012s.png",
+        "seconds": 12,
+        "sha256": "ab971a7f3c16a578accd04c1d1ee810e4df47d25905b9f5022ae6d6555f7b847"
+      }
+    ]
+  }
+}

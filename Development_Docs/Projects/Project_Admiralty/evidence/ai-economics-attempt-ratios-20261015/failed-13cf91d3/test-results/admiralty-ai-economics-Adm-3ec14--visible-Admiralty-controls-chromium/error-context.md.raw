@@ -1,0 +1,372 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#main-content"
+    - banner [ref=e4]:
+      - link "Voyagewright home" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: ✦
+        - generic [ref=e7]:
+          - strong [ref=e8]: Voyagewright
+          - generic [ref=e9]: Stories made to be played
+      - generic [ref=e10]:
+        - generic [ref=e11]: Voyagewright
+        - link "Safe return" [ref=e12] [cursor=pointer]:
+          - /url: /account
+    - generic [ref=e17]:
+      - link "Skip to command center content" [ref=e18] [cursor=pointer]:
+        - /url: "#chartroom-main"
+      - banner [ref=e19]:
+        - link "Admiralty Open the Chartroom" [ref=e20] [cursor=pointer]:
+          - /url: /admin
+          - generic [ref=e21]: ✦
+          - generic [ref=e22]:
+            - strong [ref=e23]: Admiralty
+            - generic [ref=e24]: Open the Chartroom
+        - generic [ref=e25]:
+          - generic [ref=e26]: Synthetic economics Administrator
+          - generic [ref=e27]: ADMINISTRATOR
+        - generic [ref=e28]:
+          - link "Return to account" [ref=e29] [cursor=pointer]:
+            - /url: /account
+          - button "Sign out" [ref=e30] [cursor=pointer]
+      - navigation "Admiralty navigation" [ref=e31]:
+        - group [ref=e32]:
+          - generic [ref=e33]:
+            - region "Command" [ref=e34]:
+              - strong [ref=e35]: Command
+              - link "Overview" [ref=e37] [cursor=pointer]:
+                - /url: /admin
+            - region "Accounts & support" [ref=e38]:
+              - strong [ref=e39]: Accounts & support
+              - generic [ref=e40]:
+                - link "People" [ref=e41] [cursor=pointer]:
+                  - /url: /admin/people
+                - link "Support cases" [ref=e42] [cursor=pointer]:
+                  - /url: /admin/support/cases
+            - region "Content" [ref=e43]:
+              - strong [ref=e44]: Content
+              - generic [ref=e45]:
+                - link "Chronicles" [ref=e46] [cursor=pointer]:
+                  - /url: /admin/chronicles
+                - link "Voyages" [ref=e47] [cursor=pointer]:
+                  - /url: /admin/voyages
+                - link "Community" [ref=e48] [cursor=pointer]:
+                  - /url: /admin/community
+            - region "Operations" [ref=e49]:
+              - strong [ref=e50]: Operations
+              - generic [ref=e51]:
+                - link "Operations" [ref=e52] [cursor=pointer]:
+                  - /url: /admin/operations
+                - link "Providers" [ref=e53] [cursor=pointer]:
+                  - /url: /admin/providers
+                - link "Configuration" [ref=e54] [cursor=pointer]:
+                  - /url: /admin/configuration
+                - link "Releases" [ref=e55] [cursor=pointer]:
+                  - /url: /admin/releases
+                - link "AI Usage & Quotas" [ref=e56] [cursor=pointer]:
+                  - /url: /admin/ai-usage
+            - region "Investigation" [ref=e57]:
+              - strong [ref=e58]: Investigation
+              - generic [ref=e59]:
+                - link "Audit" [ref=e60] [cursor=pointer]:
+                  - /url: /admin/audit
+                - link "Investigate" [ref=e61] [cursor=pointer]:
+                  - /url: /admin/investigate
+                - link "Bridgewatch Open read-only station" [ref=e62] [cursor=pointer]:
+                  - /url: /bridgewatch
+      - main [active] [ref=e63]:
+        - generic [ref=e64]:
+          - generic [ref=e66]:
+            - paragraph [ref=e67]: AI Economics & Capability Intelligence
+            - heading "AI Usage & Quotas" [level=1] [ref=e68]
+            - paragraph [ref=e69]: Understand what AI is doing, what it costs, who can use it, and whether its results are proving useful.
+          - region "AI economics workspace" [ref=e70]:
+            - generic [ref=e71]:
+              - generic [ref=e72]:
+                - paragraph [ref=e73]: ADMIRALTY · AI MANAGEMENT
+                - heading "Cost. Capability. Useful outcomes." [level=2] [ref=e74]
+                - paragraph [ref=e75]: Provider completion, applied edits and accepted rooms have separate receipts.
+              - generic [ref=e76]: Recorded operation evidence
+            - generic [ref=e77]:
+              - generic [ref=e78]:
+                - button "Last 7 days" [ref=e79] [cursor=pointer]
+                - button "Last 30 days" [ref=e80] [cursor=pointer]
+                - button "This month" [ref=e81] [cursor=pointer]
+              - generic [ref=e82]:
+                - text: From date (UTC)
+                - textbox "From date (UTC)" [ref=e83]: 2026-10-01
+              - generic [ref=e84]:
+                - text: Through date (UTC)
+                - textbox "Through date (UTC)" [ref=e85]: 2026-10-15
+              - generic [ref=e86]:
+                - text: Capability
+                - combobox "Capability" [ref=e87]:
+                  - option "All capabilities" [selected]
+                  - option "Room Reconstruction"
+                  - option "Grounded Assistant Edit"
+                  - option "Advanced Assistant"
+                  - option "Other AI Operations"
+              - generic [ref=e88]:
+                - text: Model
+                - combobox "Model" [ref=e89]:
+                  - option "All models" [selected]
+                  - option "gpt-6-luna"
+                  - option "gpt-6.1-sol"
+              - button "Apply economics filters" [ref=e90] [cursor=pointer]
+            - paragraph [ref=e91]: Showing operations initiated 2026-10-01 – 2026-10-16 (end exclusive, UTC). No comparable previous-period spending.
+            - navigation "AI economics views" [ref=e92]:
+              - button "Overview" [ref=e93] [cursor=pointer]
+              - button "Quality & Outcomes" [ref=e94] [cursor=pointer]
+              - button "People & Allowances" [ref=e95] [cursor=pointer]
+              - button "Capabilities" [ref=e96] [cursor=pointer]
+              - button "Operation History" [ref=e97] [cursor=pointer]
+            - generic [ref=e98]:
+              - heading "Does the spending produce useful results?" [level=3] [ref=e99]
+              - paragraph [ref=e100]: Operations are selected by initiation time in UTC. Later owner acceptance updates that request cohort. Historical outcome and provider-attempt coverage can be incomplete.
+              - paragraph [ref=e101]: 0 linked follow-up or regeneration operations · 1 logical operations with multiple provider attempts. Each provider attempt retains its cost.
+              - generic [ref=e102]:
+                - article [ref=e103]:
+                  - heading "Room Reconstruction" [level=4] [ref=e104]
+                  - strong [ref=e105]: 24.0%
+                  - paragraph [ref=e106]: 12 successful operations / 50 with recorded outcomes
+                  - generic [ref=e107]:
+                    - generic [ref=e108]:
+                      - term [ref=e109]: accepted rooms
+                      - definition [ref=e110]: "12"
+                    - generic [ref=e111]:
+                      - term [ref=e112]: Operations per useful result
+                      - definition [ref=e113]: "4.17"
+                    - generic [ref=e114]:
+                      - term [ref=e115]: Provider attempts per useful result
+                      - definition [ref=e116]: "4.17"
+                    - generic [ref=e117]:
+                      - term [ref=e118]: Observed cost per useful result
+                      - definition [ref=e119]: $0.266666667
+                    - generic [ref=e120]:
+                      - term [ref=e121]: Mean cost-settled operation
+                      - definition [ref=e122]: $0.064
+                    - generic [ref=e123]:
+                      - term [ref=e124]: Failure-related cost
+                      - definition [ref=e125]: $0.00
+                  - paragraph [ref=e126]: 50 recorded provider attempts · 100.0% operation coverage
+                  - paragraph [ref=e127]: 50 generated · 50 previewed · 38 rejected · 0 applied · 0 undone · 0 accepted then edited
+                  - paragraph [ref=e128]: Observed sample; patterns alone do not establish a cause.
+                  - group [ref=e129]:
+                    - generic "Outcome definition and coverage" [ref=e130] [cursor=pointer]
+                - article [ref=e131]:
+                  - heading "Grounded Assistant Edit" [level=4] [ref=e132]
+                  - strong [ref=e133]: 87.5%
+                  - paragraph [ref=e134]: 21 successful operations / 24 with recorded outcomes
+                  - generic [ref=e135]:
+                    - generic [ref=e136]:
+                      - term [ref=e137]: applied edits
+                      - definition [ref=e138]: "21"
+                    - generic [ref=e139]:
+                      - term [ref=e140]: Operations per useful result
+                      - definition [ref=e141]: "1.14"
+                    - generic [ref=e142]:
+                      - term [ref=e143]: Provider attempts per useful result
+                      - definition [ref=e144]: "1.19"
+                    - generic [ref=e145]:
+                      - term [ref=e146]: Observed cost per useful result
+                      - definition [ref=e147]: $0.000464286
+                    - generic [ref=e148]:
+                      - term [ref=e149]: Mean cost-settled operation
+                      - definition [ref=e150]: $0.000443182
+                    - generic [ref=e151]:
+                      - term [ref=e152]: Failure-related cost
+                      - definition [ref=e153]: $0.00045
+                  - paragraph [ref=e154]: 25 recorded provider attempts · 100.0% operation coverage
+                  - paragraph [ref=e155]: 21 generated · 0 previewed · 0 rejected · 21 applied · 0 undone · 0 accepted then edited
+                  - paragraph [ref=e156]: Observed sample; patterns alone do not establish a cause.
+                  - group [ref=e157]:
+                    - generic "Outcome definition and coverage" [ref=e158] [cursor=pointer]
+                - article [ref=e159]:
+                  - heading "Advanced Assistant" [level=4] [ref=e160]
+                  - strong [ref=e161]: 100.0%
+                  - paragraph [ref=e162]: 1 successful operations / 1 with recorded outcomes
+                  - generic [ref=e163]:
+                    - generic [ref=e164]:
+                      - term [ref=e165]: applied edits
+                      - definition [ref=e166]: "1"
+                    - generic [ref=e167]:
+                      - term [ref=e168]: Operations per useful result
+                      - definition [ref=e169]: "1.00"
+                    - generic [ref=e170]:
+                      - term [ref=e171]: Provider attempts per useful result
+                      - definition [ref=e172]: "1.00"
+                    - generic [ref=e173]:
+                      - term [ref=e174]: Observed cost per useful result
+                      - definition [ref=e175]: $0.03
+                    - generic [ref=e176]:
+                      - term [ref=e177]: Mean cost-settled operation
+                      - definition [ref=e178]: $0.03
+                    - generic [ref=e179]:
+                      - term [ref=e180]: Failure-related cost
+                      - definition [ref=e181]: $0.00
+                  - paragraph [ref=e182]: 1 recorded provider attempts · 100.0% operation coverage
+                  - paragraph [ref=e183]: 1 generated · 0 previewed · 0 rejected · 1 applied · 0 undone · 0 accepted then edited
+                  - paragraph [ref=e184]: "Small sample: fewer than 10 operations. Avoid firm comparisons."
+                  - group [ref=e185]:
+                    - generic "Outcome definition and coverage" [ref=e186] [cursor=pointer]
+                - article [ref=e187]:
+                  - heading "Other AI Operations" [level=4] [ref=e188]
+                  - strong [ref=e189]: Unavailable
+                  - paragraph [ref=e190]: 0 successful operations / 0 with recorded outcomes
+                  - generic [ref=e191]:
+                    - generic [ref=e192]:
+                      - term [ref=e193]: outcome unavailable
+                      - definition [ref=e194]: "0"
+                    - generic [ref=e195]:
+                      - term [ref=e196]: Operations per useful result
+                      - definition [ref=e197]: Unavailable
+                    - generic [ref=e198]:
+                      - term [ref=e199]: Provider attempts per useful result
+                      - definition [ref=e200]: Unavailable
+                    - generic [ref=e201]:
+                      - term [ref=e202]: Observed cost per useful result
+                      - definition [ref=e203]: Unavailable
+                    - generic [ref=e204]:
+                      - term [ref=e205]: Mean cost-settled operation
+                      - definition [ref=e206]: Unavailable
+                    - generic [ref=e207]:
+                      - term [ref=e208]: Failure-related cost
+                      - definition [ref=e209]: $0.00
+                  - paragraph [ref=e210]: 0 recorded provider attempts · Unavailable operation coverage
+                  - paragraph [ref=e211]: 0 generated · 0 previewed · 0 rejected · 0 applied · 0 undone · 0 accepted then edited
+                  - paragraph [ref=e212]: "Small sample: fewer than 10 operations. Avoid firm comparisons."
+                  - group [ref=e213]:
+                    - generic "Outcome definition and coverage" [ref=e214] [cursor=pointer]
+              - heading "Quality over time" [level=3] [ref=e215]
+              - paragraph [ref=e216]: Expand a capability to compare recorded daily outcomes and cost per useful result.
+              - group "Room Reconstruction quality trend" [ref=e217]:
+                - button "Room Reconstruction quality trend by UTC request day" [ref=e218] [cursor=pointer]: Room Reconstruction · Quality trend by UTC request day
+                - paragraph [ref=e219]: Rates describe initiated operations with recorded outcomes in each UTC request-day cohort. Missing days have no sample. Later acceptance updates the originating cohort; recent days may contain pending results. Daily accepted-room counts deduplicate owned rooms within that day; range totals deduplicate across the entire selected range. Costs include unsuccessful work and exclude unresolved amounts.
+                - figure "Room Reconstruction accepted operation rate by UTC request day" [ref=e220]:
+                  - generic [ref=e221]:
+                    - generic [ref=e222]: Accepted operation rate
+                    - generic [ref=e223]: "Scale: 0–100%"
+                  - 'img "Accepted operation rate: exact dates and denominators follow in the table" [ref=e224]'
+                  - generic [ref=e227]:
+                    - generic [ref=e228]: 2026-10-12
+                    - generic [ref=e229]: 2026-10-14
+                  - generic [ref=e230]: Accepted operation rate · dots are recorded daily samples; no value is inferred between them.
+                - paragraph [ref=e231]: Fewer than 10 operations is a small sample. Scroll horizontally for all columns; keyboard users can focus the table and use arrow keys.
+                - region "Room Reconstruction daily quality table" [ref=e232]:
+                  - table "Room Reconstruction quality by UTC request day" [ref=e233]:
+                    - caption [ref=e234]: Room Reconstruction quality by UTC request day
+                    - rowgroup [ref=e235]:
+                      - row "UTC request day Operations Accepted operation rate accepted rooms Observed cost Cost per useful result" [ref=e236]:
+                        - columnheader "UTC request day" [ref=e237]
+                        - columnheader "Operations" [ref=e238]
+                        - columnheader "Accepted operation rate" [ref=e239]
+                        - columnheader "accepted rooms" [ref=e240]
+                        - columnheader "Observed cost" [ref=e241]
+                        - columnheader "Cost per useful result" [ref=e242]
+                    - rowgroup [ref=e243]:
+                      - row "2026-10-12 20 10.0% 2 / 20 recorded outcomes; 0 unavailable 2 $1.28 100.0% operations fully costed $0.64" [ref=e244]:
+                        - rowheader "2026-10-12" [ref=e245]
+                        - cell "20" [ref=e246]
+                        - cell "10.0% 2 / 20 recorded outcomes; 0 unavailable" [ref=e247]:
+                          - text: 10.0%
+                          - generic [ref=e248]: 2 / 20 recorded outcomes; 0 unavailable
+                        - cell "2" [ref=e249]
+                        - cell "$1.28 100.0% operations fully costed" [ref=e250]:
+                          - text: $1.28
+                          - generic [ref=e251]: 100.0% operations fully costed
+                        - cell "$0.64" [ref=e252]
+                      - row "2026-10-14 30 33.3% 10 / 30 recorded outcomes; 0 unavailable 10 $1.92 100.0% operations fully costed $0.192" [ref=e253]:
+                        - rowheader "2026-10-14" [ref=e254]
+                        - cell "30" [ref=e255]
+                        - cell "33.3% 10 / 30 recorded outcomes; 0 unavailable" [ref=e256]:
+                          - text: 33.3%
+                          - generic [ref=e257]: 10 / 30 recorded outcomes; 0 unavailable
+                        - cell "10" [ref=e258]
+                        - cell "$1.92 100.0% operations fully costed" [ref=e259]:
+                          - text: $1.92
+                          - generic [ref=e260]: 100.0% operations fully costed
+                        - cell "$0.192" [ref=e261]
+              - group "Grounded Assistant Edit quality trend" [ref=e262]:
+                - button "Grounded Assistant Edit quality trend by UTC request day" [ref=e263] [cursor=pointer]: Grounded Assistant Edit · Quality trend by UTC request day
+              - group "Advanced Assistant quality trend" [ref=e264]:
+                - button "Advanced Assistant quality trend by UTC request day" [ref=e265] [cursor=pointer]: Advanced Assistant · Quality trend by UTC request day
+              - group "Other AI Operations quality trend" [ref=e266]:
+                - button "Other AI Operations quality trend by UTC request day" [ref=e267] [cursor=pointer]: Other AI Operations · Quality trend by UTC request day
+              - heading "Investigation signals" [level=3] [ref=e268]
+              - article [ref=e269]:
+                - heading "Synthetic Creator A" [level=4] [ref=e270]
+                - paragraph [ref=e271]: 40 reconstructions · 2 accepted operations · 5.0% recorded acceptance
+                - paragraph [ref=e272]: Low recorded acceptance after repeated reconstruction. Review operation evidence and workflow quality; activity alone does not establish a cause.
+                - button "Inspect Synthetic Creator A" [ref=e273] [cursor=pointer]
+          - generic [ref=e274]:
+            - generic [ref=e275]:
+              - heading "Daily AI activity" [level=2] [ref=e276]
+              - generic [ref=e277]:
+                - text: Chart shows
+                - combobox "Chart shows" [ref=e278]:
+                  - option "Requests per day" [selected]
+                  - option "Settled cost per day"
+                  - option "Accounted spending per day"
+            - paragraph [ref=e279]: "Current UTC month: 2026-10. This chart is independent of the economics and history filters above."
+            - paragraph [ref=e280]: Each bar represents the UTC day a request was admitted. Admitted requests, including pending or unresolved requests.
+            - generic [ref=e281]:
+              - generic [ref=e282]:
+                - term [ref=e283]: Requests today · UTC
+                - definition [ref=e284]: "0"
+              - generic [ref=e285]:
+                - term [ref=e286]: Settled cost today · UTC
+                - definition [ref=e287]: $0.00
+              - generic [ref=e288]:
+                - term [ref=e289]: Average requests / day
+                - definition [ref=e290]: "5"
+              - generic [ref=e291]:
+                - term [ref=e292]: Average settled cost / day
+                - definition [ref=e293]: $0.216
+            - generic [ref=e294]:
+              - generic [ref=e295]: Requests per day
+              - generic [ref=e296]: "Scale: 0–55 requests"
+            - figure "Requests per day by UTC day" [ref=e297]:
+              - generic [ref=e298]: Requests per day by UTC request day. Exact values follow in the daily activity table.
+              - 'generic "2026-10-01 UTC: 0 requests; $0.00 settled; $0.00 accounted" [ref=e299]':
+                - generic [ref=e300]: "01"
+              - 'generic "2026-10-02 UTC: 0 requests; $0.00 settled; $0.00 accounted" [ref=e301]':
+                - generic [ref=e302]: "02"
+              - 'generic "2026-10-03 UTC: 0 requests; $0.00 settled; $0.00 accounted" [ref=e303]':
+                - generic [ref=e304]: "03"
+              - 'generic "2026-10-04 UTC: 0 requests; $0.00 settled; $0.00 accounted" [ref=e305]':
+                - generic [ref=e306]: "04"
+              - 'generic "2026-10-05 UTC: 0 requests; $0.00 settled; $0.00 accounted" [ref=e307]':
+                - generic [ref=e308]: "05"
+              - 'generic "2026-10-06 UTC: 0 requests; $0.00 settled; $0.00 accounted" [ref=e309]':
+                - generic [ref=e310]: "06"
+              - 'generic "2026-10-07 UTC: 0 requests; $0.00 settled; $0.00 accounted" [ref=e311]':
+                - generic [ref=e312]: "07"
+              - 'generic "2026-10-08 UTC: 0 requests; $0.00 settled; $0.00 accounted" [ref=e313]':
+                - generic [ref=e314]: "08"
+              - 'generic "2026-10-09 UTC: 0 requests; $0.00 settled; $0.00 accounted" [ref=e315]':
+                - generic [ref=e316]: "09"
+              - 'generic "2026-10-10 UTC: 0 requests; $0.00 settled; $0.00 accounted" [ref=e317]':
+                - generic [ref=e318]: "10"
+              - 'generic "2026-10-11 UTC: 0 requests; $0.00 settled; $0.00 accounted" [ref=e319]':
+                - generic [ref=e320]: "11"
+              - 'generic "2026-10-12 UTC: 20 requests; $1.28 settled; $1.28 accounted" [ref=e321]':
+                - generic [ref=e323]: "12"
+              - 'generic "2026-10-13 UTC: 0 requests; $0.00 settled; $0.00 accounted" [ref=e324]':
+                - generic [ref=e325]: "13"
+              - 'generic "2026-10-14 UTC: 55 requests; $1.9598 settled; $2.1598 accounted" [ref=e326]':
+                - generic [ref=e328]: "14"
+              - 'generic "2026-10-15 UTC: 0 requests; $0.00 settled; $0.00 accounted" [ref=e329]':
+                - generic [ref=e330]: "15"
+            - text: Daily averages include zero-activity days from the first of the UTC month through today. Requests with released reservations are excluded.
+            - group [ref=e331]:
+              - generic "Read daily requests and costs as a table" [ref=e332] [cursor=pointer]
+          - group [ref=e333]:
+            - generic "Policies, allowances & model configuration" [ref=e334] [cursor=pointer]
+      - contentinfo [ref=e335]:
+        - paragraph [ref=e336]: "Authority: Manage governed actions · Support Access remains consented, temporary, scoped, and audited."
+  - alert [ref=e337]: Platform Overview
+```

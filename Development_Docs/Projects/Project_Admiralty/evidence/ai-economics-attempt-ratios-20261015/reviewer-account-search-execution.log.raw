@@ -1,0 +1,28 @@
+(node:67956) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+{
+  "status": "PASS",
+  "sourceCandidate": "4a185cbf6ba04c25564dcb5d031f03ef588de3c4",
+  "search": "cohortpersonselected9",
+  "accountIdAbsentFromOperationAndRequestIds": true,
+  "totalOperations": 3,
+  "totalProviderAttempts": 4,
+  "selectedPeople": [
+    "cohortpersonselected9"
+  ],
+  "rooms": {
+    "operations": 2,
+    "usefulResults": 1,
+    "providerAttempts": 2,
+    "operationsPerUsefulResult": 2,
+    "providerAttemptsPerUsefulResult": 2
+  },
+  "edits": {
+    "operations": 1,
+    "usefulResults": 1,
+    "providerAttempts": 2,
+    "operationsPerUsefulResult": 1,
+    "providerAttemptsPerUsefulResult": 2
+  }
+}
