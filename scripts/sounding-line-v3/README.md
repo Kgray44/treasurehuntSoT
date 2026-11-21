@@ -25,6 +25,8 @@ For the registered Wayfarer and Landfall unit suites, Actions may reuse a succes
 
 The cutover disables the legacy ordinary workflow in GitHub Actions. Its source and receipts remain available for historical diagnostics. This workflow uses the existing project test fixtures, including browser harnesses, in isolated runner jobs.
 
+Full browser verification uses independent jobs for dedicated journey runners, Lanternwake, and the other browser profiles. Each job owns its build and fixture data. The full decision requires every job to pass.
+
 ### Formatting
 
 Ordinary PRs run Prettier on new or modified supported source and configuration files. Passive Markdown and image changes keep the dependency-free diff, link, and asset checks.

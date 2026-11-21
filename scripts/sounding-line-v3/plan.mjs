@@ -265,8 +265,11 @@ export function select(entries, read, request, data, readBase) {
   if (directNode.size) add("changed-node-tests", "node", directNode);
   if (broadUnit) add("all-vitest", "vitest", []);
   else if (directUnit.size) add("changed-tests", "vitest", directUnit);
-  if (broadBrowser) add("browser", "browser-full", []);
-  else if (directBrowser.size) add("browser", "browser", directBrowser);
+  if (broadBrowser) {
+    add("browser", "browser-full", []);
+    add("browser-lanternwake", "browser-full", []);
+    add("browser-profiles", "browser-full", []);
+  } else if (directBrowser.size) add("browser", "browser", directBrowser);
   return {
     category,
     projects: [...projects].sort(),

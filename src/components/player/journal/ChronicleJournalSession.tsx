@@ -1566,8 +1566,10 @@ function ChronicleJournalSessionIdentity({
               <aside
                 className="chronicle-objective-tray persistent-objective"
                 data-opening-actor="objective"
+                aria-label="Current objective"
                 aria-hidden={openingActive}
                 inert={openingActive ? true : undefined}
+                tabIndex={openingActive ? undefined : 0}
               >
                 <div>
                   <p>Current objective</p>

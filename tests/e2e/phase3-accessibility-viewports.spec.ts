@@ -616,6 +616,15 @@ test.describe("Project Lanternwake Phase 3 accessibility and six required viewpo
         }
 
         await assertViewportAndAccessibility(page);
+        if (viewport.width === 844 && flow.id === "pause") {
+          const objective = page.getByRole("complementary", { name: "Current objective" });
+          await expect(objective).toHaveAttribute("tabindex", "0");
+          await objective.focus();
+          await expect(objective).toBeFocused();
+          await test
+            .info()
+            .attach("landscape-paused-objective", { body: await page.screenshot(), contentType: "image/png" });
+        }
         if (flow.kind === "reentry") await assertReadableAtTwoHundredPercentZoom(page);
         await expect(page.getByRole("button", { name: /^Motion:/ })).toBeVisible();
         if (flow.eventType && targetEventId) {

@@ -305,7 +305,6 @@ export async function runJob(job, context) {
               .filter((file) => file.endsWith(".spec.ts"))
           : files;
       if (!browserTests.length) throw new Error("Browser suite has no selected specs.");
-      await setupPrisma();
       const taskRoot = resolve("artifacts", "sounding-line");
       mkdirSync(taskRoot, { recursive: true });
       const databaseRoot = mkdtempSync(resolve(taskRoot, "v3-build-"));
@@ -322,36 +321,58 @@ export async function runJob(job, context) {
       const commands = verificationCommands(browserPlan);
       const build = commands.findIndex(([executable, args]) => executable === "npm" && args.join(" ") === "run build");
       if (build < 0) throw new Error("Browser fixture planner did not provide a build.");
-      await command(runNpm("build"), {
+      const buildEnvironment = {
         DATABASE_URL: browserPlan.databaseUrl,
         SOUNDING_LINE_BASE_SHA: base,
-        SOUNDING_LINE_TASK_OWNED_HTTP: "1",
-        SOUNDING_LINE_SUITE_PROFILE: "v3-browser",
-      });
+      };
       const fullBrowser = kind === "browser-full";
-      const profileFailures = [];
-      for (const [executable, args] of commands.slice(build + 1)) {
-        if (args[0] === "scripts/sounding-line/run-browser-suite.mjs") {
-          // Dedicated runners can restore the normal MySQL client on exit.
-          await setupPrisma();
-          const profile = args[args.indexOf("--profile") + 1];
-          try {
-            await runBrowserProfile(profile, args.slice(args.indexOf("--") + 1), tree, fullBrowser);
-          } catch (error) {
-            if (!fullBrowser) throw error;
-            profileFailures.push(profile);
-            console.error("Browser profile %s failed: %s", profile, error.message);
-          }
+      const dedicated = [];
+      const profiles = [];
+      for (const step of commands.slice(build + 1)) {
+        const [, args] = step;
+        if (args[0] !== "scripts/sounding-line/run-browser-suite.mjs") {
+          if (!fullBrowser || job.id === "browser") dedicated.push(step);
           continue;
         }
-        const env = verificationEnvironment(browserPlan, executable, args);
-        const argv =
-          executable === "npm"
-            ? [...npm, ...args]
-            : executable === "npx" && args.includes("prisma")
+        const profile = args[args.indexOf("--profile") + 1];
+        const profileJob = profile === "lanternwake-phase3" ? "browser-lanternwake" : "browser-profiles";
+        if (!fullBrowser || job.id === profileJob)
+          profiles.push({ profile, specs: args.slice(args.indexOf("--") + 1) });
+      }
+      // The legacy planner always emits a Prisma step, even without dedicated fixtures.
+      const hasDedicatedFixtures = dedicated.some(([executable]) => executable !== "npx");
+      if (!hasDedicatedFixtures && !profiles.length) throw new Error("Browser job has no fixture commands: " + job.id);
+      if (hasDedicatedFixtures) {
+        await setupPrisma();
+        await command(runNpm("build"), buildEnvironment);
+        for (const [executable, args] of dedicated) {
+          const env = verificationEnvironment(browserPlan, executable, args);
+          const argv =
+            executable === "npx" && args.includes("prisma")
               ? prisma(...args.slice(args.indexOf("prisma") + 1))
               : [executable, ...args];
-        await command(argv, { DATABASE_URL: browserPlan.databaseUrl, SOUNDING_LINE_BASE_SHA: base, ...env });
+          await command(argv, { ...buildEnvironment, ...env });
+        }
+      }
+      if (profiles.length) {
+        await setupPrisma();
+        // Dedicated runners can rebuild .next. Prepare the profile build after
+        // those runners finish, with the existing test-only settings enabled.
+        await command(runNpm("build"), {
+          ...buildEnvironment,
+          SOUNDING_LINE_TASK_OWNED_HTTP: "1",
+          SOUNDING_LINE_SUITE_PROFILE: "v3-browser",
+        });
+      }
+      const profileFailures = [];
+      for (const { profile, specs } of profiles) {
+        try {
+          await runBrowserProfile(profile, specs, tree, fullBrowser);
+        } catch (error) {
+          if (!fullBrowser) throw error;
+          profileFailures.push(profile);
+          console.error("Browser profile %s failed: %s", profile, error.message);
+        }
       }
       if (profileFailures.length) throw new Error("Failed browser profiles: " + profileFailures.join(", "));
       return;

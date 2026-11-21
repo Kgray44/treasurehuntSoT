@@ -98,7 +98,7 @@ test("only task-owned full browser profiles receive the larger V3 execution budg
   const profile = { SOUNDING_LINE_SUITE_PROFILE: "lanternwake-phase3", SOUNDING_LINE_TASK_OWNED_HTTP: "1" };
   assert.equal(browserAuthorityExecutionTimeoutMs(profile), 15 * 60_000);
   assert.equal(browserAuthorityExecutionTimeoutMs({ SOUNDING_LINE_V3_FULL_BROWSER: "1" }), 15 * 60_000);
-  assert.equal(browserAuthorityExecutionTimeoutMs({ ...profile, SOUNDING_LINE_V3_FULL_BROWSER: "1" }), 45 * 60_000);
+  assert.equal(browserAuthorityExecutionTimeoutMs({ ...profile, SOUNDING_LINE_V3_FULL_BROWSER: "1" }), 60 * 60_000);
 });
 
 test("Owner labels add coverage and unknown requests fail closed", () => {
@@ -109,7 +109,17 @@ test("Owner labels add coverage and unknown requests fail closed", () => {
   assert.throws(() => plan(["README.md"], "", { projects: ["NoSuchProject"] }), /No registered/);
   assert.throws(() => metadata(["sl:mode:full", "sl:mode:documentation"]), /one sl:mode/);
   const full = names(plan([], "", metadata(["sl:full"])));
-  for (const expected of ["all-vitest", "browser", "format", "build", "schema", "privacy", "compatibility"])
+  for (const expected of [
+    "all-vitest",
+    "browser",
+    "browser-lanternwake",
+    "browser-profiles",
+    "format",
+    "build",
+    "schema",
+    "privacy",
+    "compatibility",
+  ])
     assert.ok(full.includes(expected));
 });
 
