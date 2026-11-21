@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { mkdirSync } from "node:fs";
 import path from "node:path";
 import bcrypt from "bcryptjs";
+import { createChronicleFixture } from "../fixtures/sc07-chronicle";
 import { expect, test, type Browser, type BrowserContext, type Page } from "@playwright/test";
 import { db } from "../../src/lib/db";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
@@ -233,4 +234,68 @@ test("signed-out mobile visitor gets a Creator sign-in return path without packa
   await expect(page.getByRole("link", { name: "Sign in with Creator access" })).toBeVisible();
   await expect(page.getByText("A synthetic harbor greeting for another Creator.")).toHaveCount(0);
   await page.screenshot({ path: test.info().outputPath("mobile-signed-out-install.png"), fullPage: true });
+});
+
+test("second Creator edits an installed Chronicle through private Studio", async () => {
+  const suffix = randomUUID().slice(0, 8);
+  const slug = `sc07-chronicle-${suffix}`;
+  const { source, version } = await createChronicleFixture(owner.accountId, suffix);
+  const ownerPage = owner.page;
+  await ownerPage.goto("/studio");
+  await ownerPage.getByRole("link", { name: "Community Exchange" }).press("Enter");
+  await ownerPage.getByLabel("Saved source").selectOption(`CHRONICLE:${version.id}`);
+  await ownerPage.getByLabel("Community address").fill(slug);
+  await ownerPage.getByLabel("Preview-safe description").fill("A fictional Chronicle for other Creators.");
+  await ownerPage.getByLabel("License").selectOption("SC07_TEST_REUSE");
+  await ownerPage.getByLabel("I own or have permission to distribute every included item.").check();
+  await ownerPage.getByLabel(/I reviewed the full Chronicle for spoilers/).check();
+  await ownerPage.getByRole("button", { name: "Review exact package" }).press("Enter");
+  await ownerPage.getByText("Inspect every included field", { exact: true }).press("Enter");
+  await expect(ownerPage.getByText(/A fictional harbor awaits/)).toBeVisible();
+  await ownerPage.getByRole("button", { name: "Submit for moderation" }).press("Enter");
+  await expect(ownerPage.getByText(/Submitted for independent moderation/)).toBeVisible();
+
+  const moderatorPage = moderator.page;
+  await moderatorPage.goto("/admin/community");
+  await moderatorPage.getByLabel("Search Community content").fill(slug);
+  await moderatorPage.getByRole("button", { name: "Search", exact: true }).press("Enter");
+  await moderatorPage.getByRole("link", { name: "Synthetic Harbor Tale", exact: true }).press("Enter");
+  await moderatorPage.getByText("Inspect every included field", { exact: true }).press("Enter");
+  await expect(moderatorPage.getByText(/A fictional harbor awaits/)).toBeVisible();
+  await moderatorPage.getByLabel(/I reviewed the exact content, ownership declaration/).check();
+  await moderatorPage.getByRole("button", { name: "Approve and publish release" }).press("Enter");
+  await expect(moderatorPage.getByText("Release approved.")).toBeVisible();
+
+  const installerPage = installer.page;
+  await installerPage.setViewportSize({ width: 390, height: 844 });
+  await installerPage.emulateMedia({ reducedMotion: "reduce" });
+  await installerPage.goto("/community/chronicles");
+  await installerPage.locator(`a[href="/community/${slug}"]`).first().press("Enter");
+  await expect(installerPage.getByRole("heading", { name: "Copy this Chronicle privately" })).toBeVisible();
+  await expect(installerPage.getByText(/Credits: Synthetic owner Creator/)).toBeVisible();
+  await expect(installerPage.getByText(/A fictional harbor awaits/)).toHaveCount(0);
+  await installerPage.getByRole("button", { name: "Copy to my Studio" }).press("Enter");
+  await installerPage.getByRole("link", { name: "Open my private Chronicle" }).press("Enter");
+  await expect(installerPage).toHaveURL(/\/studio\/tales\/[^/]+$/u);
+  const installedId = new URL(installerPage.url()).pathname.split("/").at(-1)!;
+  await installerPage.getByRole("button", { name: "Chronicle Details" }).press("Enter");
+  const details = installerPage.getByRole("region", { name: "Chronicle Details" });
+  const editedTitle = "Private Harbor Chronicle";
+  await details.getByRole("textbox", { name: "Title", exact: true }).fill(editedTitle);
+  await details.getByRole("button", { name: "Save details" }).press("Enter");
+  await expect
+    .poll(() => db.chronicle.findUnique({ where: { id: installedId }, select: { title: true } }))
+    .toEqual({ title: editedTitle });
+  await expect(installerPage.getByRole("region", { name: "Chronicle Details" }).getByRole("status")).toHaveText(
+    /^Saved at/,
+  );
+  await installerPage.screenshot({ path: test.info().outputPath("chronicle-private-edit.png"), fullPage: true });
+  expect(await db.chronicle.findUnique({ where: { id: source.id }, select: { title: true } })).toEqual({
+    title: "Synthetic Harbor Tale",
+  });
+  expect(await db.publishedTaleVersion.findUnique({ where: { id: version.id }, select: { checksum: true } })).toEqual({
+    checksum: version.checksum,
+  });
+  await ownerPage.goto(`/studio/tales/${installedId}`);
+  await expect(ownerPage.getByRole("heading", { name: "Chronicle access unavailable" })).toBeVisible();
 });

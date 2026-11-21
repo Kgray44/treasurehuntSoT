@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import { db } from "@/lib/db";
-import { createStudioTale, getStudioTale, saveStudioDraft } from "@/chronicle/studio-service";
-import { publishedSourceChecksum, snapshotFromStudio } from "@/chronicle/snapshot";
+import { getStudioTale, saveStudioDraft } from "@/chronicle/studio-service";
+import { createChronicleFixture } from "../../tests/fixtures/sc07-chronicle";
 import { decideCreatorChroniclePublication, reviewCreatorChroniclePublication } from "./creator-chronicle-moderation";
 import { installCreatorChronicleRelease, reviewCreatorChronicleInstallation } from "./creator-chronicle-installation";
 import {
@@ -50,73 +50,8 @@ describe.skipIf(!isolated)("SC-07 Chronicle Community journey", () => {
       },
       update: {},
     });
-    const source = await createStudioTale({
-      creatorId: ownerId,
-      title: "Synthetic Harbor Tale",
-      slug: `sc07-tale-${suffix}`,
-      initialChapterTitle: "Opening",
-    });
-    const initial = await getStudioTale(source.id);
-    const passageId = randomUUID();
-    await saveStudioDraft(
-      source.id,
-      {
-        autosaveVersion: initial.draft.autosaveVersion,
-        tale: { ...initial.tale, visibility: "PRIVATE" },
-        chapters: [
-          {
-            ...initial.draft.chapters[0],
-            blocks: [
-              {
-                id: passageId,
-                blockType: "narrative",
-                title: "Welcome",
-                configuration: { heading: "Welcome", body: "A fictional harbor awaits." },
-                presentation: {},
-                completion: { mode: "playerConfirmation" },
-                isEnabled: true,
-                schemaVersion: 2,
-              },
-            ],
-          },
-        ],
-      },
-      ownerId,
-    );
-    const snapshot = snapshotFromStudio(await getStudioTale(source.id));
-    const checksum = publishedSourceChecksum(snapshot);
-    const version = await db.publishedTaleVersion.create({
-      data: {
-        taleId: source.id,
-        versionNumber: 1,
-        versionLabel: "1.0",
-        publishedBy: ownerId,
-        publishedByAccountId: ownerId,
-        contentSnapshot: JSON.stringify(snapshot),
-        checksum,
-        isCurrent: true,
-      },
-    });
-    await db.drydockPublishingEvidence.create({
-      data: {
-        publishedVersionId: version.id,
-        sourceChecksum: checksum,
-        schemaVersion: 1,
-        schemaRegistryVersion: 1,
-        ruleCatalogVersion: 1,
-        validationRunId: `synthetic-${suffix}`,
-        requiredSuitePolicyVersion: "synthetic-test",
-        compatibilityPolicyVersion: "synthetic-test",
-        compatibilityDigest: "a".repeat(64),
-        externalEvidenceDigest: "b".repeat(64),
-        evidence: "{}",
-        digest: randomUUID().replaceAll("-", "") + "c".repeat(32),
-      },
-    });
-    await db.chronicle.update({
-      where: { id: source.id },
-      data: { status: "PUBLISHED", latestPublishedVersionId: version.id },
-    });
+    const { source, version } = await createChronicleFixture(ownerId, suffix);
+    const { checksum } = version;
     const input = {
       publishedVersionId: version.id,
       slug: `sc07-community-tale-${suffix}`,
