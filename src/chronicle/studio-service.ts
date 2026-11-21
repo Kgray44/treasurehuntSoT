@@ -167,11 +167,13 @@ export async function createStudioTale(
     initialChapterTitle?: string;
     creatorId: string;
   },
-  transaction?: Prisma.TransactionClient,
+  transaction?: { client: Prisma.TransactionClient; creatorAccountId: string | null },
 ) {
   const slug = slugSchema.parse(input.slug?.trim() || slugify(input.title));
+  const creatorAccountId = transaction
+    ? transaction.creatorAccountId
+    : await canonicalAccountForLegacyActor(input.creatorId);
   const create = async (tx: Prisma.TransactionClient) => {
-    const creatorAccountId = await canonicalAccountForLegacyActor(input.creatorId, tx);
     const tale = await tx.chronicle.create({
       data: {
         slug,
@@ -197,7 +199,7 @@ export async function createStudioTale(
     await tx.chronicle.update({ where: { id: tale.id }, data: { currentDraftRevisionId: draft.id } });
     return { id: tale.id, slug: tale.slug, draftId: draft.id };
   };
-  return transaction ? create(transaction) : db.$transaction(create);
+  return transaction ? create(transaction.client) : db.$transaction(create);
 }
 
 export class StudioNoEditableDraftError extends Error {
@@ -755,8 +757,9 @@ export async function forkPublishedVersion(
   taleId: string,
   versionId: string,
   creatorId: string,
-  transaction?: Prisma.TransactionClient,
+  transaction?: { client: Prisma.TransactionClient; creatorAccountId: string },
 ) {
+  const creatorAccountId = transaction ? transaction.creatorAccountId : await canonicalAccountForLegacyActor(creatorId);
   const fork = async (tx: Prisma.TransactionClient) => {
     const version = await tx.publishedTaleVersion.findFirstOrThrow({ where: { id: versionId, taleId } });
     const snapshot = parsePublishedSnapshot(version.contentSnapshot);
@@ -786,7 +789,7 @@ export async function forkPublishedVersion(
         initialChapterTitle: snapshot.chapters[0]?.title ?? "Chapter One",
         creatorId,
       },
-      tx,
+      { client: tx, creatorAccountId },
     );
     await tx.chronicle.update({
       where: { id: created.id },
@@ -836,5 +839,5 @@ export async function forkPublishedVersion(
     );
     return { id: created.id, slug, forkedFromTaleId: taleId, forkedFromVersionId: versionId };
   };
-  return transaction ? fork(transaction) : db.$transaction(fork);
+  return transaction ? fork(transaction.client) : db.$transaction(fork);
 }

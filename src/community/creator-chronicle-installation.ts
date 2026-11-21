@@ -134,7 +134,10 @@ export async function installCreatorChronicleRelease(input: {
       });
       if (!stillPublic)
         throw new CommunityError("COMMUNITY_REVIEW_STALE", "This Chronicle release is no longer public.");
-      const fork = await forkPublishedVersion(source.source.taleId, source.source.id, input.accountId, tx);
+      const fork = await forkPublishedVersion(source.source.taleId, source.source.id, input.accountId, {
+        client: tx,
+        creatorAccountId: input.accountId,
+      });
       await tx.communityInstallMapping.create({
         data: { operationId, sourceId: "chronicle", targetId: fork.id, kind: "CHRONICLE" },
       });

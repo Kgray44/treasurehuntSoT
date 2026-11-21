@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { assertArtifactExchangeType } from "./domain";
+import { assertArtifactExchangeType } from "./artifact-exchange-policy";
 
 describe("Exchange source authority", () => {
   it.each(["CHRONICLE", "CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET", "SPATIAL_SCENE"])(

@@ -1,9 +1,9 @@
 import { createHash, randomUUID } from "node:crypto";
 import { db } from "@/lib/db";
+import { assertArtifactExchangeType } from "./artifact-exchange-policy";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import {
   CommunityError,
-  assertArtifactExchangeType,
   assertTransition,
   listingInputSchema,
   manifestChecksum,

@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { db } from "@/lib/db";
-import { assertArtifactExchangeType, CommunityError, stableJson } from "./domain";
+import { CommunityError, stableJson } from "./domain";
+import { assertArtifactExchangeType } from "./artifact-exchange-policy";
 import { beginInstallOperation, commitInstallOperation, createInstallPlan, type InstallMode } from "./exchange";
 import { assertPublicationScanStatus, verifyCommunityPackage, type CommunityPackageFile } from "./package";
 import { assertTrustedCommunityScanReceipts, scanCommunityPackageFiles } from "./scanner";
