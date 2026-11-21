@@ -157,11 +157,11 @@ jobs:
         if: ${{ matrix.dependencies && steps.prior.outputs.cache-hit != 'true' }}
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Install Chromium
-        if: ${{ matrix.kind == 'browser' }}
+        if: ${{ matrix.kind == 'browser' || (matrix.kind == 'browser-full' && startsWith(matrix.id, 'browser-generic-')) }}
         timeout-minutes: 6
         run: npx --no-install playwright install chromium
       - name: Install full browser compatibility coverage
-        if: ${{ matrix.kind == 'browser-full' }}
+        if: ${{ matrix.kind == 'browser-full' && !startsWith(matrix.id, 'browser-generic-') }}
         timeout-minutes: 10
         run: npx --no-install playwright install --with-deps chromium webkit
       - name: Run selected verification
