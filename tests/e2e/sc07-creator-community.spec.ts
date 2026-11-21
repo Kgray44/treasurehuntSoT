@@ -4,7 +4,7 @@ import path from "node:path";
 import bcrypt from "bcryptjs";
 import { createChronicleFixture } from "../fixtures/sc07-chronicle";
 import { createReusableFixtureEnvelope } from "../fixtures/sc07-reusable";
-import { createStudioTale } from "../../src/chronicle/studio-service";
+import { createStudioTale, getStudioTale, saveStudioDraft } from "../../src/chronicle/studio-service";
 import { expect, test, type Browser, type BrowserContext, type Page } from "@playwright/test";
 import { db } from "../../src/lib/db";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
@@ -22,6 +22,7 @@ let installer: Actor;
 let moderator: Actor;
 let moderatorPassword: string;
 let sourceId: string;
+let sourceVersionId: string;
 let listingSlug: string;
 let listingId: string;
 
@@ -139,6 +140,7 @@ test.beforeAll(async ({ browser }) => {
   };
   const envelope = { ...unsigned, checksum: checksumReusableEnvelope(unsigned) } satisfies ReusableContentEnvelope;
   sourceId = envelope.itemId;
+  sourceVersionId = envelope.versionId;
   await createReusableAuthoringItem(owner.accountId, envelope);
   listingSlug = `sc07-browser-${randomUUID().slice(0, 8)}`;
 });
@@ -183,7 +185,7 @@ test("Creator reviews exact saved item and submits it for moderation", async () 
   });
 });
 
-test("second Creator installs the approved release from public detail and opens Studio", async () => {
+test("second Creator installs the approved Passage preset and applies it in private Studio", async () => {
   const reviewPage = moderator.page;
   await reviewPage.goto(`/admin/community/${listingId}`);
   await expect(reviewPage.getByRole("heading", { name: "Review exact Creator release" })).toBeVisible();
@@ -224,6 +226,64 @@ test("second Creator installs the approved release from public detail and opens 
     },
   });
   expect(receipt.installedPackageChecksum).toBe(review.packageChecksum);
+
+  const destination = await createStudioTale({
+    creatorId: installer.accountId,
+    title: "Private Passage destination",
+    slug: `sc07-passage-${randomUUID().slice(0, 8)}`,
+  });
+  const initial = await getStudioTale(destination.id);
+  const target = {
+    id: randomUUID(),
+    blockType: "narrative",
+    title: "Destination Passage",
+    configuration: { heading: "Draft greeting", body: "A private draft greeting." },
+    presentation: {},
+    completion: { mode: "playerConfirmation" },
+    isEnabled: true,
+    schemaVersion: 2,
+  };
+  await saveStudioDraft(
+    destination.id,
+    {
+      autosaveVersion: initial.draft.autosaveVersion,
+      tale: { ...initial.tale, visibility: "PRIVATE" },
+      chapters: [{ ...initial.draft.chapters[0], blocks: [target] }],
+    },
+    installer.accountId,
+  );
+  await page.goto(`/studio/tales/${destination.id}`);
+  await page.getByRole("group", { name: "Passage: Destination Passage" }).press("Enter");
+  await page.getByRole("tab", { name: "Reuse" }).press("Enter");
+  await page
+    .getByRole("listitem")
+    .filter({ hasText: "Harbor welcome" })
+    .getByRole("button", { name: "Apply to selected Passage" })
+    .press("Enter");
+  await expect
+    .poll(async () => {
+      const studio = await getStudioTale(destination.id);
+      const usage = await db.reusableAuthoringUsage.findFirst({ where: { draftId: destination.draftId } });
+      return {
+        visibility: studio.tale.visibility,
+        body: studio.draft.chapters[0].blocks[0].configuration.body,
+        provenance: usage ? JSON.parse(usage.provenance) : null,
+      };
+    })
+    .toMatchObject({
+      visibility: "PRIVATE",
+      body: "A synthetic harbor greeting for another Creator.",
+      provenance: {
+        sourceReleaseId: review.id,
+        sourceOwnerId: owner.accountId,
+        sourceItemId: sourceId,
+        sourceVersionId,
+        license: "SC07_TEST_REUSE",
+        modified: true,
+      },
+    });
+  await page.screenshot({ path: test.info().outputPath("passage-preset-private-reuse.png"), fullPage: true });
+
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(`/community/${listingSlug}`);
   await expect(page.getByRole("link", { name: "View my installed item" })).toBeVisible();
