@@ -48,7 +48,7 @@ export async function GET() {
         where: {
           owner: { accountId: actor.accountId },
           itemType: { in: ["CHRONICLE", "CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"] },
-          publicationStatus: { in: ["READY_FOR_REVIEW", "IN_REVIEW", "PUBLISHED", "REJECTED"] },
+          publicationStatus: { in: ["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING", "PUBLISHED", "REJECTED"] },
           currentReleaseId: { not: null },
           archivedAt: null,
           removedAt: null,
@@ -57,6 +57,7 @@ export async function GET() {
           id: true,
           title: true,
           slug: true,
+          itemType: true,
           publicationStatus: true,
           currentRelease: { select: { semanticVersion: true } },
         },

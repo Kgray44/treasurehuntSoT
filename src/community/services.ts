@@ -259,6 +259,11 @@ export async function transitionListing(
     !["DRAFT", "VALIDATING", "READY_FOR_REVIEW"].includes(next)
   )
     throw new CommunityError("COMMUNITY_ACCESS_DENIED", "Only moderation may change this publication state.");
+  if (listing.currentReleaseId && ["CHRONICLE", "CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"].includes(listing.itemType))
+    throw new CommunityError(
+      "COMMUNITY_MODERATION_REQUIRED",
+      "Use this release's Creator publication workflow to change its state.",
+    );
   assertTransition(listing.publicationStatus as Parameters<typeof assertTransition>[0], next);
   return db.$transaction(async (tx) => {
     const updated = await tx.communityListing.update({ where: { id }, data: { publicationStatus: next } });

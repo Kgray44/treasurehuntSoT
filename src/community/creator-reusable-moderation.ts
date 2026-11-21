@@ -16,7 +16,7 @@ async function loadCandidate(listingId: string) {
     !listing ||
     !release ||
     !["CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"].includes(listing.itemType) ||
-    !["READY_FOR_REVIEW", "IN_REVIEW"].includes(listing.publicationStatus) ||
+    !["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus) ||
     listing.visibility !== "COMMUNITY" ||
     listing.moderationStatus !== "ACTIVE" ||
     listing.owner.moderationStatus !== "ACTIVE" ||

@@ -32,7 +32,7 @@ export async function recordCreatorPublicationDecision(
         currentReleaseId: input.releaseId,
         currentRelease: { packageChecksum: input.packageChecksum, moderationStatus: "ACTIVE", deprecatedAt: null },
         owner: { moderationStatus: "ACTIVE", creatorStatus: { not: "SUSPENDED" } },
-        publicationStatus: { in: ["READY_FOR_REVIEW", "IN_REVIEW"] },
+        publicationStatus: { in: ["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING"] },
         moderationStatus: "ACTIVE",
         archivedAt: null,
         removedAt: null,

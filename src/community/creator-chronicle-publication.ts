@@ -6,11 +6,13 @@ import { publishedSourceChecksum } from "@/chronicle/snapshot";
 import { isInstalledCommunityChronicle } from "./creator-installed-library";
 import { assertCommunityDrydockPublicationGate } from "./drydock-publication-gate";
 import { assertPublishingAllowed, CommunityError, listingInputSchema, stableJson } from "./domain";
+import { resolveCreatorPublicationTarget, stageCreatorPublicationListing } from "./creator-publication-target";
 import { resolvePublicProfileProjection } from "./public-profile";
 import { communityPackageManifestSchema, packageChecksum, sha256, verifyCommunityPackage } from "./package";
 
 export const creatorChroniclePublicationSchema = z.strictObject({
   publishedVersionId: z.string().min(1).max(128),
+  listingId: z.string().min(1).max(128).optional(),
   slug: z
     .string()
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
@@ -36,7 +38,8 @@ function portableSnapshot(snapshot: ReturnType<typeof parsePublishedSnapshot>) {
       "COMMUNITY_DEPENDENCY_UNSUPPORTED",
       "This Chronicle has media, spatial or artifact dependencies that cannot yet be packaged with verified rights.",
     );
-  const external = /(?:asset|artifact|location|provider|media|image|audio)Id$/i;
+  const external =
+    /(?:asset|artifact|location|provider|media|image|audio|spatial(?:Asset|Scene|Environment|Moment))(?:Ids?|Url)$|^spatialMoment$/i;
   const visit = (value: unknown, key = "") => {
     if (external.test(key) && value !== null && value !== undefined && value !== "")
       throw new CommunityError(
@@ -128,6 +131,15 @@ async function resolveReview(accountId: string, raw: unknown) {
     locationClass: "FICTIONAL",
     tags: input.tags,
   });
+  const targetInput = {
+    listingId: input.listingId,
+    slug: input.slug,
+    itemType: listing.itemType,
+    ownerProfileId: profile.id,
+    sourceId: source.version.taleId,
+    sourceVersionId: source.version.id,
+  };
+  const target = await resolveCreatorPublicationTarget(db, targetInput);
   const attribution = [{ displayName: profile.displayName, contributionType: "Creator" }];
   const digest = sha256(
     stableJson({
@@ -135,12 +147,13 @@ async function resolveReview(accountId: string, raw: unknown) {
       checksum: source.version.checksum,
       evidenceDigest: source.version.drydockPublishingEvidence!.digest,
       listing,
+      target,
       licenseKey: policy.key,
       licenseVersion: policy.policyVersion,
       attribution,
     }),
   );
-  return { input, profile, source, policy, listing, attribution, digest };
+  return { input, profile, source, policy, listing, attribution, digest, targetInput, target };
 }
 
 export async function preflightCreatorChroniclePublication(accountId: string, raw: unknown) {
@@ -166,9 +179,8 @@ export async function submitCreatorChroniclePublication(accountId: string, raw: 
       "COMMUNITY_REVIEW_STALE",
       "The Chronicle or publishing choices changed. Review the release again.",
     );
-  if (await db.communityListing.findUnique({ where: { slug: review.input.slug } }))
-    throw new CommunityError("COMMUNITY_SLUG_TAKEN", "This Community address is already in use.");
-  const listingId = randomUUID();
+  const listingId = review.target?.listingId ?? randomUUID();
+  const semanticVersion = review.target?.semanticVersion ?? "1.0.0";
   const releaseId = randomUUID();
   const packageId = randomUUID();
   const bytes = new TextEncoder().encode(stableJson(review.source.snapshot));
@@ -186,7 +198,7 @@ export async function submitCreatorChroniclePublication(accountId: string, raw: 
     schemaVersion: 1,
     packageId,
     releaseId,
-    semanticVersion: "1.0.0",
+    semanticVersion,
     license,
     attribution: review.attribution,
     items: [item],
@@ -223,20 +235,18 @@ export async function submitCreatorChroniclePublication(accountId: string, raw: 
       pinned.drydockPublishingEvidence.sourceChecksum !== review.source.version.checksum
     )
       throw new CommunityError("COMMUNITY_SOURCE_CONFLICT", "The published Chronicle changed before submission.");
-    await tx.communityListing.create({
-      data: {
-        id: listingId,
-        ownerProfileId: review.profile.id,
-        ...review.listing,
-        tags: JSON.stringify(review.listing.tags),
-        publicationStatus: "READY_FOR_REVIEW",
-      },
-    });
+    const publicationStatus = await stageCreatorPublicationListing(
+      tx,
+      review.targetInput,
+      review.target,
+      review.listing,
+      listingId,
+    );
     await tx.communityRelease.create({
       data: {
         id: releaseId,
         listingId,
-        semanticVersion: "1.0.0",
+        semanticVersion,
         sourcePublishedTaleVersionId: review.source.version.id,
         manifest: JSON.stringify(releaseManifest),
         manifestChecksum: sha256(stableJson(releaseManifest)),
@@ -307,7 +317,7 @@ export async function submitCreatorChroniclePublication(accountId: string, raw: 
         eventType: "COMMUNITY_RELEASE_CREATED",
         aggregateType: "COMMUNITY_RELEASE",
         aggregateId: releaseId,
-        payload: JSON.stringify({ listingId, packageId, semanticVersion: "1.0.0" }),
+        payload: JSON.stringify({ listingId, packageId, semanticVersion }),
         idempotencyKey: `COMMUNITY_RELEASE_CREATED:${releaseId}`,
       },
     });
@@ -315,7 +325,8 @@ export async function submitCreatorChroniclePublication(accountId: string, raw: 
       listingId,
       releaseId,
       packageId,
-      publicationStatus: "READY_FOR_REVIEW" as const,
+      publicationStatus,
+      semanticVersion,
       listingUrl: `/community/${review.input.slug}`,
     };
   });

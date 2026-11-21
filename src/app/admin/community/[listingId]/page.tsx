@@ -43,7 +43,7 @@ export default async function CommunityListingPage({ params }: { params: Promise
     ["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus);
   const creatorPending =
     ["CHRONICLE", "CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"].includes(listing.itemType) &&
-    listing.publicationStatus === "READY_FOR_REVIEW";
+    ["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus);
   const assuranceActive =
     (spatialPending || creatorPending) && operator.capabilities.includes("COMMUNITY_MODERATE")
       ? (await privilegedAssuranceState(operator)).recent

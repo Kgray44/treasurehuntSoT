@@ -154,6 +154,23 @@ describe.skipIf(!isolated)("SC-07 Creator reusable Community journey", () => {
       await expect(reviewCreatorReusableInstallation(installerId, rejection.listingId)).rejects.toMatchObject({
         code: "COMMUNITY_LISTING_NOT_FOUND",
       });
+      const revisionInput = {
+        ...rejectedInput,
+        listingId: rejection.listingId,
+        description: "A fictional introduction with clear credit.",
+      };
+      const revisionReview = await preflightCreatorReusablePublication(ownerId, revisionInput);
+      const revised = await submitCreatorReusablePublication(ownerId, revisionInput, revisionReview.reviewDigest);
+      expect(revised).toMatchObject({
+        listingId: rejection.listingId,
+        semanticVersion: "2.0.0",
+        publicationStatus: "READY_FOR_REVIEW",
+      });
+      expect(revised.releaseId).not.toBe(rejection.releaseId);
+      expect(
+        (await db.communityRelease.findUniqueOrThrow({ where: { id: rejection.releaseId } })).packageChecksum,
+      ).toBe(rejectedReview.packageChecksum);
+      expect(await getPublicListingBySlug(rejectedInput.slug)).toBeNull();
       const moderation = await reviewCreatorReusablePublication(moderator, pending.listingId);
       expect(moderation.included.checksum).toBe(source.checksum);
       await expect(

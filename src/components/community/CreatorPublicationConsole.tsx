@@ -15,7 +15,8 @@ type Submission = {
   id: string;
   title: string;
   slug: string;
-  publicationStatus: "READY_FOR_REVIEW" | "IN_REVIEW" | "PUBLISHED" | "REJECTED";
+  itemType: Source["type"];
+  publicationStatus: "READY_FOR_REVIEW" | "IN_REVIEW" | "UPDATE_PENDING" | "PUBLISHED" | "REJECTED";
   currentRelease: { semanticVersion: string } | null;
 };
 type Options = { sources: Source[]; licenses: License[]; submissions?: Submission[] };
@@ -43,6 +44,7 @@ const sourceLabel = (type: Source["type"]) =>
 export function CreatorPublicationConsole() {
   const [options, setOptions] = useState<Options | null>(null);
   const [sourceKey, setSourceKey] = useState("");
+  const [replacementId, setReplacementId] = useState("");
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [description, setDescription] = useState("");
@@ -76,9 +78,16 @@ export function CreatorPublicationConsole() {
     () => options?.sources.find((entry) => `${entry.type}:${entry.id}` === sourceKey),
     [options, sourceKey],
   );
+  const replacements =
+    options?.submissions?.filter(
+      (submission) =>
+        submission.itemType === source?.type &&
+        (submission.publicationStatus === "PUBLISHED" || submission.publicationStatus === "REJECTED"),
+    ) ?? [];
   const publication = useMemo(() => {
     if (!source) return null;
     const common = {
+      ...(replacementId ? { listingId: replacementId } : {}),
       slug,
       title,
       description,
@@ -93,7 +102,7 @@ export function CreatorPublicationConsole() {
     return source.type === "CHRONICLE"
       ? { publishedVersionId: source.id, ...common, spoilersAcknowledged }
       : { source: { itemId: source.id, versionId: source.versionId }, ...common };
-  }, [source, slug, title, description, tags, licenseKey, rightsAcknowledged, spoilersAcknowledged]);
+  }, [source, replacementId, slug, title, description, tags, licenseKey, rightsAcknowledged, spoilersAcknowledged]);
   const route = source?.type === "CHRONICLE" ? "creator-chronicle" : "creator-reuse";
   const resetReview = () => {
     setPreflight(null);
@@ -183,6 +192,7 @@ export function CreatorPublicationConsole() {
             onChange={(event) => {
               const next = options.sources.find((entry) => `${entry.type}:${entry.id}` === event.target.value);
               setSourceKey(event.target.value);
+              setReplacementId("");
               setTitle(next?.title.replace(/ · .+$/, "") ?? "");
               setSlug(slugify(next?.title.replace(/ · .+$/, "") ?? ""));
               resetReview();
@@ -212,10 +222,33 @@ export function CreatorPublicationConsole() {
                   resetReview();
                 }}
               />
+              {replacements.length > 0 && (
+                <>
+                  <label htmlFor="creator-publication-replacement">Publication destination</label>
+                  <select
+                    id="creator-publication-replacement"
+                    value={replacementId}
+                    onChange={(event) => {
+                      const replacement = replacements.find((submission) => submission.id === event.target.value);
+                      setReplacementId(event.target.value);
+                      setSlug(replacement?.slug ?? slugify(title));
+                      resetReview();
+                    }}
+                  >
+                    <option value="">Create a new listing</option>
+                    {replacements.map((submission) => (
+                      <option key={submission.id} value={submission.id}>
+                        Replace {submission.title}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
               <label htmlFor="creator-publication-slug">Community address</label>
               <input
                 id="creator-publication-slug"
                 value={slug}
+                readOnly={Boolean(replacementId)}
                 onChange={(event) => {
                   setSlug(slugify(event.target.value));
                   resetReview();

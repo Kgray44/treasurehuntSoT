@@ -18,7 +18,7 @@ export async function loadCreatorChronicleCandidate(listingId: string, pendingOn
     !release ||
     listing.itemType !== "CHRONICLE" ||
     (pendingOnly
-      ? !["READY_FOR_REVIEW", "IN_REVIEW"].includes(listing.publicationStatus)
+      ? !["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus)
       : listing.publicationStatus !== "PUBLISHED") ||
     listing.visibility !== "COMMUNITY" ||
     listing.moderationStatus !== "ACTIVE" ||
