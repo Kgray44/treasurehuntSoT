@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { BrowserCameraBroker } from "@/sextant/camera";
 import { useOptionalCurrentUser } from "@/components/auth/CurrentUserProvider";
 
 const changeEvent = "crossdeck-gesture-preference";
@@ -38,7 +39,54 @@ export function useChartGestureEnabled() {
 export function ChartGesturePreference() {
   const enabled = useChartGestureEnabled();
   const key = usePreferenceKey();
-  const [failed, setFailed] = useState(false);
+  const [message, setMessage] = useState("");
+  const [requestingKey, setRequestingKey] = useState<string | null>(null);
+  const requesting = !!key && requestingKey === key;
+  const cameraRequest = useRef<BrowserCameraBroker | null>(null);
+  useEffect(
+    () => () => {
+      cameraRequest.current?.release();
+      cameraRequest.current = null;
+    },
+    [key],
+  );
+
+  const save = (next: boolean) => {
+    if (!key) return;
+    try {
+      if (next) localStorage.setItem(key, "enabled");
+      else localStorage.removeItem(key);
+      setMessage("");
+      window.dispatchEvent(new Event(changeEvent));
+    } catch {
+      setMessage("This browser could not save the camera preference.");
+    }
+  };
+
+  const enable = async () => {
+    if (!key) return;
+    if (!window.isSecureContext || !navigator.mediaDevices) {
+      setMessage("Camera access is unavailable here. You can still send Charts manually.");
+      return;
+    }
+    const broker = new BrowserCameraBroker(navigator.mediaDevices);
+    cameraRequest.current = broker;
+    setRequestingKey(key);
+    setMessage("");
+    try {
+      const lease = await broker.acquire(true, document.visibilityState === "visible");
+      lease.release();
+      if (cameraRequest.current === broker) save(true);
+    } catch {
+      if (cameraRequest.current === broker)
+        setMessage("Allow camera access to enable hand gestures. Manual transfer is available.");
+    } finally {
+      if (cameraRequest.current === broker) {
+        cameraRequest.current = null;
+        setRequestingKey(null);
+      }
+    }
+  };
   return (
     <section className="harbor-stack" aria-labelledby="chart-transfer-preference">
       <h2 id="chart-transfer-preference">Chart hand gestures</h2>
@@ -46,18 +94,11 @@ export function ChartGesturePreference() {
         <input
           type="checkbox"
           checked={enabled}
-          disabled={!key}
+          disabled={!key || requesting}
           aria-describedby="chart-transfer-privacy"
           onChange={(event) => {
-            if (!key) return;
-            try {
-              if (event.target.checked) localStorage.setItem(key, "enabled");
-              else localStorage.removeItem(key);
-              setFailed(false);
-              window.dispatchEvent(new Event(changeEvent));
-            } catch {
-              setFailed(true);
-            }
+            if (event.target.checked) void enable();
+            else save(false);
           }}
         />{" "}
         Use hand gestures on this device
@@ -67,7 +108,8 @@ export function ChartGesturePreference() {
         to pick it up. Open your fist in front of another connected device to receive it there. Camera images and hand
         landmarks stay on this device. The camera runs while an eligible connected Voyage is visible.
       </p>
-      {failed && <p role="alert">This browser could not save the camera preference.</p>}
+      {requesting && <p role="status">Waiting for camera permission…</p>}
+      {message && <p role="alert">{message}</p>}
     </section>
   );
 }
