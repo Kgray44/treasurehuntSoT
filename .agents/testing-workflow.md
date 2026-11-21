@@ -3,7 +3,7 @@ title: Focused development and final verification
 audience: automation
 status: current
 canonical_for: focused-development-testing-workflow
-last_reviewed: 2026-10-17
+last_reviewed: 2026-11-21
 ---
 
 # Focused development and final verification
@@ -35,11 +35,8 @@ match. Mutable databases, browser contexts, ports and output directories remain
 isolated for each execution. A changed input requires new preparation.
 
 Development results are labelled `DEVELOPMENT_ONLY` and `qualification: false`.
-They do not reserve campaign custody, consume a final-verification allowance,
-mint a qualifier, or satisfy a protected integration decision. Ordinary focused
-development within the owner's authorized task does not require another finite
-diagnostic exception or repeated owner permission. Existing reservations and
-failed final qualification records remain immutable and spent.
+Use them to diagnose and repair the task. The protected integration decision
+comes from the required Sounding Line V3 check.
 
 Keep the original assertions, fixture safeguards and timeouts when diagnosing a
 failure. If an isolated case does not reproduce a failure, record that result as
@@ -58,12 +55,6 @@ Only encrypted diagnostics may be uploaded where traces, screenshots or context
 could contain private runtime data. Keep collection completeness, encryption,
 upload, cleanup and the original test outcome distinct. A retention failure must
 not replace or erase the original application failure.
-
-Completed passing obligations may be retained after a later obligation fails.
-Reuse requires complete fingerprints and independently verified trusted producer
-provenance. A self-hashed cache file or a historical stdout pass is insufficient.
-Missing, incompatible, partial or unauthenticated evidence requires fresh proof.
-Retained partial progress never changes the failed whole-run outcome.
 
 Use [Sounding Line V3](../scripts/sounding-line-v3/README.md) to inspect the
 selected checks and verify the final candidate. Merge after the required
