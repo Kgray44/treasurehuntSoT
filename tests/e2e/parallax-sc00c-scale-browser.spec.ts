@@ -138,7 +138,9 @@ test("a large saved-Scene catalog remains searchable and paged in the actual Stu
   await expect(library.getByRole("article")).toHaveCount(48);
   await library.getByRole("button", { name: /Show more/ }).click();
   await expect(library.getByRole("article")).toHaveCount(96);
-  const evidence = total === 1000 ? "artifacts/sc00c/scale-browser" : `artifacts/sc00c/scale-browser-${total}`;
+  const evidence =
+    process.env.SC00C_SCALE_EVIDENCE_DIR ??
+    (total === 1000 ? "artifacts/sc00c/scale-browser" : `artifacts/sc00c/scale-browser-${total}`);
   const imageLabel = total === 1000 ? "thousand-scenes" : `${total}-scenes`;
   await mkdir(evidence, { recursive: true });
   const firstCard = library.getByRole("button", { name: "Inspect Synthetic Scale Scene 0000" });
