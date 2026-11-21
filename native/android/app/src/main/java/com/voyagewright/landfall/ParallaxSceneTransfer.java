@@ -14,18 +14,31 @@ final class ParallaxSceneTransfer {
   static final int SCENE_BYTES = 393216, CHUNK_BYTES = 8192, MAX_CHUNKS = 48, TIMEOUT_MS = 15000;
   final String sessionId;
   final int epoch;
+  final int deliveryVersion;
+  private final String expectedChecksum, expectedInstance;
   private int generation, currentGeneration, count, total, next;
   private long deadline;
   private String transaction, digest;
   private ByteArrayOutputStream buffer;
-  ParallaxSceneTransfer(String sessionId, int epoch) { this.sessionId = sessionId; this.epoch = epoch; }
+  private String stagedTransaction;
+  private int stagedGeneration;
+  ParallaxSceneTransfer(String sessionId, int epoch) { this(sessionId, epoch, 1, null, null); }
+  ParallaxSceneTransfer(String sessionId, int epoch, int version, String checksum, String instance) {
+    this.sessionId = sessionId; this.epoch = epoch; this.deliveryVersion = version;
+    this.expectedChecksum = checksum; this.expectedInstance = instance;
+  }
   private static boolean integer(JSONObject p, String key) { Object value=p.opt(key); return value instanceof Number && Double.isFinite(((Number)value).doubleValue()) && ((Number)value).doubleValue() == ((Number)value).intValue(); }
   private static boolean number(JSONObject p, String key) { return p.opt(key) instanceof Number; }
   static boolean validStart(JSONObject p) {
-    return p.length()==5 && integer(p,"epoch") && p.optInt("epoch")>0 && integer(p,"sceneTransferVersion") && p.optInt("sceneTransferVersion")==1 && p.opt("sessionId") instanceof String && p.optString("sessionId").matches("[A-Za-z0-9-]{1,64}") && p.opt("versionChecksum") instanceof String && p.optString("versionChecksum").matches("[a-f0-9]{64}") && p.opt("instanceId") instanceof String && p.optString("instanceId").matches("[A-Za-z0-9][A-Za-z0-9._:-]{0,299}");
+    return p.length()==5 && integer(p,"epoch") && p.optInt("epoch")>0 && integer(p,"sceneTransferVersion") && (p.optInt("sceneTransferVersion")==1 || p.optInt("sceneTransferVersion")==2) && p.opt("sessionId") instanceof String && p.optString("sessionId").matches("[A-Za-z0-9-]{1,64}") && p.opt("versionChecksum") instanceof String && p.optString("versionChecksum").matches("[a-f0-9]{64}") && p.opt("instanceId") instanceof String && p.optString("instanceId").matches("[A-Za-z0-9][A-Za-z0-9._:-]{0,299}");
   }
   boolean matches(JSONObject p) { return p.opt("sessionId") instanceof String && sessionId.equals(p.optString("sessionId")) && integer(p,"epoch") && epoch == p.optInt("epoch", -1); }
   void clear() { buffer = null; transaction = null; }
+  boolean stagedMatches(JSONObject p) {
+    return matches(p) && stagedTransaction != null && stagedTransaction.equals(p.optString("transactionId"))
+        && integer(p, "generation") && stagedGeneration == p.optInt("generation", -1);
+  }
+  void completeActivation() { stagedTransaction = null; }
   void expire(long now) { if (buffer != null && now >= deadline) clear(); }
   private boolean current(JSONObject p, long now) {
     expire(now);
@@ -35,7 +48,7 @@ final class ParallaxSceneTransfer {
     expire(now);
     int g = p.optInt("generation", -1), n = p.optInt("totalBytes", -1), c = p.optInt("chunkCount", -1);
     String t = p.optString("transactionId"), d = p.optString("digest");
-    if (p.length()!=8 || !integer(p,"generation") || !integer(p,"totalBytes") || !integer(p,"chunkCount") || !integer(p,"sceneTransferVersion") || !(p.opt("transactionId") instanceof String) || !(p.opt("digest") instanceof String) || !matches(p) || buffer != null || p.optInt("sceneTransferVersion") != 1 || g <= generation || g <= 0 || n < 1 || n > SCENE_BYTES || c != (n + CHUNK_BYTES - 1) / CHUNK_BYTES || c > MAX_CHUNKS || !t.matches("[A-Za-z0-9-]{1,64}") || !d.matches("[a-f0-9]{64}")) return false;
+    if (p.length()!=8 || !integer(p,"generation") || !integer(p,"totalBytes") || !integer(p,"chunkCount") || !integer(p,"sceneTransferVersion") || !(p.opt("transactionId") instanceof String) || !(p.opt("digest") instanceof String) || !matches(p) || buffer != null || p.optInt("sceneTransferVersion") != deliveryVersion || g <= generation || g <= 0 || n < 1 || n > SCENE_BYTES || c != (n + CHUNK_BYTES - 1) / CHUNK_BYTES || c > MAX_CHUNKS || !t.matches("[A-Za-z0-9-]{1,64}") || !d.matches("[a-f0-9]{64}")) return false;
     generation = currentGeneration = g; count = c; total = n; next = 0; deadline = now + TIMEOUT_MS;
     transaction = t; digest = d; buffer = new ByteArrayOutputStream(n); return true;
   }
@@ -49,8 +62,12 @@ final class ParallaxSceneTransfer {
       buffer.write(bytes, 0, bytes.length); next++; return true;
     } catch (Exception e) { clear(); return false; }
   }
-  boolean abort(JSONObject p) { if (matches(p) && transaction != null && transaction.equals(p.optString("transactionId")) && integer(p,"generation") && currentGeneration == p.optInt("generation", -1)) clear(); return matches(p); }
+  boolean abort(JSONObject p) { if (matches(p) && transaction != null && transaction.equals(p.optString("transactionId")) && integer(p,"generation") && currentGeneration == p.optInt("generation", -1)) clear(); if (stagedMatches(p)) completeActivation(); return matches(p); }
   JSONArray commit(JSONObject p, long now) {
+    JSONObject scene = commitScene(p, now);
+    return scene == null ? null : scene.optJSONArray("entities");
+  }
+  JSONObject commitScene(JSONObject p, long now) {
     if (!current(p, now)) return null;
     try {
       if (p.length()!=4 || next != count || buffer.size() != total) return null;
@@ -60,9 +77,15 @@ final class ParallaxSceneTransfer {
       if (!hash.toString().equals(digest)) return null;
       String json = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(bytes)).toString();
       JSONTokener tokener=new JSONTokener(json); JSONObject scene = new JSONObject(tokener);
-      if (tokener.nextClean()!=0 || scene.length() != 4 || !integer(scene,"schemaVersion") || scene.optInt("schemaVersion") != 1 || !scene.optString("transformKind").equals("RESOLVED_LOCAL_V1") || !scene.optString("coordinateFrame").equals("LOCAL_Y_UP_NEGATIVE_Z")) return null;
+      if (tokener.nextClean()!=0 || !integer(scene,"schemaVersion") || scene.optInt("schemaVersion") != deliveryVersion || !scene.optString("transformKind").equals("RESOLVED_LOCAL_V1") || !scene.optString("coordinateFrame").equals("LOCAL_Y_UP_NEGATIVE_Z")) return null;
+      if (deliveryVersion == 2) {
+        if (!ParallaxSceneDelivery.valid(scene, expectedChecksum, expectedInstance)) return null;
+        stagedTransaction = p.getString("transactionId"); stagedGeneration = p.getInt("generation");
+        return scene;
+      }
+      if (scene.length() != 4) return null;
       JSONArray entities = scene.getJSONArray("entities");
-      return validEntities(entities) ? entities : null;
+      return validEntities(entities) ? scene : null;
     } catch (Exception e) { return null; } finally { clear(); }
   }
   static boolean validEntities(JSONArray input) {

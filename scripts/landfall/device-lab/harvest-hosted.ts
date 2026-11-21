@@ -2,6 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { labTool } from "./host";
+import { readAndroidGraphicsProbe, validateAndroidGraphicsProbeTransport } from "./android-graphics-probe";
 
 /** Recover source-bound artifacts before removing only the unchanged transport branch we created. */
 export async function harvestLandfallHostedLab(runId: string, dispatchFile: string) {
@@ -18,11 +19,33 @@ export async function harvestLandfallHostedLab(runId: string, dispatchFile: stri
     !new RegExp(`^codex/landfall-lab-${dispatch.candidateSha.slice(0, 12)}-[0-9]+$`).test(dispatch.branch)
   )
     throw new Error("LANDFALL_HOSTED_DISPATCH_INVALID");
+  const graphicsProbe = readAndroidGraphicsProbe(
+    dispatch.graphicsProbe,
+    dispatch.target,
+    dispatch.tier,
+    Array.isArray(dispatch.profiles?.android)
+      ? dispatch.profiles.android.map((profile: { profile?: unknown }) => profile?.profile)
+      : undefined,
+  );
   const run = JSON.parse(await labTool("gh", ["run", "view", runId, "--json", "headSha,status,conclusion,url"]));
   if (run.headSha !== dispatch.transportSha) throw new Error("LANDFALL_HOSTED_SOURCE_MISMATCH");
   if (run.status !== "completed") return { state: "PENDING", url: run.url };
   if ((await labTool("git", ["rev-parse", `${dispatch.transportSha}^`])).trim() !== dispatch.candidateSha)
     throw new Error("LANDFALL_HOSTED_PARENT_MISMATCH");
+  const [candidateTemplate, transportWorkflow] = await Promise.all([
+    labTool("git", ["show", `${dispatch.candidateSha}:.agents/landfall-device-lab-hosted.yml`]),
+    labTool("git", ["show", `${dispatch.transportSha}:.github/workflows/landfall-device-lab.yml`]),
+  ]);
+  validateAndroidGraphicsProbeTransport(
+    graphicsProbe,
+    candidateTemplate,
+    transportWorkflow,
+    graphicsProbe
+      ? (await labTool("git", ["diff", "--name-only", dispatch.candidateSha, dispatch.transportSha]))
+          .trim()
+          .split(/\r?\n/)
+      : [],
+  );
   const directory = path.join(path.dirname(file), `run-${runId}`);
   await mkdir(directory, { recursive: true });
   const artifactDirectory = path.join(directory, "artifacts");
@@ -78,6 +101,7 @@ export async function harvestLandfallHostedLab(runId: string, dispatchFile: stri
     artifacts,
     artifactState,
     cleanup: { result: "PASS", ownedResources: [ref], remainingResources: [] },
+    ...(graphicsProbe ? { graphicsProbe } : {}),
   };
   await writeFile(path.join(directory, "hosted-receipt.json"), JSON.stringify(receipt, null, 2));
   await writeFile(

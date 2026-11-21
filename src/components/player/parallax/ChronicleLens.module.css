@@ -164,10 +164,14 @@
   background: #03101bd9;
 }
 .lens header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.4rem 1.7rem;
+  background: #0c202b;
   border-bottom: 1px solid #d4af6928;
   gap: 1rem;
 }
@@ -198,6 +202,14 @@
   display: grid;
   place-items: center;
   padding: 0;
+}
+.errorBanner {
+  margin: 0;
+  padding: 0.85rem 1.7rem;
+  border-bottom: 1px solid #e3b66a75;
+  background: #382b1f;
+  color: #ffe0a0;
+  line-height: 1.5;
 }
 .stage {
   padding: 1.8rem;
@@ -244,10 +256,11 @@
   font-size: 1.4rem;
   margin: 0.5rem 0;
 }
-.object p {
+.lens .object h3,
+.lens .object p {
   color: #2c2418;
 }
-.objectKind {
+.lens .object .objectKind {
   font-size: 0.7rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -319,6 +332,9 @@
   .lens header,
   .lens footer {
     padding: 1rem;
+  }
+  .errorBanner {
+    padding: 0.85rem 1rem;
   }
   .objects {
     grid-template-columns: 1fr;
