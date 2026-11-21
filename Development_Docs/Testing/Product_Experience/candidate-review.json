@@ -1710,5 +1710,13 @@
     "chronicle.creation",
     "homeport.owner-correction.round1.workspaces"
   ],
-  "reviewArtifactId": 13102538249
+  "reviewArtifactId": 13102538249,
+  "subsequentSourceBoundReviews": [
+    {
+      "contractId": "crossdeck.phase2.continuity",
+      "candidateSha": "e679720fd6b95099308436d57da5f08b311d34da",
+      "sourceDigest": "3da46ce348267a79250e1ec0fc5daa5d2a6112e249ab8aaa332ceb6434c3bd9e",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/candidate-review.json"
+    }
+  ]
 }

@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "contractId": "crossdeck.phase2.continuity",
+  "baseSha": "4053d4ee5833bc6130f91a0b8d2cd11d1ce0b97f",
+  "candidateSha": "e679720fd6b95099308436d57da5f08b311d34da",
+  "sourceDigest": "3da46ce348267a79250e1ec0fc5daa5d2a6112e249ab8aaa332ceb6434c3bd9e",
+  "contractDigest": "faaa2cd7233f6a9e7892a466d541dbf23552c5e3591cccd2704836770e0faee9",
+  "packetDigest": "827c585eb16f81173ef0f7f1f4cb810b7b6862dccec228137864859e0cf3689f",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "builderContext": "01a1ff86-66f0-7c10-afaa-4cb3e3e67037",
+  "reviewerContext": "/root/gesture_experience_review",
+  "independence": "Separate reviewer received actual rendered media and a neutral brief.",
+  "status": "NO_BLOCKING_FINDINGS_OBSERVED",
+  "artifacts": [
+    {
+      "id": "source-held-normal",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/source-held-normal.png",
+      "sha256": "8aa60def7126b965943c26d68c4e7cfcd27413491a96133f6ec31f6893674cb3",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "source-held-reduced",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/source-held-reduced.png",
+      "sha256": "c2f97ee003f18921b114fb00b29b2d90c7e51e26cb9c20ba3c38e81ec04e7e6e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "source-delivered-normal",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/source-delivered-normal.png",
+      "sha256": "e0c4424998db1c3d1e2977a1738de664cfd5293b2fce561673a663d6dea6ab30",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "phone-pinned-chart-normal",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/phone-pinned-chart-normal.png",
+      "sha256": "7fd6be20f69ab7b439a112fcbd08033a92dbad696087376236bb659f3c6db0bf",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "source-gesture-normal",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/source-gesture-normal.webm",
+      "sha256": "740036fe045396cc5395d81c9a8e4c120d65614517d0615718452c7d706e204f",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "timings",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/timings.json",
+      "sha256": "3feedb234fe41bf738bbe8d3b2346ad0414ff8f8505cb81a76689b9b0b5f076c",
+      "type": "timing",
+      "origin": "ACTUAL_APPLICATION"
+    }
+  ],
+  "journeyVerification": {
+    "spec": "tests/e2e/crossdeck-chart-gesture.spec.ts",
+    "result": "PASS_NORMAL_AND_REDUCED",
+    "runtime": "Task-owned Sounding Line V3 production build, isolated SQLite and two paired Chromium contexts",
+    "verified": [
+      "Keyboard opt-in persists in both device contexts after reload.",
+      "Camera gestures arm and complete the pinned Chart transfer through Crossdeck.",
+      "The receiving Chart opens automatically and acknowledges its rendered view.",
+      "One exact command retry after response loss produces one acknowledged handoff.",
+      "Animation is present with normal motion and suppressed with reduced motion."
+    ]
+  },
+  "reviewObservations": [
+    {
+      "dimension": "state feedback",
+      "evidenceIds": ["source-held-normal", "source-gesture-normal", "source-delivered-normal"],
+      "observation": "The Chart drawer distinguishes the carried state, the check for a receiving device, and the acknowledgement in a consistent, readable position."
+    },
+    {
+      "dimension": "accessibility and motion",
+      "evidenceIds": ["source-held-reduced", "source-gesture-normal"],
+      "observation": "The reduced-motion presentation preserves the carried instruction and the readable Journal fallback. Each state is available as text."
+    },
+    {
+      "dimension": "layout and continuity",
+      "evidenceIds": ["source-delivered-normal", "phone-pinned-chart-normal"],
+      "observation": "The desktop retains a visible drawer close affordance and Continue Voyage. The phone shows the same Voyage, a synced read-only Chart, and Return to Chronicle without observed horizontal clipping."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "LOW",
+      "evidenceIds": ["source-delivered-normal"],
+      "observation": "Readiness appears just above acknowledgement and can draw the first glance. The explicit delivered line remains visible."
+    },
+    {
+      "severity": "LOW",
+      "evidenceIds": ["source-held-normal", "phone-pinned-chart-normal"],
+      "observation": "The existing Chart and Journal each label their distinct objectives as Current objective. The receiving device shows the same objective as the Chart."
+    }
+  ],
+  "limits": [
+    "The browser proof uses synthetic landmarks. It supplies no physical webcam, lighting or hand-recognition acceptance.",
+    "The reviewer inspected sequential frames and stills. Continuous animation quality, assistive-technology announcements and activation of the return control remain unverified by this review.",
+    "The linked recording is trimmed to the Chart interaction after pairing."
+  ]
+}
