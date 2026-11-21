@@ -30,7 +30,9 @@ beforeAll(async () => {
   for (const sql of (
     readFileSync(resolve("prisma/migrations/20261011180000_parallax_a1_ai_quotas/migration.sql"), "utf8") +
     "\n" +
-    readFileSync(resolve("prisma/migrations/20261011210000_parallax_a1_application_receipt/migration.sql"), "utf8")
+    readFileSync(resolve("prisma/migrations/20261011210000_parallax_a1_application_receipt/migration.sql"), "utf8") +
+    "\n" +
+    readFileSync(resolve("prisma/migrations/20261015010000_admiralty_ai_economics/migration.sql"), "utf8")
   )
     .split(";")
     .map((part) => part.trim())
@@ -173,6 +175,9 @@ describe("Revisioned Admiralty owner policy commands with durable preview and au
     ).rejects.toMatchObject({ code: "ADMIRALTY_CAPABILITY_DENIED" });
     await expect(
       previewAIQuotaPolicy({ ...actor, roles: ["SUPPORT_OPERATOR"] }, command(), store, now),
+    ).rejects.toMatchObject({ code: "ADMIRALTY_CAPABILITY_DENIED" });
+    await expect(
+      previewAIQuotaPolicy({ ...actor, roles: ["CONFIGURATION_OPERATOR"] }, command(), store, now),
     ).rejects.toMatchObject({ code: "ADMIRALTY_CAPABILITY_DENIED" });
     expect(await store.aIQuotaPolicyRevision.count()).toBe(0);
   });

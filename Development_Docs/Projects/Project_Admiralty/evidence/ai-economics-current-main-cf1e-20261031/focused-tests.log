@@ -1,0 +1,22 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 D:/CodexWorkspaces/admiralty-ai-economics-20261031
+
+{"level":40,"time":1793497653426,"pid":26812,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1793497653448,"pid":26812,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1793497653448,"pid":26812,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1793497653449,"pid":26812,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1793497653450,"pid":26812,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1793497653450,"pid":26812,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1793497653451,"pid":26812,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1793497653451,"pid":26812,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"DraftConflictError","errorCode":"DRAFT_CONFLICT","msg":"Voyagewright request rejected"}
+{"level":40,"time":1793497653461,"pid":26812,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"Error","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1793497653462,"pid":26812,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"Error","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1793497653462,"pid":26812,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+
+ Test Files  15 passed (15)
+      Tests  183 passed (183)
+   Start at  21:47:22
+   Duration  12.76s (transform 2.66s, setup 986ms, import 10.79s, tests 8.91s, environment 2.13s)

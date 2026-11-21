@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+  "baseURL": "http://127.0.0.1:64831",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+  "timings": {
+    "serverPreparationMs": 16,
+    "serverReadinessMs": 1840,
+    "browserExecutionMs": 67658,
+    "infrastructureFailureWaitMs": 0,
+    "cleanupMs": 30
+  }
+}

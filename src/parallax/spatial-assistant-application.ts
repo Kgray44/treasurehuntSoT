@@ -179,6 +179,14 @@ export async function applySpatialAssistant(
           applicationRevision: revision,
           applicationChecksum: canonicalChecksum(prepared.draft),
           appliedAt: now,
+          outcome: "APPLIED",
+          outcomeAt: now,
+          outcomeEvidence: JSON.stringify({
+            authority: "PARALLAX_CANONICAL_APPLY",
+            revision,
+            checksum: canonicalChecksum(prepared.draft),
+            previousChecksum: prepared.previousChecksum,
+          }),
         },
       });
       if (claimed.count !== 1)

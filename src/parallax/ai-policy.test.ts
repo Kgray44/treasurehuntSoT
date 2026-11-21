@@ -20,6 +20,17 @@ const override: AIUserPolicy = {
   expiresAt: null,
 };
 describe("AI policy and versioned integer pricing", () => {
+  it("rejects duplicate effective instants even when their UTC text formats differ", () => {
+    expect(
+      aiGlobalPolicySchema.safeParse({
+        ...defaultAIGlobalPolicy,
+        pricingVersions: [
+          { ...aiPricing["gpt-6-luna"], revision: "equivalent-one", effectiveAt: "2026-11-01T00:00:00Z" },
+          { ...aiPricing["gpt-6-luna"], revision: "equivalent-two", effectiveAt: "2026-11-01T00:00:00.000Z" },
+        ],
+      }).success,
+    ).toBe(false);
+  });
   it("routes photo reconstruction independently of text mode and permits bounded per-user model exceptions", () => {
     const global = { ...defaultAIGlobalPolicy, enabled: true };
     const inherited = effectiveAIUserPolicy(global, null);

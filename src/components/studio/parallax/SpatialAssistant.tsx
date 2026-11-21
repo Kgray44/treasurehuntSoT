@@ -34,6 +34,7 @@ export type SpatialAssistantReply = {
 export type SpatialAssistantBase = { draft: SpatialDraft; revision: number; editorGeneration: number };
 export type SpatialAssistantSavedDraft = { status: "SAVED"; draft: SpatialDraft; revision: number };
 export type SpatialAssistantPort = {
+  reportOutcome?: (requestId: string, decision: "PREVIEWED" | "REJECTED") => Promise<unknown>;
   prepareBase: () => Promise<SpatialAssistantBase>;
   request: (input: AssistantRequest, signal: AbortSignal) => Promise<SpatialAssistantReply>;
   apply: (
@@ -406,6 +407,9 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         )
           throw new Error("Your scene has changed. Regenerate this proposal to preserve your newer work.");
         latest.current.onPreview(next, affected(ids));
+        void latest.current.port
+          .reportOutcome?.(proposal.requestId, "PREVIEWED")
+          .catch(() => setNotice("Preview is available; its usage feedback could not be recorded."));
       } else latest.current.onPreview(null, []);
       setPreviewing(enabled);
       setNotice("");
@@ -922,6 +926,9 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                   <button
                     disabled={working}
                     onClick={() => {
+                      void props.port
+                        .reportOutcome?.(proposal.requestId, "REJECTED")
+                        .catch(() => setNotice("Your scene is unchanged; rejection feedback could not be recorded."));
                       setSentRequest("");
                       setCurrentResponse(null);
                       setConversation([]);

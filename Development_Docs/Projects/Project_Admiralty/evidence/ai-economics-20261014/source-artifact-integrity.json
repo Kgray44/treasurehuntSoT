@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "kind": "BUILDER_SOURCE_AND_ARTIFACT_INTEGRITY_CHECK",
+  "status": "VERIFIED",
+  "candidate": "cfd78948301e86531d45a12f79b0f3f2f37e192d",
+  "packetSha256": "6fb877a8e5c84beb122b10ae79b4ca81f7398acd2eadd8fc983aa70b2f7024bb",
+  "reviewSha256": "c57f56f232fbbf7b78f9e1146cee494c5f96dc8ecd7a5d8c1a97992f27e036c4",
+  "sourceBindingsVerifiedAgainstCommit": 47,
+  "screenshots": 25,
+  "recordings": 2,
+  "sampledRecordingFrames": 7,
+  "boundary": "Byte integrity and provenance only. This report grants no protected capture/review authority, Mainline Decision, merge approval or owner acceptance."
+}

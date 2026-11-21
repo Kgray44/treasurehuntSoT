@@ -1,0 +1,641 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "INDEPENDENT_PRODUCT_EXPERIENCE_REVIEW",
+  "reviewIteration": 1,
+  "disposition": "LOCAL_ATTEMPT_EFFICIENCY_INCREMENT_SUPPORTED_WITH_RETAINED_BASELINE_DEBT",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "acceptance": "LOCAL_SOURCE_BOUND_EXPERIENCE_REVIEW_ONLY",
+  "reviewerContext": {
+    "contextId": "/root/quality_trend_review",
+    "kind": "SEPARATE_REVIEW_SUBAGENT_CONTEXT",
+    "builderContext": "/root",
+    "builder": false,
+    "provenance": "The same independent reviewer context that reviewed the preceding quality-trends cohort received a new bounded packet and frozen source. It inspected this packet's objective/contracts, the actual 32 current screenshots and all 12 declared primary recording frames before inspecting this increment's source/tests. Earlier reference images and immutable baseline review remain context, not substituted final-candidate evidence.",
+    "suppliedBuilderRationale": false,
+    "identityLimitation": "Context separation is recorded provenance, not cryptographic identity authentication.",
+    "reviewedAt": "2026-10-15T05:21:35.6891107Z"
+  },
+  "objective": "An Administrator distinguishes logical operations per useful result from recorded provider attempts per useful result, including retries and unsuccessful work, with capability-specific accepted-room or Apply denominators and explicit incomplete-attempt coverage. Existing daily quality, cost, policy and investigation journeys remain usable.",
+  "packet": {
+    "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/review-packet.json",
+    "sha256": "d23d4ffd778482fd0886a6c198633110ccf8943337ecc8ac8aeb6d8ee7d43e08",
+    "candidate": "4a185cbf6ba04c25564dcb5d031f03ef588de3c4",
+    "incrementBase": "a14d4d695bbc3d3ae266c838743dc738a9974e24",
+    "protectedBase": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa"
+  },
+  "verification": {
+    "packetDigestMatches": true,
+    "frozenHeadMatches": true,
+    "trackedSourceDiffFromCandidateEmpty": true,
+    "sourceBindingsChecked": 47,
+    "screenshotsChecked": 32,
+    "recordingByteBindingsChecked": 2,
+    "sampledFrameBindingsChecked": 12,
+    "retainedFailedArtifactsChecked": 17,
+    "baselineReviewDigestMatches": true,
+    "originalEconomicsReviewDigestMatches": true,
+    "mismatches": [],
+    "method": "SHA256 of every packet-declared source file, current screenshot, complete recording, sampled frame, retained failed-attempt artifact and immutable baseline review; git HEAD and source diff checked against the frozen candidate.",
+    "browserReceipt": {
+      "profile": "generic",
+      "status": "PASS",
+      "passedJourneys": 2,
+      "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+      "baseURL": "http://127.0.0.1:59889",
+      "independentlyRerun": false,
+      "evidence": [
+        "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser-suite-profile.json",
+        "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser-runtime.json",
+        "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser-execution.log"
+      ]
+    },
+    "reviewerTests": {
+      "command": "node node_modules/vitest/vitest.mjs run src/parallax/ai-economics.test.ts -t 'pre-dispatch|distinguishes Creators|leaves provider|counts one'",
+      "reviewerExecuted": true,
+      "status": "PASS",
+      "testFilesPassed": 1,
+      "testsPassed": 4,
+      "testsSkipped": 11,
+      "durationSeconds": 12.25,
+      "isolation": "The inspected test creates a unique temporary SQLite ledger and explicit Prisma datasources, then disconnects and removes only that temporary directory. No shared application database or provider was used."
+    },
+    "accountOnlySearchReproduction": {
+      "status": "PASS",
+      "reviewerExecuted": true,
+      "command": "node node_modules/tsx/dist/cli.mjs D:/CodexTemp/attempt-ratio-review-20261015/account-only-search.ts",
+      "script": {
+        "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/reviewer-account-search.ts.raw",
+        "sha256": "ed18aae2ba22b887fe8945b042f2387ccc351c597927a4c8a7cca32bff38f5f2",
+        "publication": "Verbatim copy of the executed temporary script; bytes match the executed .ts file."
+      },
+      "executionLog": {
+        "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/reviewer-account-search-execution.log.raw",
+        "sha256": "a97379b45c9caf69e9a3ae29393eefd1bd509ed7168d37e1f8e9aba6608efd93",
+        "publication": "Observed output of a fresh reviewer execution, including its runtime warning; not a reconstruction of the earlier terminal output."
+      },
+      "result": {
+        "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/reviewer-account-search-result.json",
+        "sha256": "25bc37b1930a095a951178e6c48bf0b0f01b99fc49c63baff75760146f49e34a",
+        "publication": "Parsed directly from the observed execution log and formatted with repository Prettier."
+      },
+      "observations": "Search cohortpersonselected9 is absent from every operation/request ID. A separate excluded account is present. The selected result contains one person, 3 logical operations and 4 provider attempts. Two reconstruction operations share one owned room: logical/provider efficiency both equal 2. One Assistant operation has two attempts and one Apply: logical efficiency 1, provider efficiency 2. Thus logical, accepted-room/useful-result and provider-attempt aggregates describe the same account-only searched cohort.",
+      "isolation": "Independent temporary SQLite store populated with synthetic records through the actual reserve/dispatch/settle/retry functions; synthetic outcome updates establish test denominators. Explicit datasource and bounded temporary-directory cleanup; no application/provider runtime."
+    }
+  },
+  "contracts": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+  "artifactNamespace": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015",
+  "inspectedReferences": [
+    {
+      "path": "Experience_Images/Contact_Sheets/Area_Admiralty_Desktop_01.png",
+      "observation": "Previously inspected in this separate context. Current captures preserve the same Chartroom dark-green panels, warm serif headings, gold emphasis and grouped administrative shell."
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+      "observation": "Previously inspected accepted shell reference: current economics retains visible account access and clear destinations with administrative task density."
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+      "observation": "Previously inspected mobile reference: current cards and controls stack readably; inherited expanded-station height remains baseline debt."
+    }
+  ],
+  "inspectedArtifacts": [
+    {
+      "id": "AE-QT-overview-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/overview-desktop.png"
+    },
+    {
+      "id": "AE-QT-daily-fallback-keyboard-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/daily-fallback-keyboard-desktop.png"
+    },
+    {
+      "id": "AE-QT-quality-keyboard-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/quality-keyboard-desktop.png"
+    },
+    {
+      "id": "AE-QT-quality-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/quality-desktop.png"
+    },
+    {
+      "id": "AE-QT-attempt-ratios-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/attempt-ratios-desktop.png"
+    },
+    {
+      "id": "AE-QT-quality-trend-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/quality-trend-desktop.png"
+    },
+    {
+      "id": "AE-QT-quality-trend-keyboard-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/quality-trend-keyboard-desktop.png"
+    },
+    {
+      "id": "AE-QT-investigation-history-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/investigation-history-desktop.png"
+    },
+    {
+      "id": "AE-QT-operation-inspector",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/operation-inspector.png"
+    },
+    {
+      "id": "AE-QT-people-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/people-desktop.png"
+    },
+    {
+      "id": "AE-QT-allowance-effective-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/allowance-effective-desktop.png"
+    },
+    {
+      "id": "AE-QT-allowance-effective-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/allowance-effective-mobile.png"
+    },
+    {
+      "id": "AE-QT-allowance-preview-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/allowance-preview-mobile.png"
+    },
+    {
+      "id": "AE-QT-allowance-preview-detail-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/allowance-preview-detail-mobile.png"
+    },
+    {
+      "id": "AE-QT-allowance-preview-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/allowance-preview-desktop.png"
+    },
+    {
+      "id": "AE-QT-allowance-applied-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/allowance-applied-mobile.png"
+    },
+    {
+      "id": "AE-QT-allowance-applied-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/allowance-applied-desktop.png"
+    },
+    {
+      "id": "AE-QT-configuration-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/configuration-desktop.png"
+    },
+    {
+      "id": "AE-QT-capabilities-desktop",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/capabilities-desktop.png"
+    },
+    {
+      "id": "AE-QT-capabilities-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/capabilities-mobile.png"
+    },
+    {
+      "id": "AE-QT-history-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/history-mobile.png"
+    },
+    {
+      "id": "AE-QT-overview-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/overview-mobile.png"
+    },
+    {
+      "id": "AE-QT-comparison-scroll-keyboard-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/comparison-scroll-keyboard-mobile.png"
+    },
+    {
+      "id": "AE-QT-quality-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/quality-mobile.png"
+    },
+    {
+      "id": "AE-QT-attempt-ratios-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/attempt-ratios-mobile.png"
+    },
+    {
+      "id": "AE-QT-attempt-coverage-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/attempt-coverage-mobile.png"
+    },
+    {
+      "id": "AE-QT-quality-trend-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/quality-trend-mobile.png"
+    },
+    {
+      "id": "AE-QT-quality-trend-keyboard-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/quality-trend-keyboard-mobile.png"
+    },
+    {
+      "id": "AE-QT-empty-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/empty-mobile.png"
+    },
+    {
+      "id": "AE-QT-loading-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/loading-mobile.png"
+    },
+    {
+      "id": "AE-QT-error-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/error-mobile.png"
+    },
+    {
+      "id": "AE-QT-recovered-mobile",
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/browser/recovered-mobile.png"
+    }
+  ],
+  "recordings": [
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/journey.webm",
+      "sha256": "7c42a62316210e0ce3adfa4a0cd7dc202a87f6170da311f844b2d45f83e5c2e3",
+      "bytesVerified": true,
+      "visualReview": "All 12 declared sampled primary recording frames inspected."
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/capture-journey.webm",
+      "sha256": "81b81459d33cf413e248a05a002e9ee186c02eb9c7c744841bee38a702236154",
+      "bytesVerified": true,
+      "visualReview": "Complete bytes verified; separate continuous playback not performed."
+    }
+  ],
+  "inspectedRecordingFrames": [
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/recording-frames/at-000s.png",
+      "seconds": 0
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/recording-frames/at-002s.png",
+      "seconds": 2
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/recording-frames/at-004s.png",
+      "seconds": 4
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/recording-frames/at-006s.png",
+      "seconds": 6
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/recording-frames/at-008s.png",
+      "seconds": 8
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/recording-frames/at-010s.png",
+      "seconds": 10
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/recording-frames/at-012s.png",
+      "seconds": 12
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/recording-frames/at-014s.png",
+      "seconds": 14
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/recording-frames/at-016s.png",
+      "seconds": 16
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/recording-frames/at-018s.png",
+      "seconds": 18
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/recording-frames/at-020s.png",
+      "seconds": 20
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/recording-frames/at-022s.png",
+      "seconds": 22
+    }
+  ],
+  "recordingAssessment": {
+    "method": "SAMPLED_FRAMES_NOT_CONTINUOUS_PLAYBACK",
+    "durationSeconds": 23.4,
+    "observations": "0s is initial white content; 2s shows economics entry; 4s shows investigation history; 6s shows focused history filtering with the retried Assistant operation; 8s shows mobile effective rights/fields; 10s shows policy review; 12s shows privileged confirmation controls; 14s shows return to economics; 16s shows focused horizontal comparison access; 18s shows Quality navigation; 20s shows focused exact trend-table cost columns; 22s shows loading feedback. Gray space is recording canvas outside a narrow viewport, not established page overflow.",
+    "limits": "Two-second samples cannot prove every transition, absence of brief flashes, continuous playback quality, actual latency, or human-paced usability."
+  },
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "status": "SUPPORTED_WITH_BASELINE_DEBT",
+      "observation": "The new provider-attempt row sits directly beneath operations per useful result in each existing quality card. An adjacent attempt-count/coverage sentence follows the monetary facts. Desktop retains two columns; mobile stacks complete capability cards. No new chart, navigation branch or overlay competes with the existing quality/trend flow.",
+      "evidence": ["AE-QT-attempt-ratios-desktop", "AE-QT-attempt-ratios-mobile", "AE-QT-quality-mobile"],
+      "baselineDebt": ["AE-PX-O01"]
+    },
+    {
+      "dimension": "hierarchy",
+      "status": "SUPPORTED_WITH_BASELINE_DEBT",
+      "observation": "Accepted rooms/applied edits remain the first exact facts beneath the outcome rate; operation efficiency and provider efficiency are next and separately named. Counts and coverage are visible before the secondary Outcome definition and coverage disclosure. Existing repeated introductions and tall mobile station remain inherited hierarchy debt.",
+      "evidence": ["AE-QT-quality-desktop", "AE-QT-attempt-ratios-mobile", "AE-QT-overview-mobile"],
+      "baselineDebt": ["AE-PX-O01"]
+    },
+    {
+      "dimension": "typography",
+      "status": "SUPPORTED_WITH_BASELINE_DEBT",
+      "observation": "The focused desktop and mobile captures clearly distinguish 1.14 logical-operation efficiency from 1.19 provider-attempt efficiency. Mobile labels fit without clipping; the longer provider label has its own fact row. In incomplete history, Unavailable occupies a clear separate value line. Long fractional cost values remain legible but retain baseline comparison debt.",
+      "evidence": ["AE-QT-attempt-ratios-desktop", "AE-QT-attempt-ratios-mobile", "AE-QT-attempt-coverage-mobile"],
+      "baselineDebt": ["AE-PX-O02"]
+    },
+    {
+      "dimension": "spacing",
+      "status": "SUPPORTED",
+      "observation": "Rules and vertical padding separate the two efficiency facts, monetary values and coverage sentence. Mobile wraps the coverage sentence to two lines without collision with generated/applied counts. Adding the row increases card height while preserving the following disclosure and next card.",
+      "evidence": ["AE-QT-attempt-ratios-mobile", "AE-QT-attempt-coverage-mobile", "AE-QT-quality-desktop"]
+    },
+    {
+      "dimension": "controls",
+      "status": "SUPPORTED_FOR_CAPTURED_JOURNEY",
+      "observation": "The existing Quality & Outcomes control discovers the new facts without extra interaction. Outcome definition and coverage remains a visible semantic disclosure for detailed meaning. Existing trend, filters, inspector, People allowances, capability and configuration controls remain available in the current captures; the new efficiency facts are read-only.",
+      "evidence": [
+        "AE-QT-quality-keyboard-desktop",
+        "AE-QT-attempt-ratios-mobile",
+        "AE-QT-operation-inspector",
+        "AE-QT-configuration-desktop"
+      ],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
+      "dimension": "contrast",
+      "status": "SUPPORTED_WITH_BOUNDED_ACCESSIBILITY_EVIDENCE",
+      "observation": "Pale fact values and muted capitalized labels separate against dark green cards; gold rates/disclosures and aqua focus remain distinct. The current test performs scoped axe checks in the economics workspace. Visual/axe support is bounded and does not certify every ratio, shared-shell chrome or assistive-technology session.",
+      "evidence": [
+        "AE-QT-attempt-ratios-desktop",
+        "AE-QT-attempt-coverage-mobile",
+        "AE-QT-quality-trend-keyboard-mobile",
+        "tests/e2e/admiralty-ai-economics.spec.ts:282"
+      ]
+    },
+    {
+      "dimension": "consistency",
+      "status": "SUPPORTED",
+      "observation": "The new fact uses the same definition-list row, precision and unavailable wording as existing quality facts. Room Reconstruction keeps accepted rooms as its useful result, Assistant cards keep applied edits, and the Capabilities registry retains those canonical distinctions. The reference Chartroom family is preserved.",
+      "evidence": ["AE-QT-quality-desktop", "AE-QT-capabilities-desktop", "AE-QT-capabilities-mobile"]
+    },
+    {
+      "dimension": "states",
+      "status": "SUPPORTED",
+      "observation": "Complete Assistant capture shows 25 attempts and 100.0% operation coverage with ratio 1.19. The missing-instrumentation mobile state retains 1.14 logical efficiency, shows 25 attempts/95.8% coverage and makes provider efficiency Unavailable. Empty periods show unavailable ratios and zero recorded attempts. Loading, failed refresh and recovery are separately captured; the test restores capture metadata and verifies 1.19 returns.",
+      "evidence": [
+        "AE-QT-attempt-ratios-mobile",
+        "AE-QT-attempt-coverage-mobile",
+        "AE-QT-empty-mobile",
+        "AE-QT-loading-mobile",
+        "AE-QT-error-mobile",
+        "AE-QT-recovered-mobile",
+        "tests/e2e/admiralty-ai-economics.spec.ts:255"
+      ]
+    },
+    {
+      "dimension": "responsive",
+      "status": "SUPPORTED_WITH_BASELINE_DEBT",
+      "observation": "The new rows remain readable in the focused mobile card without horizontal table interaction. Existing exact daily/comparison tables contain overflow and expose right-side columns after actual keyboard scrolling. Policy preview still clips the Proposed heading/origins at initial position, separately tracked as inherited debt.",
+      "evidence": [
+        "AE-QT-attempt-ratios-mobile",
+        "AE-QT-attempt-coverage-mobile",
+        "AE-QT-quality-trend-keyboard-mobile",
+        "AE-QT-comparison-scroll-keyboard-mobile",
+        "AE-QT-allowance-preview-detail-mobile"
+      ],
+      "baselineDebt": ["AE-PX-O04"]
+    },
+    {
+      "dimension": "keyboard",
+      "status": "SUPPORTED_FOR_SPECIFIED_CONTROLS",
+      "observation": "New read-only facts introduce no new focus trap or required pointer action. The current suite establishes focus then uses actual Enter for Quality and the reconstruction disclosure, and ArrowRight for contained comparison/trend access. Full Tab-from-entry, screen-reader interpretation and policy-table horizontal keyboard traversal remain unproved.",
+      "evidence": [
+        "AE-QT-quality-keyboard-desktop",
+        "AE-QT-daily-fallback-keyboard-desktop",
+        "AE-QT-quality-trend-keyboard-mobile",
+        "AE-QT-comparison-scroll-keyboard-mobile"
+      ]
+    },
+    {
+      "dimension": "focus",
+      "status": "SUPPORTED_FOR_SPECIFIED_CONTROLS",
+      "observation": "The current Quality control, exact daily fallback and both mobile scroll regions show visible outlines in their focused captures. The new metric rows remain plain readable content. Centered targeted captures keep active content below the sticky shell; complete shared-shell focus behavior is not certified.",
+      "evidence": [
+        "AE-QT-quality-keyboard-desktop",
+        "AE-QT-daily-fallback-keyboard-desktop",
+        "AE-QT-quality-trend-keyboard-mobile",
+        "AE-QT-comparison-scroll-keyboard-mobile"
+      ]
+    },
+    {
+      "dimension": "feedback",
+      "status": "SUPPORTED",
+      "observation": "Incomplete attempt capture visibly changes only provider efficiency to Unavailable while leaving recorded counts and logical efficiency intact. Current loading/503/retry evidence retains explicit applied-period feedback. The existing policy flow still displays revision/audit feedback. No attempt ratio is presented as an authoritative owner-acceptance signal.",
+      "evidence": [
+        "AE-QT-attempt-coverage-mobile",
+        "AE-QT-error-mobile",
+        "AE-QT-recovered-mobile",
+        "AE-QT-allowance-applied-mobile"
+      ]
+    },
+    {
+      "dimension": "motion",
+      "status": "SUPPORTED_WITH_SAMPLING_LIMIT",
+      "observation": "The increment adds static facts without animation. Existing reduced-motion mobile capture path and static daily sample dots remain. All declared sampled frames were inspected, but sampling and source do not establish continuous transition quality or actual timing acceptance.",
+      "evidence": [
+        "AE-QT-attempt-ratios-mobile",
+        "AE-QT-quality-trend-mobile",
+        "recording-frames/at-020s.png",
+        "tests/e2e/admiralty-ai-economics.spec.ts"
+      ]
+    },
+    {
+      "dimension": "continuity",
+      "status": "SUPPORTED_FOR_LOCAL_ECONOMICS_JOURNEY",
+      "observation": "Current browser evidence preserves natural /admin entry, economics navigation, quality/trend inspection, investigation/history/inspector, canonical dossier allowance review/application, capabilities/configuration, return and recovery. The source restores the synthetic incomplete metadata before continuing; current final captures are not substituted earlier failed captures.",
+      "evidence": [
+        "AE-QT-investigation-history-desktop",
+        "AE-QT-operation-inspector",
+        "AE-QT-people-desktop",
+        "AE-QT-allowance-applied-desktop",
+        "AE-QT-capabilities-mobile",
+        "AE-QT-recovered-mobile",
+        "browser-execution.log"
+      ]
+    },
+    {
+      "dimension": "complexity",
+      "status": "SUPPORTED_WITH_BASELINE_DEBT",
+      "observation": "One adjacent provider-efficiency row and one visible coverage sentence express the distinction without adding a screen. Detailed denominator/coverage meaning stays in a named disclosure, while exact counts remain visible. Existing page/dossier length and fractional-value density remain retained debt.",
+      "evidence": ["AE-QT-attempt-ratios-desktop", "AE-QT-attempt-ratios-mobile", "AE-QT-quality-mobile"],
+      "baselineDebt": ["AE-PX-O01", "AE-PX-O02"]
+    },
+    {
+      "dimension": "role-outcomes",
+      "status": "SUPPORTED_FOR_LOCAL_SYNTHETIC_OBJECTIVE",
+      "observation": "The Administrator can compare 24 logical Assistant operations/21 applied edits (1.14) with 25 provider attempts/21 applied edits (1.19), while reconstruction shows 50 logical operations and attempts/12 distinct accepted rooms (4.17 each). Failed/retried work remains in recorded attempt counts. Reviewer tests and account-only reproduction independently preserve useful-result and selected-cohort semantics; descriptive ratios do not establish causation or production invoice truth.",
+      "evidence": [
+        "AE-QT-attempt-ratios-desktop",
+        "AE-QT-attempt-ratios-mobile",
+        "AE-QT-operation-inspector",
+        "src/parallax/ai-economics.test.ts:100",
+        "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/reviewer-account-search-result.json"
+      ],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
+      "dimension": "fallbacks",
+      "status": "SUPPORTED_WITH_RENDERED_LIMITS",
+      "observation": "Incomplete instrumentation renders an unavailable provider ratio even with visible attempts; unknown/empty denominators do not become zero efficiency. Tests cover a missing dispatch receipt, legacy capture metadata and a known undispatched zero-attempt operation. Other AI Operations has no useful semantics and remains unavailable. The definition disclosure is visible closed in this cohort; its detailed text is source-verified rather than separately captured expanded.",
+      "evidence": [
+        "AE-QT-attempt-coverage-mobile",
+        "AE-QT-empty-mobile",
+        "AE-QT-quality-desktop",
+        "src/parallax/ai-economics.test.ts:85",
+        "src/parallax/ai-economics.test.ts:204",
+        "src/components/admiralty/AIEconomicsConsole.tsx:557"
+      ],
+      "contractIds": ["admiralty.ai-economics"]
+    }
+  ],
+  "specialAssessments": {
+    "logicalVersusProvider": {
+      "status": "SUPPORTED",
+      "observation": "Source exposes separate operationsPerUsefulResult and providerAttemptsPerUsefulResult. Provider numerator counts all joined recorded attempts for the same filtered logical operations, including unsuccessful dispatches/retries. Ratio is withheld unless requests are nonempty, the capability has useful semantics and all selected logical operations have known attempt capture. Known undispatched operations can contribute zero attempts; missing history is not inferred.",
+      "evidence": [
+        "src/parallax/ai-economics.ts:156",
+        "src/parallax/ai-economics.ts:326",
+        "src/parallax/ai-economics.ts:477",
+        "AE-QT-attempt-coverage-mobile"
+      ]
+    },
+    "usefulDenominators": {
+      "status": "SUPPORTED",
+      "observation": "Reconstruction efficiency divides by distinct owned accepted rooms across the selected request cohort, not accepted-operation count. Assistant efficiency divides by currently APPLIED edits, not generated proposals. Existing acceptance/Apply rate denominators remain recorded-outcome operations, a separate concept. The account-only reproduction deliberately creates two accepted operations for one owned room and one applied edit with a retry.",
+      "evidence": [
+        "src/parallax/ai-economics.ts",
+        "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/reviewer-account-search-result.json",
+        "AE-QT-attempt-ratios-desktop"
+      ]
+    },
+    "filterParity": {
+      "status": "SUPPORTED_FOR_REPRODUCED_ACCOUNT_ONLY_SEARCH",
+      "observation": "economicsWhere search includes id, requestId and accountId; economicsSql search also includes all three. The actual SQLite reproduction selects an account whose ID occurs in neither operation nor request IDs, and independently confirms matching logical-operation, useful-result and provider-attempt cohorts while excluding another account. Exact scalar filter predicates also remain present in both builders; the reviewer does not claim exhaustive cross-provider/collation/wildcard equivalence.",
+      "evidence": [
+        "src/parallax/ai-economics.ts:25",
+        "src/parallax/ai-economics.ts:52",
+        "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/reviewer-account-search.ts.raw",
+        "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/reviewer-account-search-result.json"
+      ]
+    },
+    "dailyQualityContinuity": {
+      "status": "SUPPORTED_FOR_CAPTURED_ROOM_TREND",
+      "observation": "Current exact table still shows October 12:2/20, $0.64 per useful result; October 14:10/30, $0.192. Noninterpolated daily dots, UTC request-day definition, distinct-room deduplication explanation and keyboard-scroll fallback remain. Other capability expanded trend variants remain source-supported rather than separately rendered."
+    }
+  },
+  "findings": [],
+  "nonblockingObservations": [],
+  "retainedFailedAttempts": {
+    "artifactsChecked": 17,
+    "allDigestsMatch": true,
+    "attempts": [
+      {
+        "id": "AE-AT-PREFLIGHT-001",
+        "candidate": "13cf91d371c584c378a5b3501991f52e9c6df359",
+        "status": "RETAINED_PRE_BOOTSTRAP_PATH_REJECTION",
+        "observation": "The preserved log reports SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:generic:DATABASE_PATH before bootstrap. Its original profile receipt was overwritten by the next invocation and is not reconstructed. This is failed-preflight evidence, not final-candidate acceptance."
+      },
+      {
+        "id": "AE-AT-CAPTURE-002",
+        "candidate": "13cf91d371c584c378a5b3501991f52e9c6df359",
+        "status": "RETAINED_FAILED_CAPTURE_COHORT",
+        "observation": "The raw log/receipts retain PRODUCT_FAILURE and 1 failed capture pass/1 passed repetition. The exact top-scroll assertion expected 0 and observed 2. Associated original screenshots, videos, trace and diagnostics retain their earlier source identity. Source comparison shows the final capture helper repeats top scroll within the existing exact-zero poll rather than relaxing the assertion. Final 4a185cbf receipts independently report two passing journeys; earlier failure evidence is not relabeled as final acceptance."
+      }
+    ],
+    "authorityBoundary": "Retained earlier-source artifacts document actual failed attempts only. They are not part of the final-candidate inspected screenshot/recording set and confer no protected or owner acceptance."
+  },
+  "baselineDebt": {
+    "preservedReview": {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/independent-review.json",
+      "sha256": "c201845a8daf1bc584c084ad10af688c6689dcb075e30224e5862db831d8ebcf",
+      "source": "ca670ddad1418f8de581cdb0701309683c21968d",
+      "publication": "a14d4d695bbc3d3ae266c838743dc738a9974e24",
+      "modifiedByReviewer": false
+    },
+    "originalEconomicsReview": {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/independent-review-final.json",
+      "sha256": "c57f56f232fbbf7b78f9e1146cee494c5f96dc8ecd7a5d8c1a97992f27e036c4",
+      "modifiedByReviewer": false
+    },
+    "retainedObservationIds": ["AE-PX-O01", "AE-PX-O02", "AE-PX-O04"],
+    "observations": [
+      {
+        "id": "AE-PX-O01",
+        "priority": "P3",
+        "blocking": false,
+        "status": "RETAINED_OPEN",
+        "observation": "Expanded mobile station consumes roughly the first viewport before the title, a second introduction repeats hierarchy, and the canonical dossier remains long.",
+        "evidence": ["AE-QT-overview-mobile", "AE-QT-quality-mobile", "AE-QT-allowance-effective-mobile"],
+        "accountableOwner": "Admiralty experience integration with Homeport for shared navigation",
+        "repairPath": "Separately scoped mobile-shell/hierarchy refinement reducing station/repeated introduction height while preserving navigation and canonical dossier obligations."
+      },
+      {
+        "id": "AE-PX-O02",
+        "priority": "P3",
+        "blocking": false,
+        "status": "RETAINED_OPEN",
+        "observation": "Mean and per-useful-result monetary figures retain many fractional digits, preserving precision while slowing quick comparison. The new two-decimal efficiency facts do not discharge this debt.",
+        "evidence": ["AE-QT-attempt-ratios-mobile", "AE-QT-overview-mobile", "AE-QT-quality-mobile"],
+        "accountableOwner": "Admiralty AI economics experience integration",
+        "repairPath": "Consider concise approximate defaults with exact nanodollar-derived values in an accessible disclosure, preserving precision and cost-basis labels."
+      },
+      {
+        "id": "AE-PX-O04",
+        "priority": "P3",
+        "blocking": false,
+        "status": "OPEN_BOUNDED_READABILITY_DEBT",
+        "observation": "Mobile policy review still clips Proposed/origin values initially; effective allowances place remaining/model columns offscreen. Current comparison/trend keyboard evidence does not prove the policy-table path.",
+        "evidence": [
+          "AE-QT-allowance-effective-mobile",
+          "AE-QT-allowance-preview-detail-mobile",
+          "AE-QT-allowance-applied-mobile"
+        ],
+        "accountableOwner": "Admiralty allowance experience integration",
+        "repairPath": "Add a visible horizontal-scroll cue or stacked Current/Proposed presentation in bounded follow-up; exercise both horizontal positions without weakening privileged confirmation."
+      }
+    ],
+    "protectedPrerequisite": {
+      "status": "REPORTED_BLOCK_RETAINED",
+      "accountableOwner": "Existing Crossdeck/Parallax experience integration owner and Sounding Line qualification authority",
+      "repairPath": "Resolve selected consumer design and prerequisite integration through the existing owners, freeze a new exact source and obtain fresh ordinary protected capture/review/qualification.",
+      "observation": "Current packet remains dependent on unresolved protected prerequisites and parent PR #722. This local independent report does not discharge Crossdeck design or unregistered-consumer gates and does not query/attest live remote state."
+    }
+  },
+  "sourceInspectedAfterExperience": [
+    {
+      "path": "src/components/admiralty/AIEconomicsConsole.tsx",
+      "purpose": "Adjacent efficiency labels, unavailable/coverage feedback, disclosure definition and existing fallback continuity."
+    },
+    {
+      "path": "src/parallax/ai-economics.ts",
+      "purpose": "Recorded provider attempts and known capture coverage, useful denominators, selected cohort equivalence and unavailable ratios."
+    },
+    {
+      "path": "src/parallax/ai-economics.test.ts",
+      "purpose": "Inspect isolated setup and independently run four focused regression cases."
+    },
+    {
+      "path": "src/parallax/ai-attempts.ts",
+      "purpose": "Confirm explicitly created retry dispatch attempt status and preserved failed/settled attempts."
+    },
+    {
+      "path": "src/app/api/admin/ai-economics/route.ts",
+      "purpose": "Confirm supported account/search filter contract and shared overview filter plumbing."
+    },
+    {
+      "path": "scripts/admiralty/ai-economics-fixture.ts",
+      "purpose": "Understand actual synthetic fixture denominators and retried operation."
+    },
+    {
+      "path": "tests/e2e/admiralty-ai-economics.spec.ts",
+      "purpose": "Confirm actual desktop/mobile assertions, incomplete capture/recovery mutation, existing keyboard journeys and exact-zero capture repair."
+    }
+  ],
+  "evidenceLimits": [
+    "Local actual-application synthetic evidence only; no production provider invoice audit, real private content, production deployment or actual mobile-device acceptance.",
+    "All 32 current screenshots and 12 declared unaltered sampled primary recording frames were inspected. Both complete recording bytehashes were verified; continuous playback was not performed.",
+    "The reviewer independently executed four narrow existing SQLite regressions and an additional isolated account-only search reproduction. Current two browser passes are supported by inspected receipts/log/source and captures, not an independent full browser rerun.",
+    "Detailed Outcome definition and coverage text is source-verified; its expanded variant is not separately captured. Incomplete instrumentation rendering is captured directly.",
+    "Programmatic focus establishes keyboard start positions before actual Enter/ArrowRight. Full Tab-from-entry, assistive technology, complete shared-shell focus and policy-table horizontal keyboard access remain unproved.",
+    "Scoped axe and screenshots support review; they do not certify all contrast ratios, shared shell accessibility or human-paced usability.",
+    "Only Room Reconstruction daily trend is captured expanded; other trend variants retain the previous source/test-supported rendered-evidence limitation.",
+    "All 17 retained failed-attempt artifacts preserve the earlier 13cf91d3 source; their failure status is not transformed into final 4a185cbf acceptance.",
+    "The protected registry complete People-search and daily metric journeys remain ordinary protected contract obligations beyond this economics suite.",
+    "No protected artifact attestation, Sounding Line Mainline Decision, merge acceptance, prerequisite acceptance, provider billing acceptance or owner PRODUCT_ACCEPTED is claimed."
+  ],
+  "acceptanceBoundary": "Local source-bound actual-application evidence only. Protected Crossdeck design and unregistered-consumer gates, parent PR #722, ordinary Sounding Line qualification, merge and owner acceptance remain unresolved and unclaimed.",
+  "protectedAttestation": false,
+  "mainlineDecision": false,
+  "ownerAcceptance": false,
+  "mergeAcceptance": false,
+  "unresolvedBlockingFindings": [],
+  "nextAction": "Verify and publish this formatted review and its retained reviewer reproduction artifacts beside the unchanged packet/captures. Preserve P3 baseline debt and failed-attempt source boundaries. Continue qualification only when prerequisites permit; changed product source requires fresh exact-source evidence.",
+  "documentClassification": "Engineering evidence under Development_Docs; JSON review record and reviewer reproduction evidence, not current human guidance or active automation instructions. Root owns documentation indexes/catalog publication checks."
+}
