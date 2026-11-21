@@ -129,14 +129,34 @@ export async function installCreatorReusableRelease(input: {
       "COMMUNITY_REVIEW_STALE",
       "The release changed. Review its current package before installing.",
     );
-  const prior = await installedTarget(input.accountId, input.releaseId);
-  if (prior)
+  const existingResult = async () => {
+    const prior = await installedTarget(input.accountId, input.releaseId);
+    if (!prior) return null;
+    if (
+      prior.installation.packageId !== source.record.id ||
+      prior.installation.installedPackageChecksum !== input.packageChecksum
+    )
+      throw new CommunityError(
+        "COMMUNITY_INSTALLATION_STALE",
+        "The existing installation no longer matches this release.",
+      );
     return {
       status: "ALREADY_INSTALLED" as const,
       itemId: prior.target.id,
       releaseId: input.releaseId,
       studioUrl: "/studio/exchange#installed-community",
     };
+  };
+  const assertRequestMatches = async () => {
+    const existing = await db.communityInstallOperation.findUnique({
+      where: { accountId_requestId: { accountId: input.accountId, requestId: input.requestId } },
+    });
+    if (existing && (existing.releaseId !== input.releaseId || existing.packageId !== source.record.id))
+      throw new CommunityError("COMMUNITY_SOURCE_CONFLICT", "This request was used for another release.");
+  };
+  await assertRequestMatches();
+  const prior = await existingResult();
+  if (prior) return prior;
   const itemId = randomUUID();
   const versionId = randomUUID();
   const operationId = randomUUID();
@@ -148,93 +168,94 @@ export async function installCreatorReusableRelease(input: {
     source.release.id,
     source.license.key!,
   );
-  return db.$transaction(async (tx) => {
-    const existing = await tx.communityInstallOperation.findUnique({
-      where: { accountId_requestId: { accountId: input.accountId, requestId: input.requestId } },
-    });
-    if (existing) {
-      if (existing.releaseId !== input.releaseId || existing.packageId !== source.record.id)
-        throw new CommunityError("COMMUNITY_SOURCE_CONFLICT", "This request was used for another release.");
-      const mapping = await tx.communityInstallMapping.findFirst({
-        where: { operationId: existing.id, sourceId: "creator-item" },
+  try {
+    return await db.$transaction(async (tx) => {
+      await tx.communityInstallOperation.create({
+        data: {
+          id: operationId,
+          requestId: input.requestId,
+          idempotencyKey: `CREATOR_REUSABLE_RELEASE:${input.accountId}:${input.releaseId}`,
+          packageId: source.record.id,
+          releaseId: input.releaseId,
+          accountId: input.accountId,
+          mode: "LIBRARY_REFERENCE",
+          status: "COMMITTED",
+          destinationRevision: "NEW_LIBRARY_ENTRY",
+          plan: JSON.stringify({
+            sourceItemId: source.verified.envelope.itemId,
+            targetItemId: itemId,
+            packageChecksum: source.record.packageChecksum,
+          }),
+          completedAt: new Date(),
+        },
       });
-      if (!mapping) throw new CommunityError("COMMUNITY_INSTALLATION_STALE", "The prior installation is incomplete.");
+      const stillPublic = await tx.communityListing.findFirst({
+        where: {
+          id: input.listingId,
+          currentReleaseId: input.releaseId,
+          publicationStatus: "PUBLISHED",
+          visibility: { in: ["COMMUNITY", "UNLISTED"] },
+          currentRelease: { moderationStatus: "ACTIVE", deprecatedAt: null, packageChecksum: input.packageChecksum },
+          owner: { visibility: "COMMUNITY", moderationStatus: "ACTIVE", creatorStatus: { not: "SUSPENDED" } },
+          moderationStatus: "ACTIVE",
+          archivedAt: null,
+          removedAt: null,
+        },
+      });
+      if (!stillPublic) throw new CommunityError("COMMUNITY_REVIEW_STALE", "This release is no longer public.");
+      await tx.reusableAuthoringItem.create({
+        data: {
+          id: itemId,
+          ownerAccountId: input.accountId,
+          kind: envelope.kind,
+          name: envelope.name,
+          description: envelope.description,
+          tags: JSON.stringify(envelope.tags),
+          status: "INSTALLED_READ_ONLY",
+          currentVersionNumber: 1,
+          versions: {
+            create: {
+              id: versionId,
+              versionNumber: 1,
+              envelope: JSON.stringify(envelope),
+              checksum: envelope.checksum,
+            },
+          },
+        },
+      });
+      await tx.communityInstallMapping.create({
+        data: {
+          operationId,
+          sourceId: "creator-item",
+          targetId: itemId,
+          kind: envelope.kind,
+        },
+      });
+      await tx.communityInstallation.create({
+        data: {
+          accountId: input.accountId,
+          packageId: source.record.id,
+          releaseId: input.releaseId,
+          operationId,
+          mode: "LIBRARY_REFERENCE",
+          installedPackageChecksum: source.record.packageChecksum,
+          upstreamReleaseId: input.releaseId,
+        },
+      });
       return {
-        status: "ALREADY_INSTALLED" as const,
-        itemId: mapping.targetId,
+        status: "COMMITTED" as const,
+        itemId,
         releaseId: input.releaseId,
         studioUrl: "/studio/exchange#installed-community",
       };
+    });
+  } catch (cause) {
+    const code = (cause as { code?: string } | null)?.code;
+    if (code === "P2002" || code === "P2034") {
+      await assertRequestMatches();
+      const completed = await existingResult();
+      if (completed) return completed;
     }
-    const stillPublic = await tx.communityListing.findFirst({
-      where: {
-        id: input.listingId,
-        currentReleaseId: input.releaseId,
-        publicationStatus: "PUBLISHED",
-        moderationStatus: "ACTIVE",
-        archivedAt: null,
-        removedAt: null,
-      },
-    });
-    if (!stillPublic) throw new CommunityError("COMMUNITY_REVIEW_STALE", "This release is no longer public.");
-    await tx.reusableAuthoringItem.create({
-      data: {
-        id: itemId,
-        ownerAccountId: input.accountId,
-        kind: envelope.kind,
-        name: envelope.name,
-        description: envelope.description,
-        tags: JSON.stringify(envelope.tags),
-        status: "INSTALLED_READ_ONLY",
-        currentVersionNumber: 1,
-        versions: {
-          create: { id: versionId, versionNumber: 1, envelope: JSON.stringify(envelope), checksum: envelope.checksum },
-        },
-      },
-    });
-    await tx.communityInstallOperation.create({
-      data: {
-        id: operationId,
-        requestId: input.requestId,
-        idempotencyKey: `CREATOR_REUSABLE:${input.accountId}:${input.requestId}`,
-        packageId: source.record.id,
-        releaseId: input.releaseId,
-        accountId: input.accountId,
-        mode: "LIBRARY_REFERENCE",
-        status: "COMMITTED",
-        destinationRevision: "NEW_LIBRARY_ENTRY",
-        plan: JSON.stringify({
-          sourceItemId: source.verified.envelope.itemId,
-          targetItemId: itemId,
-          packageChecksum: source.record.packageChecksum,
-        }),
-        completedAt: new Date(),
-      },
-    });
-    await tx.communityInstallMapping.create({
-      data: {
-        operationId,
-        sourceId: "creator-item",
-        targetId: itemId,
-        kind: envelope.kind,
-      },
-    });
-    await tx.communityInstallation.create({
-      data: {
-        accountId: input.accountId,
-        packageId: source.record.id,
-        releaseId: input.releaseId,
-        operationId,
-        mode: "LIBRARY_REFERENCE",
-        installedPackageChecksum: source.record.packageChecksum,
-        upstreamReleaseId: input.releaseId,
-      },
-    });
-    return {
-      status: "COMMITTED" as const,
-      itemId,
-      releaseId: input.releaseId,
-      studioUrl: "/studio/exchange#installed-community",
-    };
-  });
+    throw cause;
+  }
 }

@@ -200,13 +200,23 @@ describe.skipIf(!isolated)("SC-07 Creator reusable Community journey", () => {
           requestId: `sc07-${randomUUID()}`,
         }),
       ).rejects.toMatchObject({ code: "COMMUNITY_REVIEW_STALE" });
-      const installed = await installCreatorReusableRelease({
+      const installInput = {
         accountId: installerId,
         listingId: pending.listingId,
         releaseId: installReview.releaseId,
         packageChecksum: installReview.packageChecksum,
-        requestId: `sc07-${randomUUID()}`,
-      });
+      };
+      const attempts = await Promise.all(
+        [1, 2].map(() =>
+          installCreatorReusableRelease({
+            ...installInput,
+            requestId: `sc07-${randomUUID()}`,
+          }),
+        ),
+      );
+      const installed = attempts.find((attempt) => attempt.status === "COMMITTED")!;
+      expect(attempts.map((attempt) => attempt.status).sort()).toEqual(["ALREADY_INSTALLED", "COMMITTED"]);
+      expect(attempts[0].itemId).toBe(attempts[1].itemId);
       expect(installed.status).toBe("COMMITTED");
       expect((await reviewCreatorReusableInstallation(installerId, pending.listingId)).studioUrl).toBe(
         "/studio/exchange#installed-community",
