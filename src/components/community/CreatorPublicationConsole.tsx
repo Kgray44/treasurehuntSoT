@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Source = {
   type: "CHRONICLE" | "CHRONICLE_TEMPLATE" | "STORY_BLOCK_PRESET";
@@ -56,6 +56,10 @@ export function CreatorPublicationConsole() {
   const [receipt, setReceipt] = useState<Receipt | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const receiptRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
+    if (receipt) receiptRef.current?.focus();
+  }, [receipt]);
   useEffect(() => {
     let cancelled = false;
     void fetch("/api/community/creator-publication/options", { cache: "no-store" })
@@ -336,7 +340,7 @@ export function CreatorPublicationConsole() {
         <section aria-labelledby="creator-publication-review">
           <h2 id="creator-publication-review">Review before submitting</h2>
           <p>
-            Source checksum: <code>{preflight.sourceChecksum}</code>
+            Source checksum: <code style={{ overflowWrap: "anywhere" }}>{preflight.sourceChecksum}</code>
           </p>
           <p>
             License: {preflight.license.name}. Credits:{" "}
@@ -358,7 +362,7 @@ export function CreatorPublicationConsole() {
         </section>
       )}
       {receipt && (
-        <p role="status">
+        <p ref={receiptRef} role="status" tabIndex={-1}>
           Submitted for independent moderation. The listing will become public after approval.{" "}
           <Link href={receipt.listingUrl}>View its Community address</Link>.
         </p>

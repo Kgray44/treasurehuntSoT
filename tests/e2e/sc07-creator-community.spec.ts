@@ -36,35 +36,38 @@ function requireOwnedDatabase() {
     throw new Error("SC07_OWNED_BROWSER_DATABASE_REQUIRED");
 }
 
-async function actor(browser: Browser, label: string): Promise<Actor> {
+async function actor(browser: Browser, label: string, creator = true): Promise<Actor> {
   const suffix = randomUUID().slice(0, 8);
   const username = `sc07-${label}-${suffix}`;
+  const claimedAt = creator ? new Date() : null;
   const account = await db.userAccount.create({
-    data: { status: "ACTIVE", ordinaryWorkspaceEntryAt: new Date(), claimedAt: new Date() },
+    data: { status: creator ? "ACTIVE" : "GUEST_UNCLAIMED", ordinaryWorkspaceEntryAt: claimedAt, claimedAt },
   });
   await db.playerProfile.create({
     data: {
       accountId: account.id,
-      displayName: `Synthetic ${label} Creator`,
-      normalizedDisplayName: `synthetic ${label} creator ${suffix}`,
+      displayName: creator ? `Synthetic ${label} Creator` : "Synthetic Player",
+      normalizedDisplayName: `synthetic ${label} ${suffix}`,
       handle: username,
       normalizedHandle: username,
       defaultVisibility: "PUBLIC",
       status: "ACTIVE",
-      claimedAt: new Date(),
+      claimedAt,
     },
   });
-  await db.accountEmail.create({
-    data: {
-      accountId: account.id,
-      normalizedEmail: `${username}@example.test`,
-      displayEmail: `${username}@example.test`,
-      isPrimary: true,
-      verificationState: "VERIFIED",
-      verifiedAt: new Date(),
-    },
-  });
-  await activateWorkspaceCapability(account.id, "CREATOR");
+  if (creator) {
+    await db.accountEmail.create({
+      data: {
+        accountId: account.id,
+        normalizedEmail: `${username}@example.test`,
+        displayEmail: `${username}@example.test`,
+        isPrimary: true,
+        verificationState: "VERIFIED",
+        verifiedAt: claimedAt,
+      },
+    });
+    await activateWorkspaceCapability(account.id, "CREATOR");
+  }
   const videoDir = path.join(test.info().project.outputDir, "role-recordings");
   mkdirSync(videoDir, { recursive: true });
   const context = await browser.newContext({ recordVideo: { dir: videoDir } });
@@ -159,8 +162,10 @@ test.afterAll(async () => {
   await db.$disconnect();
 });
 
-test("Creator reviews exact saved item and submits it for moderation", async () => {
+test("only the owner with Creator access submits the exact saved item for moderation", async ({ browser }) => {
   const page = owner.page;
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/studio/exchange");
   await expect(page.getByRole("heading", { name: "Open the Exchange" })).toBeVisible();
   await page.getByLabel("Saved source").selectOption(`STORY_BLOCK_PRESET:${sourceId}`);
@@ -168,15 +173,56 @@ test("Creator reviews exact saved item and submits it for moderation", async () 
   await page.getByLabel("Preview-safe description").fill("A fictional greeting for other Creators.");
   await page.getByLabel("License").selectOption("SC07_TEST_REUSE");
   await page.getByLabel("I own or have permission to distribute every included item.").check();
-  await page.getByRole("button", { name: "Review exact package" }).click();
+  const reviewed = page.waitForResponse(
+    (response) => new URL(response.url()).pathname === "/api/community/creator-reuse/preflight",
+  );
+  await page.getByRole("button", { name: "Review exact package" }).press("Enter");
+  const preflight = await reviewed;
+  expect(preflight.ok()).toBe(true);
   await expect(page.getByRole("heading", { name: "Review before submitting" })).toBeVisible();
   await page.getByText("Inspect every included field", { exact: true }).press("Enter");
   await expect(page.getByText(/A synthetic harbor greeting for another Creator/)).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: test.info().outputPath("creator-package-review.png"), fullPage: true });
+
+  const publishRequest = {
+    publication: preflight.request().postDataJSON(),
+    reviewDigest: (await preflight.json()).reviewDigest,
+  };
+  const player = await actor(browser, "player", false);
+  try {
+    await player.page.goto("/studio/exchange");
+    await expect(player.page.getByRole("heading", { name: "Creator access is required." })).toBeVisible();
+    for (const { participant, status, code } of [
+      { participant: player, status: 403, code: "COMMUNITY_ACCESS_DENIED" },
+      { participant: installer, status: 400, code: "COMMUNITY_SOURCE_NOT_OWNED" },
+    ]) {
+      const session = await participant.page.request.get("/api/player/session");
+      expect(session.ok()).toBe(true);
+      const { csrfToken } = await session.json();
+      expect(csrfToken).toBeTruthy();
+      const denied = await participant.page.request.post("/api/community/creator-reuse/publish", {
+        data: publishRequest,
+        headers: { "x-csrf-token": csrfToken },
+      });
+      expect(denied.status()).toBe(status);
+      expect(await denied.json()).toMatchObject({ code });
+    }
+    expect(await db.communityListing.count({ where: { slug: listingSlug } })).toBe(0);
+  } finally {
+    await player.context.close();
+  }
+
   await page.getByRole("button", { name: "Submit for moderation" }).press("Enter");
-  await expect(page.getByText(/Submitted for independent moderation/)).toBeVisible();
-  await page.screenshot({ path: test.info().outputPath("creator-submitted.png"), fullPage: true });
+  const confirmation = page.getByRole("status").filter({ hasText: "Submitted for independent moderation" });
+  await expect(confirmation).toBeFocused();
+  await expect(confirmation).toBeInViewport({ ratio: 1 });
+  await page.screenshot({ path: test.info().outputPath("creator-submitted.png") });
   listingId = (await db.communityListing.findUniqueOrThrow({ where: { slug: listingSlug } })).id;
+  const ownerReview = await page.request.get(`/api/admin/community/creator-reuse/${listingId}/review`);
+  expect(ownerReview.status()).toBe(403);
+  expect(await ownerReview.text()).not.toContain("A synthetic harbor greeting for another Creator.");
+  await page.setViewportSize({ width: 1280, height: 800 });
   await installer.page.goto("/community/templates");
   await expect(installer.page.locator(`a[href="/community/${listingSlug}"]`)).toHaveCount(0);
   await installer.page.screenshot({
