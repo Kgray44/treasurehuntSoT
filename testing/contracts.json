@@ -11696,18 +11696,14 @@
       "id": "admiralty.ai-economics",
       "name": "Capability-aware AI economics and canonical useful outcomes",
       "authority": "project-admiralty",
-      "owners": [
-        "project-admiralty"
-      ],
+      "owners": ["project-admiralty"],
       "critical": true,
       "experience": {
         "persona": "An authenticated Administrator managing AI quality, spending and individual capability rights",
         "objective": "Understand resource consumption and genuinely useful AI outcomes, investigate poor experience, and configure governed allowances",
         "visibleOutcome": "Capability-aware economics distinguish provider attempts, logical-operation and provider-attempt efficiency, applied edits, accepted rooms, and uncertain cost; UTC request-day quality rates and cost per useful result expose changes over time; person controls use the canonical dossier and audited policy service",
         "integrationOwner": "Admiralty AI economics experience integration",
-        "systems": [
-          "project-admiralty"
-        ],
+        "systems": ["project-admiralty"],
         "sourcePaths": [
           "src/components/admiralty/AIEconomicsConsole.tsx",
           "src/components/admiralty/AIEconomicsConsole.module.css",
@@ -11731,13 +11727,8 @@
           "HISTORY_READY",
           "ECONOMICS_RETURNED"
         ],
-        "devices": [
-          "DESKTOP",
-          "MOBILE"
-        ],
-        "roles": [
-          "ADMINISTRATOR"
-        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["ADMINISTRATOR"],
         "accessibility": "Semantic figures and exact daily data, labeled filters, visible focus, keyboard-reachable contained tables, responsive cards and explicit loading/error/recovery feedback.",
         "fallback": "No operations reports an honest empty period. Missing usage retains unknown dimensions and unresolved exposure. A failed refresh identifies the last loaded period and provides Retry.",
         "navigation": "Enter through existing Admiralty navigation; move among economics views and the canonical People dossier; reveal existing governed configuration through its visible disclosure.",
@@ -11760,16 +11751,9 @@
             "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
           }
         ],
-        "homeportScreenIds": [
-          "screen-page-admin",
-          "screen-page-admin-people"
-        ],
-        "homeportJourneyIds": [
-          "B"
-        ],
-        "browserTests": [
-          "tests/e2e/admiralty-ai-economics.spec.ts"
-        ],
+        "homeportScreenIds": ["screen-page-admin", "screen-page-admin-people"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": ["tests/e2e/admiralty-ai-economics.spec.ts"],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
@@ -11807,9 +11791,7 @@
         "journeys": [
           {
             "id": "economics-capability-quality-and-return",
-            "roles": [
-              "ADMINISTRATOR"
-            ],
+            "roles": ["ADMINISTRATOR"],
             "outcome": "An Administrator naturally opens economics, distinguishes outcomes, inspects capability semantics and operation history, and returns to the overview.",
             "steps": [
               {

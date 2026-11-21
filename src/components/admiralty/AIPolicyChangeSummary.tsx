@@ -80,7 +80,12 @@ export function AIPolicyChangeSummary({ current, proposed }: { current: unknown;
     <>
       <h3>What will change</h3>
       {changed.length ? (
-        <div className={`${styles.scroll} ${styles.policyChanges}`} tabIndex={0} role="region" aria-label="Policy changes">
+        <div
+          className={`${styles.scroll} ${styles.policyChanges}`}
+          tabIndex={0}
+          role="region"
+          aria-label="Policy changes"
+        >
           <table className={styles.desktopPolicyChanges}>
             <caption>Changed values only. All other effective settings stay the same.</caption>
             <thead>
