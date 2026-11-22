@@ -22,16 +22,21 @@ const plan = (files, content = "", request = {}) =>
   );
 const names = (result) => result.jobs.map(({ id }) => id);
 
-test("ordinary Lanternwake runs the extended lifecycle file under its own deadline", () => {
+test("ordinary Lanternwake runs both extended lifecycle groups under separate deadlines", () => {
   const accessibility = "tests/e2e/phase3-accessibility-viewports.spec.ts";
   const extended = "tests/e2e/phase3-lifecycle-extended.spec.ts";
   const performance = "tests/e2e/phase3-performance.spec.ts";
+  const audioSuite = "Project Lanternwake Phase 3 audio lifecycle";
   const files = [accessibility, extended, performance];
+  const extendedBatches = [
+    [extended, "--grep-invert", audioSuite],
+    [extended, "--grep", audioSuite],
+  ];
   assert.deepEqual(browserProfileBatches("lanternwake-phase3", files, false), [
     [accessibility, performance],
-    [extended],
+    ...extendedBatches,
   ]);
-  assert.deepEqual(browserProfileBatches("lanternwake-phase3", [extended], false), [[extended]]);
+  assert.deepEqual(browserProfileBatches("lanternwake-phase3", [extended], false), extendedBatches);
   assert.deepEqual(browserProfileBatches("lanternwake-phase3", files, true), [files]);
   assert.deepEqual(browserProfileBatches("generic", files, false), [files]);
 });
