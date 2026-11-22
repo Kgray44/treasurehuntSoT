@@ -564,8 +564,12 @@ async function measuredFullOpening(page: Page, control: Locator) {
   return { ...opening, visual };
 }
 
-// Capture actions and failures without recording the page during samples.
-phase3Test.use({ video: "off", trace: { mode: "retain-on-failure", screenshots: false, snapshots: false } });
+// Use the regular Chromium build and keep recording work out of frame measurements.
+phase3Test.use({
+  channel: "chromium",
+  video: "off",
+  trace: { mode: "retain-on-failure", screenshots: false, snapshots: false },
+});
 
 phase3Test(
   "canonical production Journal performance and lifecycle budgets",
