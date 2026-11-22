@@ -11726,7 +11726,7 @@
           "src/parallax/ai-quota-projections.ts",
           "src/app/api/admin/ai-economics"
         ],
-        "entryPoint": "/admin",
+        "entryPoint": "/admin/ai-usage",
         "states": [
           "ADMIN_ENTRY",
           "ECONOMICS_READY",
@@ -11905,7 +11905,6 @@
                 "text": "Cost and evidence coverage",
                 "path": "/admin/ai-usage",
                 "state": "ECONOMICS_RETURNED",
-                "kind": "outcome",
                 "meaning": "The operator returns to the cost overview without mutating policies.",
                 "returnPath": true
               }
