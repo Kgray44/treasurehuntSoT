@@ -296,6 +296,26 @@ describe("RouteMotionBoundary", () => {
     act(() => vi.advanceTimersByTime(400));
     expect(view.getByRole("heading", { name: "Public Profile" })).toHaveFocus();
   });
+  it("preserves focus already assigned by the arriving destination", () => {
+    motionState.mode = "reduced";
+    vi.useFakeTimers();
+    const view = render(
+      <RouteMotionBoundary pathname="/community/harbor">{ready("Harbor opening")}</RouteMotionBoundary>,
+    );
+    view.rerender(
+      <RouteMotionBoundary pathname="/studio/exchange">
+        <main>
+          <h1>Open the Exchange</h1>
+          <h2 tabIndex={-1}>Installed from Community</h2>
+        </main>
+      </RouteMotionBoundary>,
+    );
+
+    const installedHeading = view.getByRole("heading", { name: "Installed from Community" });
+    installedHeading.focus({ preventScroll: true });
+    act(() => vi.advanceTimersByTime(400));
+    expect(installedHeading).toHaveFocus();
+  });
   it("keeps the active editor and its unsaved input mounted when motion preference changes", () => {
     function Editor() {
       const [title, setTitle] = useState("Initial scene");
