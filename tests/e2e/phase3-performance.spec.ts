@@ -34,6 +34,7 @@ type LayoutShiftSample = Readonly<{ atMs: number; score: number; phase: string |
 type VisualProbeResult = Readonly<{
   elapsedMs: number;
   frameDurationsMs: readonly number[];
+  framesByPhase: Record<string, number[]>;
   longTaskDurationsMs: readonly number[];
   cls: number;
   layoutShifts: readonly LayoutShiftSample[];
@@ -210,6 +211,7 @@ async function startVisualProbe(page: Page) {
       startedAt: number;
       lastFrameAt: number | null;
       frameDurationsMs: number[];
+      framesByPhase: Record<string, number[]>;
       longTaskDurationsMs: number[];
       cls: number;
       layoutShifts: LayoutShiftSample[];
@@ -230,13 +232,20 @@ async function startVisualProbe(page: Page) {
       startedAt: window.performance.now(),
       lastFrameAt: null,
       frameDurationsMs: [],
+      framesByPhase: {},
       longTaskDurationsMs: [],
       cls: 0,
       layoutShifts: [],
       frame: 0,
     } as unknown as Probe;
+    const scene = document.querySelector<HTMLElement>(".chronicle-journal-shell");
     const sampleFrame = (at: number) => {
-      if (probe.lastFrameAt !== null) probe.frameDurationsMs.push(at - probe.lastFrameAt);
+      if (probe.lastFrameAt !== null) {
+        const elapsed = at - probe.lastFrameAt;
+        const phase = scene?.dataset.journalPhase ?? "UNMOUNTED";
+        probe.frameDurationsMs.push(elapsed);
+        (probe.framesByPhase[phase] ??= []).push(elapsed);
+      }
       probe.lastFrameAt = at;
       probe.frame = requestAnimationFrame(sampleFrame);
     };
@@ -280,6 +289,7 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
       __phase3VisualProbe?: {
         startedAt: number;
         frameDurationsMs: number[];
+      framesByPhase: Record<string, number[]>;
         longTaskDurationsMs: number[];
         cls: number;
         layoutShifts: VisualProbeResult["layoutShifts"];
@@ -301,6 +311,7 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
     return {
       elapsedMs: window.performance.now() - probe.startedAt,
       frameDurationsMs: probe.frameDurationsMs,
+      framesByPhase: probe.framesByPhase,
       longTaskDurationsMs: probe.longTaskDurationsMs,
       cls: probe.cls,
       layoutShifts: probe.layoutShifts,
@@ -584,8 +595,10 @@ async function measuredFullOpening(page: Page, control: Locator) {
   return { ...opening, visual };
 }
 
+phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
+
 phase3Test(
-  "canonical production Journal performance and lifecycle budgets",
+  "compare real Journal settling with individually animated and grouped decorations",
   async ({ page, phase3, browser, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
@@ -615,235 +628,67 @@ phase3Test(
     const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
     expect(fullRuntimeBaseline.eventSources).toBe(1);
 
-    const warmRuns: Awaited<ReturnType<typeof measuredFullOpening>>[] = [];
-    const desktopRuns = [cold.visual];
-    for (let index = 0; index < 3; index += 1) {
-      const run = await measuredFullOpening(page, replay(page));
-      warmRuns.push(run);
-      desktopRuns.push(run.visual);
-    }
-    const mobileContext = await browser.newContext({ ...devices["Pixel 7"], baseURL: "http://127.0.0.1:3200" });
-    const mobileRuns: VisualProbeResult[] = [];
-    try {
-      const mobile = await mobileContext.newPage();
-      await installRuntimeCounter(mobile);
-      await setPhase3Motion(mobile, PHASE3_MOTION_MODES[0]);
-      await enterJournal(mobile, fixture, journalPath);
-      await assertReadableJournal(mobile);
-      for (let index = 0; index < 3; index += 1) {
-        const run = await measuredFullOpening(mobile, replay(mobile));
-        warmRuns.push(run);
-        mobileRuns.push(run.visual);
+    const furniture = ".book-shadow, .rear-book-cover, .page-stack, .book-binding";
+    const camera = journal(page).locator(".book-camera");
+    const setGroup = (grouped: boolean) => camera.evaluate((target, settings) => {
+      const existing = target.querySelector(":scope > [data-diagnostic-book-furniture]");
+      if (!settings.grouped) {
+        if (existing) {
+          for (const child of Array.from(existing.children)) target.insertBefore(child, existing);
+          existing.remove();
+        }
+        return;
       }
-    } finally {
-      await mobileContext.close();
+      if (existing) return;
+      const nodes = Array.from(target.children).filter((node) => node.matches(settings.furniture));
+      if (nodes.length !== 5) throw new Error("The five book decorations did not resolve.");
+      const group = document.createElement("div");
+      group.dataset.diagnosticBookFurniture = "true";
+      group.setAttribute("aria-hidden", "true");
+      target.insertBefore(group, nodes[0]!);
+      for (const node of nodes) group.appendChild(node);
+    }, { grouped, furniture });
+    const style = await page.addStyleTag({ content: [
+      '.chronicle-journal-shell [data-diagnostic-book-furniture] {',
+      'position:absolute; inset:0; z-index:0; opacity:0; pointer-events:none;',
+      'transition:opacity 820ms ease 180ms; }',
+      '.chronicle-journal-shell [data-diagnostic-book-furniture] > * {',
+      'opacity:1 !important; transition:none !important; }',
+      '.chronicle-journal-shell:is([data-journal-phase="BOOK_SETTLING"], [data-journal-phase="JOURNAL_READY"])',
+      '[data-diagnostic-book-furniture] { opacity:1; }',
+    ].join(" ") });
+    const geometry = () => camera.evaluate((target, selector) =>
+      Array.from(target.querySelectorAll(selector)).map((node) => {
+        const rect = node.getBoundingClientRect();
+        return [rect.left, rect.top, rect.width, rect.height].map((number) => Math.round(number * 10) / 10);
+      }), furniture);
+    const normalGeometry = await geometry();
+    const values: Record<"original" | "grouped", VisualProbeResult[]> = { original: [], grouped: [] };
+    for (const mode of ["original", "grouped", "grouped", "original"] as const) {
+      await setGroup(mode === "grouped");
+      expect(await geometry()).toEqual(normalGeometry);
+      const opening = await measuredFullOpening(page, replay(page));
+      expect(opening.durationMs).toBeLessThan(budgets.openingMs);
+      values[mode].push(opening.visual);
+      expect(await geometry()).toEqual(normalGeometry);
     }
+    await style.evaluate((node) => { node.parentNode?.removeChild(node); });
+    expect(await camera.locator(":scope > [data-diagnostic-book-furniture]").count()).toBe(0);
 
-    await startVisualProbe(page);
-    await replay(page).click();
-    await expect(journal(page)).toHaveAttribute("data-journal-opening-outcome", "running");
-    const skip = await measureSkip(page.getByRole("button", { name: "Skip ceremony" }), fullRuntimeBaseline);
-    const skipVisual = await stopVisualProbe(page);
-    await assertReadableJournal(page);
-    expect(await waitForStableRuntimeBaseline(page)).toEqual(fullRuntimeBaseline);
-
-    // Reduced mode takes the same preparation/handoff path without the full
-    // ceremony. Measure button activation through the readable PageFlip handoff,
-    // which includes the phase transition and frame wait rather than timing a DOM query.
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    await expect(journal(page)).toHaveAttribute("data-motion-level", "reduced");
-    await assertReadableJournal(page, true);
-    const reducedRuntimeBaseline = await waitForStableRuntimeBaseline(page);
-    const preflightWarmupCount = 8;
-    const preflightSampleCount = 40;
-    const preflightSamplesMs: number[] = [];
-    for (let index = 0; index < preflightWarmupCount + preflightSampleCount; index += 1) {
-      const handoff = await measureOpening(replay(page));
-      expect(handoff.phases).toContain("BOOK_SETTLING");
-      // The canonical application intentionally reports the readable reduced
-      // book as completed-fallback. An unplanned runtime fallback is distinct.
-      expect(handoff.reason).toBe("completed-fallback");
-      expect(handoff.bookStatus).toBe("reduced");
-      if (index >= preflightWarmupCount) preflightSamplesMs.push(handoff.durationMs);
-    }
-    expect(preflightSamplesMs).toHaveLength(preflightSampleCount);
-    await assertReadableJournal(page, true);
-    expect(await waitForStableRuntimeBaseline(page)).toEqual(reducedRuntimeBaseline);
-
-    await page.emulateMedia({ reducedMotion: "no-preference" });
-    await expect(journal(page)).toHaveAttribute("data-motion-level", "full");
-    await assertReadableJournal(page);
-    const nextPage = page.getByRole("button", { name: "Next journal page" });
-    await expect(nextPage).toBeEnabled();
-    const turn = await measurePageTurn(nextPage);
-    expect(turn.events.map(({ phase }) => phase)).toEqual(["start", "commit", "settle"]);
-    expect(turn.events.at(-1)?.fallbackStatus).toBe("runtime");
-    expect(turn.events.at(-1)?.toPage).toBeGreaterThan(turn.events[0]!.fromPage);
-    await assertReadableJournal(page);
-
-    await startVisualProbe(page);
-    const navigationResponseMs = await measureNavigation(
-      journal(page).getByRole("link", { name: /Chronicle Library/ }),
-    );
-    await expect(page).toHaveURL(/\/player\/library$/);
-    await expect(page.getByRole("heading", { name: "My Chronicle Library" })).toBeVisible();
-    await waitAnimationFrames(page, 30);
-    const ordinaryVisual = await stopVisualProbe(page);
-
-    const openingVisuals = [...desktopRuns, ...mobileRuns, skipVisual];
-    const desktopFrames = desktopRuns.flatMap((run) => [...run.frameDurationsMs]);
-    const mobileFrames = mobileRuns.flatMap((run) => [...run.frameDurationsMs]);
-    const openingLongTasks = openingVisuals.flatMap((run) => [...run.longTaskDurationsMs]);
-    const openingCumulativeLongTasks = openingVisuals.map((run) => total(run.longTaskDurationsMs));
-    const openingCls = openingVisuals.map((run) => run.cls);
-    const replayResponseMs = warmRuns[0]!.responseMs;
-    const metrics = {
-      coldOpeningMs: rounded(cold.durationMs),
-      liveUpdateMs: rounded(liveUpdateMs),
-      warmOpeningMs: warmRuns.map((run) => rounded(run.durationMs)),
-      preflightP95Ms: rounded(percentile(preflightSamplesMs, 0.95)),
-      controlResponseMs: [replayResponseMs, skip.responseMs, turn.responseMs, navigationResponseMs].map(rounded),
-      cleanupMs: rounded(skip.cleanupMs),
-      desktopFrameP95Ms: rounded(percentile(desktopFrames, 0.95)),
-      mobileFrameP95Ms: rounded(percentile(mobileFrames, 0.95)),
-      openingMaximumLongTaskMs: rounded(maximum(openingLongTasks)),
-      openingCumulativeLongTaskMs: rounded(maximum(openingCumulativeLongTasks)),
-      ordinaryMaximumLongTaskMs: rounded(maximum(ordinaryVisual.longTaskDurationsMs)),
-      ordinaryCumulativeLongTaskMs: rounded(total(ordinaryVisual.longTaskDurationsMs)),
-      openingMaximumCls: rounded(maximum(openingCls)),
-      ordinaryCls: rounded(ordinaryVisual.cls),
-    };
-    expect(warmRuns).toHaveLength(6);
-    const budgetChecks = [
-      { name: "journal-cold-opening-duration", passed: cold.durationMs < budgets.openingMs },
-      { name: "live-journal-update", passed: liveUpdateMs < budgets.openingMs },
-      ...warmRuns.map((run, index) => ({
-        name: `journal-warm-opening-${String(index + 1).padStart(2, "0")}-duration`,
-        passed: run.durationMs < budgets.openingMs,
-      })),
-      { name: "readable-preflight-p95", passed: metrics.preflightP95Ms < budgets.preflightP95Ms },
-      { name: "control-replay-response", passed: replayResponseMs < budgets.controlResponseMs },
-      { name: "control-skip-response", passed: skip.responseMs < budgets.controlResponseMs },
-      { name: "control-pageflip-response", passed: turn.responseMs < budgets.controlResponseMs },
-      { name: "control-navigation-response", passed: navigationResponseMs < budgets.controlResponseMs },
-      { name: "skip-cleanup", passed: skip.cleanupMs < budgets.cleanupMs },
-      { name: "desktop-frame-p95", passed: metrics.desktopFrameP95Ms <= budgets.desktopFrameP95Ms },
-      { name: "mobile-frame-p95", passed: metrics.mobileFrameP95Ms <= budgets.mobileFrameP95Ms },
-      { name: "opening-maximum-long-task", passed: metrics.openingMaximumLongTaskMs <= budgets.maximumLongTaskMs },
-      { name: "ordinary-maximum-long-task", passed: metrics.ordinaryMaximumLongTaskMs <= budgets.maximumLongTaskMs },
-      {
-        name: "opening-cumulative-long-task",
-        passed: metrics.openingCumulativeLongTaskMs <= budgets.chapterLongTaskCumulativeMs,
-      },
-      {
-        name: "ordinary-cumulative-long-task",
-        passed: metrics.ordinaryCumulativeLongTaskMs <= budgets.ordinaryLongTaskCumulativeMs,
-      },
-      { name: "opening-maximum-cls", passed: metrics.openingMaximumCls <= budgets.cls },
-      { name: "ordinary-cls", passed: metrics.ordinaryCls <= budgets.cls },
-    ] as const;
-    const budgetNames = budgetChecks.map((check) => check.name);
-    expect(new Set(budgetNames).size, "Performance budget evidence names must be unique.").toBe(budgetNames.length);
-    budgetNames.forEach((name) => expect(name).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u));
-    const failedBudgets = budgetChecks.filter((check) => !check.passed).map((check) => check.name);
-
-    const nonceHash = boundedEnvironmentValue(["FOREVER_VALIDATION_NONCE_HASH"], /^[a-f0-9]{64}$/u, "missing");
-    expect(nonceHash, "Performance evidence requires the validated nonce hash proof reference.").toMatch(
-      /^[a-f0-9]{64}$/u,
-    );
-    const runId = boundedEnvironmentValue(
-      ["FOREVER_VALIDATION_RUN_ID", "VALIDATION_RUN_ID", "GITHUB_RUN_ID", "BUILD_BUILDID"],
-      /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/u,
-      "phase3-performance-local",
-    );
-    const testedSourceSha = boundedEnvironmentValue(
-      ["FOREVER_VALIDATION_SOURCE_SHA", "VALIDATION_SOURCE_SHA", "GITHUB_SHA"],
-      /^[a-fA-F0-9]{40,64}$/u,
-      "uncommitted",
-    ).toLowerCase();
-    const integratedSha = boundedEnvironmentValue(
-      ["FOREVER_VALIDATION_INTEGRATED_SHA", "VALIDATION_INTEGRATED_SHA"],
-      /^[a-fA-F0-9]{40,64}$/u,
-      "uncommitted",
-    ).toLowerCase();
-    const commonReport = Object.freeze({
-      version: 3,
-      completedAtUtc: new Date().toISOString(),
-      runId,
-      provenance: Object.freeze({
-        testedSourceSha,
-        integratedSha,
-        config: "tests/config/playwright/playwright.phase3-performance.config.ts",
-        browser: Object.freeze({
-          engine: "chromium",
-          project: "chromium-production",
-          desktopProfile: "Desktop Chrome",
-          mobileProfile: "Pixel 7",
-        }),
-        server: Object.freeze({ kind: "owned-next-start", origin: "http://127.0.0.1:3200", port: 3200 }),
-        isolationProof: Object.freeze({
-          endpoint: "/api/dev/validation/database-identity",
-          nonceHash,
-          markerExpectation: "exactly-one",
-        }),
-      }),
-      samples: Object.freeze({
-        coldOpenings: 1,
-        liveUpdates: 1,
-        warmOpenings: warmRuns.length,
-        preflightWarmups: preflightWarmupCount,
-        preflightMeasured: preflightSamplesMs.length,
-        desktopFrames: desktopFrames.length,
-        mobileFrames: mobileFrames.length,
-      }),
-      budgets,
-      metrics,
-      measurements: {
-        desktop: desktopRuns.map((run) => ({
-          frameP95Ms: rounded(percentile(run.frameDurationsMs, 0.95)),
-          layoutShifts: run.layoutShifts,
-        })),
-        mobile: mobileRuns.map((run) => ({
-          frameP95Ms: rounded(percentile(run.frameDurationsMs, 0.95)),
-          layoutShifts: run.layoutShifts,
-        })),
-        skip: { layoutShifts: skipVisual.layoutShifts, cleanup: skip.observations },
-      },
-      runtimeBaseline: Object.freeze({
-        full: fullRuntimeBaseline,
-        reduced: reducedRuntimeBaseline,
-        fullReturnedToBaseline: true,
-        reducedReturnedToBaseline: true,
-      }),
-    });
-
-    if (failedBudgets.length > 0) {
-      await writePerformanceArtifact(
-        artifact.artifactPath,
-        Object.freeze({
-          ...commonReport,
-          status: "failed",
-          failureBudgetCount: failedBudgets.length,
-          failedBudgets: Object.freeze(failedBudgets),
-        }),
-        [fixture.slug, voyage!.sessionId],
-      );
-      expect(failedBudgets, "Production performance budgets failed; see the sanitized failure artifact.").toEqual([]);
-      return;
-    }
-
-    for (const check of budgetChecks) {
-      expect(check.passed, `${check.name} must pass before success evidence is written.`).toBe(true);
-    }
-    await writePerformanceArtifact(
-      artifact.artifactPath,
-      Object.freeze({
-        ...commonReport,
-        status: "passed",
-        failureBudgetCount: 0,
-        failedBudgets: Object.freeze([]),
-      }),
-      [fixture.slug, voyage!.sessionId],
-    );
+    const byMode = Object.fromEntries((["original", "grouped"] as const).map((mode) => {
+      const runs = values[mode];
+      const frames = runs.flatMap((sample) => [...sample.frameDurationsMs]);
+      const phases = Object.fromEntries(["CLOSED_BOOK_REVEAL", "COVER_OPENING", "BOOK_SETTLING"].map((phase) => {
+        const intervals = runs.flatMap((sample) => sample.framesByPhase[phase] ?? []);
+        return [phase, { samples: intervals.length, p95: rounded(percentile(intervals, 0.95)),
+          slow: intervals.filter((ms) => ms > budgets.desktopFrameP95Ms).length }];
+      }));
+      return [mode, { samples: frames.length, p95: rounded(percentile(frames, 0.95)),
+        slow: frames.filter((ms) => ms > budgets.desktopFrameP95Ms).length, phases }];
+    }));
+    const report = { purpose: "DEVELOPMENT_ONLY", geometryMatches: true, budgetMs: budgets.desktopFrameP95Ms, byMode };
+    await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
+    console.log(JSON.stringify(report));
+    expect(byMode.grouped.p95).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
   },
 );
