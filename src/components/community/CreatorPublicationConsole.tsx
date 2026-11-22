@@ -56,7 +56,7 @@ export function CreatorPublicationConsole({ onOptionsSettled }: { onOptionsSettl
   const [spoilersAcknowledged, setSpoilersAcknowledged] = useState(false);
   const [preflight, setPreflight] = useState<Preflight | null>(null);
   const [receipt, setReceipt] = useState<Receipt | null>(null);
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState<"review" | "submit" | null>(null);
   const [error, setError] = useState<{ message: string; moveFocus?: true } | null>(null);
   const reviewHeadingRef = useRef<HTMLHeadingElement>(null);
   const receiptRef = useRef<HTMLParagraphElement>(null);
@@ -129,9 +129,8 @@ export function CreatorPublicationConsole({ onOptionsSettled }: { onOptionsSettl
   };
   const review = async () => {
     if (!publication || !rightsAcknowledged || (source?.type === "CHRONICLE" && !spoilersAcknowledged)) return;
-    setBusy(true);
+    setBusy("review");
     setError(null);
-    setPreflight(null);
     try {
       const response = await fetch(`/api/community/${route}/preflight`, {
         method: "POST",
@@ -142,14 +141,15 @@ export function CreatorPublicationConsole({ onOptionsSettled }: { onOptionsSettl
       if (!response.ok) throw new Error(data.error ?? "This saved source is not eligible for Community publication.");
       setPreflight(data as Preflight);
     } catch (cause) {
+      setPreflight(null);
       setError({ message: cause instanceof Error ? cause.message : "Review could not finish.", moveFocus: true });
     } finally {
-      setBusy(false);
+      setBusy(null);
     }
   };
   const publish = async () => {
     if (!publication || !preflight) return;
-    setBusy(true);
+    setBusy("submit");
     setError(null);
     try {
       const sessionResponse = await fetch("/api/player/session", { cache: "no-store" });
@@ -167,7 +167,7 @@ export function CreatorPublicationConsole({ onOptionsSettled }: { onOptionsSettl
     } catch (cause) {
       setError({ message: cause instanceof Error ? cause.message : "Submission could not finish.", moveFocus: true });
     } finally {
-      setBusy(false);
+      setBusy(null);
     }
   };
   return (
@@ -334,7 +334,7 @@ export function CreatorPublicationConsole({ onOptionsSettled }: { onOptionsSettl
                 className="primary"
                 type="button"
                 disabled={
-                  busy ||
+                  busy !== null ||
                   !title ||
                   !slug ||
                   !description ||
@@ -344,7 +344,7 @@ export function CreatorPublicationConsole({ onOptionsSettled }: { onOptionsSettl
                 }
                 onClick={() => void review()}
               >
-                {busy ? "Checking…" : "Review exact package"}
+                {busy === "review" ? "Checking…" : "Review exact package"}
               </button>
             </>
           )}
@@ -373,8 +373,8 @@ export function CreatorPublicationConsole({ onOptionsSettled }: { onOptionsSettl
               <ReceiptDetails value={preflight.included} />
             </div>
           </details>
-          <button className="primary" type="button" disabled={busy} onClick={() => void publish()}>
-            {busy ? "Submitting…" : "Submit for moderation"}
+          <button className="primary" type="button" disabled={busy !== null} onClick={() => void publish()}>
+            {busy === "submit" ? "Submitting…" : "Submit for moderation"}
           </button>
         </section>
       )}

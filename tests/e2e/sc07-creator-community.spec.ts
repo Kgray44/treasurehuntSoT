@@ -53,9 +53,7 @@ async function expectFocusedHeadingBelowMasthead(heading: Locator) {
       return geometry.clear;
     })
     .toBe(true)
-    .catch(async (error: Error) => {
-      const records = await heading.page().evaluate(() => Reflect.get(window, "__sc07FocusGeometry"));
-      console.log("FOCUS_GEOMETRY_HISTORY " + JSON.stringify(records));
+    .catch((error: Error) => {
       throw new Error(`Focused heading geometry: ${JSON.stringify(observed)}`, { cause: error });
     });
 }
@@ -198,51 +196,6 @@ test.afterAll(async () => {
 
 test("only the owner with Creator access submits the exact saved item for moderation", async ({ browser }) => {
   const page = owner.page;
-  await page.addInitScript(() => {
-    const records: unknown[] = [];
-    const state = (event: string, metadata?: unknown) => {
-      const heading = document.getElementById("creator-publication-review");
-      const header = document.querySelector(".product-shell-header");
-      records.push({ event, metadata, at: Math.round(performance.now()), width: innerWidth, height: innerHeight,
-        y: scrollY, max: document.documentElement ? document.documentElement.scrollHeight - innerHeight : null,
-        heading: heading?.getBoundingClientRect().top, sticky: header?.getBoundingClientRect().bottom,
-        active: document.activeElement?.outerHTML.split(">")[0].slice(0, 130),
-        details: document.querySelector("section[aria-labelledby=creator-publication-review] details")?.hasAttribute("open"),
-        margin: heading && getComputedStyle(heading).scrollMarginBlockStart });
-      if (records.length > 160) records.shift();
-    };
-    Object.defineProperty(window, "__sc07FocusGeometry", { value: records });
-    const scrollIntoView = Element.prototype.scrollIntoView;
-    Element.prototype.scrollIntoView = function (options) {
-      if (this.id !== "creator-publication-review") return scrollIntoView.call(this, options);
-      state("scroll-into-view-before", options);
-      const result = scrollIntoView.call(this, options);
-      state("scroll-into-view-after", options);
-      requestAnimationFrame(() => {
-        state("following-frame");
-        requestAnimationFrame(() => state("second-following-frame"));
-      });
-      return result;
-    };
-    for (const event of ["scroll", "resize", "focusin", "focusout", "toggle"])
-      window.addEventListener(event, (received) => {
-        if (innerWidth > 1000) state(event, (received.target as Element | null)?.tagName);
-      }, { capture: true, passive: true });
-    let layout = "";
-    const track = () => {
-      const heading = document.getElementById("creator-publication-review");
-      if (innerWidth > 1000) {
-        const key = [scrollY, heading?.getBoundingClientRect().top, document.querySelector(".product-shell-header")?.getBoundingClientRect().bottom].join();
-        if (key !== layout) {
-          state("frame-geometry-changed");
-          layout = key;
-        }
-      }
-      requestAnimationFrame(track);
-    };
-    requestAnimationFrame(track);
-  });
-
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/studio/exchange");
@@ -272,8 +225,13 @@ test("only the owner with Creator access submits the exact saved item for modera
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: test.info().outputPath("creator-package-review.png"), fullPage: true });
   await page.setViewportSize({ width: 1440, height: 900 });
+  const desktopPreflight = page.waitForResponse(
+    (response) => new URL(response.url()).pathname === "/api/community/creator-reuse/preflight",
+  );
   await page.getByRole("button", { name: "Review exact package" }).press("Enter");
+  expect((await desktopPreflight).ok()).toBe(true);
   await expectFocusedHeadingBelowMasthead(reviewHeading);
+  await expect(packageReview.locator("details")).toHaveAttribute("open", "");
 
   const publishRequest = {
     publication: preflight.request().postDataJSON(),

@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Creator Community exact scroll geometry diagnosis
+run-name: Creator Community stable package review browser sequence
 
 on:
   push:
@@ -13,17 +13,17 @@ permissions:
 
 jobs:
   benchmark:
-    name: Creator moderation scroll geometry (development)
+    name: Creator moderation and Crossdeck disconnect (development)
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 2ea51d0e0e8d07b9aec96ef56e3787a98ece57aa
+      CANDIDATE_SHA: 9ef16b49ad7b39d12a4005b019c81eae54f35c5d
       BASE_SHA: c6ad7cb674e8fe1d8780d5c7c66a46061c3f6f0d
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 2ea51d0e0e8d07b9aec96ef56e3787a98ece57aa
+          ref: 9ef16b49ad7b39d12a4005b019c81eae54f35c5d
           fetch-depth: 8
           persist-credentials: false
           sparse-checkout-cone-mode: false
