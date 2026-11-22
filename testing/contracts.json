@@ -39,6 +39,7 @@
           "MODERATION_PENDING",
           "PUBLIC_APPROVED",
           "INSTALL_REVIEWED",
+          "PRIVATE_INSTALL_READY",
           "PRIVATE_COPY_OPENED",
           "INELIGIBLE_SOURCE"
         ],
@@ -377,6 +378,7 @@
                 "text": "View my installed item",
                 "pathFromFixture": "approvedPublicPath",
                 "kind": "outcome",
+                "state": "PRIVATE_INSTALL_READY",
                 "meaning": "The approved release is installed privately."
               },
               {

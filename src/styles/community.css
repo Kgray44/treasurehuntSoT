@@ -632,7 +632,8 @@ html[data-voyage-theme="light"] :where(.community-button--quiet, .community-filt
   background: rgb(115 173 152 / 8%);
 }
 
-.community-button:disabled {
+.community-button:disabled,
+.community-button[aria-disabled="true"] {
   cursor: not-allowed;
   opacity: 0.55;
 }

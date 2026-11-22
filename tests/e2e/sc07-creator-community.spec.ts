@@ -353,7 +353,11 @@ test("second Creator installs the approved Passage preset and applies it in priv
   await expect(page.getByText(/Credits: Synthetic owner Creator/)).toBeVisible();
   await page.screenshot({ path: test.info().outputPath("public-install-review.png"), fullPage: true });
   await page.getByRole("button", { name: "Install to my reusable Library" }).press("Enter");
-  await expect(page.getByRole("link", { name: "View my installed item" })).toBeVisible();
+  const installedLink = page.getByRole("link", { name: "View my installed item" });
+  await expect(installedLink).toBeFocused();
+  await expect(page.getByRole("status").filter({ hasText: "Installed in your private Studio library." })).toHaveCount(
+    1,
+  );
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.getByRole("link", { name: "View my installed item" }).click();
   await expect(page).toHaveURL(/\/studio\/exchange#installed-community/u);
@@ -650,7 +654,12 @@ test("Chapter template rejection stays private and installation rechecks the cur
   ).toBe(0);
   await installerPage.screenshot({ path: test.info().outputPath("current-install-review.png") });
   await install.press("Enter");
-  await installerPage.getByRole("link", { name: "View my installed item" }).press("Enter");
+  const installedLink = installerPage.getByRole("link", { name: "View my installed item" });
+  await expect(installedLink).toBeFocused();
+  await expect(
+    installerPage.getByRole("status").filter({ hasText: "Installed in your private Studio library." }),
+  ).toHaveCount(1);
+  await installedLink.press("Enter");
   const installedLibrary = installerPage.getByRole("region", { name: "Installed from Community" });
   const installedHeading = installedLibrary.getByRole("heading", { name: "Installed from Community" });
   await expectFocusedHeadingBelowMasthead(installedHeading);

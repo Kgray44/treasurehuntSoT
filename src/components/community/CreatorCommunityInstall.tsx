@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 type Review = {
   title: string;
@@ -35,8 +35,18 @@ export function CreatorCommunityInstall({
   const [busy, setBusy] = useState(false);
   const [opened, setOpened] = useState<string | null>(null);
   const requestId = useRef<string>(crypto.randomUUID());
+  const installationInFlight = useRef(false);
+  const installButtonRef = useRef<HTMLButtonElement>(null);
+  const installedLinkRef = useRef<HTMLAnchorElement>(null);
+  const focusInstalledLink = useRef(false);
   const refreshReviewRef = useRef<HTMLButtonElement>(null);
   const reviewHeadingRef = useRef<HTMLHeadingElement>(null);
+  useLayoutEffect(() => {
+    if (opened && focusInstalledLink.current) {
+      focusInstalledLink.current = false;
+      installedLinkRef.current?.focus({ preventScroll: true });
+    }
+  }, [opened]);
   useEffect(() => {
     if (staleReview) refreshReviewRef.current?.focus();
   }, [staleReview]);
@@ -73,7 +83,8 @@ export function CreatorCommunityInstall({
   }, [listingId, path]);
 
   const install = async () => {
-    if (!review) return;
+    if (!review || installationInFlight.current) return;
+    installationInFlight.current = true;
     setBusy(true);
     setError("");
     try {
@@ -97,12 +108,17 @@ export function CreatorCommunityInstall({
           setStaleReview(true);
         throw new Error(result.error ?? "The private installation could not finish.");
       }
+      const installButton = installButtonRef.current;
+      focusInstalledLink.current = Boolean(
+        installButton && installButton.ownerDocument.activeElement === installButton,
+      );
       setOpened(
         result.studioUrl ?? (itemType === "CHRONICLE" ? "/studio/library" : "/studio/exchange#installed-community"),
       );
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "The private installation could not finish.");
     } finally {
+      installationInFlight.current = false;
       setBusy(false);
     }
   };
@@ -146,14 +162,15 @@ export function CreatorCommunityInstall({
             <p>Credits: {review.attribution.map((credit) => credit.displayName).join(", ")}</p>
           )}
           {destination ? (
-            <Link className="community-button community-button--primary" href={destination}>
+            <Link ref={installedLinkRef} className="community-button community-button--primary" href={destination}>
               {itemType === "CHRONICLE" ? "Open my private Chronicle" : "View my installed item"}
             </Link>
           ) : (
             <button
               className="community-button community-button--primary"
               type="button"
-              disabled={busy}
+              ref={installButtonRef}
+              aria-disabled={busy || undefined}
               onClick={() => void install()}
             >
               {busy ? "Installing…" : itemType === "CHRONICLE" ? "Copy to my Studio" : "Install to my reusable Library"}
@@ -161,6 +178,12 @@ export function CreatorCommunityInstall({
           )}
         </>
       )}
+      <span className="sr-only" role="status">
+        {opened &&
+          (itemType === "CHRONICLE"
+            ? "Copied to your private Studio library."
+            : "Installed in your private Studio library.")}
+      </span>
       {error && (
         <p id="creator-install-error" role="alert">
           {error}
