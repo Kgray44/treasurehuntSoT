@@ -76,6 +76,10 @@ vi.mock("@/animation/journal/opening-machine", async (importOriginal) => ({
   waitForJournalPhase: (...args: unknown[]) => openingTestDouble.waitForPhase(...args),
 }));
 
+vi.mock("./reduced-journal-paint", () => ({
+  waitForReducedJournalPaint: (...args: unknown[]) => openingTestDouble.waitForPhase(...args),
+}));
+
 vi.mock("@/components/player/journal/PhysicalJournalBook", async () => {
   const React = await import("react");
   return {

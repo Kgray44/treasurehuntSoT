@@ -377,7 +377,7 @@ function scheduleFrame(callback: FrameRequestCallback) {
 
 const paintAcquisitionTimeoutMs = 100;
 
-function nextPaint(signal: AbortSignal, followup: "frame" | "task") {
+function nextPaint(signal: AbortSignal) {
   return new Promise<"painted" | "aborted">((resolve) => {
     let settled = false;
     let paintTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -404,11 +404,6 @@ function nextPaint(signal: AbortSignal, followup: "frame" | "task") {
     paintTimeout = setTimeout(() => settle("painted"), paintAcquisitionTimeoutMs);
     cancelPendingFrame = scheduleFrame(() => {
       if (settled) return;
-      if (followup === "task") {
-        const afterPaint = setTimeout(() => settle("painted"), 0);
-        cancelPendingFrame = () => clearTimeout(afterPaint);
-        return;
-      }
       cancelPendingFrame = scheduleFrame(() => settle("painted"));
     });
   });
@@ -536,9 +531,7 @@ export async function waitForJournalPhase(
   signal: AbortSignal,
 ): Promise<JournalPhaseOutcome> {
   const startedAt = clockNow();
-  // The static reduced handoff needs a rendering opportunity before the readable-book probe.
-  const followup = mode === "reduced" && phase === "JOURNAL_READY" ? "task" : "frame";
-  if ((await nextPaint(signal, followup)) === "aborted") return { status: "aborted", phase };
+  if ((await nextPaint(signal)) === "aborted") return { status: "aborted", phase };
   if (signal.aborted) return { status: "aborted", phase };
   const contract = journalPhaseContracts[phase];
   if (contract.actors.length === 0) {

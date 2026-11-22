@@ -34,6 +34,7 @@ import type {
 } from "@/components/animation/PageFlipBook";
 import { resolveStoryMotion } from "@/animation/presentation/story-motion";
 import { PhysicalJournalBook } from "@/components/player/journal/PhysicalJournalBook";
+import { waitForReducedJournalPaint } from "./reduced-journal-paint";
 import { ChronicleJournalPageContent, type JournalAsset } from "@/components/player/journal/ChronicleJournalPage";
 import { LandfallJournalChart, LandfallJournalProvider } from "@/components/player/journal/LandfallJournalChart";
 import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
@@ -611,6 +612,7 @@ function ChronicleJournalSessionIdentity({
       const result = await runJournalOpeningPhases({
         root: rootElement,
         phases: policy.phases,
+        waitForPhase: policy.composition === "reduced" ? waitForReducedJournalPaint : waitForJournalPhase,
         mode,
         signal: controller.signal,
         // JOURNAL_READY is committed only after the public PageFlip readiness handoff below.
