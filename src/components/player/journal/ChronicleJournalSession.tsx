@@ -1103,6 +1103,7 @@ function ChronicleJournalSessionIdentity({
 
   const journalReady = isJournalInteractive(openingPhase);
   const openingActive = !journalReady;
+  const resetOpeningPresentation = openingPhase === "ENTRY_ACTIVATED" || readyReceipt?.reason === "skipped";
   const openingFeedback =
     openingNotice && (journalReady || openingOutcome === "aborted") ? (
       <p
@@ -1185,7 +1186,7 @@ function ChronicleJournalSessionIdentity({
           ref={root}
           data-experience-voyage={state.session.id}
           data-experience-version={state.session.versionId}
-          className={`voyage-shell chronicle-journal-shell mode-${state.journal.mode}${readyReceipt?.reason === "skipped" ? " journal-resetting" : ""}`}
+          className={`voyage-shell chronicle-journal-shell ${styles.journalShell} mode-${state.journal.mode}${resetOpeningPresentation ? " journal-resetting" : ""}`}
           data-journal-phase={openingPhase}
           data-journal-opening-outcome={openingOutcome}
           data-journal-ready-reason={readyReceipt?.reason}
