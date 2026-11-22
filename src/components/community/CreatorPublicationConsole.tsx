@@ -1,5 +1,6 @@
 "use client";
 
+import { ReceiptDetails } from "@/components/ui/ReceiptDetails";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { focusExchangeHeading } from "./focus-exchange-heading";
@@ -363,13 +364,14 @@ export function CreatorPublicationConsole({ onOptionsSettled }: { onOptionsSettl
           </p>
           <details>
             <summary>Inspect every included field</summary>
-            <pre
+            <div
               style={{ maxHeight: "24rem", overflow: "auto", whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}
               tabIndex={0}
-              aria-label="Exact Creator package JSON"
+              role="region"
+              aria-label="Creator package contents"
             >
-              {JSON.stringify(preflight.included, null, 2)}
-            </pre>
+              <ReceiptDetails value={preflight.included} />
+            </div>
           </details>
           <button className="primary" type="button" disabled={busy} onClick={() => void publish()}>
             {busy ? "Submitting…" : "Submit for moderation"}

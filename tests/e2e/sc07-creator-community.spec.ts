@@ -217,7 +217,11 @@ test("only the owner with Creator access submits the exact saved item for modera
   await expect(packageReview.getByText(/Source checksum:/)).toBeInViewport();
   await expect(packageReview.getByText(/License:.*Credits:/)).toBeInViewport();
   await page.getByText("Inspect every included field", { exact: true }).press("Enter");
-  await expect(page.getByText(/A synthetic harbor greeting for another Creator/)).toBeVisible();
+  await expect(
+    packageReview
+      .getByRole("region", { name: "Creator package contents" })
+      .getByText(/A synthetic harbor greeting for another Creator/),
+  ).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: test.info().outputPath("creator-package-review.png"), fullPage: true });
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -466,7 +470,9 @@ test("second Creator edits an installed Chronicle through private Studio", async
   await ownerPage.getByLabel(/I reviewed the full Chronicle for spoilers/).check();
   await ownerPage.getByRole("button", { name: "Review exact package" }).press("Enter");
   await ownerPage.getByText("Inspect every included field", { exact: true }).press("Enter");
-  await expect(ownerPage.getByText(/A fictional harbor awaits/)).toBeVisible();
+  await expect(
+    ownerPage.getByRole("region", { name: "Creator package contents" }).getByText(/A fictional harbor awaits/),
+  ).toBeVisible();
   await ownerPage.getByRole("button", { name: "Submit for moderation" }).press("Enter");
   await expect(ownerPage.getByText(/Submitted for independent moderation/)).toBeVisible();
 
@@ -476,7 +482,11 @@ test("second Creator edits an installed Chronicle through private Studio", async
   await moderatorPage.getByRole("button", { name: "Search", exact: true }).press("Enter");
   await moderatorPage.getByRole("link", { name: "Synthetic Harbor Tale", exact: true }).press("Enter");
   await moderatorPage.getByText("Inspect every included field", { exact: true }).press("Enter");
-  await expect(moderatorPage.getByText(/A fictional harbor awaits/)).toBeVisible();
+  await expect(
+    moderatorPage
+      .getByRole("region", { name: "Creator release package contents" })
+      .getByText(/A fictional harbor awaits/),
+  ).toBeVisible();
   await moderatorPage.getByLabel(/I reviewed the exact content, ownership declaration/).check();
   await moderatorPage.getByRole("button", { name: "Approve and publish release" }).press("Enter");
   await expect(moderatorPage.getByText("Release approved.")).toBeVisible();

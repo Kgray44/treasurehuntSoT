@@ -588,11 +588,11 @@ for (const motion of ["no-preference", "reduce"] as const)
         await capture(d, "12b-recovery-in-progress");
       } finally {
         releaseRecovery();
-        await d.unroute(syncRoute, holdRecovery);
       }
       await expect(d.locator(".journal-objects-drawer.open [data-landfall-player-chart]:visible")).toBeVisible({
         timeout: 15000,
       });
+      await d.unroute(syncRoute, holdRecovery);
       await assertDesktopPassageHeadingUnobscured(d, "Follow the lanterns");
       await capture(d, "13-recovered-chart");
       await phone.setOffline(false);

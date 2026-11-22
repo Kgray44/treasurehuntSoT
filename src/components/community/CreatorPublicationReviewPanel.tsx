@@ -1,5 +1,6 @@
 "use client";
 
+import { ReceiptDetails } from "@/components/ui/ReceiptDetails";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -177,13 +178,14 @@ export function CreatorPublicationReviewPanel({
         }}
       >
         <summary>Inspect every included field</summary>
-        <pre
+        <div
           style={{ maxHeight: "24rem", overflow: "auto", whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}
           tabIndex={0}
-          aria-label="Creator release package JSON"
+          role="region"
+          aria-label="Creator release package contents"
         >
-          {JSON.stringify(review.included, null, 2)}
-        </pre>
+          <ReceiptDetails value={review.included} />
+        </div>
       </details>
       <p>
         Package checksum: <code style={{ overflowWrap: "anywhere" }}>{review.packageChecksum}</code>
