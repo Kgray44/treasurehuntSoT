@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake Mac Metal with an animation-free baseline
+run-name: Lanternwake macOS Skip teardown target
 
 on:
   push:
@@ -17,14 +17,14 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: f3edff6df19885a14acf5f97990ed355be5777a2
+      CANDIDATE_SHA: feb7b6cb7a1648f0ca2de48d87c36538791469fd
       BASE_SHA: aaf7aa6e80d0c71c02018432c1e8a66ef5e1e21f
-      FOREVER_VALIDATION_SOURCE_SHA: f3edff6df19885a14acf5f97990ed355be5777a2
+      FOREVER_VALIDATION_SOURCE_SHA: feb7b6cb7a1648f0ca2de48d87c36538791469fd
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: f3edff6df19885a14acf5f97990ed355be5777a2
+          ref: feb7b6cb7a1648f0ca2de48d87c36538791469fd
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
