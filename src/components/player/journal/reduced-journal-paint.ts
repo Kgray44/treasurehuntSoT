@@ -4,8 +4,7 @@ export const waitForReducedJournalPaint: typeof waitForJournalPhase = (_root, ph
   if (signal.aborted) return Promise.resolve({ status: "aborted", phase });
   const startedAt = performance.now();
   const diagnosticWindow = window as Window & {
-    __lanternwakeTimingMode?: "timer" | "priority";
-    scheduler?: { postTask: (task: () => void, opts: { priority: "user-blocking"; signal: AbortSignal }) => Promise<void> };
+    __lanternwakeTimingMode?: "timer" | "frame";
   };
   performance.mark("lw-preflight:start");
 
@@ -38,11 +37,8 @@ export const waitForReducedJournalPaint: typeof waitForJournalPhase = (_root, ph
     // The static handoff can proceed in a task after the first rendering opportunity.
     const frame = requestAnimationFrame(() => {
       performance.mark("lw-preflight:frame");
-      if (diagnosticWindow.__lanternwakeTimingMode === "priority" && diagnosticWindow.scheduler) {
-        void diagnosticWindow.scheduler.postTask(() => {
-          performance.mark("lw-preflight:priority-task");
-          complete();
-        }, { priority: "user-blocking", signal }).catch(() => undefined);
+      if (diagnosticWindow.__lanternwakeTimingMode === "frame") {
+        complete();
         return;
       }
       afterPaint = setTimeout(() => {
