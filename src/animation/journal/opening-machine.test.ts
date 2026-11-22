@@ -454,6 +454,29 @@ describe("journal opening state machine", () => {
     expect(cover.getAnimations).not.toHaveBeenCalled();
   });
 
+  it("settles the static reduced Journal after one rendering opportunity", async () => {
+    const frames: FrameRequestCallback[] = [];
+    vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => frames.push(callback));
+    vi.stubGlobal("cancelAnimationFrame", vi.fn());
+    const settled = vi.fn();
+    const outcome = waitForJournalPhase(
+      document.createElement("div"),
+      "JOURNAL_READY",
+      "reduced",
+      new AbortController().signal,
+    );
+    void outcome.then(settled);
+    expect(settled).not.toHaveBeenCalled();
+
+    frames.shift()?.(performance.now());
+    await vi.advanceTimersByTimeAsync(0);
+    const settledAfterFirstFrame = settled.mock.calls.length;
+
+    frames.shift()?.(performance.now());
+    await expect(outcome).resolves.toMatchObject({ status: "completed", phase: "JOURNAL_READY" });
+    expect(settledAfterFirstFrame).toBe(1);
+  });
+
   it("returns the same deterministic terminal outcome for a phase that declares no animation", async () => {
     const root = document.createElement("div");
     const first = waitForJournalPhase(root, "JOURNAL_READY", "full", new AbortController().signal);
