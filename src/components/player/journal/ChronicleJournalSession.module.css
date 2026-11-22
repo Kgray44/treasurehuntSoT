@@ -22,14 +22,3 @@
   background-image: url("/textures/paper-grain.svg");
   mix-blend-mode: soft-light;
 }
-
-/* These decorations first become visible as the open book settles. */
-.journalShell:not([data-journal-phase="BOOK_SETTLING"], [data-journal-phase="JOURNAL_READY"])
-  :global(.book-camera)
-  > :is(:global(.book-shadow), :global(.rear-book-cover), :global(.page-stack), :global(.book-binding)) {
-  visibility: hidden;
-}
-
-.journalShell[data-motion-mode="reduced"][data-journal-phase="BOOK_SETTLING"] :global(.closed-book) {
-  display: none;
-}
