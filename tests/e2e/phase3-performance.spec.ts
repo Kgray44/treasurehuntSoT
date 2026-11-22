@@ -170,6 +170,7 @@ async function waitForStableRuntimeBaseline(page: Page) {
     if (
       previous &&
       JSON.stringify(current) === JSON.stringify(previous) &&
+      current.activeAnimations === 0 &&
       current.activePresentations === 0 &&
       current.temporaryPageClones === 0 &&
       current.lottiePlaying === 0
