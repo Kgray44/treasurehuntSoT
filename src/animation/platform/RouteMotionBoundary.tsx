@@ -320,10 +320,27 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
       stableSnapshot.current = { pathname, html: routeSnapshotHtml(content) };
     };
     capture();
-    const observer = new MutationObserver(() => {
-      if (!frame) frame = requestAnimationFrame(capture);
+    const observer = new MutationObserver((records) => {
+      if (frame) return;
+      // PageFlip rewrites the same attributes every frame on settled pages.
+      const onlyDuplicatePageFlipWrites = records.every(
+        ({ target, type, attributeName, attributeNamespace, oldValue }) =>
+          type === "attributes" &&
+          attributeNamespace === null &&
+          (attributeName === "class" || attributeName === "style") &&
+          target instanceof Element &&
+          oldValue === target.getAttribute(attributeName) &&
+          target.closest("[data-pageflip-runtime]") !== null,
+      );
+      if (!onlyDuplicatePageFlipWrites) frame = requestAnimationFrame(capture);
     });
-    observer.observe(content, { attributes: true, characterData: true, childList: true, subtree: true });
+    observer.observe(content, {
+      attributes: true,
+      attributeOldValue: true,
+      characterData: true,
+      childList: true,
+      subtree: true,
+    });
     return () => {
       observer.disconnect();
       if (frame) cancelAnimationFrame(frame);

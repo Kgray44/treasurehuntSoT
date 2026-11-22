@@ -236,6 +236,64 @@ describe("RouteMotionBoundary", () => {
     expect(view.container.querySelector('[data-route-role="outgoing"]')).toHaveStyle({ opacity: "1" });
   });
 
+  it("skips duplicate PageFlip frame writes while capturing real route changes", async () => {
+    vi.useFakeTimers();
+    const view = render(
+      <RouteMotionBoundary pathname="/player/lanternwake">
+        <main>
+          <div data-pageflip-runtime="">
+            <section className="--simple" style={{ display: "block" }}>
+              Opening page
+            </section>
+          </div>
+          <aside>Journal controls</aside>
+        </main>
+      </RouteMotionBoundary>,
+    );
+    const content = view.container.querySelector<HTMLElement>("[data-route-content]")!;
+    const page = content.querySelector<HTMLElement>("section")!;
+    const controls = content.querySelector<HTMLElement>("aside")!;
+    const clone = vi.spyOn(content, "cloneNode");
+
+    async function flushSnapshot(mutate: () => void) {
+      await act(async () => {
+        mutate();
+        await Promise.resolve();
+        vi.advanceTimersByTime(32);
+      });
+    }
+
+    await flushSnapshot(() => {
+      page.classList.add("--simple");
+      page.style.cssText = "display: block;";
+    });
+    const duplicateCaptures = clone.mock.calls.length;
+
+    await flushSnapshot(() => {
+      page.classList.add("--simple");
+      page.style.cssText = "display: none;";
+    });
+    const changedPageCaptures = clone.mock.calls.length;
+
+    await flushSnapshot(() => {
+      page.style.cssText = "display: none;";
+      controls.style.opacity = "0.5";
+    });
+    const mixedBatchCaptures = clone.mock.calls.length;
+    clone.mockRestore();
+
+    expect({ duplicateCaptures, changedPageCaptures, mixedBatchCaptures }).toEqual({
+      duplicateCaptures: 0,
+      changedPageCaptures: 1,
+      mixedBatchCaptures: 2,
+    });
+
+    view.rerender(<RouteMotionBoundary pathname="/player/library">{pending("Preparing Library")}</RouteMotionBoundary>);
+    const outgoing = view.container.querySelector('[data-route-role="outgoing"]');
+    expect(outgoing?.querySelector("section")).toHaveStyle({ display: "none" });
+    expect(outgoing?.querySelector("aside")).toHaveStyle({ opacity: "0.5" });
+  });
+
   it("captures an initially pending route when its content becomes ready without a React rerender", async () => {
     vi.useFakeTimers();
     const view = render(<RouteMotionBoundary pathname="/tales">{pending("Preparing Chronicles")}</RouteMotionBoundary>);
