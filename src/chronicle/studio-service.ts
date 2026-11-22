@@ -1,10 +1,17 @@
 import { z } from "zod";
+import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
+import {
+  containsInstalledCommunityReuse,
+  isInstalledCommunityChronicle,
+  snapshotContainsInstalledCommunityReuse,
+} from "@/community/creator-installed-library";
 import { getBlockDefinition } from "@/chronicle/block-registry";
 import { journalPresentationSchema } from "@/chronicle/journal-contract";
 import type { JsonObject, StudioDraftInput } from "@/chronicle/types";
 import { parseJsonObject, parsePublishedSnapshot } from "@/chronicle/types";
 import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
+import { parseReusableEnvelope } from "@/studio/reusable-content";
 import { studioRegistryFromDrydock } from "@/drydock/contracts/registry";
 import { parseStoredLandfallDefinition, validateLandfallDefinition } from "@/landfall/definition";
 
@@ -145,23 +152,28 @@ export async function listStudioTales(accountId: string) {
   }));
 }
 
-export async function createStudioTale(input: {
-  title: string;
-  slug?: string;
-  subtitle?: string;
-  shortDescription?: string;
-  longDescription?: string;
-  theme?: string;
-  playerCountMin?: number;
-  playerCountMax?: number;
-  estimatedDuration?: number;
-  visibility?: "PRIVATE" | "UNLISTED" | "PUBLIC";
-  initialChapterTitle?: string;
-  creatorId: string;
-}) {
+export async function createStudioTale(
+  input: {
+    title: string;
+    slug?: string;
+    subtitle?: string;
+    shortDescription?: string;
+    longDescription?: string;
+    theme?: string;
+    playerCountMin?: number;
+    playerCountMax?: number;
+    estimatedDuration?: number;
+    visibility?: "PRIVATE" | "UNLISTED" | "PUBLIC";
+    initialChapterTitle?: string;
+    creatorId: string;
+  },
+  transaction?: { client: Prisma.TransactionClient; creatorAccountId: string | null },
+) {
   const slug = slugSchema.parse(input.slug?.trim() || slugify(input.title));
-  const creatorAccountId = await canonicalAccountForLegacyActor(input.creatorId);
-  return db.$transaction(async (tx) => {
+  const creatorAccountId = transaction
+    ? transaction.creatorAccountId
+    : await canonicalAccountForLegacyActor(input.creatorId);
+  const create = async (tx: Prisma.TransactionClient) => {
     const tale = await tx.chronicle.create({
       data: {
         slug,
@@ -186,7 +198,8 @@ export async function createStudioTale(input: {
     });
     await tx.chronicle.update({ where: { id: tale.id }, data: { currentDraftRevisionId: draft.id } });
     return { id: tale.id, slug: tale.slug, draftId: draft.id };
-  });
+  };
+  return transaction ? create(transaction.client) : db.$transaction(create);
 }
 
 export class StudioNoEditableDraftError extends Error {
@@ -330,7 +343,12 @@ function json(value: unknown) {
   return JSON.stringify(value ?? {});
 }
 
-export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInput, userId: string) {
+export async function saveStudioDraft(
+  taleId: string,
+  unchecked: StudioDraftInput,
+  userId: string,
+  transaction?: Prisma.TransactionClient,
+) {
   const input = studioDraftSchema.parse(unchecked);
   const landfall = input.landfall == null ? input.landfall : validateLandfallDefinition(input.landfall);
   if (landfall && landfall.taleId !== taleId) throw new Error("LANDFALL_TALE_MISMATCH");
@@ -343,13 +361,35 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
         throw new Error("This Chronicle contains an unrecognized Passage type.");
     }
   }
-  return db.$transaction(async (tx) => {
+  const save = async (tx: Prisma.TransactionClient) => {
     const tale = await tx.chronicle.findUniqueOrThrow({
       where: { id: taleId },
       include: { drafts: { orderBy: { revisionNumber: "desc" }, take: 1 } },
     });
     const draft = tale.drafts[0];
     if (!draft) throw new Error("This Chronicle has no editable draft.");
+    if (
+      input.tale.visibility &&
+      input.tale.visibility !== "PRIVATE" &&
+      tale.forkedFromVersionId &&
+      (await isInstalledCommunityChronicle(taleId, tx))
+    )
+      throw new Error("Community Chronicle copies must remain private to preserve their published rights and credit.");
+    if (
+      (input.tale.visibility ?? tale.visibility) !== "PRIVATE" &&
+      (await containsInstalledCommunityReuse(
+        {
+          taleId,
+          blockIds: new Set(input.chapters.flatMap((chapter) => chapter.blocks.map((block) => block.id))),
+          chapterIds: new Set(input.chapters.map((chapter) => chapter.id)),
+          pendingItemId: input.reusableUsage?.itemId,
+        },
+        tx,
+      ))
+    )
+      throw new Error(
+        "Community content must remain private until its upstream rights and credit can be verified for publication.",
+      );
     const reserved = await tx.chronicle.findFirst({
       where: { slug: input.tale.slug, id: { not: taleId } },
       select: { id: true },
@@ -478,9 +518,23 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
         throw new Error("Reusable content provenance must refer only to Passages and Chapters in this saved draft.");
       const version = await tx.reusableAuthoringItemVersion.findFirst({
         where: { id: usage.versionId, itemId: usage.itemId, item: { ownerAccountId: userId, archivedAt: null } },
-        select: { id: true },
+        select: { checksum: true, envelope: true },
       });
       if (!version) throw new Error("The reusable source version is not available to this Creator.");
+      const source = parseReusableEnvelope(JSON.parse(version.envelope));
+      if (
+        source.itemId !== usage.itemId ||
+        source.versionId !== usage.versionId ||
+        source.ownerId !== userId ||
+        source.checksum !== version.checksum
+      )
+        throw new Error("The reusable source version could not be verified.");
+      const provenance = {
+        ...source.attribution,
+        sourceItemId: source.attribution.sourceItemId ?? source.itemId,
+        sourceVersionId: source.attribution.sourceVersionId ?? source.versionId,
+        modified: true,
+      };
       await tx.reusableAuthoringUsage.create({
         data: {
           draftId: draft.id,
@@ -489,7 +543,7 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
           sourceKind: usage.sourceKind,
           insertedBlockIds: json(usage.insertedBlockIds),
           insertedChapterIds: json(usage.insertedChapterIds),
-          provenance: json(usage.provenance),
+          provenance: json(provenance),
         },
       });
     }
@@ -546,7 +600,8 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
       savedAt: updated.updatedAt.toISOString(),
       validationState: updated.validationState,
     };
-  });
+  };
+  return transaction ? save(transaction) : db.$transaction(save);
 }
 
 export async function archiveStudioTale(taleId: string, archived: boolean) {
@@ -628,6 +683,11 @@ export async function restorePublishedVersionToDraft(taleId: string, versionId: 
   if (snapshot.schemaVersion !== 1 || !Array.isArray(snapshot.chapters))
     throw new Error("This Chronicle version cannot be copied into the current draft.");
 
+  if (await snapshotContainsInstalledCommunityReuse(taleId, snapshot, version.publishedAt))
+    throw new Error(
+      "Restoring this version as a new draft requires preserving its upstream Community rights and credit. Keep editing the existing private draft.",
+    );
+
   const previousDraftId = tale.currentDraftRevisionId;
   const draft = await db.taleDraft.create({
     data: {
@@ -693,68 +753,91 @@ export async function restorePublishedVersionToDraft(taleId: string, versionId: 
   return { draftId: draft.id, basedOnPublishedVersionId: version.id, revisionNumber: draft.revisionNumber };
 }
 
-export async function forkPublishedVersion(taleId: string, versionId: string, creatorId: string) {
-  const version = await db.publishedTaleVersion.findFirstOrThrow({ where: { id: versionId, taleId } });
-  const snapshot = parsePublishedSnapshot(version.contentSnapshot);
-  let slug = slugify(`${snapshot.tale.slug}-copy`);
-  let suffix = 2;
-  const base = slug;
-  while (await db.chronicle.findUnique({ where: { slug }, select: { id: true } })) slug = `${base}-${suffix++}`;
-  const created = await createStudioTale({
-    title: `${snapshot.tale.title} Copy`,
-    slug,
-    subtitle: snapshot.tale.subtitle ?? undefined,
-    shortDescription: snapshot.tale.shortDescription ?? undefined,
-    longDescription: snapshot.tale.longDescription ?? undefined,
-    theme: snapshot.tale.theme,
-    visibility: "PRIVATE",
-    playerCountMin: snapshot.tale.playerCountMin,
-    playerCountMax: snapshot.tale.playerCountMax,
-    estimatedDuration: snapshot.tale.estimatedDuration ?? undefined,
-    initialChapterTitle: snapshot.chapters[0]?.title ?? "Chapter One",
-    creatorId,
-  });
-  await db.chronicle.update({
-    where: { id: created.id },
-    data: { forkedFromTaleId: taleId, forkedFromVersionId: versionId },
-  });
-  const target = await getStudioTale(created.id);
-  const chapterIds = new Map(snapshot.chapters.map((chapter) => [chapter.id, crypto.randomUUID()]));
-  const blockIds = new Map(
-    snapshot.chapters.flatMap((chapter) => chapter.blocks.map((block) => [block.id, crypto.randomUUID()] as const)),
-  );
-  const remap = (value: unknown) => (typeof value === "string" && blockIds.has(value) ? blockIds.get(value) : value);
-  await saveStudioDraft(
-    created.id,
-    {
-      autosaveVersion: target.draft.autosaveVersion,
-      tale: { ...snapshot.tale, title: `${snapshot.tale.title} Copy`, slug, visibility: "PRIVATE" },
-      chapters: snapshot.chapters.map((chapter) => ({
-        ...chapter,
-        id: chapterIds.get(chapter.id)!,
-        blocks: chapter.blocks.map((block) => ({
-          ...block,
-          id: blockIds.get(block.id)!,
-          connections: block.connections?.map((connection) => ({
-            ...connection,
-            targetBlockId: blockIds.get(connection.targetBlockId) ?? connection.targetBlockId,
+export async function forkPublishedVersion(
+  taleId: string,
+  versionId: string,
+  creatorId: string,
+  transaction?: { client: Prisma.TransactionClient; creatorAccountId: string },
+) {
+  const creatorAccountId = transaction ? transaction.creatorAccountId : await canonicalAccountForLegacyActor(creatorId);
+  const fork = async (tx: Prisma.TransactionClient) => {
+    const version = await tx.publishedTaleVersion.findFirstOrThrow({ where: { id: versionId, taleId } });
+    const snapshot = parsePublishedSnapshot(version.contentSnapshot);
+    if (
+      (await isInstalledCommunityChronicle(taleId, tx)) ||
+      (await snapshotContainsInstalledCommunityReuse(taleId, snapshot, version.publishedAt, tx))
+    )
+      throw new Error(
+        "Making another Chronicle copy requires preserving its upstream Community rights and credit. Keep editing the existing private draft.",
+      );
+    let slug = slugify(`${snapshot.tale.slug}-copy`);
+    let suffix = 2;
+    const base = slug;
+    while (await tx.chronicle.findUnique({ where: { slug }, select: { id: true } })) slug = `${base}-${suffix++}`;
+    const created = await createStudioTale(
+      {
+        title: `${snapshot.tale.title} Copy`,
+        slug,
+        subtitle: snapshot.tale.subtitle ?? undefined,
+        shortDescription: snapshot.tale.shortDescription ?? undefined,
+        longDescription: snapshot.tale.longDescription ?? undefined,
+        theme: snapshot.tale.theme,
+        visibility: "PRIVATE",
+        playerCountMin: snapshot.tale.playerCountMin,
+        playerCountMax: snapshot.tale.playerCountMax,
+        estimatedDuration: snapshot.tale.estimatedDuration ?? undefined,
+        initialChapterTitle: snapshot.chapters[0]?.title ?? "Chapter One",
+        creatorId,
+      },
+      { client: tx, creatorAccountId },
+    );
+    await tx.chronicle.update({
+      where: { id: created.id },
+      data: { forkedFromTaleId: taleId, forkedFromVersionId: versionId },
+    });
+    const draft = await tx.taleDraft.findUniqueOrThrow({
+      where: { id: created.draftId },
+      select: { autosaveVersion: true },
+    });
+    const chapterIds = new Map(snapshot.chapters.map((chapter) => [chapter.id, crypto.randomUUID()]));
+    const blockIds = new Map(
+      snapshot.chapters.flatMap((chapter) => chapter.blocks.map((block) => [block.id, crypto.randomUUID()] as const)),
+    );
+    const remap = (value: unknown) => (typeof value === "string" && blockIds.has(value) ? blockIds.get(value) : value);
+    await saveStudioDraft(
+      created.id,
+      {
+        autosaveVersion: draft.autosaveVersion,
+        tale: { ...snapshot.tale, title: `${snapshot.tale.title} Copy`, slug, visibility: "PRIVATE" },
+        chapters: snapshot.chapters.map((chapter) => ({
+          ...chapter,
+          id: chapterIds.get(chapter.id)!,
+          blocks: chapter.blocks.map((block) => ({
+            ...block,
+            id: blockIds.get(block.id)!,
+            connections: block.connections?.map((connection) => ({
+              ...connection,
+              targetBlockId: blockIds.get(connection.targetBlockId) ?? connection.targetBlockId,
+            })),
+            configuration: {
+              ...block.configuration,
+              successTargetBlockId: remap(block.configuration.successTargetBlockId),
+              failureTargetBlockId: remap(block.configuration.failureTargetBlockId),
+              choices: Array.isArray(block.configuration.choices)
+                ? block.configuration.choices.map((choice) =>
+                    choice && typeof choice === "object" && !Array.isArray(choice)
+                      ? { ...choice, targetBlockId: remap(choice.targetBlockId) }
+                      : choice,
+                  )
+                : block.configuration.choices,
+            },
           })),
-          configuration: {
-            ...block.configuration,
-            successTargetBlockId: remap(block.configuration.successTargetBlockId),
-            failureTargetBlockId: remap(block.configuration.failureTargetBlockId),
-            choices: Array.isArray(block.configuration.choices)
-              ? block.configuration.choices.map((choice) =>
-                  choice && typeof choice === "object" && !Array.isArray(choice)
-                    ? { ...choice, targetBlockId: remap(choice.targetBlockId) }
-                    : choice,
-                )
-              : block.configuration.choices,
-          },
         })),
-      })),
-    },
-    creatorId,
-  );
-  return { id: created.id, slug, forkedFromTaleId: taleId, forkedFromVersionId: versionId };
+      },
+      creatorId,
+      tx,
+    );
+    return { id: created.id, slug, forkedFromTaleId: taleId, forkedFromVersionId: versionId };
+  };
+  return transaction ? fork(transaction.client) : db.$transaction(fork);
 }
