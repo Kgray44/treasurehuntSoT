@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake focused CPU compositor comparison
+run-name: Lanternwake Mesa CPU compositor comparison
 
 on:
   push:
@@ -17,14 +17,15 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 7d7e81b2c8b4d42df6784de0911cced3b0d76388
+      CANDIDATE_SHA: ab22f6fbe2f03c87b4fe33d2438a79be5d827e9b
       BASE_SHA: aaf7aa6e80d0c71c02018432c1e8a66ef5e1e21f
-      FOREVER_VALIDATION_SOURCE_SHA: 7d7e81b2c8b4d42df6784de0911cced3b0d76388
+      FOREVER_VALIDATION_SOURCE_SHA: ab22f6fbe2f03c87b4fe33d2438a79be5d827e9b
       NEXT_TELEMETRY_DISABLED: "1"
+      LIBGL_ALWAYS_SOFTWARE: "true"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 7d7e81b2c8b4d42df6784de0911cced3b0d76388
+          ref: ab22f6fbe2f03c87b4fe33d2438a79be5d827e9b
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -61,7 +62,7 @@ jobs:
       - name: Run the same Phase 3 journeys with explicit CPU composition
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          node --input-type=module <<'EOF'
+          xvfb-run -a -s '-screen 0 1600x1000x24' node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
           await runJob(
             { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
