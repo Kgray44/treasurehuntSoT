@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake reduced Journal same-frame handoff on Linux
+run-name: Lanternwake paired ready-state publication on Linux
 
 on:
   push:
@@ -17,14 +17,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: fd7091dc7e4c548a8ab5949f0030c9f1c50a2a7e
+      CANDIDATE_SHA: b41e4551f85576edade90ab46788b218a3cc096a
       BASE_SHA: aaf7aa6e80d0c71c02018432c1e8a66ef5e1e21f
-      FOREVER_VALIDATION_SOURCE_SHA: fd7091dc7e4c548a8ab5949f0030c9f1c50a2a7e
+      FOREVER_VALIDATION_SOURCE_SHA: b41e4551f85576edade90ab46788b218a3cc096a
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: fd7091dc7e4c548a8ab5949f0030c9f1c50a2a7e
+          ref: b41e4551f85576edade90ab46788b218a3cc096a
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,7 +58,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Compare same-frame and post-frame Journal publication
+      - name: Compare asynchronous and synchronous reduced readiness publication
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -72,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lanternwake-linux-frame-preflight
+          name: lanternwake-linux-ready-preflight
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
           if-no-files-found: ignore
           retention-days: 30
