@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake scoped compiled Skip and reduced preflight on Linux
+run-name: Lanternwake compositor layer attribution on Linux
 
 on:
   push:
@@ -17,14 +17,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: dddb364aebd51647b686ca511e21b87d0aabafa5
+      CANDIDATE_SHA: 5e96291917a1cef51d87ee181b31b237c721df1e
       BASE_SHA: 9e612bd42dee2561d75dfac9263ac3307d5dee24
-      FOREVER_VALIDATION_SOURCE_SHA: dddb364aebd51647b686ca511e21b87d0aabafa5
+      FOREVER_VALIDATION_SOURCE_SHA: 5e96291917a1cef51d87ee181b31b237c721df1e
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: dddb364aebd51647b686ca511e21b87d0aabafa5
+          ref: 5e96291917a1cef51d87ee181b31b237c721df1e
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,7 +58,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Verify both compiled Journal handoffs within their original limits
+      - name: Map the Journal compositor layers through one cold opening and one replay
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -72,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lanternwake-linux-compiled-handoffs
+          name: lanternwake-linux-compositor-layers
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
           if-no-files-found: ignore
           retention-days: 30

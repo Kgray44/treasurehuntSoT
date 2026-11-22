@@ -587,7 +587,7 @@ async function measuredFullOpening(page: Page, control: Locator) {
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
 phase3Test(
-  "compiled real Skip and reduced-motion preflight",
+  "map slow Journal compositor layers to their application owners",
   async ({ page, phase3, browser, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
@@ -617,42 +617,65 @@ phase3Test(
     const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
     expect(fullRuntimeBaseline.eventSources).toBe(1);
 
-    await replay(page).click();
-    await expect(journal(page)).toHaveAttribute("data-journal-opening-outcome", "running");
-    const skip = await measureSkip(page.getByRole("button", { name: "Skip ceremony" }), fullRuntimeBaseline);
-    await assertReadableJournal(page);
-    expect(await waitForStableRuntimeBaseline(page)).toEqual(fullRuntimeBaseline);
-    await expect(replay(page)).toBeFocused();
-    // Reduced mode takes the same preparation/handoff path without the full
-    // ceremony. Measure button activation through the readable PageFlip handoff,
-    // which includes the phase transition and frame wait rather than timing a DOM query.
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    await expect(journal(page)).toHaveAttribute("data-motion-level", "reduced");
-    await assertReadableJournal(page, true);
-    const reducedRuntimeBaseline = await waitForStableRuntimeBaseline(page);
-    const preflightWarmupCount = 8;
-    const preflightSampleCount = 40;
-    const preflightSamplesMs: number[] = [];
-    for (let index = 0; index < preflightWarmupCount + preflightSampleCount; index += 1) {
-      const handoff = await measureOpening(replay(page));
-      expect(handoff.phases).toContain("BOOK_SETTLING");
-      // The canonical application intentionally reports the readable reduced
-      // book as completed-fallback. An unplanned runtime fallback is distinct.
-      expect(handoff.reason).toBe("completed-fallback");
-      expect(handoff.bookStatus).toBe("reduced");
-      if (index >= preflightWarmupCount) preflightSamplesMs.push(handoff.durationMs);
-    }
-    expect(preflightSamplesMs).toHaveLength(preflightSampleCount);
-    await assertReadableJournal(page, true);
-    expect(await waitForStableRuntimeBaseline(page)).toEqual(reducedRuntimeBaseline);
+    const session = await page.context().newCDPSession(page);
+    type Layer = { layerId: string; backendNodeId?: number; width: number; height: number;
+      offsetX: number; offsetY: number; drawsContent: boolean; paintCount: number };
+    let layerTree: Layer[] = [];
+    const painted = new Map<string, number>();
+    session.on("LayerTree.layerTreeDidChange", ({ layers }) => { if (layers) layerTree = layers; });
+    session.on("LayerTree.layerPainted", ({ layerId }) => {
+      painted.set(layerId, (painted.get(layerId) ?? 0) + 1);
+    });
+    await session.send("DOM.enable");
+    await session.send("LayerTree.enable");
+    const scene = journal(page);
+    const describe = async (layer: Layer) => {
+      const [description, compositing] = await Promise.allSettled([
+        layer.backendNodeId === undefined
+          ? Promise.resolve(undefined)
+          : session.send("DOM.describeNode", { backendNodeId: layer.backendNodeId }),
+        session.send("LayerTree.compositingReasons", { layerId: layer.layerId }),
+      ]);
+      const node = description.status === "fulfilled" ? description.value?.node : undefined;
+      const attrs = node?.attributes ?? [];
+      const classes = attrs[attrs.indexOf("class") + 1] ?? "";
+      const actor = attrs[attrs.indexOf("data-opening-actor") + 1] ?? "";
+      const part = attrs[attrs.indexOf("data-scene-part") + 1] ?? "";
+      const safe = (value: string) => value.split(/\s+/u).filter((part) => /^[\w-]+$/u.test(part)).slice(0, 8);
+      return {
+        layer: layer.layerId, tag: node?.nodeName ?? null, classes: attrs.includes("class") ? safe(classes) : [],
+        actor: attrs.includes("data-opening-actor") ? safe(actor) : [],
+        scenePart: attrs.includes("data-scene-part") ? safe(part) : [],
+        width: layer.width, height: layer.height, paintCount: layer.paintCount,
+        events: painted.get(layer.layerId) ?? 0,
+        reasons: compositing.status === "fulfilled" ? compositing.value.compositingReasonIds : [],
+      };
+    };
+    const snapshots = [];
+    const capture = async (phase: string) => {
+      await expect(scene).toHaveAttribute("data-journal-phase", phase);
+      await waitAnimationFrames(page, 4);
+      await expect(scene).toHaveAttribute("data-journal-phase", phase);
+      const drawing = layerTree.filter((layer) => layer.drawsContent);
+      const ordered = [...drawing].sort((left, right) => right.width * right.height - left.width * left.height);
+      const large = await Promise.all(ordered.slice(0, 25).map(describe));
+      snapshots.push({ phase, layers: layerTree.length, drawing: drawing.length,
+        area: drawing.reduce((sum, layer) => sum + layer.width * layer.height, 0), large });
+    };
 
-    const p95Ms = rounded(percentile(preflightSamplesMs, 0.95));
-    await expect(replay(page)).toBeFocused();
-    const report = { purpose: "DEVELOPMENT_ONLY", candidate: "6f81ff1f20185791904ad2eb6ed03d88308605b3",
-      p95Ms, budgetMs: budgets.preflightP95Ms, skipCleanupMs: skip.cleanupMs, warmups: preflightWarmupCount, samples: preflightSamplesMs };
+    await capture("JOURNAL_READY");
+    await replay(page).click();
+    await capture("CLOSED_BOOK_REVEAL");
+    await capture("COVER_OPENING");
+    await capture("BOOK_SETTLING");
+    await assertReadableJournal(page);
+    await session.send("LayerTree.disable");
+    await session.detach();
+
+    expect(snapshots.slice(1).every((snapshot) => snapshot.drawing > 0)).toBe(true);
+    const report = { purpose: "DEVELOPMENT_ONLY", candidate: "6f81ff1f20185791904ad2eb6ed03d88308605b3", snapshots };
     await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
-    console.log(JSON.stringify(report));
-    expect(skip.cleanupMs).toBeLessThan(budgets.cleanupMs);
-    expect(p95Ms).toBeLessThan(budgets.preflightP95Ms);
+    console.log(JSON.stringify({ purpose: report.purpose, snapshots: snapshots.map(({ phase, layers, drawing, area }) =>
+      ({ phase, layers, drawing, area })) }));
   },
 );
