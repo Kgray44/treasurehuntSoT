@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake equivalent planar book surfaces during settling on Linux
+run-name: Lanternwake static moving-header backdrop during settling
 
 on:
   push:
@@ -17,14 +17,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 7b66ac63aa1a90cf3191559629862bd82ec3789f
+      CANDIDATE_SHA: b535947cbd0c3466172c78aac63f114f3d8f41d3
       BASE_SHA: 9e612bd42dee2561d75dfac9263ac3307d5dee24
-      FOREVER_VALIDATION_SOURCE_SHA: 7b66ac63aa1a90cf3191559629862bd82ec3789f
+      FOREVER_VALIDATION_SOURCE_SHA: b535947cbd0c3466172c78aac63f114f3d8f41d3
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 7b66ac63aa1a90cf3191559629862bd82ec3789f
+          ref: b535947cbd0c3466172c78aac63f114f3d8f41d3
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,7 +58,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Compare static PageFlip settling with equivalent 2D transforms
+      - name: Compare the original and static backdrops during the same header motion
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -72,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lanternwake-linux-settle-planar
+          name: lanternwake-linux-settle-header
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
           if-no-files-found: ignore
           retention-days: 30

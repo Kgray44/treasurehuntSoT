@@ -598,7 +598,7 @@ async function measuredFullOpening(page: Page, control: Locator) {
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
 phase3Test(
-  "compare equivalent transforms on the static PageFlip surfaces during settling",
+  "compare a fixed header backdrop during Book Settling",
   async ({ page, phase3, browser, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
@@ -628,15 +628,10 @@ phase3Test(
     const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
     expect(fullRuntimeBaseline.eventSources).toBe(1);
 
-    const scope = '.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"]';
-    const css = [
-      scope + ' .book-camera { transform: scale(.985); }',
-      scope + ' .page-flip-runtime.stf__parent { transform: matrix(1, 0, 0, 1, 0, 0); }',
-      scope + ' .page-flip-runtime .stf__item.--simple { transform-style: flat; }',
-    ].join("\n");
-    const values: Record<"original" | "planar", VisualProbeResult[]> = { original: [], planar: [] };
-    for (const mode of ["original", "planar", "planar", "original"] as const) {
-      const treatment = mode === "planar" ? await page.addStyleTag({ content: css }) : null;
+    const css = '.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"] .chronicle-session-header { backdrop-filter: none; }';
+    const values: Record<"original" | "staticBackdrop", VisualProbeResult[]> = { original: [], staticBackdrop: [] };
+    for (const mode of ["original", "staticBackdrop", "staticBackdrop", "original"] as const) {
+      const treatment = mode === "staticBackdrop" ? await page.addStyleTag({ content: css }) : null;
       const opening = await measuredFullOpening(page, replay(page));
       expect(opening.durationMs).toBeLessThan(budgets.openingMs);
       values[mode].push(opening.visual);
@@ -645,19 +640,19 @@ phase3Test(
 
     await replay(page).click();
     await expect(journal(page)).toHaveAttribute("data-journal-phase", "BOOK_SETTLING");
-    const inspect = () => journal(page).evaluate((root) => [".book-camera", ".page-flip-runtime.stf__parent"].map(
-      (selector) => {
-        const item = root.querySelector(selector);
-        if (!item) throw new Error("Expected static surface: " + selector);
-        const matrix = new DOMMatrixReadOnly(getComputedStyle(item).transform);
-        return { a: matrix.a, b: matrix.b, c: matrix.c, d: matrix.d, e: matrix.e, f: matrix.f,
-          z: matrix.m43, depthScale: matrix.m33 };
-      }));
-    const originalTransform = await inspect();
+    const inspect = () => journal(page).locator(".chronicle-session-header").evaluate((header) => {
+      const style = getComputedStyle(header);
+      return { backdrop: style.backdropFilter, background: style.backgroundImage, transition: style.transitionProperty };
+    });
+    const original = await inspect();
     await page.addStyleTag({ content: css });
-    expect(await inspect()).toEqual(originalTransform);
+    const staticBackdrop = await inspect();
+    expect(original.backdrop).toContain("blur");
+    expect(staticBackdrop.backdrop).toBe("none");
+    expect(staticBackdrop.background).toBe(original.background);
+    expect(staticBackdrop.transition).toBe(original.transition);
     await assertReadableJournal(page);
-    const byMode = Object.fromEntries((["original", "planar"] as const).map((mode) => {
+    const byMode = Object.fromEntries((["original", "staticBackdrop"] as const).map((mode) => {
       const runs = values[mode];
       const frames = runs.flatMap((sample) => [...sample.frameDurationsMs]);
       const phases = Object.fromEntries(["CLOSED_BOOK_REVEAL", "COVER_OPENING", "BOOK_SETTLING"].map((phase) => {
@@ -670,9 +665,9 @@ phase3Test(
         slow: frames.filter((ms) => ms > budgets.desktopFrameP95Ms).length, phases }];
     }));
     const report = { purpose: "DEVELOPMENT_ONLY", candidate: "d1b6b4c79bf0600e4f3cf44c456a4b1f68973754",
-      originalTransform, transformMatches: true, budgetMs: budgets.desktopFrameP95Ms, byMode };
+      originalBackdrop: original.backdrop, treatmentBackdrop: staticBackdrop.backdrop, budgetMs: budgets.desktopFrameP95Ms, byMode };
     await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
     console.log(JSON.stringify(report));
-    expect(byMode.planar.p95).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
+    expect(byMode.staticBackdrop.p95).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
   },
 );
