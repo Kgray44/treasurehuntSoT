@@ -1,5 +1,4 @@
 import { db } from "@/lib/db";
-import { cache } from "react";
 import {
   communityFacetCounts,
   databaseCommunitySearchProvider,
@@ -108,7 +107,6 @@ export type HomeportListingDetail = Readonly<{
     minimumPlatformVersion?: string;
     publishedAt: string;
   };
-  creatorInstallEligible?: boolean;
   tideglassComparison?: {
     href: string;
     sourceReleaseVersion: string;
@@ -280,7 +278,7 @@ export async function listHomeportCreatorCards(viewerAccountId?: string | null) 
   return visible.map((profile) => creatorCard(profile, workCounts.get(profile.id) ?? 0));
 }
 
-const getVisibleCreatorProfile = cache(async (handle: string, viewerAccountId?: string | null) => {
+export async function getHomeportCreatorDetail(handle: string, viewerAccountId?: string | null) {
   const profile = await db.communityProfile.findFirst({
     where: {
       normalizedHandle: handle.normalize("NFKC").toLocaleLowerCase("en-US"),
@@ -300,23 +298,7 @@ const getVisibleCreatorProfile = cache(async (handle: string, viewerAccountId?: 
       updatedAt: true,
     },
   });
-  return profile && !(await isBlocked(viewerAccountId, profile.accountId)) ? profile : null;
-});
-
-export async function getHomeportCreatorSharingInfo(handle: string, viewerAccountId?: string | null) {
-  const profile = await getVisibleCreatorProfile(handle, viewerAccountId);
-  return profile
-    ? {
-        canonicalPath: creatorProfilePath(profile.handle),
-        title: profile.displayName,
-        biography: profile.biography ?? undefined,
-      }
-    : null;
-}
-
-export async function getHomeportCreatorDetail(handle: string, viewerAccountId?: string | null) {
-  const profile = await getVisibleCreatorProfile(handle, viewerAccountId);
-  if (!profile) return null;
+  if (!profile || (await isBlocked(viewerAccountId, profile.accountId))) return null;
   const [records, badgeGrants, followers, collections] = await Promise.all([
     databaseCommunitySearchProvider.search({
       filters: { creatorId: profile.id },
@@ -505,8 +487,6 @@ export async function getHomeportListingDetail(slug: string, viewerAccountId?: s
           semanticVersion: true,
           minimumPlatformVersion: true,
           licenseSnapshot: true,
-          manifest: true,
-          packageChecksum: true,
           moderationStatus: true,
           deprecatedAt: true,
           publishedAt: true,
@@ -613,35 +593,6 @@ export async function getHomeportListingDetail(slug: string, viewerAccountId?: s
           publishedAt: listing.currentRelease.publishedAt.toISOString(),
         }
       : undefined;
-  let creatorInstallEligible = false;
-  if (
-    listing.currentRelease &&
-    ["CHRONICLE", "CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"].includes(listing.itemType) &&
-    listing.currentRelease.moderationStatus === "ACTIVE" &&
-    !listing.currentRelease.deprecatedAt &&
-    listing.currentRelease.packageChecksum
-  ) {
-    try {
-      const manifest = JSON.parse(listing.currentRelease.manifest) as {
-        reviewDigest?: string;
-        packageChecksum?: string;
-      };
-      const record = await db.communityPackage.findUnique({
-        where: { releaseId: listing.currentRelease.id },
-        select: { packageChecksum: true, storageStatus: true, scanStatus: true, finalizedAt: true },
-      });
-      creatorInstallEligible = Boolean(
-        manifest.reviewDigest &&
-          manifest.packageChecksum === listing.currentRelease.packageChecksum &&
-          record?.packageChecksum === listing.currentRelease.packageChecksum &&
-          record.storageStatus === "READY" &&
-          record.scanStatus === "CLEAN" &&
-          record.finalizedAt,
-      );
-    } catch {
-      creatorInstallEligible = false;
-    }
-  }
   const tale = listing.currentRelease?.sourcePublishedTaleVersion?.tale;
   const useAction =
     listing.itemType === "CHRONICLE" && tale?.status === "PUBLISHED" && tale.visibility === "PUBLIC"
@@ -696,7 +647,6 @@ export async function getHomeportListingDetail(slug: string, viewerAccountId?: s
         }
       : {}),
     ...(release ? { release } : {}),
-    ...(creatorInstallEligible ? { creatorInstallEligible: true } : {}),
     ...(tideglassComparison ? { tideglassComparison } : {}),
     useAction,
   } satisfies HomeportListingDetail;
@@ -763,10 +713,6 @@ export function homeportCardFromDiscovery(record: DiscoveryRecord): HomeportComm
   };
 }
 
-function creatorProfilePath(handle: string) {
-  return `/community/creators/${encodeURIComponent(handle)}`;
-}
-
 function creatorCard(
   profile: {
     id: string;
@@ -780,7 +726,7 @@ function creatorCard(
   },
   workCount: number,
 ): HomeportCommunityCard {
-  const destination = creatorProfilePath(profile.handle);
+  const destination = `/community/creators/${encodeURIComponent(profile.handle)}`;
   return {
     id: profile.id,
     variant: "CREATOR",

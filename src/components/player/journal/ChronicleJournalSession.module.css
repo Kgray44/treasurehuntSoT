@@ -3,3 +3,33 @@
     var(--focus-ring),
     0 20px 45px rgba(0, 0, 0, 0.5);
 }
+
+/* Blend the static texture with the ocean backdrop before composing the moving Journal. */
+.journalShell:global(.voyage-shell)::after {
+  content: none;
+}
+
+.oceanBackdrop {
+  isolation: isolate;
+}
+
+.oceanBackdrop::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  opacity: calc(0.16 * var(--texture-opacity));
+  background-image: url("/textures/paper-grain.svg");
+  mix-blend-mode: soft-light;
+}
+
+/* These decorations first become visible as the open book settles. */
+.journalShell:not([data-journal-phase="BOOK_SETTLING"], [data-journal-phase="JOURNAL_READY"])
+  :global(.book-camera)
+  > :is(:global(.book-shadow), :global(.rear-book-cover), :global(.page-stack), :global(.book-binding)) {
+  visibility: hidden;
+}
+
+.journalShell[data-motion-mode="reduced"][data-journal-phase="BOOK_SETTLING"] :global(.closed-book) {
+  display: none;
+}

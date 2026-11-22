@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Creator Community isolated runtime and audio batches
+run-name: Lanternwake focused Linux benchmark with dormant book surfaces excluded
 
 on:
   push:
@@ -13,17 +13,18 @@ permissions:
 
 jobs:
   benchmark:
-    name: Extended Lanternwake lifecycle only (development)
+    name: Phase 3 performance only (development)
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 64f014440582b5a31d23a09ab101fb55d984f987
-      BASE_SHA: ef7d6adcfb87acc4f9ac1e592ed6e521f98b87bc
+      CANDIDATE_SHA: d03d230a3053bf1888773b7eb2441848ee476fff
+      BASE_SHA: aaf7aa6e80d0c71c02018432c1e8a66ef5e1e21f
+      FOREVER_VALIDATION_SOURCE_SHA: d03d230a3053bf1888773b7eb2441848ee476fff
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 64f014440582b5a31d23a09ab101fb55d984f987
+          ref: d03d230a3053bf1888773b7eb2441848ee476fff
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -57,13 +58,21 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Run the unchanged extended lifecycle spec
+      - name: Run the unchanged Phase 3 performance spec
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
           await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-lifecycle-extended.spec.ts"] },
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
             { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
           );
           EOF
+      - name: Retain sanitized performance metrics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lanternwake-linux-performance-metrics
+          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
+          if-no-files-found: ignore
+          retention-days: 30
