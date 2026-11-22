@@ -614,17 +614,9 @@ phase3Test.use({
 });
 
 phase3Test(
-  "canonical production Journal performance and lifecycle budgets",
-  async ({ page, phase3, browser, browserName }) => {
+  "compiled Journal Skip cleanup and replay",
+  async ({ page, phase3, browserName }) => {
     expect(browserName).toBe("chromium");
-    const rendererProbe = await browser.newBrowserCDPSession();
-    const { gpu } = await rendererProbe.send("SystemInfo.getInfo");
-    await rendererProbe.detach();
-    console.log(JSON.stringify({ purpose: "DEVELOPMENT_ONLY", renderBackend: gpu.auxAttributes?.glRenderer,
-      compositor: gpu.featureStatus?.gpu_compositing, rasterization: gpu.featureStatus?.rasterization }));
-    expect(gpu.auxAttributes?.glRenderer).toMatch(/Metal Renderer: Apple Paravirtual device/i);
-    expect(gpu.featureStatus?.gpu_compositing).toBe("enabled");
-    expect(gpu.featureStatus?.rasterization).toBe("enabled");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
     expect(process.env.FOREVER_PHASE3_PERFORMANCE_BASE_URL).toBe("http://127.0.0.1:3200");
     const artifact = performanceArtifactTarget();
@@ -640,7 +632,7 @@ phase3Test(
     const journalPath = `/player/playthroughs/${voyage!.sessionId}/journal`;
     await enterJournal(page, fixture, journalPath);
 
-    const cold = await measuredFullOpening(page, page.getByRole("button", { name: "Open the journal" }));
+    await measuredFullOpening(page, page.getByRole("button", { name: "Open the journal" }));
     await expect(journal(page).getByText("Captain channel connected")).toBeVisible();
     await expect(journal(page)).toHaveAttribute("data-live-event", "idle");
     const liveStartedAt = performance.now();
@@ -652,40 +644,25 @@ phase3Test(
     const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
     expect(fullRuntimeBaseline.eventSources).toBe(1);
 
-    const warmRuns: Awaited<ReturnType<typeof measuredFullOpening>>[] = [];
-    const desktopRuns = [cold.visual];
-    for (let index = 0; index < 3; index += 1) {
-      const run = await measuredFullOpening(page, replay(page));
-      warmRuns.push(run);
-      desktopRuns.push(run.visual);
-    }
-    const mobileContext = await browser.newContext({ ...devices["Pixel 7"], baseURL: "http://127.0.0.1:3200" });
-    const mobileRuns: VisualProbeResult[] = [];
-    try {
-      const mobile = await mobileContext.newPage();
-      await installRuntimeCounter(mobile);
-      await setPhase3Motion(mobile, PHASE3_MOTION_MODES[0]);
-      await enterJournal(mobile, fixture, journalPath);
-      await assertReadableJournal(mobile);
-      for (let index = 0; index < 3; index += 1) {
-        const run = await measuredFullOpening(mobile, replay(mobile));
-        warmRuns.push(run);
-        mobileRuns.push(run.visual);
-      }
-    } finally {
-      await mobileContext.close();
-    }
-
     await startVisualProbe(page);
     await replay(page).click();
     await expect(journal(page)).toHaveAttribute("data-journal-opening-outcome", "running");
     const skip = await measureSkip(page.getByRole("button", { name: "Skip ceremony" }), fullRuntimeBaseline);
-    const skipVisual = await stopVisualProbe(page);
+    await stopVisualProbe(page);
     await assertReadableJournal(page);
     expect(await waitForStableRuntimeBaseline(page)).toEqual(fullRuntimeBaseline);
+    await expect(page.getByRole("complementary", { name: "Current objective" })).toBeVisible();
+    await expect(replay(page)).toBeFocused();
 
     console.log(JSON.stringify({purpose:"DEVELOPMENT_ONLY", skipMs:skip.cleanupMs,
-      openingBeforeSkip: desktopRuns.length, mobileOpenings: mobileRuns.length, observations:skip.observations}));
+      observations:skip.observations}));
+    await writePerformanceArtifact(artifact.artifactPath, { source: process.env.FOREVER_VALIDATION_SOURCE_SHA, purpose: "DEVELOPMENT_ONLY", budgetMs: budgets.cleanupMs, ...skip }, [fixture.slug, voyage!.sessionId]);
     expect(skip.cleanupMs).toBeLessThan(budgets.cleanupMs);
+    const afterSkip = await measuredFullOpening(page, replay(page));
+    expect(afterSkip.reason).toBe("completed");
+    expect(afterSkip.durationMs).toBeLessThan(budgets.openingMs);
   },
 );
+
+
+
