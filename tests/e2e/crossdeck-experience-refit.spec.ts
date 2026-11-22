@@ -10,7 +10,11 @@ import { createAccountSession, revokeAccountSession } from "../../src/wayfarer/a
 import { STALE_MS } from "../../src/crossdeck/contracts";
 import { createCrossdeckRefitFixture, removeCrossdeckRefitFixture } from "./fixtures/crossdeck-refit";
 import { authenticateClosure, openClosureJournal, openClosureMap } from "./fixtures/landfall-closure";
-import { assertDesktopHandoffReceiptReadable, assertPhoneJournalReadingArea } from "./fixtures/journal-layout";
+import {
+  assertDesktopHandoffReceiptReadable,
+  assertPhoneJournalReadingArea,
+  assertRecoveredDesktopPassageHeading,
+} from "./fixtures/journal-layout";
 
 test.describe.configure({ mode: "serial", timeout: 180_000 });
 test.use({ trace: "off", video: "off", screenshot: "off" });
@@ -563,6 +567,7 @@ for (const motion of ["no-preference", "reduce"] as const)
       await expect(d.locator(".journal-objects-drawer.open [data-landfall-player-chart]:visible")).toBeVisible({
         timeout: 15000,
       });
+      await assertRecoveredDesktopPassageHeading(d, "Follow the lanterns");
       await capture(d, "13-recovered-chart");
       await phone.setOffline(false);
       await p.reload();

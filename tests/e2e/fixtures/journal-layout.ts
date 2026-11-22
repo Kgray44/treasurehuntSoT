@@ -13,7 +13,7 @@ type Geometry = {
 // This callback is serialized into the browser. Keep its geometry helpers self-contained.
 function measureJournalGeometry(
   element: Element,
-  input: { kind: "phone" | "receipt"; expectedText: string },
+  input: { kind: "phone" | "receipt" | "recovered-heading"; expectedText: string },
 ): Geometry {
   const failures: string[] = [];
   const rect = (value: DOMRect | Rect): Rect => ({
@@ -118,10 +118,12 @@ function measureJournalGeometry(
     return { failures, viewport, textRects, obstacles };
   }
 
-  if (Math.abs(window.scrollY) > 1 || Math.abs(window.scrollX) > 1)
-    failures.push("Journal is not at deliberate scroll zero");
-  if (viewport.width >= viewport.height) failures.push("Phone first-viewport check requires portrait orientation");
-  if (document.documentElement.scrollWidth > innerWidth + 1) failures.push("Journal overflows horizontally");
+  if (input.kind === "phone") {
+    if (Math.abs(window.scrollY) > 1 || Math.abs(window.scrollX) > 1)
+      failures.push("Journal is not at deliberate scroll zero");
+    if (viewport.width >= viewport.height) failures.push("Phone first-viewport check requires portrait orientation");
+    if (document.documentElement.scrollWidth > innerWidth + 1) failures.push("Journal overflows horizontally");
+  }
   const leaf = element.closest<HTMLElement>(".journal-leaf"),
     book = element.closest<HTMLElement>(".main-journal-book");
   if (!leaf || !book || !painted(leaf)) {
@@ -145,6 +147,8 @@ function measureJournalGeometry(
   for (const line of textRects)
     for (const obstacle of obstacles)
       if (positive(intersect(line, obstacle.rect))) failures.push(`Active heading intersects ${obstacle.name}`);
+
+  if (input.kind === "recovered-heading") return { failures, viewport, textRects, obstacles };
 
   let candidates = [clipToAncestors(leaf, intersect(rect(leaf.getBoundingClientRect()), viewport))].filter(positive);
   for (const obstacle of obstacles) {
@@ -213,6 +217,23 @@ export async function assertDesktopHandoffReceiptReadable(page: Page, handoff: L
     )
     .toEqual([]);
   return geometry!;
+}
+
+export async function assertRecoveredDesktopPassageHeading(page: Page, activeHeading: string) {
+  const heading = page.getByRole("heading", { name: activeHeading, exact: true });
+  await expect(heading).toHaveCount(1);
+  await expect
+    .poll(
+      async () =>
+        (
+          await heading.evaluate(measureJournalGeometry, {
+            kind: "recovered-heading",
+            expectedText: activeHeading,
+          })
+        ).failures,
+      { message: "The recovered Chart keeps the active passage heading unobscured without manual scrolling" },
+    )
+    .toEqual([]);
 }
 
 /** Deliberately checks the initial portrait viewport; no scroll-into-view workaround is permitted. */
