@@ -655,7 +655,7 @@ phase3Test(
       expect(opening.durationMs).toBeLessThan(budgets.openingMs);
       results.push({ mode, values: opening.visual.frameDurationsMs,
         p95: rounded(percentile(opening.visual.frameDurationsMs, 0.95)) });
-      await injected?.evaluate((style) => style.remove());
+      await injected?.evaluate((node) => { node.parentNode?.removeChild(node); });
     }
     const byMode = Object.fromEntries((["original", "raster"] as const).map((mode) => {
       const rows = results.filter((result) => result.mode === mode);
