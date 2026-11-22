@@ -70,7 +70,8 @@ for (const viewport of [
       );
       await expect(
         page.locator("main .chartroom-empty").getByText("No matching Community content", { exact: true }),
-      ).toBeVisible();
+      ).toBeInViewport({ ratio: 1 });
+      await expect(page.getByRole("region", { name: "Search results", exact: true })).toBeFocused();
       for (const [path, title] of [
         ["/admin/providers", "Providers"],
         ["/admin/releases", "Releases"],
@@ -95,7 +96,8 @@ for (const viewport of [
       );
       await expect(
         page.locator("main .chartroom-empty").getByText("No authorized match", { exact: true }),
-      ).toBeVisible();
+      ).toBeInViewport({ ratio: 1 });
+      await expect(page.getByRole("region", { name: "Search results", exact: true })).toBeFocused();
       await expect(page.locator("body")).not.toContainText(canary);
       expect(await page.request.get(page.url()).then((response) => response.text())).not.toContain(canary);
       await returnHome(page, "Synthetic compatibility administrator", baseURL!);
@@ -219,7 +221,7 @@ for (const viewport of [
     const purpose = `Synthetic compatibility owner-authorized support ${randomUUID()}`;
     await page.getByRole("textbox", { name: "Purpose", exact: true }).fill(purpose);
     await page.getByRole("button", { name: "Request owner consent", exact: true }).click();
-    await expect(page.getByText(/The target user must approve it\./)).toBeVisible();
+    await expect(page.getByText(/The target user must approve it\./)).toBeInViewport({ ratio: 1 });
     const ownerContext = await browser.newContext();
     try {
       await authenticateClosure(ownerContext, target, baseURL!);

@@ -34,7 +34,6 @@ import type {
 } from "@/components/animation/PageFlipBook";
 import { resolveStoryMotion } from "@/animation/presentation/story-motion";
 import { PhysicalJournalBook } from "@/components/player/journal/PhysicalJournalBook";
-import { waitForReducedJournalPaint } from "./reduced-journal-paint";
 import { ChronicleJournalPageContent, type JournalAsset } from "@/components/player/journal/ChronicleJournalPage";
 import { LandfallJournalChart, LandfallJournalProvider } from "@/components/player/journal/LandfallJournalChart";
 import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
@@ -173,6 +172,24 @@ function usableFocusTarget(element: HTMLElement | null): element is HTMLElement 
   return Boolean(
     element?.isConnected && !element.hidden && !element.closest("[inert]") && !element.closest('[aria-hidden="true"]'),
   );
+}
+
+function waitForReadableReducedFrame(phase: JournalOpeningPhase, signal: AbortSignal): Promise<JournalPhaseOutcome> {
+  if (signal.aborted) return Promise.resolve({ status: "aborted", phase });
+  const startedAt = performance.now();
+  return new Promise((resolve) => {
+    const finish = (status: "completed" | "aborted") => {
+      cancelAnimationFrame(frame);
+      clearTimeout(deadline);
+      signal.removeEventListener("abort", abort);
+      if (status === "aborted") resolve({ status, phase });
+      else resolve({ status, phase, finiteAnimationCount: 0, durationMs: Math.round(performance.now() - startedAt) });
+    };
+    const abort = () => finish("aborted");
+    const frame = requestAnimationFrame(() => finish("completed"));
+    const deadline = setTimeout(() => finish("completed"), 100);
+    signal.addEventListener("abort", abort, { once: true });
+  });
 }
 
 export async function runJournalOpeningPhases({
@@ -596,6 +613,8 @@ function ChronicleJournalSessionIdentity({
     async (policy: JournalOpeningPolicy, focusOrigin?: HTMLElement | null) => {
       const rootElement = root.current;
       if (openingBusy.current || !rootElement) return;
+      const hasReadableReducedBook = policy.composition === "reduced" && book.current?.readiness().status === "reduced";
+      audio.current.unlock();
       openingBusy.current = true;
       activeOpeningPolicy.current = policy;
       openingFocusOrigin.current =
@@ -612,9 +631,11 @@ function ChronicleJournalSessionIdentity({
       const result = await runJournalOpeningPhases({
         root: rootElement,
         phases: policy.phases,
-        waitForPhase: policy.composition === "reduced" ? waitForReducedJournalPaint : waitForJournalPhase,
         mode,
         signal: controller.signal,
+        waitForPhase: hasReadableReducedBook
+          ? (_root, phase, _mode, signal) => waitForReadableReducedFrame(phase, signal)
+          : waitForJournalPhase,
         // JOURNAL_READY is committed only after the public PageFlip readiness handoff below.
         onPhase: (phase) => flushSync(() => setOpeningPhase(phase === "JOURNAL_READY" ? "BOOK_SETTLING" : phase)),
       });
@@ -664,16 +685,20 @@ function ChronicleJournalSessionIdentity({
         const readinessFallback = ["fallback", "reduced"].includes(readiness.readinessStatus);
         const settledOutcome =
           result.status === "completed-fallback" || readinessFallback ? "completed-fallback" : result.status;
-        settleJournalReady(
-          policy,
-          settledOutcome,
-          settledOutcome,
-          readinessFallback
-            ? "Page turning is using its readable fallback. The Voyage Journal is ready."
-            : result.status === "completed-fallback"
-              ? "Motion was reduced. The Voyage Journal is open in its readable final state."
-              : "",
-        );
+        const publishReady = () =>
+          settleJournalReady(
+            policy,
+            settledOutcome,
+            settledOutcome,
+            readinessFallback
+              ? "Page turning is using its readable fallback. The Voyage Journal is ready."
+              : result.status === "completed-fallback"
+                ? "Motion was reduced. The Voyage Journal is open in its readable final state."
+                : "",
+          );
+        // Publish within the first available frame when the static book is already readable.
+        if (hasReadableReducedBook && readiness.readinessStatus === "reduced") flushSync(publishReady);
+        else publishReady();
         return;
       }
 
@@ -1160,7 +1185,7 @@ function ChronicleJournalSessionIdentity({
           ref={root}
           data-experience-voyage={state.session.id}
           data-experience-version={state.session.versionId}
-          className={`voyage-shell chronicle-journal-shell mode-${state.journal.mode} ${styles.journalShell}`}
+          className={`voyage-shell chronicle-journal-shell mode-${state.journal.mode}${readyReceipt?.reason === "skipped" ? " journal-resetting" : ""}`}
           data-journal-phase={openingPhase}
           data-journal-opening-outcome={openingOutcome}
           data-journal-ready-reason={readyReceipt?.reason}
@@ -1174,7 +1199,7 @@ function ChronicleJournalSessionIdentity({
             } as React.CSSProperties
           }
         >
-          <div className={`ocean-depth ${styles.oceanBackdrop}`} aria-hidden="true">
+          <div className="ocean-depth" aria-hidden="true">
             <div data-scene-part="sky" />
             <div data-scene-part="horizon" />
             <div data-scene-part="ocean" />

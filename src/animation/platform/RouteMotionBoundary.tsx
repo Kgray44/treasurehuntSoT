@@ -320,27 +320,10 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
       stableSnapshot.current = { pathname, html: routeSnapshotHtml(content) };
     };
     capture();
-    const observer = new MutationObserver((records) => {
-      if (frame) return;
-      // PageFlip rewrites the same attributes every frame on settled pages.
-      const onlyDuplicatePageFlipWrites = records.every(
-        ({ target, type, attributeName, attributeNamespace, oldValue }) =>
-          type === "attributes" &&
-          attributeNamespace === null &&
-          (attributeName === "class" || attributeName === "style") &&
-          target instanceof Element &&
-          oldValue === target.getAttribute(attributeName) &&
-          target.closest("[data-pageflip-runtime]") !== null,
-      );
-      if (!onlyDuplicatePageFlipWrites) frame = requestAnimationFrame(capture);
+    const observer = new MutationObserver(() => {
+      if (!frame) frame = requestAnimationFrame(capture);
     });
-    observer.observe(content, {
-      attributes: true,
-      attributeOldValue: true,
-      characterData: true,
-      childList: true,
-      subtree: true,
-    });
+    observer.observe(content, { attributes: true, characterData: true, childList: true, subtree: true });
     return () => {
       observer.disconnect();
       if (frame) cancelAnimationFrame(frame);
@@ -384,6 +367,7 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
       if (unsettled || !content) return;
       frame = requestAnimationFrame(() => {
         if (cancelled || ownedGeneration !== generation.current || isTypingTarget(document.activeElement)) return;
+        if (content.contains(content.ownerDocument.activeElement)) return;
         const destination = content.querySelector<HTMLElement>("[data-route-focus], h1") ?? content;
         if (!destination.hasAttribute("tabindex")) destination.setAttribute("tabindex", "-1");
         destination.focus({ preventScroll: true });
