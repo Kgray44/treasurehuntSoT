@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Journal PR 905 corrected readiness experience capture
+run-name: Journal PR 905 capture with verified protected-base ancestry
 
 on:
   push:
@@ -21,11 +21,12 @@ jobs:
       BASE_SHA: 9e612bd42dee2561d75dfac9263ac3307d5dee24
       FOREVER_VALIDATION_SOURCE_SHA: e7a17fab39173fbd4a18ba53332e2033bf3f69eb
       NEXT_TELEMETRY_DISABLED: "1"
+      SOUNDING_LINE_PR_NUMBER: "905"
     steps:
       - uses: actions/checkout@v4
         with:
           ref: e7a17fab39173fbd4a18ba53332e2033bf3f69eb
-          fetch-depth: 2
+          fetch-depth: 16
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
@@ -54,6 +55,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
+      - name: Verify the actual protected base and its candidate ancestry
+        run: |
+          git fetch --no-tags --filter=blob:none --depth=16 origin refs/heads/main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
       - name: Install locked dependencies and Chromium
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
@@ -65,7 +71,10 @@ jobs:
           import {execFileSync} from "node:child_process";
           import {writeFile} from "node:fs/promises";
           import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
+          import {recognizeExceptionExecution} from "./scripts/sounding-line/experience-exception.mjs";
           const root = process.cwd();
+          if (recognizeExceptionExecution({root, baseSha: process.env.BASE_SHA, candidateSha: process.env.CANDIDATE_SHA}))
+            throw new Error("Current source was classified as a separate exception campaign");
           const plan = JSON.parse(execFileSync(process.execPath, [
             "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
             "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
