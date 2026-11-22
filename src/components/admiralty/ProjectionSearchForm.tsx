@@ -1,4 +1,5 @@
 import { EmptyState } from "./AdminPrimitives";
+import { ProjectionSearchResult } from "./ProjectionSearchResult";
 
 export const projectionSearchResultsId = "chartroom-search-results";
 
@@ -32,8 +33,8 @@ export function ProjectionSearchForm({
 
 export function ProjectionSearchEmpty({ title, detail }: { title: string; detail?: string }) {
   return (
-    <div id={projectionSearchResultsId} tabIndex={-1}>
+    <ProjectionSearchResult id={projectionSearchResultsId}>
       <EmptyState title={title} detail={detail} />
-    </div>
+    </ProjectionSearchResult>
   );
 }

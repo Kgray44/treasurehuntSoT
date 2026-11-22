@@ -13,6 +13,7 @@ import {
   ProjectionSearchForm,
   projectionSearchResultsId,
 } from "@/components/admiralty/ProjectionSearchForm";
+import { ProjectionSearchResult } from "@/components/admiralty/ProjectionSearchResult";
 
 export default async function InvestigatePage({ searchParams }: { searchParams: Promise<{ q?: string | string[] }> }) {
   const operator = await admiraltyPageOperator("PLATFORM_OBSERVE");
@@ -41,7 +42,7 @@ export default async function InvestigatePage({ searchParams }: { searchParams: 
         />
       ) : result?.data?.results.length ? (
         <>
-          <div className="chartroom-investigation" id={projectionSearchResultsId} tabIndex={-1}>
+          <ProjectionSearchResult className="chartroom-investigation" id={projectionSearchResultsId}>
             {Object.entries(grouped).map(([domain, items]) => (
               <section key={domain}>
                 <header>
@@ -63,7 +64,7 @@ export default async function InvestigatePage({ searchParams }: { searchParams: 
                 </div>
               </section>
             ))}
-          </div>
+          </ProjectionSearchResult>
           <EvidenceStrip evidence={result.evidence} />
         </>
       ) : (
