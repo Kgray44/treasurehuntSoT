@@ -41,7 +41,7 @@ const slugify = (value: string) =>
 const sourceLabel = (type: Source["type"]) =>
   type === "STORY_BLOCK_PRESET" ? "Passage preset" : type === "CHRONICLE_TEMPLATE" ? "Chapter template" : "Chronicle";
 
-export function CreatorPublicationConsole() {
+export function CreatorPublicationConsole({ onOptionsSettled }: { onOptionsSettled: () => void }) {
   const [options, setOptions] = useState<Options | null>(null);
   const [sourceKey, setSourceKey] = useState("");
   const [replacementId, setReplacementId] = useState("");
@@ -56,8 +56,16 @@ export function CreatorPublicationConsole() {
   const [receipt, setReceipt] = useState<Receipt | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<{ message: string; moveFocus?: true } | null>(null);
+  const reviewHeadingRef = useRef<HTMLHeadingElement>(null);
   const receiptRef = useRef<HTMLParagraphElement>(null);
   const errorRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
+    const heading = reviewHeadingRef.current;
+    if (preflight && heading) {
+      heading.focus({ preventScroll: true });
+      heading.scrollIntoView?.({ block: "start", behavior: "instant" });
+    }
+  }, [preflight]);
   useEffect(() => {
     if (receipt) receiptRef.current?.focus();
   }, [receipt]);
@@ -77,11 +85,14 @@ export function CreatorPublicationConsole() {
       })
       .catch((cause) => {
         if (!cancelled) setError({ message: cause instanceof Error ? cause.message : "Options are unavailable." });
+      })
+      .finally(() => {
+        if (!cancelled) onOptionsSettled();
       });
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [onOptionsSettled]);
   const source = useMemo(
     () => options?.sources.find((entry) => `${entry.type}:${entry.id}` === sourceKey),
     [options, sourceKey],
@@ -342,7 +353,14 @@ export function CreatorPublicationConsole() {
       )}
       {preflight && !receipt && (
         <section aria-labelledby="creator-publication-review">
-          <h2 id="creator-publication-review">Review before submitting</h2>
+          <h2
+            id="creator-publication-review"
+            ref={reviewHeadingRef}
+            tabIndex={-1}
+            style={{ scrollMarginBlockStart: "calc(var(--shell-header-height) + 1rem)" }}
+          >
+            Review before submitting
+          </h2>
           <p>
             Source checksum: <code style={{ overflowWrap: "anywhere" }}>{preflight.sourceChecksum}</code>
           </p>

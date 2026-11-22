@@ -179,7 +179,10 @@ test("only the owner with Creator access submits the exact saved item for modera
   await page.getByRole("button", { name: "Review exact package" }).press("Enter");
   const preflight = await reviewed;
   expect(preflight.ok()).toBe(true);
-  await expect(page.getByRole("heading", { name: "Review before submitting" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Review before submitting" })).toBeFocused();
+  const packageReview = page.getByRole("region", { name: "Review before submitting" });
+  await expect(packageReview.getByText(/Source checksum:/)).toBeInViewport();
+  await expect(packageReview.getByText(/License:.*Credits:/)).toBeInViewport();
   await page.getByText("Inspect every included field", { exact: true }).press("Enter");
   await expect(page.getByText(/A synthetic harbor greeting for another Creator/)).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -319,7 +322,8 @@ test("second Creator installs the approved Passage preset and applies it in priv
   await expect(page).toHaveURL(/\/studio\/exchange#installed-community/u);
   const installedPanel = page.locator("#installed-community");
   const installedHeading = installedPanel.getByRole("heading", { name: "Installed from Community" });
-  await expect(installedHeading).toBeInViewport();
+  await expect(installedHeading).toBeFocused();
+  await expect(installedHeading).toBeInViewport({ ratio: 1 });
   await expect
     .poll(async () => {
       const heading = await installedHeading.boundingBox();
@@ -327,7 +331,7 @@ test("second Creator installs the approved Passage preset and applies it in priv
       return heading !== null && header !== null && heading.y >= header.y + header.height;
     })
     .toBe(true);
-  await expect(installedPanel.getByText("Credits: Synthetic owner Creator.")).toBeVisible();
+  await expect(installedPanel.getByText("Credits: Synthetic owner Creator.")).toBeInViewport({ ratio: 1 });
   await expect(installedPanel.getByText(review.packageChecksum!)).toBeVisible();
   await installedPanel.screenshot({ path: test.info().outputPath("installed-private-studio.png") });
   const receipt = await db.communityInstallation.findFirstOrThrow({
@@ -618,9 +622,14 @@ test("Chapter template rejection stays private and installation rechecks the cur
   await installerPage.screenshot({ path: test.info().outputPath("current-install-review.png") });
   await install.press("Enter");
   await installerPage.getByRole("link", { name: "View my installed item" }).press("Enter");
-  const installed = installerPage.getByRole("listitem").filter({ hasText: "Harbor opening" });
-  await expect(installed.getByText("Credits: Synthetic owner Creator.")).toBeVisible();
-  await expect(installed).toContainText("Synthetic reuse");
+  const installedLibrary = installerPage.getByRole("region", { name: "Installed from Community" });
+  const installedHeading = installedLibrary.getByRole("heading", { name: "Installed from Community" });
+  await expect(installedHeading).toBeFocused();
+  await expect(installedHeading).toBeInViewport({ ratio: 1 });
+  const installed = installedLibrary.getByRole("listitem").filter({ hasText: "Harbor opening" });
+  await expect(installed.getByRole("heading", { name: /Harbor opening/ })).toBeInViewport({ ratio: 1 });
+  await expect(installed.getByText("Credits: Synthetic owner Creator.")).toBeInViewport({ ratio: 1 });
+  await expect(installed.getByText(/License: Synthetic reuse/)).toBeInViewport({ ratio: 1 });
 
   const draft = await createStudioTale({
     creatorId: installer.accountId,

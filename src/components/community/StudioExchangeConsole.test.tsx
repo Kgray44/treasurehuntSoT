@@ -37,6 +37,31 @@ describe("Studio Exchange Console", () => {
     expect(screen.getByRole("button", { name: "Rotate right" })).toBeEnabled();
   });
 
+  it("focuses the installed library after the options above it and the installed content settle", async () => {
+    const previousUrl = window.location.href;
+    window.history.replaceState(null, "", "/studio/exchange#installed-community");
+
+    let finishOptions = () => {};
+    const pendingOptions = new Promise<Response>((resolve) => {
+      finishOptions = () => resolve(response({ sources: [], licenses: [] }));
+    });
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((url: string) => (url.endsWith("/options") ? pendingOptions : Promise.resolve(response({ items: [] })))),
+    );
+
+    try {
+      render(<StudioExchangeConsole authenticated />);
+      await screen.findByText(/No Community items installed yet/);
+      const installedHeading = screen.getByRole("heading", { name: "Installed from Community" });
+      expect(installedHeading).not.toHaveFocus();
+      finishOptions();
+      await waitFor(() => expect(installedHeading).toHaveFocus());
+    } finally {
+      window.history.replaceState(null, "", previousUrl);
+    }
+  });
+
   it("reviews the server package before sending the exact digest for moderation", async () => {
     const calls: Array<{ url: string; body?: Record<string, unknown> }> = [];
     vi.stubGlobal(
@@ -88,7 +113,8 @@ describe("Studio Exchange Console", () => {
     fireEvent.click(screen.getByLabelText("I own or have permission to distribute every included item."));
     fireEvent.click(screen.getByLabelText(/I reviewed the full Chronicle for spoilers/));
     fireEvent.click(screen.getByRole("button", { name: "Review exact package" }));
-    expect(await screen.findByRole("heading", { name: "Review before submitting" })).toBeInTheDocument();
+    const reviewHeading = await screen.findByRole("heading", { name: "Review before submitting" });
+    await waitFor(() => expect(reviewHeading).toHaveFocus());
     expect(screen.getByText(/Synthetic Creator/)).toBeInTheDocument();
     expect(calls.some((call) => call.url.endsWith("/publish"))).toBe(false);
     fireEvent.click(screen.getByRole("button", { name: "Submit for moderation" }));

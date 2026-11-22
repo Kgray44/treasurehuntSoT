@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useCallback, useState } from "react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { ArtifactPreview } from "./ArtifactPreview";
 import { CreatorPublicationConsole } from "./CreatorPublicationConsole";
@@ -8,6 +9,8 @@ import { CreatorInstalledCommunityLibrary } from "./CreatorInstalledCommunityLib
 
 export function StudioExchangeConsole({ authenticated }: { authenticated: boolean }) {
   const { mode } = useMotionMode();
+  const [publicationOptionsSettled, setPublicationOptionsSettled] = useState(false);
+  const onPublicationOptionsSettled = useCallback(() => setPublicationOptionsSettled(true), []);
   if (!authenticated)
     return (
       <main className="studio-auth-gate">
@@ -29,7 +32,7 @@ export function StudioExchangeConsole({ authenticated }: { authenticated: boolea
         </div>
       </header>
       <div className="studio-exchange-layout">
-        <CreatorPublicationConsole />
+        <CreatorPublicationConsole onOptionsSettled={onPublicationOptionsSettled} />
         <aside className="studio-exchange-guidance" aria-label="Community publishing safeguards">
           <p className="eyebrow">Publishing path</p>
           <h2>What happens next</h2>
@@ -45,7 +48,7 @@ export function StudioExchangeConsole({ authenticated }: { authenticated: boolea
           <Link href="/community">Browse Community Harbor</Link>
         </aside>
       </div>
-      <CreatorInstalledCommunityLibrary />
+      <CreatorInstalledCommunityLibrary publicationOptionsSettled={publicationOptionsSettled} />
       <ArtifactPreview
         title="Preview sandbox"
         description="A static poster fallback is available for 3D Exchange artifacts."

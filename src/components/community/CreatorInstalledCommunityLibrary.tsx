@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Item = {
   itemId: string;
@@ -15,9 +15,15 @@ type Item = {
   studioUrl: string | null;
 };
 
-export function CreatorInstalledCommunityLibrary() {
+export function CreatorInstalledCommunityLibrary({
+  publicationOptionsSettled,
+}: {
+  publicationOptionsSettled: boolean;
+}) {
   const [items, setItems] = useState<Item[] | null>(null);
   const [error, setError] = useState("");
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const reachedInstallDestination = useRef(false);
   useEffect(() => {
     let cancelled = false;
     void fetch("/api/community/creator-publication/installed", { cache: "no-store" })
@@ -36,6 +42,20 @@ export function CreatorInstalledCommunityLibrary() {
       cancelled = true;
     };
   }, []);
+  useEffect(() => {
+    const heading = headingRef.current;
+    if (
+      !heading ||
+      !publicationOptionsSettled ||
+      (items === null && !error) ||
+      reachedInstallDestination.current ||
+      window.location.hash !== "#installed-community"
+    )
+      return;
+    reachedInstallDestination.current = true;
+    heading.focus({ preventScroll: true });
+    heading.scrollIntoView?.({ block: "start", behavior: "instant" });
+  }, [error, items, publicationOptionsSettled]);
   return (
     <section
       id="installed-community"
@@ -44,7 +64,14 @@ export function CreatorInstalledCommunityLibrary() {
       aria-labelledby="installed-community-title"
     >
       <p className="eyebrow">Your private Library</p>
-      <h2 id="installed-community-title">Installed from Community</h2>
+      <h2
+        id="installed-community-title"
+        ref={headingRef}
+        tabIndex={-1}
+        style={{ scrollMarginBlockStart: "calc(var(--shell-header-height) + 1rem)" }}
+      >
+        Installed from Community
+      </h2>
       {!items && !error && <p role="status">Loading your installed Creator items…</p>}
       {error && <p role="alert">{error}</p>}
       {items && !items.length && <p>No Community items installed yet. Browse an approved release to start.</p>}
