@@ -879,6 +879,7 @@ export function SpatialStudio({
     [],
   );
   const closeAssistant = () => {
+    setFloatingFeedback("");
     if (assistantCloseTimer.current) clearTimeout(assistantCloseTimer.current);
     setAssistantTaskResetVersion((version) => version + 1);
     setAssistantClosing(true);
@@ -3571,7 +3572,7 @@ export function SpatialStudio({
                 }
                 windowControls={
                   <div className={styles.assistantWindowControls}>
-                    <span className={styles.srOnly} aria-live="polite">
+                    <span className={styles.assistantWindowFeedback} aria-live="polite">
                       {floatingFeedback}
                     </span>
                     <button
@@ -3580,9 +3581,10 @@ export function SpatialStudio({
                       title={layout.assistantDocked ? "Float assistance" : "Dock assistance"}
                       aria-label={layout.assistantDocked ? "Float assistance" : "Dock assistance"}
                       aria-pressed={layout.assistantDocked}
-                      onClick={() =>
-                        setLayout((previous) => ({ ...previous, assistantDocked: !previous.assistantDocked }))
-                      }
+                      onClick={() => {
+                        setFloatingFeedback("");
+                        setLayout((previous) => ({ ...previous, assistantDocked: !previous.assistantDocked }));
+                      }}
                     >
                       <StudioIcon name={layout.assistantDocked ? "copy" : "inspect"} />
                       <span>{layout.assistantDocked ? "Float assistance" : "Dock assistance"}</span>
@@ -3631,6 +3633,7 @@ export function SpatialStudio({
                 canRedo={!!history.future.length && !busy}
                 onClose={closeAssistant}
                 onCanvasView={() => {
+                  setFloatingFeedback("");
                   setAssistantOpen(false);
                   queueMicrotask(() =>
                     document.querySelector<HTMLButtonElement>('[aria-controls="parallax-assistance"]')?.focus(),

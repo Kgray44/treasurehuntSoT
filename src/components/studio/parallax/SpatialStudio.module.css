@@ -4144,6 +4144,14 @@
   gap: 6px;
   margin-left: auto;
 }
+.assistantWindowFeedback {
+  color: var(--text-primary);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.assistantWindowFeedback:empty {
+  position: absolute;
+}
 .studio .assistantWindowControls button {
   width: 34px;
   min-height: 34px;
