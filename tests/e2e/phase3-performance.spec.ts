@@ -656,14 +656,16 @@ phase3Test("attributes the reduced Journal preflight to readiness and rendering"
     const reducedRuntimeBaseline = await waitForStableRuntimeBaseline(page);
     const preflightWarmupCount = 8;
     const preflightSampleCount = 40;
-    const modes = ["timer", "frame"] as const;
+    const modes = ["normal", "sync"] as const;
     type Mode = (typeof modes)[number];
-    const samples: Record<Mode, OpeningMeasurement[]> = { timer: [], frame: [] };
+    const samples: Record<Mode, OpeningMeasurement[]> = { normal: [], sync: [] };
     for (let index = 0; index < preflightWarmupCount + preflightSampleCount; index += 1) {
-      for (const mode of index % 2 === 0 ? modes : ["frame", "timer"] as const) {
+      for (const mode of index % 2 === 0 ? modes : ["sync", "normal"] as const) {
         await page.evaluate((value) => {
 
-          (window as Window & { __lanternwakeTimingMode?: string }).__lanternwakeTimingMode = value;
+                    const diagnostics = window as Window & { __lanternwakeTimingMode?: string; __lanternwakePublishMode?: string };
+          diagnostics.__lanternwakeTimingMode = "frame";
+          diagnostics.__lanternwakePublishMode = value;
         }, mode);
         const result = await measureOpening(replay(page));
         expect(result.phases).toContain("BOOK_SETTLING");
@@ -671,7 +673,7 @@ phase3Test("attributes the reduced Journal preflight to readiness and rendering"
         expect(result.initialBookStatus).toBe("reduced");
         expect(result.bookStatus).toBe("reduced");
         await expect(journal(page).locator(".reduced-page-stage > [data-page-index]")).toBeVisible();
-        expect(Object.keys(result.marks)).toContain("lw-preflight:complete");
+        expect(Object.keys(result.marks)).toContain("lw-preflight:publish-return");
         if (index >= preflightWarmupCount) samples[mode].push(result);
       }
     }
@@ -685,5 +687,5 @@ phase3Test("attributes the reduced Journal preflight to readiness and rendering"
     await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
     console.log(JSON.stringify({purpose: report.purpose, p95, counts: modes.map((mode) => samples[mode].length),
       slow: modes.map((mode) => [...samples[mode]].sort((a,b) => b.durationMs-a.durationMs).slice(0,4))}));
-    expect(p95.frame).toBeLessThan(budgets.preflightP95Ms);
+    expect(p95.sync).toBeLessThan(budgets.preflightP95Ms);
 });
