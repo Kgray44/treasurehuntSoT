@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { focusExchangeHeading } from "./focus-exchange-heading";
 
 type Item = {
   itemId: string;
@@ -53,8 +54,7 @@ export function CreatorInstalledCommunityLibrary({
     )
       return;
     reachedInstallDestination.current = true;
-    heading.focus({ preventScroll: true });
-    heading.scrollIntoView?.({ block: "start", behavior: "instant" });
+    focusExchangeHeading(heading);
   }, [error, items, publicationOptionsSettled]);
   return (
     <section
@@ -64,12 +64,7 @@ export function CreatorInstalledCommunityLibrary({
       aria-labelledby="installed-community-title"
     >
       <p className="eyebrow">Your private Library</p>
-      <h2
-        id="installed-community-title"
-        ref={headingRef}
-        tabIndex={-1}
-        style={{ scrollMarginBlockStart: "calc(var(--shell-header-height) + 1rem)" }}
-      >
+      <h2 id="installed-community-title" ref={headingRef} tabIndex={-1}>
         Installed from Community
       </h2>
       {!items && !error && <p role="status">Loading your installed Creator items…</p>}

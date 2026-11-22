@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { createChronicleFixture } from "../fixtures/sc07-chronicle";
 import { createReusableFixtureEnvelope } from "../fixtures/sc07-reusable";
 import { createStudioTale, getStudioTale, saveStudioDraft } from "../../src/chronicle/studio-service";
-import { expect, test, type Browser, type BrowserContext, type Page } from "@playwright/test";
+import { expect, test, type Browser, type BrowserContext, type Locator, type Page } from "@playwright/test";
 import { db } from "../../src/lib/db";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
 import { createAccountSession } from "../../src/wayfarer/accounts";
@@ -25,6 +25,38 @@ let sourceId: string;
 let sourceVersionId: string;
 let listingSlug: string;
 let listingId: string;
+
+async function expectFocusedHeadingBelowMasthead(heading: Locator) {
+  await expect(heading).toBeFocused();
+  await expect(heading).toBeInViewport({ ratio: 1 });
+  let observed: unknown;
+  await expect
+    .poll(async () => {
+      const geometry = await heading.evaluate((destination) => {
+        const masthead = document.querySelector(".product-shell-header");
+        const destinationTop = destination.getBoundingClientRect().top;
+        const mastheadBottom = masthead?.getBoundingClientRect().bottom ?? null;
+        const scrollRoots = [];
+        for (let parent = destination.parentElement; parent; parent = parent.parentElement) {
+          if (parent.scrollTop) scrollRoots.push({ tag: parent.tagName, top: parent.scrollTop });
+        }
+        return {
+          clear: mastheadBottom !== null && destinationTop >= mastheadBottom + 4,
+          destinationTop,
+          mastheadBottom,
+          scrollY: window.scrollY,
+          scrollMargin: getComputedStyle(destination).scrollMarginBlockStart,
+          scrollRoots,
+        };
+      });
+      observed = geometry;
+      return geometry.clear;
+    })
+    .toBe(true)
+    .catch((error: Error) => {
+      throw new Error(`Focused heading geometry: ${JSON.stringify(observed)}`, { cause: error });
+    });
+}
 
 function requireOwnedDatabase() {
   if (process.env.SOUNDING_LINE_SUITE_PROFILE === "generic") return ensureGenericSoundingLineIsolation();
@@ -179,7 +211,8 @@ test("only the owner with Creator access submits the exact saved item for modera
   await page.getByRole("button", { name: "Review exact package" }).press("Enter");
   const preflight = await reviewed;
   expect(preflight.ok()).toBe(true);
-  await expect(page.getByRole("heading", { name: "Review before submitting" })).toBeFocused();
+  const reviewHeading = page.getByRole("heading", { name: "Review before submitting" });
+  await expectFocusedHeadingBelowMasthead(reviewHeading);
   const packageReview = page.getByRole("region", { name: "Review before submitting" });
   await expect(packageReview.getByText(/Source checksum:/)).toBeInViewport();
   await expect(packageReview.getByText(/License:.*Credits:/)).toBeInViewport();
@@ -187,6 +220,9 @@ test("only the owner with Creator access submits the exact saved item for modera
   await expect(page.getByText(/A synthetic harbor greeting for another Creator/)).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: test.info().outputPath("creator-package-review.png"), fullPage: true });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.getByRole("button", { name: "Review exact package" }).press("Enter");
+  await expectFocusedHeadingBelowMasthead(reviewHeading);
 
   const publishRequest = {
     publication: preflight.request().postDataJSON(),
@@ -318,19 +354,12 @@ test("second Creator installs the approved Passage preset and applies it in priv
   await page.screenshot({ path: test.info().outputPath("public-install-review.png"), fullPage: true });
   await page.getByRole("button", { name: "Install to my reusable Library" }).press("Enter");
   await expect(page.getByRole("link", { name: "View my installed item" })).toBeVisible();
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.getByRole("link", { name: "View my installed item" }).click();
   await expect(page).toHaveURL(/\/studio\/exchange#installed-community/u);
   const installedPanel = page.locator("#installed-community");
   const installedHeading = installedPanel.getByRole("heading", { name: "Installed from Community" });
-  await expect(installedHeading).toBeFocused();
-  await expect(installedHeading).toBeInViewport({ ratio: 1 });
-  await expect
-    .poll(async () => {
-      const heading = await installedHeading.boundingBox();
-      const header = await page.getByRole("banner").boundingBox();
-      return heading !== null && header !== null && heading.y >= header.y + header.height;
-    })
-    .toBe(true);
+  await expectFocusedHeadingBelowMasthead(installedHeading);
   await expect(installedPanel.getByText("Credits: Synthetic owner Creator.")).toBeInViewport({ ratio: 1 });
   await expect(installedPanel.getByText(review.packageChecksum!)).toBeVisible();
   await installedPanel.screenshot({ path: test.info().outputPath("installed-private-studio.png") });
@@ -624,8 +653,7 @@ test("Chapter template rejection stays private and installation rechecks the cur
   await installerPage.getByRole("link", { name: "View my installed item" }).press("Enter");
   const installedLibrary = installerPage.getByRole("region", { name: "Installed from Community" });
   const installedHeading = installedLibrary.getByRole("heading", { name: "Installed from Community" });
-  await expect(installedHeading).toBeFocused();
-  await expect(installedHeading).toBeInViewport({ ratio: 1 });
+  await expectFocusedHeadingBelowMasthead(installedHeading);
   const installed = installedLibrary.getByRole("listitem").filter({ hasText: "Harbor opening" });
   await expect(installed.getByRole("heading", { name: /Harbor opening/ })).toBeInViewport({ ratio: 1 });
   await expect(installed.getByText("Credits: Synthetic owner Creator.")).toBeInViewport({ ratio: 1 });

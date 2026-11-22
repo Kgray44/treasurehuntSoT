@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { focusExchangeHeading } from "./focus-exchange-heading";
 
 type Source = {
   type: "CHRONICLE" | "CHRONICLE_TEMPLATE" | "STORY_BLOCK_PRESET";
@@ -61,10 +62,7 @@ export function CreatorPublicationConsole({ onOptionsSettled }: { onOptionsSettl
   const errorRef = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
     const heading = reviewHeadingRef.current;
-    if (preflight && heading) {
-      heading.focus({ preventScroll: true });
-      heading.scrollIntoView?.({ block: "start", behavior: "instant" });
-    }
+    if (preflight && heading) focusExchangeHeading(heading);
   }, [preflight]);
   useEffect(() => {
     if (receipt) receiptRef.current?.focus();
@@ -353,12 +351,7 @@ export function CreatorPublicationConsole({ onOptionsSettled }: { onOptionsSettl
       )}
       {preflight && !receipt && (
         <section aria-labelledby="creator-publication-review">
-          <h2
-            id="creator-publication-review"
-            ref={reviewHeadingRef}
-            tabIndex={-1}
-            style={{ scrollMarginBlockStart: "calc(var(--shell-header-height) + 1rem)" }}
-          >
+          <h2 id="creator-publication-review" ref={reviewHeadingRef} tabIndex={-1}>
             Review before submitting
           </h2>
           <p>
