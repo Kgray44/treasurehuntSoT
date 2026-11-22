@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "project": "Project Homeport",
   "phase": 5,
-  "implementationSourceSha": "7050cd38047f47af9d43b5aa487d1b8a2f487b51",
+  "implementationSourceSha": "383c45ee2e4934f6aae2e697f2e93bc7f9cea1b3",
   "implementationStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
   "generatedAt": "2026-08-03T18:00:00.000Z",
   "rootRouteId": "route-page-root",
@@ -3309,11 +3309,11 @@
       ]
     }
   ],
-  "nodeRegistryDigest": "051370d7604fda1ac4eef5b48575297505aa1b6fe2194fe99b869ac192e9a2b2",
-  "edgeRegistryDigest": "42fa7c1074e3afc21757f7d4aa635fee709a8f5d0863c2c0147465370b14c342",
+  "nodeRegistryDigest": "75e6ec40d4d8f14eb874e25e45a549d721a7f245bd69886e2bbd6873c85b2e24",
+  "edgeRegistryDigest": "93ff1937b4957e9b23ba524fc0cf42d834ab5e5cb9885dbed46917563ac20b9e",
   "summary": {
     "discoveredPageSources": 128,
-    "discoveredServiceSources": 327,
+    "discoveredServiceSources": 315,
     "nodeCount": 128,
     "edgeCount": 239,
     "ordinaryRouteCount": 54,

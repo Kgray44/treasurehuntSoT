@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { browserAuthorityExecutionTimeoutMs } from "../scripts/sounding-line/browser-authority.mjs";
-import { browserProfileBatches } from "../scripts/sounding-line-v3/checks.mjs";
 import { classifyFormatting } from "../scripts/sounding-line-v3/format.mjs";
 import { reusableSource } from "../scripts/sounding-line-v3/reuse.mjs";
 import { disposition, prerequisites } from "../scripts/sounding-line-v3/integrate.mjs";
@@ -21,25 +20,6 @@ const plan = (files, content = "", request = {}) =>
     data,
   );
 const names = (result) => result.jobs.map(({ id }) => id);
-
-test("ordinary Lanternwake runs both extended lifecycle groups under separate deadlines", () => {
-  const accessibility = "tests/e2e/phase3-accessibility-viewports.spec.ts";
-  const extended = "tests/e2e/phase3-lifecycle-extended.spec.ts";
-  const performance = "tests/e2e/phase3-performance.spec.ts";
-  const audioSuite = "Project Lanternwake Phase 3 audio lifecycle";
-  const files = [accessibility, extended, performance];
-  const extendedBatches = [
-    [extended, "--grep-invert", audioSuite],
-    [extended, "--grep", audioSuite],
-  ];
-  assert.deepEqual(browserProfileBatches("lanternwake-phase3", files, false), [
-    [accessibility, performance],
-    ...extendedBatches,
-  ]);
-  assert.deepEqual(browserProfileBatches("lanternwake-phase3", [extended], false), extendedBatches);
-  assert.deepEqual(browserProfileBatches("lanternwake-phase3", files, true), [files]);
-  assert.deepEqual(browserProfileBatches("generic", files, false), [files]);
-});
 
 test("Markdown and evidence images use the same dependency-free fast path", () => {
   for (const file of ["README.md", "docs/README.md", "Experience_Images/proof.png"]) {

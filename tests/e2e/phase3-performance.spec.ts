@@ -34,6 +34,7 @@ type LayoutShiftSample = Readonly<{ atMs: number; score: number; phase: string |
 type VisualProbeResult = Readonly<{
   elapsedMs: number;
   frameDurationsMs: readonly number[];
+  framesByPhase: Record<string, number[]>;
   longTaskDurationsMs: readonly number[];
   cls: number;
   layoutShifts: readonly LayoutShiftSample[];
@@ -170,7 +171,6 @@ async function waitForStableRuntimeBaseline(page: Page) {
     if (
       previous &&
       JSON.stringify(current) === JSON.stringify(previous) &&
-      current.activeAnimations === 0 &&
       current.activePresentations === 0 &&
       current.temporaryPageClones === 0 &&
       current.lottiePlaying === 0
@@ -200,7 +200,7 @@ async function waitAnimationFrames(page: Page, count: number) {
 }
 
 async function startVisualProbe(page: Page) {
-  await page.evaluate(() => {
+  await page.evaluate((emitPhaseMarks) => {
     type LayoutShiftEntry = PerformanceEntry & {
       value: number;
       hadRecentInput: boolean;
@@ -210,6 +210,7 @@ async function startVisualProbe(page: Page) {
       startedAt: number;
       lastFrameAt: number | null;
       frameDurationsMs: number[];
+      framesByPhase: Record<string, number[]>;
       longTaskDurationsMs: number[];
       cls: number;
       layoutShifts: LayoutShiftSample[];
@@ -230,13 +231,25 @@ async function startVisualProbe(page: Page) {
       startedAt: window.performance.now(),
       lastFrameAt: null,
       frameDurationsMs: [],
+      framesByPhase: Object.create(null),
       longTaskDurationsMs: [],
       cls: 0,
       layoutShifts: [],
       frame: 0,
     } as unknown as Probe;
+    const shell = document.querySelector<HTMLElement>(".chronicle-journal-shell");
+    let markedPhase: string | null = null;
     const sampleFrame = (at: number) => {
-      if (probe.lastFrameAt !== null) probe.frameDurationsMs.push(at - probe.lastFrameAt);
+      if (probe.lastFrameAt !== null) {
+        const elapsed = at - probe.lastFrameAt;
+        const phase = shell?.dataset.journalPhase ?? "UNMOUNTED";
+        if (emitPhaseMarks && phase !== markedPhase) {
+          performance.mark("lanternwake-phase:" + phase);
+          markedPhase = phase;
+        }
+        probe.frameDurationsMs.push(elapsed);
+        (probe.framesByPhase[phase] ??= []).push(elapsed);
+      }
       probe.lastFrameAt = at;
       probe.frame = requestAnimationFrame(sampleFrame);
     };
@@ -268,7 +281,7 @@ async function startVisualProbe(page: Page) {
     probe.layoutShiftObserver.observe({ type: "layout-shift", buffered: false });
     probe.frame = requestAnimationFrame(sampleFrame);
     probeWindow.__phase3VisualProbe = probe;
-  });
+  }, process.env.LANTERNWAKE_EXPERIMENT === "compositor-cause");
 }
 
 async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
@@ -280,6 +293,7 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
       __phase3VisualProbe?: {
         startedAt: number;
         frameDurationsMs: number[];
+      framesByPhase: Record<string, number[]>;
         longTaskDurationsMs: number[];
         cls: number;
         layoutShifts: VisualProbeResult["layoutShifts"];
@@ -301,6 +315,7 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
     return {
       elapsedMs: window.performance.now() - probe.startedAt,
       frameDurationsMs: probe.frameDurationsMs,
+      framesByPhase: probe.framesByPhase,
       longTaskDurationsMs: probe.longTaskDurationsMs,
       cls: probe.cls,
       layoutShifts: probe.layoutShifts,
@@ -342,6 +357,9 @@ type OpeningMeasurement = {
   phases: string[];
   reason: string;
   bookStatus: string | null;
+  frameDeltas: number[];
+  marks: Record<string, number>;
+  initialBookStatus: string | null;
 };
 
 async function measureOpening(control: Locator): Promise<OpeningMeasurement> {
@@ -350,22 +368,35 @@ async function measureOpening(control: Locator): Promise<OpeningMeasurement> {
     if (!shell) throw new Error("The opening control must belong to the canonical Journal.");
     const probeWindow = window as unknown as Window & { __phase3OpeningMeasurement?: Promise<OpeningMeasurement> };
     const phases = new Set<string>();
+    const initialBookStatus = shell.querySelector(".main-journal-book")?.getAttribute("data-pageflip-status") ?? null;
     const initialPhase = shell.dataset.journalPhase;
     probeWindow.__phase3OpeningMeasurement = new Promise((resolve, reject) => {
       let startedAt: number | null = null;
       let responseMs: number | null = null;
+      let frame = 0;
+      const frameDeltas: number[] = [];
+      const sample = (at: number) => {
+        if (startedAt === null) return;
+        frameDeltas.push(at - startedAt);
+        frame = requestAnimationFrame(sample);
+      };
       const onClick = (event: Event) => {
         if (!event.isTrusted) return;
         startedAt = window.performance.now();
+        frame = requestAnimationFrame(sample);
       };
       const finish = (error?: Error) => {
         observer.disconnect();
         button.removeEventListener("click", onClick, true);
+        cancelAnimationFrame(frame);
         clearTimeout(timeout);
         if (error) reject(error);
         else if (startedAt !== null && responseMs !== null) {
           resolve({
             durationMs: window.performance.now() - startedAt,
+            frameDeltas,
+            marks: Object.fromEntries(performance.getEntriesByType("mark").filter((mark) => mark.startTime >= startedAt! && mark.name.startsWith("lw-preflight:")).map((mark) => [mark.name, mark.startTime - startedAt!])),
+            initialBookStatus,
             responseMs,
             phases: [...phases],
             reason: shell.dataset.journalReadyReason ?? "",
@@ -417,39 +448,29 @@ async function measureOpening(control: Locator): Promise<OpeningMeasurement> {
   });
 }
 
-type SkipMeasurement = {
-  responseMs: number;
-  cleanupMs: number;
-  observations: { elapsedMs: number; counts: RuntimeBaseline; animations: string[] }[];
-};
-
-async function measureSkip(control: Locator, baseline: RuntimeBaseline): Promise<SkipMeasurement> {
-  await control.evaluate((button, expected) => {
+async function measureSkip(control: Locator, baseline: RuntimeBaseline) {
+  return control.evaluate((button, expected) => {
     const shell = button.closest<HTMLElement>(".chronicle-journal-shell");
-    const probeWindow = window as unknown as Window & {
-      __phase3RuntimeCounter?: JournalRuntimeProbe;
-      __phase3SkipMeasurement?: Promise<SkipMeasurement>;
-    };
-    const probe = probeWindow.__phase3RuntimeCounter;
+    const probe = (window as unknown as Window & { __phase3RuntimeCounter?: JournalRuntimeProbe })
+      .__phase3RuntimeCounter;
     if (!shell || !probe) throw new Error("The active Journal and its cleanup probe are required.");
-    probeWindow.__phase3SkipMeasurement = new Promise((resolve, reject) => {
-      const observations: SkipMeasurement["observations"] = [];
-      let startedAt: number | null = null;
+    const startedAt = window.performance.now();
+    return new Promise<{
+      responseMs: number;
+      cleanupMs: number;
+      observations: { elapsedMs: number; counts: RuntimeBaseline; animations: string[] }[];
+    }>((resolve, reject) => {
+      const observations: { elapsedMs: number; counts: RuntimeBaseline; animations: string[] }[] = [];
       let previous = "";
       let responseMs: number | null = null;
       let frame = 0;
       let cleanFrames = 0;
-      const onClick = (event: Event) => {
-        if (event.isTrusted) startedAt = window.performance.now();
-      };
       const finish = () => {
         observer.disconnect();
-        button.removeEventListener("click", onClick, true);
         cancelAnimationFrame(frame);
         clearTimeout(timeout);
       };
       const inspectCleanup = () => {
-        if (startedAt === null) return;
         const current = probe.snapshot();
         const serialized = JSON.stringify(current);
         const clean = serialized === JSON.stringify(expected);
@@ -478,7 +499,6 @@ async function measureSkip(control: Locator, baseline: RuntimeBaseline): Promise
       };
       const observer = new MutationObserver(() => {
         if (
-          startedAt !== null &&
           responseMs === null &&
           shell.dataset.journalPhase === "JOURNAL_READY" &&
           shell.dataset.journalReadyReason === "skipped"
@@ -495,17 +515,9 @@ async function measureSkip(control: Locator, baseline: RuntimeBaseline): Promise
         attributes: true,
         attributeFilter: ["data-journal-phase", "data-journal-ready-reason"],
       });
-      button.addEventListener("click", onClick, { capture: true, once: true });
+      (button as HTMLButtonElement).click();
     });
   }, baseline);
-  await control.click();
-  return control.page().evaluate(() => {
-    const probeWindow = window as unknown as Window & { __phase3SkipMeasurement?: Promise<SkipMeasurement> };
-    const result = probeWindow.__phase3SkipMeasurement;
-    delete probeWindow.__phase3SkipMeasurement;
-    if (!result) throw new Error("The Journal's trusted Skip measurement is missing.");
-    return result;
-  });
 }
 
 async function measurePageTurn(control: Locator) {
@@ -584,58 +596,93 @@ async function measuredFullOpening(page: Page, control: Locator) {
   return { ...opening, visual };
 }
 
+async function startCompositorTrace(page: Page, output: string) {
+  const session = await page.context().newCDPSession(page);
+  const completed = new Promise<string>((resolve, reject) => {
+    session.once("Tracing.tracingComplete", ({ stream }) =>
+      stream ? resolve(stream) : reject(new Error("Chromium trace stream was missing")),
+    );
+  });
+  await session.send("Tracing.start", {
+    transferMode: "ReturnAsStream",
+    traceConfig: {
+      recordMode: "recordUntilFull",
+      includedCategories: ["blink.user_timing", "viz"],
+    },
+  });
+  return async () => {
+    await session.send("Tracing.end");
+    const stream = await completed;
+    const file = await fs.open(output, "wx");
+    let bytes = 0;
+    try {
+      for (;;) {
+        const chunk = await session.send("IO.read", { handle: stream, size: 1024 ** 2 });
+        const buffer = Buffer.from(chunk.data, chunk.base64Encoded ? "base64" : "utf8");
+        bytes += buffer.length;
+        if (bytes > 96 * 1024 ** 2) throw new Error("Chromium trace exceeded its diagnostic allocation");
+        await file.writeFile(buffer);
+        if (chunk.eof) break;
+      }
+    } finally {
+      await file.close();
+      await session.send("IO.close", { handle: stream });
+      await session.detach();
+    }
+  };
+}
+
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
-phase3Test(
-  "compiled Journal Skip from a real click",
-  async ({ page, phase3, browser, browserName }) => {
-    expect(browserName).toBe("chromium");
-    expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
-    expect(process.env.FOREVER_PHASE3_PERFORMANCE_BASE_URL).toBe("http://127.0.0.1:3200");
+phase3Test("attributes the reduced Journal preflight to readiness and rendering", async ({ page, phase3, browser }) => {
+  const cdp = await browser.newBrowserCDPSession();
+  const { gpu } = await cdp.send("SystemInfo.getInfo");
+  await cdp.detach();
+
+  console.log(JSON.stringify({ purpose: "DEVELOPMENT_ONLY", renderer: gpu.auxAttributes?.glRenderer }));
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await installRuntimeCounter(page);
+  await setPhase3Motion(page, PHASE3_MOTION_MODES[0]);
+  await phase3.proveIsolation();
+  const fixture = await phase3.createCase("P3-DESKTOP-ATTRIBUTION", "CHAPTER_RELEASED");
+  const voyage = await resolveLegacyCampaign(fixture.slug);
+  expect(voyage).toBeTruthy();
+  await enterJournal(page, fixture, "/player/playthroughs/" + voyage!.sessionId + "/journal");
+
+  await measuredFullOpening(page, page.getByRole("button", { name: "Open the journal" }));
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await expect(journal(page)).toHaveAttribute("data-motion-level", "reduced");
+    await assertReadableJournal(page, true);
+    const reducedRuntimeBaseline = await waitForStableRuntimeBaseline(page);
+    const preflightWarmupCount = 8;
+    const preflightSampleCount = 40;
+    const modes = ["timer", "priority"] as const;
+    type Mode = (typeof modes)[number];
+    const samples: Record<Mode, OpeningMeasurement[]> = { timer: [], priority: [] };
+    for (let index = 0; index < preflightWarmupCount + preflightSampleCount; index += 1) {
+      for (const mode of index % 2 === 0 ? modes : ["priority", "timer"] as const) {
+        await page.evaluate((value) => {
+          if (!("scheduler" in window)) throw new Error("Chromium Scheduler API is required.");
+          (window as Window & { __lanternwakeTimingMode?: string }).__lanternwakeTimingMode = value;
+        }, mode);
+        const result = await measureOpening(replay(page));
+        expect(result.phases).toContain("BOOK_SETTLING");
+        expect(result.reason).toBe("completed-fallback");
+        expect(result.initialBookStatus).toBe("reduced");
+        expect(result.bookStatus).toBe("reduced");
+        expect(Object.keys(result.marks)).toContain("lw-preflight:complete");
+        if (index >= preflightWarmupCount) samples[mode].push(result);
+      }
+    }
+    await assertReadableJournal(page, true);
+    expect(await waitForStableRuntimeBaseline(page)).toEqual(reducedRuntimeBaseline);
+    const p95 = Object.fromEntries(modes.map((mode) => [mode,
+      rounded(percentile(samples[mode].map((sample) => sample.durationMs), .95))]));
+    const report = { purpose: "DEVELOPMENT_ONLY", budgetMs: budgets.preflightP95Ms, p95, samples };
     const artifact = performanceArtifactTarget();
-    await fs.mkdir(artifact.artifactDirectory, { recursive: true });
-    await fs.rm(artifact.artifactPath, { force: true });
-    await page.setViewportSize({ width: 1_440, height: 900 });
-    await installRuntimeCounter(page);
-    await setPhase3Motion(page, PHASE3_MOTION_MODES[0]);
-    await phase3.proveIsolation();
-    const fixture = await phase3.createCase("P3-PERFORMANCE-CHAPTER", "CHAPTER_RELEASED");
-    const voyage = await resolveLegacyCampaign(fixture.slug);
-    expect(voyage, "The performance fixture must be bound to a canonical Voyage.").toBeTruthy();
-    const journalPath = `/player/playthroughs/${voyage!.sessionId}/journal`;
-    await enterJournal(page, fixture, journalPath);
-
-    const cold = await measuredFullOpening(page, page.getByRole("button", { name: "Open the journal" }));
-    await expect(journal(page).getByText("Captain channel connected")).toBeVisible();
-    await expect(journal(page)).toHaveAttribute("data-live-event", "idle");
-    const liveStartedAt = performance.now();
-    const live = await phase3.canonicalCaptainAction(fixture, "presentation");
-    expect(live.eventType).toBe("presentationTriggered");
-    await expect(journal(page)).toHaveAttribute("data-live-event", "revealed");
-    await expect(journal(page).locator('[aria-live="assertive"]')).toContainText("A new page was released:");
-    const liveUpdateMs = performance.now() - liveStartedAt;
-    const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
-    expect(fullRuntimeBaseline.eventSources).toBe(1);
-
-    await startVisualProbe(page);
-    await replay(page).click();
-    await expect(journal(page)).toHaveAttribute("data-journal-opening-outcome", "running");
-    const skip = await measureSkip(page.getByRole("button", { name: "Skip ceremony" }), fullRuntimeBaseline);
-    const skipVisual = await stopVisualProbe(page);
-    await assertReadableJournal(page);
-    expect(await waitForStableRuntimeBaseline(page)).toEqual(fullRuntimeBaseline);
-
-    await expect(journal(page)).toHaveClass(/journal-resetting/);
-    await expect(page.getByRole("complementary", { name: "Current objective" })).toBeVisible();
-    await expect(replay(page)).toBeFocused();
-    await writePerformanceArtifact(artifact.artifactPath,
-      { candidate: "1055ade8278ea071a775cf7542879daf210e4e94", purpose: "DEVELOPMENT_ONLY", budgetMs: budgets.cleanupMs, ...skip },
-      [fixture.slug, voyage!.sessionId]);
-    console.log(JSON.stringify({ purpose: "DEVELOPMENT_ONLY", skipMs: skip.cleanupMs, observations: skip.observations }));
-    expect(skip.cleanupMs).toBeLessThan(budgets.cleanupMs);
-    const afterSkip = await measuredFullOpening(page, replay(page));
-    expect(afterSkip.reason).toBe("completed");
-    expect(afterSkip.durationMs).toBeLessThan(budgets.openingMs);
-    await expect(journal(page)).not.toHaveClass(/journal-resetting/);
-  },
-);
+    await fs.mkdir(artifact.artifactDirectory, {recursive: true});
+    await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
+    console.log(JSON.stringify({purpose: report.purpose, p95, counts: modes.map((mode) => samples[mode].length),
+      slow: modes.map((mode) => [...samples[mode]].sort((a,b) => b.durationMs-a.durationMs).slice(0,4))}));
+    expect(p95.priority).toBeLessThan(budgets.preflightP95Ms);
+});

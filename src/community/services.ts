@@ -1,6 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
 import { db } from "@/lib/db";
-import { assertArtifactExchangeType } from "./artifact-exchange-policy";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import {
   CommunityError,
@@ -9,6 +8,7 @@ import {
   manifestChecksum,
   normalizeHandle,
   releaseManifestSchema,
+  sanitizeChronicleMetadata,
 } from "./domain";
 import { updateProfile } from "@/wayfarer/profile";
 import { resolvePublicProfileProjection } from "./public-profile";
@@ -209,11 +209,6 @@ export async function updateListing(actor: CommunityActor, id: string, raw: unkn
   const input = listingInputSchema.partial().strict().parse(raw);
   const listing = await db.communityListing.findFirst({ where: { id, ownerProfileId: profile.id } });
   if (!listing) throw new CommunityError("COMMUNITY_ACCESS_DENIED", "You cannot edit this listing.");
-  if (listing.currentReleaseId || listing.publicationStatus !== "DRAFT")
-    throw new CommunityError(
-      "COMMUNITY_MODERATION_REQUIRED",
-      "Submitted listing details cannot change outside their reviewed publication flow.",
-    );
   if (input.visibility === "FEATURED")
     throw new CommunityError("COMMUNITY_ACCESS_DENIED", "Only editorial staff may feature content.");
   return db.$transaction(async (tx) => {
@@ -260,11 +255,6 @@ export async function transitionListing(
     !["DRAFT", "VALIDATING", "READY_FOR_REVIEW"].includes(next)
   )
     throw new CommunityError("COMMUNITY_ACCESS_DENIED", "Only moderation may change this publication state.");
-  if (listing.currentReleaseId && ["CHRONICLE", "CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"].includes(listing.itemType))
-    throw new CommunityError(
-      "COMMUNITY_MODERATION_REQUIRED",
-      "Use this release's Creator publication workflow to change its state.",
-    );
   assertTransition(listing.publicationStatus as Parameters<typeof assertTransition>[0], next);
   return db.$transaction(async (tx) => {
     const updated = await tx.communityListing.update({ where: { id }, data: { publicationStatus: next } });
@@ -317,19 +307,17 @@ export async function createRelease(actor: CommunityActor, listingId: string, ra
   return db.$transaction(async (tx) => {
     const listing = await tx.communityListing.findFirst({ where: { id: listingId, ownerProfileId: profile.id } });
     if (!listing) throw new CommunityError("COMMUNITY_ACCESS_DENIED", "You cannot release this listing.");
-    assertArtifactExchangeType(listing.itemType);
-    const source = await tx.publishedTaleVersion.findFirst({
-      where: {
-        id: request.sourcePublishedTaleVersionId,
-        tale: { OR: [{ visibility: "PUBLIC" }, { creatorAccountId: actor.accountId }] },
-      },
-    });
+    const source = await tx.publishedTaleVersion.findUnique({ where: { id: request.sourcePublishedTaleVersionId } });
     if (!source || !source.isCurrent)
       throw new CommunityError(
         "COMMUNITY_SOURCE_NOT_IMMUTABLE",
         "An immutable published Chronicle version is required.",
       );
-    const manifest = request;
+    const publicMetadata = sanitizeChronicleMetadata(JSON.parse(source.contentSnapshot) as Record<string, unknown>);
+    const manifest = releaseManifestSchema.parse({
+      ...request,
+      publicMetadata: { ...request.publicMetadata, ...publicMetadata },
+    });
     const checksum = manifestChecksum(manifest);
     const release = await tx.communityRelease.create({
       data: {

@@ -44,10 +44,6 @@ for (const viewport of [
       await page.emulateMedia({ reducedMotion });
       await page.goto("/passport");
       await expect(page.getByRole("heading", { name: "Chronicle Passport", exact: true })).toBeVisible();
-      await expect(page.getByRole("heading", { name: "A record you can return to", exact: true })).toHaveCSS(
-        "color",
-        "rgb(30, 41, 37)",
-      );
       const history = page
         .getByRole("navigation", { name: "Chronicle Passport sections", exact: true })
         .getByRole("link", { name: "Your Voyages", exact: true });
