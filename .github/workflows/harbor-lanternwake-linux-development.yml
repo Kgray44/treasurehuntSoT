@@ -58,6 +58,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
+      - name: Bind the actual protected main ref
+        run: |
+          git fetch --no-tags --depth=1 origin refs/heads/main:refs/remotes/origin/main
+          test "$(git rev-parse refs/remotes/origin/main)" = "$BASE_SHA"
+          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
       - name: Install locked dependencies and Chromium
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
