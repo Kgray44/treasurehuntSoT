@@ -13,7 +13,7 @@ type Geometry = {
 // This callback is serialized into the browser. Keep its geometry helpers self-contained.
 function measureJournalGeometry(
   element: Element,
-  input: { kind: "phone" | "receipt" | "recovered-heading"; expectedText: string },
+  input: { kind: "phone" | "receipt" | "desktop-heading"; expectedText: string },
 ): Geometry {
   const failures: string[] = [];
   const rect = (value: DOMRect | Rect): Rect => ({
@@ -148,7 +148,7 @@ function measureJournalGeometry(
     for (const obstacle of obstacles)
       if (positive(intersect(line, obstacle.rect))) failures.push(`Active heading intersects ${obstacle.name}`);
 
-  if (input.kind === "recovered-heading") return { failures, viewport, textRects, obstacles };
+  if (input.kind === "desktop-heading") return { failures, viewport, textRects, obstacles };
 
   let candidates = [clipToAncestors(leaf, intersect(rect(leaf.getBoundingClientRect()), viewport))].filter(positive);
   for (const obstacle of obstacles) {
@@ -219,7 +219,7 @@ export async function assertDesktopHandoffReceiptReadable(page: Page, handoff: L
   return geometry!;
 }
 
-export async function assertRecoveredDesktopPassageHeading(page: Page, activeHeading: string) {
+export async function assertDesktopPassageHeadingUnobscured(page: Page, activeHeading: string) {
   const heading = page.getByRole("heading", { name: activeHeading, exact: true });
   await expect(heading).toHaveCount(1);
   await expect
@@ -227,11 +227,11 @@ export async function assertRecoveredDesktopPassageHeading(page: Page, activeHea
       async () =>
         (
           await heading.evaluate(measureJournalGeometry, {
-            kind: "recovered-heading" as const,
+            kind: "desktop-heading" as const,
             expectedText: activeHeading,
           })
         ).failures,
-      { message: "The recovered Chart keeps the active passage heading unobscured without manual scrolling" },
+      { message: "The active passage heading stays unobscured beside the Chart without manual scrolling" },
     )
     .toEqual([]);
 }
