@@ -598,7 +598,7 @@ async function measuredFullOpening(page: Page, control: Locator) {
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
 phase3Test(
-  "compare a fixed header backdrop during Book Settling",
+  "compare the same physical movement with parchment before the reading handoff",
   async ({ page, phase3, browser, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
@@ -628,31 +628,43 @@ phase3Test(
     const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
     expect(fullRuntimeBaseline.eventSources).toBe(1);
 
-    const css = '.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"] .chronicle-session-header { backdrop-filter: none; }';
-    const values: Record<"original" | "staticBackdrop", VisualProbeResult[]> = { original: [], staticBackdrop: [] };
-    for (const mode of ["original", "staticBackdrop", "staticBackdrop", "original"] as const) {
-      const treatment = mode === "staticBackdrop" ? await page.addStyleTag({ content: css }) : null;
+    const scope = '.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"] .open-page-stage';
+    const css = [
+      scope + ' .ft-page > .journal-leaf > * { visibility:hidden !important; }',
+      scope + ' .ft-page::before, ' + scope + ' .ft-page::after { visibility:hidden !important; }',
+    ].join("\n");
+    const values: Record<"original" | "paper", VisualProbeResult[]> = { original: [], paper: [] };
+    for (const mode of ["original", "paper", "paper", "original"] as const) {
+      const treatment = mode === "paper" ? await page.addStyleTag({ content: css }) : null;
       const opening = await measuredFullOpening(page, replay(page));
       expect(opening.durationMs).toBeLessThan(budgets.openingMs);
       values[mode].push(opening.visual);
       await treatment?.evaluate((node) => { node.parentNode?.removeChild(node); });
     }
 
-    await replay(page).click();
-    await expect(journal(page)).toHaveAttribute("data-journal-phase", "BOOK_SETTLING");
-    const inspect = () => journal(page).locator(".chronicle-session-header").evaluate((header) => {
-      const style = getComputedStyle(header);
-      return { backdrop: style.backdropFilter, background: style.backgroundImage, transition: style.transitionProperty };
-    });
-    const original = await inspect();
-    await page.addStyleTag({ content: css });
-    const staticBackdrop = await inspect();
-    expect(original.backdrop).toContain("blur");
-    expect(staticBackdrop.backdrop).toBe("none");
-    expect(staticBackdrop.background).toBe(original.background);
-    expect(staticBackdrop.transition).toBe(original.transition);
-    await assertReadableJournal(page);
-    const byMode = Object.fromEntries((["original", "staticBackdrop"] as const).map((mode) => {
+    const views: Record<string, unknown> = {};
+    for (const mode of ["original", "paper"] as const) {
+      const treatment = mode === "paper" ? await page.addStyleTag({ content: css }) : null;
+      await replay(page).click();
+      await expect(journal(page)).toHaveAttribute("data-journal-phase", "BOOK_SETTLING");
+      await waitAnimationFrames(page, 15);
+      const evidence = await journal(page).evaluate((root) => {
+        const frame = root.querySelector<HTMLElement>(".open-page-stage");
+        const page = root.querySelector<HTMLElement>('.open-page-stage [data-pageflip-role="primary"][data-pageflip-current="true"]');
+        const text = page?.querySelector<HTMLElement>(".journal-leaf > *");
+        if (!frame || !page || !text) throw new Error("The active physical page is missing during settling.");
+        return { frameOpacity: getComputedStyle(frame).opacity, page: getComputedStyle(page).visibility, text: getComputedStyle(text).visibility };
+      });
+      expect(evidence.page).toBe("visible");
+      expect(evidence.text).toBe(mode === "paper" ? "hidden" : "visible");
+      expect(Number(evidence.frameOpacity)).toBeGreaterThan(0);
+      views[mode] = evidence;
+      await page.screenshot({ path: path.join(artifact.artifactDirectory, mode + "-settling.png") });
+      await assertReadableJournal(page);
+      await expect(journal(page).locator('.open-page-stage [data-pageflip-role="primary"][data-pageflip-current="true"] .journal-leaf > *').first()).toBeVisible();
+      await treatment?.evaluate((node) => { node.parentNode?.removeChild(node); });
+    }
+    const byMode = Object.fromEntries((["original", "paper"] as const).map((mode) => {
       const runs = values[mode];
       const frames = runs.flatMap((sample) => [...sample.frameDurationsMs]);
       const phases = Object.fromEntries(["CLOSED_BOOK_REVEAL", "COVER_OPENING", "BOOK_SETTLING"].map((phase) => {
@@ -665,9 +677,9 @@ phase3Test(
         slow: frames.filter((ms) => ms > budgets.desktopFrameP95Ms).length, phases }];
     }));
     const report = { purpose: "DEVELOPMENT_ONLY", candidate: "d1b6b4c79bf0600e4f3cf44c456a4b1f68973754",
-      originalBackdrop: original.backdrop, treatmentBackdrop: staticBackdrop.backdrop, budgetMs: budgets.desktopFrameP95Ms, byMode };
+      views, budgetMs: budgets.desktopFrameP95Ms, byMode };
     await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
     console.log(JSON.stringify(report));
-    expect(byMode.staticBackdrop.p95).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
+    expect(byMode.paper.p95).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
   },
 );
