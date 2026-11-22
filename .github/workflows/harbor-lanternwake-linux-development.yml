@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake grouped book decorations comparison on Linux
+run-name: Lanternwake compiled replay reveal on Linux
 
 on:
   push:
@@ -17,14 +17,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 7136cc8dd4d07dd62f24969eaee9289235e34119
+      CANDIDATE_SHA: a4ecde2c76a7ecb01e142207350f0840e4dbb162
       BASE_SHA: 9e612bd42dee2561d75dfac9263ac3307d5dee24
-      FOREVER_VALIDATION_SOURCE_SHA: 7136cc8dd4d07dd62f24969eaee9289235e34119
+      FOREVER_VALIDATION_SOURCE_SHA: a4ecde2c76a7ecb01e142207350f0840e4dbb162
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 7136cc8dd4d07dd62f24969eaee9289235e34119
+          ref: a4ecde2c76a7ecb01e142207350f0840e4dbb162
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,7 +58,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Compare the settling frames when decorations share one fade
+      - name: Verify the compiled Journal reset and original reveal frames
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -72,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lanternwake-linux-settle-group
+          name: lanternwake-linux-compiled-reveal
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
           if-no-files-found: ignore
           retention-days: 30

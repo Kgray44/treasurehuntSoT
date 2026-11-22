@@ -598,7 +598,7 @@ async function measuredFullOpening(page: Page, control: Locator) {
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
 phase3Test(
-  "compare real Journal settling with individually animated and grouped decorations",
+  "verify the compiled replay reset and sample the original reveal frames",
   async ({ page, phase3, browser, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
@@ -628,67 +628,42 @@ phase3Test(
     const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
     expect(fullRuntimeBaseline.eventSources).toBe(1);
 
-    const furniture = ".book-shadow, .rear-book-cover, .page-stack, .book-binding";
-    const camera = journal(page).locator(".book-camera");
-    const setGroup = (grouped: boolean) => camera.evaluate((target, settings) => {
-      const existing = target.querySelector(":scope > [data-diagnostic-book-furniture]");
-      if (!settings.grouped) {
-        if (existing) {
-          for (const child of Array.from(existing.children)) target.insertBefore(child, existing);
-          existing.remove();
-        }
-        return;
-      }
-      if (existing) return;
-      const nodes = Array.from(target.children).filter((node) => node.matches(settings.furniture));
-      if (nodes.length !== 5) throw new Error("The five book decorations did not resolve.");
-      const group = document.createElement("div");
-      group.dataset.diagnosticBookFurniture = "true";
-      group.setAttribute("aria-hidden", "true");
-      target.insertBefore(group, nodes[0]!);
-      for (const node of nodes) group.appendChild(node);
-    }, { grouped, furniture });
-    const style = await page.addStyleTag({ content: [
-      '.chronicle-journal-shell [data-diagnostic-book-furniture] {',
-      'position:absolute; inset:0; z-index:0; opacity:0; pointer-events:none;',
-      'transition:opacity 820ms ease 180ms; }',
-      '.chronicle-journal-shell [data-diagnostic-book-furniture] > * {',
-      'opacity:1 !important; transition:none !important; }',
-      '.chronicle-journal-shell:is([data-journal-phase="BOOK_SETTLING"], [data-journal-phase="JOURNAL_READY"])',
-      '[data-diagnostic-book-furniture] { opacity:1; }',
-    ].join(" ") });
-    const geometry = () => camera.evaluate((target, selector) =>
-      Array.from(target.querySelectorAll(selector)).map((node) => {
-        const rect = node.getBoundingClientRect();
-        return [rect.left, rect.top, rect.width, rect.height].map((number) => Math.round(number * 10) / 10);
-      }), furniture);
-    const normalGeometry = await geometry();
-    const values: Record<"original" | "grouped", VisualProbeResult[]> = { original: [], grouped: [] };
-    for (const mode of ["original", "grouped", "grouped", "original"] as const) {
-      await setGroup(mode === "grouped");
-      expect(await geometry()).toEqual(normalGeometry);
+    const replays: VisualProbeResult[] = [];
+    for (let index = 0; index < 3; index += 1) {
       const opening = await measuredFullOpening(page, replay(page));
       expect(opening.durationMs).toBeLessThan(budgets.openingMs);
-      values[mode].push(opening.visual);
-      expect(await geometry()).toEqual(normalGeometry);
+      await expect(replay(page)).toBeFocused();
+      replays.push(opening.visual);
     }
-    await style.evaluate((node) => { node.parentNode?.removeChild(node); });
-    expect(await camera.locator(":scope > [data-diagnostic-book-furniture]").count()).toBe(0);
-
-    const byMode = Object.fromEntries((["original", "grouped"] as const).map((mode) => {
-      const runs = values[mode];
-      const frames = runs.flatMap((sample) => [...sample.frameDurationsMs]);
-      const phases = Object.fromEntries(["CLOSED_BOOK_REVEAL", "COVER_OPENING", "BOOK_SETTLING"].map((phase) => {
-        const intervals = runs.flatMap((sample) => sample.framesByPhase[phase] ?? []);
-        return [phase, { samples: intervals.length, p95: rounded(percentile(intervals, 0.95)),
-          slow: intervals.filter((ms) => ms > budgets.desktopFrameP95Ms).length }];
-      }));
-      return [mode, { samples: frames.length, p95: rounded(percentile(frames, 0.95)),
-        slow: frames.filter((ms) => ms > budgets.desktopFrameP95Ms).length, phases }];
+    await replay(page).click();
+    await expect(journal(page)).toHaveAttribute("data-journal-phase", "CLOSED_BOOK_REVEAL");
+    const composition = await journal(page).evaluate((root) => {
+      const inspect = (selector: string) => {
+        const element = root.querySelector(selector);
+        if (!element) throw new Error("Missing book composition layer: " + selector);
+        const style = getComputedStyle(element);
+        return { opacity: style.opacity, visibility: style.visibility };
+      };
+      return Object.fromEntries([".open-page-stage", ".rear-book-cover", ".page-stack", ".closed-book"].map(
+        (selector) => [selector, inspect(selector)],
+      ));
+    });
+    await assertReadableJournal(page);
+    const phases = Object.fromEntries(["CLOSED_BOOK_REVEAL", "COVER_OPENING", "BOOK_SETTLING"].map((phase) => {
+      const intervals = replays.flatMap((sample) => sample.framesByPhase[phase] ?? []);
+      return [phase, { samples: intervals.length, p95: rounded(percentile(intervals, 0.95)),
+        slow: intervals.filter((ms) => ms > budgets.desktopFrameP95Ms).length }];
     }));
-    const report = { purpose: "DEVELOPMENT_ONLY", geometryMatches: true, budgetMs: budgets.desktopFrameP95Ms, byMode };
+    const report = {
+      purpose: "DEVELOPMENT_ONLY", candidate: "d1b6b4c79bf0600e4f3cf44c456a4b1f68973754",
+      budgetMs: budgets.desktopFrameP95Ms, composition, phases,
+      originalDesktopFrameP95Ms: rounded(percentile([cold.visual, ...replays].flatMap((trace) => [...trace.frameDurationsMs]), 0.95)),
+    };
     await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
     console.log(JSON.stringify(report));
-    expect(byMode.grouped.p95).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
+    expect(composition[".open-page-stage"].visibility).toBe("hidden");
+    expect(composition[".rear-book-cover"].opacity).toBe("0");
+    expect(composition[".closed-book"].visibility).toBe("visible");
+    expect(phases.CLOSED_BOOK_REVEAL.p95).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
   },
 );
