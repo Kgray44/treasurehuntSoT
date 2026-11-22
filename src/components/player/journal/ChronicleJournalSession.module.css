@@ -3,3 +3,7 @@
     var(--focus-ring),
     0 20px 45px rgba(0, 0, 0, 0.5);
 }
+
+:global(.chronicle-journal-shell[data-journal-ready-reason="skipped"]) .objectiveTray {
+  transition-property: none;
+}
