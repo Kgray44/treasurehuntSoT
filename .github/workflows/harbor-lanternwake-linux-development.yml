@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Creator moderation and Crossdeck disconnect focused Linux verification
+run-name: Creator Community focused ordinary generic browser sequence
 
 on:
   push:
@@ -57,13 +57,22 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Verify the corrected Creator and Crossdeck browser cases
+      - name: Verify the complete generic browser profile
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/crossdeck-phase2.spec.ts", "tests/e2e/sc07-creator-community.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
+          import assert from "node:assert/strict";
+          import { runJob, snapshotReader } from "./scripts/sounding-line-v3/checks.mjs";
+          import { changes, registry, select } from "./scripts/sounding-line-v3/plan.mjs";
+          import { resolveBrowserSuiteDispatches } from "./scripts/sounding-line/browser-suite-profiles.mjs";
+          const base = process.env.BASE_SHA;
+          const tree = process.env.CANDIDATE_SHA;
+          const plan = select(changes(base, tree), snapshotReader(tree), { projects: [], suites: [] }, registry(tree), snapshotReader(base));
+          const selected = plan.jobs.find(({ id }) => id === "browser").files;
+          const profile = resolveBrowserSuiteDispatches(selected).find(({ browserTests }) =>
+            browserTests.includes("tests/e2e/sc07-creator-community.spec.ts"));
+          assert(profile.browserTests.includes("tests/e2e/crossdeck-phase2.spec.ts"));
+          assert(profile.browserTests.length < selected.length);
+          console.log(JSON.stringify({ purpose: "DEVELOPMENT_ONLY", selectedGenericSpecs: profile.browserTests.length }));
+          await runJob({ id: "creator-generic-sequence", kind: "browser", files: profile.browserTests }, { base, tree });
           EOF
