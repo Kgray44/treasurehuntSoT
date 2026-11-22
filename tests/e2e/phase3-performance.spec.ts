@@ -34,7 +34,7 @@ type LayoutShiftSample = Readonly<{ atMs: number; score: number; phase: string |
 type VisualProbeResult = Readonly<{
   elapsedMs: number;
   frameDurationsMs: readonly number[];
-  framesByPhase: Record<string, number[]>;
+  phaseFrames: Record<string, { count: number; slow: number }>;
   longTaskDurationsMs: readonly number[];
   cls: number;
   layoutShifts: readonly LayoutShiftSample[];
@@ -171,6 +171,7 @@ async function waitForStableRuntimeBaseline(page: Page) {
     if (
       previous &&
       JSON.stringify(current) === JSON.stringify(previous) &&
+      current.activeAnimations === 0 &&
       current.activePresentations === 0 &&
       current.temporaryPageClones === 0 &&
       current.lottiePlaying === 0
@@ -200,7 +201,7 @@ async function waitAnimationFrames(page: Page, count: number) {
 }
 
 async function startVisualProbe(page: Page) {
-  await page.evaluate((emitPhaseMarks) => {
+  await page.evaluate(() => {
     type LayoutShiftEntry = PerformanceEntry & {
       value: number;
       hadRecentInput: boolean;
@@ -210,7 +211,7 @@ async function startVisualProbe(page: Page) {
       startedAt: number;
       lastFrameAt: number | null;
       frameDurationsMs: number[];
-      framesByPhase: Record<string, number[]>;
+      phaseFrames: Record<string, { count: number; slow: number }>;
       longTaskDurationsMs: number[];
       cls: number;
       layoutShifts: LayoutShiftSample[];
@@ -231,24 +232,21 @@ async function startVisualProbe(page: Page) {
       startedAt: window.performance.now(),
       lastFrameAt: null,
       frameDurationsMs: [],
-      framesByPhase: Object.create(null),
+      phaseFrames: {},
       longTaskDurationsMs: [],
       cls: 0,
       layoutShifts: [],
       frame: 0,
     } as unknown as Probe;
     const shell = document.querySelector<HTMLElement>(".chronicle-journal-shell");
-    let markedPhase: string | null = null;
     const sampleFrame = (at: number) => {
       if (probe.lastFrameAt !== null) {
-        const elapsed = at - probe.lastFrameAt;
-        const phase = shell?.dataset.journalPhase ?? "UNMOUNTED";
-        if (emitPhaseMarks && phase !== markedPhase) {
-          performance.mark("lanternwake-phase:" + phase);
-          markedPhase = phase;
-        }
-        probe.frameDurationsMs.push(elapsed);
-        (probe.framesByPhase[phase] ??= []).push(elapsed);
+        const interval = at - probe.lastFrameAt;
+        probe.frameDurationsMs.push(interval);
+        const phase = shell?.dataset.journalPhase ?? "outside-journal";
+        const counts = (probe.phaseFrames[phase] ??= { count: 0, slow: 0 });
+        counts.count += 1;
+        if (interval > 25) counts.slow += 1;
       }
       probe.lastFrameAt = at;
       probe.frame = requestAnimationFrame(sampleFrame);
@@ -281,7 +279,7 @@ async function startVisualProbe(page: Page) {
     probe.layoutShiftObserver.observe({ type: "layout-shift", buffered: false });
     probe.frame = requestAnimationFrame(sampleFrame);
     probeWindow.__phase3VisualProbe = probe;
-  }, process.env.LANTERNWAKE_EXPERIMENT === "compositor-cause");
+  });
 }
 
 async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
@@ -293,7 +291,7 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
       __phase3VisualProbe?: {
         startedAt: number;
         frameDurationsMs: number[];
-      framesByPhase: Record<string, number[]>;
+      phaseFrames: Record<string, { count: number; slow: number }>;
         longTaskDurationsMs: number[];
         cls: number;
         layoutShifts: VisualProbeResult["layoutShifts"];
@@ -315,7 +313,7 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
     return {
       elapsedMs: window.performance.now() - probe.startedAt,
       frameDurationsMs: probe.frameDurationsMs,
-      framesByPhase: probe.framesByPhase,
+      phaseFrames: probe.phaseFrames,
       longTaskDurationsMs: probe.longTaskDurationsMs,
       cls: probe.cls,
       layoutShifts: probe.layoutShifts,
@@ -357,9 +355,6 @@ type OpeningMeasurement = {
   phases: string[];
   reason: string;
   bookStatus: string | null;
-  frameDeltas: number[];
-  marks: Record<string, number>;
-  initialBookStatus: string | null;
 };
 
 async function measureOpening(control: Locator): Promise<OpeningMeasurement> {
@@ -368,35 +363,22 @@ async function measureOpening(control: Locator): Promise<OpeningMeasurement> {
     if (!shell) throw new Error("The opening control must belong to the canonical Journal.");
     const probeWindow = window as unknown as Window & { __phase3OpeningMeasurement?: Promise<OpeningMeasurement> };
     const phases = new Set<string>();
-    const initialBookStatus = shell.querySelector(".main-journal-book")?.getAttribute("data-pageflip-status") ?? null;
     const initialPhase = shell.dataset.journalPhase;
     probeWindow.__phase3OpeningMeasurement = new Promise((resolve, reject) => {
       let startedAt: number | null = null;
       let responseMs: number | null = null;
-      let frame = 0;
-      const frameDeltas: number[] = [];
-      const sample = (at: number) => {
-        if (startedAt === null) return;
-        frameDeltas.push(at - startedAt);
-        frame = requestAnimationFrame(sample);
-      };
       const onClick = (event: Event) => {
         if (!event.isTrusted) return;
         startedAt = window.performance.now();
-        frame = requestAnimationFrame(sample);
       };
       const finish = (error?: Error) => {
         observer.disconnect();
         button.removeEventListener("click", onClick, true);
-        cancelAnimationFrame(frame);
         clearTimeout(timeout);
         if (error) reject(error);
         else if (startedAt !== null && responseMs !== null) {
           resolve({
             durationMs: window.performance.now() - startedAt,
-            frameDeltas,
-            marks: Object.fromEntries(performance.getEntriesByType("mark").filter((mark) => mark.startTime >= startedAt! && mark.name.startsWith("lw-preflight:")).map((mark) => [mark.name, mark.startTime - startedAt!])),
-            initialBookStatus,
             responseMs,
             phases: [...phases],
             reason: shell.dataset.journalReadyReason ?? "",
@@ -596,96 +578,65 @@ async function measuredFullOpening(page: Page, control: Locator) {
   return { ...opening, visual };
 }
 
-async function startCompositorTrace(page: Page, output: string) {
-  const session = await page.context().newCDPSession(page);
-  const completed = new Promise<string>((resolve, reject) => {
-    session.once("Tracing.tracingComplete", ({ stream }) =>
-      stream ? resolve(stream) : reject(new Error("Chromium trace stream was missing")),
-    );
-  });
-  await session.send("Tracing.start", {
-    transferMode: "ReturnAsStream",
-    traceConfig: {
-      recordMode: "recordUntilFull",
-      includedCategories: ["blink.user_timing", "viz"],
-    },
-  });
-  return async () => {
-    await session.send("Tracing.end");
-    const stream = await completed;
-    const file = await fs.open(output, "wx");
-    let bytes = 0;
-    try {
-      for (;;) {
-        const chunk = await session.send("IO.read", { handle: stream, size: 1024 ** 2 });
-        const buffer = Buffer.from(chunk.data, chunk.base64Encoded ? "base64" : "utf8");
-        bytes += buffer.length;
-        if (bytes > 96 * 1024 ** 2) throw new Error("Chromium trace exceeded its diagnostic allocation");
-        await file.writeFile(buffer);
-        if (chunk.eof) break;
-      }
-    } finally {
-      await file.close();
-      await session.send("IO.close", { handle: stream });
-      await session.detach();
-    }
-  };
-}
-
-phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
-
-phase3Test("attributes the reduced Journal preflight to readiness and rendering", async ({ page, phase3, browser }) => {
-  const cdp = await browser.newBrowserCDPSession();
-  const { gpu } = await cdp.send("SystemInfo.getInfo");
-  await cdp.detach();
-
-  console.log(JSON.stringify({ purpose: "DEVELOPMENT_ONLY", renderer: gpu.auxAttributes?.glRenderer }));
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await installRuntimeCounter(page);
-  await setPhase3Motion(page, PHASE3_MOTION_MODES[0]);
-  await phase3.proveIsolation();
-  const fixture = await phase3.createCase("P3-DESKTOP-ATTRIBUTION", "CHAPTER_RELEASED");
-  const voyage = await resolveLegacyCampaign(fixture.slug);
-  expect(voyage).toBeTruthy();
-  await enterJournal(page, fixture, "/player/playthroughs/" + voyage!.sessionId + "/journal");
-
-  await measuredFullOpening(page, page.getByRole("button", { name: "Open the journal" }));
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    await expect(journal(page)).toHaveAttribute("data-motion-level", "reduced");
-    await assertReadableJournal(page, true);
-    const reducedRuntimeBaseline = await waitForStableRuntimeBaseline(page);
-    const preflightWarmupCount = 8;
-    const preflightSampleCount = 40;
-    const modes = ["normal", "sync"] as const;
-    type Mode = (typeof modes)[number];
-    const samples: Record<Mode, OpeningMeasurement[]> = { normal: [], sync: [] };
-    for (let index = 0; index < preflightWarmupCount + preflightSampleCount; index += 1) {
-      for (const mode of index % 2 === 0 ? modes : ["sync", "normal"] as const) {
-        await page.evaluate((value) => {
-
-                    const diagnostics = window as Window & { __lanternwakeTimingMode?: string; __lanternwakePublishMode?: string };
-          diagnostics.__lanternwakeTimingMode = "frame";
-          diagnostics.__lanternwakePublishMode = value;
-        }, mode);
-        const result = await measureOpening(replay(page));
-        expect(result.phases).toContain("BOOK_SETTLING");
-        expect(result.reason).toBe("completed-fallback");
-        expect(result.initialBookStatus).toBe("reduced");
-        expect(result.bookStatus).toBe("reduced");
-        await expect(journal(page).locator(".reduced-page-stage > [data-page-index]")).toBeVisible();
-        expect(Object.keys(result.marks)).toContain("lw-preflight:publish-return");
-        if (index >= preflightWarmupCount) samples[mode].push(result);
-      }
-    }
-    await assertReadableJournal(page, true);
-    expect(await waitForStableRuntimeBaseline(page)).toEqual(reducedRuntimeBaseline);
-    const p95 = Object.fromEntries(modes.map((mode) => [mode,
-      rounded(percentile(samples[mode].map((sample) => sample.durationMs), .95))]));
-    const report = { purpose: "DEVELOPMENT_ONLY", budgetMs: budgets.preflightP95Ms, p95, samples };
-    const artifact = performanceArtifactTarget();
-    await fs.mkdir(artifact.artifactDirectory, {recursive: true});
-    await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
-    console.log(JSON.stringify({purpose: report.purpose, p95, counts: modes.map((mode) => samples[mode].length),
-      slow: modes.map((mode) => [...samples[mode]].sort((a,b) => b.durationMs-a.durationMs).slice(0,4))}));
-    expect(p95.sync).toBeLessThan(budgets.preflightP95Ms);
+// Use the regular Chromium build and keep recording work out of frame measurements.
+phase3Test.use({
+  channel: "chromium",
+  video: "off",
+  trace: { mode: "retain-on-failure", screenshots: false, snapshots: false },
 });
+
+phase3Test(
+  "unchanged desktop Journal frame budget on Linux ARM64",
+  async ({ page, phase3, browser, browserName }) => {
+    expect(browserName).toBe("chromium");
+    expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
+    expect(process.env.FOREVER_PHASE3_PERFORMANCE_BASE_URL).toBe("http://127.0.0.1:3200");
+    const artifact = performanceArtifactTarget();
+    await fs.mkdir(artifact.artifactDirectory, { recursive: true });
+    await fs.rm(artifact.artifactPath, { force: true });
+    await page.setViewportSize({ width: 1_440, height: 900 });
+    await installRuntimeCounter(page);
+    await setPhase3Motion(page, PHASE3_MOTION_MODES[0]);
+    await phase3.proveIsolation();
+    const fixture = await phase3.createCase("P3-PERFORMANCE-CHAPTER", "CHAPTER_RELEASED");
+    const voyage = await resolveLegacyCampaign(fixture.slug);
+    expect(voyage, "The performance fixture must be bound to a canonical Voyage.").toBeTruthy();
+    const journalPath = `/player/playthroughs/${voyage!.sessionId}/journal`;
+    await enterJournal(page, fixture, journalPath);
+
+    const cold = await measuredFullOpening(page, page.getByRole("button", { name: "Open the journal" }));
+    await expect(journal(page).getByText("Captain channel connected")).toBeVisible();
+    await expect(journal(page)).toHaveAttribute("data-live-event", "idle");
+    const liveStartedAt = performance.now();
+    const live = await phase3.canonicalCaptainAction(fixture, "presentation");
+    expect(live.eventType).toBe("presentationTriggered");
+    await expect(journal(page)).toHaveAttribute("data-live-event", "revealed");
+    await expect(journal(page).locator('[aria-live="assertive"]')).toContainText("A new page was released:");
+    const liveUpdateMs = performance.now() - liveStartedAt;
+    const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
+    expect(fullRuntimeBaseline.eventSources).toBe(1);
+
+    const warmRuns: Awaited<ReturnType<typeof measuredFullOpening>>[] = [];
+    const desktopRuns = [cold.visual];
+    for (let index = 0; index < 3; index += 1) {
+      const run = await measuredFullOpening(page, replay(page));
+      warmRuns.push(run);
+      desktopRuns.push(run.visual);
+    }
+    expect(warmRuns).toHaveLength(3);
+    expect(process.arch).toBe("arm64");
+    const desktopFrameP95Ms = rounded(percentile(desktopRuns.flatMap((run) => [...run.frameDurationsMs]), 0.95));
+    const report = {
+      purpose: "DEVELOPMENT_ONLY",
+      architecture: process.arch,
+      desktopFrameP95Ms,
+      budgetMs: budgets.desktopFrameP95Ms,
+      p95ByRun: desktopRuns.map((run) => rounded(percentile(run.frameDurationsMs, 0.95))),
+      sampleCountByRun: desktopRuns.map((run) => run.frameDurationsMs.length),
+      durationMs: [cold.durationMs, ...warmRuns.map((run) => run.durationMs)],
+    };
+    await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
+    console.log(JSON.stringify(report));
+    expect(desktopFrameP95Ms).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
+  },
+);

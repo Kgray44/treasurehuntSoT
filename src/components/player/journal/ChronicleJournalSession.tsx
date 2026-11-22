@@ -619,7 +619,6 @@ function ChronicleJournalSessionIdentity({
         onPhase: (phase) => flushSync(() => setOpeningPhase(phase === "JOURNAL_READY" ? "BOOK_SETTLING" : phase)),
       });
 
-      if (policy.composition === "reduced") performance.mark("lw-preflight:readiness-start");
       const readiness =
         result.status === "completed" || result.status === "completed-fallback"
           ? await waitForJournalReadiness(() => book.current?.readiness() ?? null, controller.signal)
@@ -665,7 +664,7 @@ function ChronicleJournalSessionIdentity({
         const readinessFallback = ["fallback", "reduced"].includes(readiness.readinessStatus);
         const settledOutcome =
           result.status === "completed-fallback" || readinessFallback ? "completed-fallback" : result.status;
-        const publish = () => settleJournalReady(
+        settleJournalReady(
           policy,
           settledOutcome,
           settledOutcome,
@@ -675,15 +674,6 @@ function ChronicleJournalSessionIdentity({
               ? "Motion was reduced. The Voyage Journal is open in its readable final state."
               : "",
         );
-        if (policy.composition === "reduced" && readiness.readinessStatus === "reduced") {
-          const diagnostics = window as Window & { __lanternwakePublishMode?: string };
-          performance.mark("lw-preflight:publish-start");
-          if (diagnostics.__lanternwakePublishMode === "sync") flushSync(publish);
-          else publish();
-          performance.mark("lw-preflight:publish-return");
-        } else {
-          publish();
-        }
         return;
       }
 

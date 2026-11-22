@@ -3,10 +3,6 @@ import type { waitForJournalPhase } from "@/animation/journal/opening-machine";
 export const waitForReducedJournalPaint: typeof waitForJournalPhase = (_root, phase, _mode, signal) => {
   if (signal.aborted) return Promise.resolve({ status: "aborted", phase });
   const startedAt = performance.now();
-  const diagnosticWindow = window as Window & {
-    __lanternwakeTimingMode?: "timer" | "frame";
-  };
-  performance.mark("lw-preflight:start");
 
   return new Promise((resolve) => {
     let afterPaint: ReturnType<typeof setTimeout> | undefined;
@@ -20,11 +16,7 @@ export const waitForReducedJournalPaint: typeof waitForJournalPhase = (_root, ph
       cleanup();
       resolve({ status: "aborted", phase });
     }
-    let settled = false;
     function complete() {
-      if (settled) return;
-      settled = true;
-      performance.mark("lw-preflight:complete");
       cleanup();
       resolve({
         status: "completed",
@@ -36,20 +28,9 @@ export const waitForReducedJournalPaint: typeof waitForJournalPhase = (_root, ph
 
     // The static handoff can proceed in a task after the first rendering opportunity.
     const frame = requestAnimationFrame(() => {
-      performance.mark("lw-preflight:frame");
-      if (diagnosticWindow.__lanternwakeTimingMode === "frame") {
-        complete();
-        return;
-      }
-      afterPaint = setTimeout(() => {
-        performance.mark("lw-preflight:timer-task");
-        complete();
-      }, 0);
+      afterPaint = setTimeout(complete, 0);
     });
-    const deadline = setTimeout(() => {
-      performance.mark("lw-preflight:deadline");
-      complete();
-    }, 100);
+    const deadline = setTimeout(complete, 100);
     signal.addEventListener("abort", abort, { once: true });
   });
 };

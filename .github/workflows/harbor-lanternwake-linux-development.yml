@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake paired ready-state publication on Linux
+run-name: Lanternwake unchanged desktop frame budget on Linux ARM64
 
 on:
   push:
@@ -14,17 +14,17 @@ permissions:
 jobs:
   benchmark:
     name: Phase 3 performance only (development)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: b41e4551f85576edade90ab46788b218a3cc096a
+      CANDIDATE_SHA: fc479091c7b0f7294f3bca4d224f821893eb4e23
       BASE_SHA: aaf7aa6e80d0c71c02018432c1e8a66ef5e1e21f
-      FOREVER_VALIDATION_SOURCE_SHA: b41e4551f85576edade90ab46788b218a3cc096a
+      FOREVER_VALIDATION_SOURCE_SHA: fc479091c7b0f7294f3bca4d224f821893eb4e23
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: b41e4551f85576edade90ab46788b218a3cc096a
+          ref: fc479091c7b0f7294f3bca4d224f821893eb4e23
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,7 +58,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Compare asynchronous and synchronous reduced readiness publication
+      - name: Measure the original cold and warm desktop frame workload
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -72,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lanternwake-linux-ready-preflight
+          name: lanternwake-linux-arm64-desktop-metrics
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
           if-no-files-found: ignore
           retention-days: 30
