@@ -1,0 +1,53 @@
+name: Lanternwake isolated Linux benchmark
+run-name: Lanternwake focused Linux development benchmark
+
+on:
+  push:
+    branches:
+      - codex/lanternwake-focused-development-cf6b1d6bbae4
+    paths:
+      - .github/workflows/harbor-lanternwake-linux-development.yml
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    name: Phase 3 performance only (development)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    env:
+      CANDIDATE_SHA: cf6b1d6bbae4352100bbc58e5614600784747943
+      BASE_SHA: aaf7aa6e80d0c71c02018432c1e8a66ef5e1e21f
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: cf6b1d6bbae4352100bbc58e5614600784747943
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Install locked dependencies and Chromium
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install --with-deps chromium
+      - name: Run the unchanged Phase 3 performance spec
+        run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          node --input-type=module <<'EOF'
+          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
+          );
+          EOF
+      - name: Retain sanitized performance metrics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lanternwake-linux-performance-metrics
+          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
+          if-no-files-found: ignore
+          retention-days: 30
