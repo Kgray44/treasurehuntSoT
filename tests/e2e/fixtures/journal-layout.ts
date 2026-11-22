@@ -227,7 +227,7 @@ export async function assertRecoveredDesktopPassageHeading(page: Page, activeHea
       async () =>
         (
           await heading.evaluate(measureJournalGeometry, {
-            kind: "recovered-heading",
+            kind: "recovered-heading" as const,
             expectedText: activeHeading,
           })
         ).failures,
