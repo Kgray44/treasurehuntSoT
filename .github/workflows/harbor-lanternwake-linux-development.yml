@@ -17,14 +17,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 9f085718c8cd589b8a4043bf1f8d1fbcccc4ef73
+      CANDIDATE_SHA: 7d7e81b2c8b4d42df6784de0911cced3b0d76388
       BASE_SHA: aaf7aa6e80d0c71c02018432c1e8a66ef5e1e21f
-      FOREVER_VALIDATION_SOURCE_SHA: 9f085718c8cd589b8a4043bf1f8d1fbcccc4ef73
+      FOREVER_VALIDATION_SOURCE_SHA: 7d7e81b2c8b4d42df6784de0911cced3b0d76388
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 9f085718c8cd589b8a4043bf1f8d1fbcccc4ef73
+          ref: 7d7e81b2c8b4d42df6784de0911cced3b0d76388
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
