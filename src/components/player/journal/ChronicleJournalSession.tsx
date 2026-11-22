@@ -1160,7 +1160,7 @@ function ChronicleJournalSessionIdentity({
           ref={root}
           data-experience-voyage={state.session.id}
           data-experience-version={state.session.versionId}
-          className={`voyage-shell chronicle-journal-shell mode-${state.journal.mode}`}
+          className={`voyage-shell chronicle-journal-shell mode-${state.journal.mode} ${styles.journalShell}`}
           data-journal-phase={openingPhase}
           data-journal-opening-outcome={openingOutcome}
           data-journal-ready-reason={readyReceipt?.reason}
@@ -1174,7 +1174,7 @@ function ChronicleJournalSessionIdentity({
             } as React.CSSProperties
           }
         >
-          <div className="ocean-depth" aria-hidden="true">
+          <div className={`ocean-depth ${styles.oceanBackdrop}`} aria-hidden="true">
             <div data-scene-part="sky" />
             <div data-scene-part="horizon" />
             <div data-scene-part="ocean" />
