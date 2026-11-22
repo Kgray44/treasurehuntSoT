@@ -358,6 +358,7 @@ type OpeningMeasurement = {
   reason: string;
   bookStatus: string | null;
   frameDeltas: number[];
+  marks: Record<string, number>;
   initialBookStatus: string | null;
 };
 
@@ -394,6 +395,7 @@ async function measureOpening(control: Locator): Promise<OpeningMeasurement> {
           resolve({
             durationMs: window.performance.now() - startedAt,
             frameDeltas,
+            marks: Object.fromEntries(performance.getEntriesByType("mark").filter((mark) => mark.startTime >= startedAt! && mark.name.startsWith("lw-preflight:")).map((mark) => [mark.name, mark.startTime - startedAt!])),
             initialBookStatus,
             responseMs,
             phases: [...phases],
@@ -654,35 +656,33 @@ phase3Test("attributes the reduced Journal preflight to readiness and rendering"
     const reducedRuntimeBaseline = await waitForStableRuntimeBaseline(page);
     const preflightWarmupCount = 8;
     const preflightSampleCount = 40;
-    const preflightSamplesMs: number[] = [];
-    const breakdown: Array<{durationMs:number; responseMs:number; frameDeltas:number[]; initialBookStatus:string|null}> = [];
+    const modes = ["timer", "priority"] as const;
+    type Mode = (typeof modes)[number];
+    const samples: Record<Mode, OpeningMeasurement[]> = { timer: [], priority: [] };
     for (let index = 0; index < preflightWarmupCount + preflightSampleCount; index += 1) {
-      const handoff = await measureOpening(replay(page));
-      expect(handoff.phases).toContain("BOOK_SETTLING");
-      // The canonical application intentionally reports the readable reduced
-      // book as completed-fallback. An unplanned runtime fallback is distinct.
-      expect(handoff.reason).toBe("completed-fallback");
-      expect(handoff.bookStatus).toBe("reduced");
-      if (index >= preflightWarmupCount) {
-        preflightSamplesMs.push(handoff.durationMs);
-        breakdown.push({ durationMs: handoff.durationMs, responseMs: handoff.responseMs,
-          frameDeltas: handoff.frameDeltas, initialBookStatus: handoff.initialBookStatus });
+      for (const mode of index % 2 === 0 ? modes : ["priority", "timer"] as const) {
+        await page.evaluate((value) => {
+          if (!("scheduler" in window)) throw new Error("Chromium Scheduler API is required.");
+          (window as Window & { __lanternwakeTimingMode?: string }).__lanternwakeTimingMode = value;
+        }, mode);
+        const result = await measureOpening(replay(page));
+        expect(result.phases).toContain("BOOK_SETTLING");
+        expect(result.reason).toBe("completed-fallback");
+        expect(result.initialBookStatus).toBe("reduced");
+        expect(result.bookStatus).toBe("reduced");
+        expect(Object.keys(result.marks)).toContain("lw-preflight:complete");
+        if (index >= preflightWarmupCount) samples[mode].push(result);
       }
     }
-    expect(preflightSamplesMs).toHaveLength(preflightSampleCount);
     await assertReadableJournal(page, true);
     expect(await waitForStableRuntimeBaseline(page)).toEqual(reducedRuntimeBaseline);
-
-  const root = process.env.VALIDATION_ARTIFACTS ?? "";
-  expect(path.isAbsolute(root)).toBe(true);
-  const measuredP95Ms = rounded(percentile(preflightSamplesMs, 0.95));
-  const result = { purpose: "DEVELOPMENT_ONLY", testedSourceSha: process.env.FOREVER_VALIDATION_SOURCE_SHA,
-    backend: gpu.auxAttributes?.glRenderer, samples: preflightSamplesMs.length, warmups: preflightWarmupCount,
-    measuredP95Ms, budgetMs: 50, passed: measuredP95Ms < 50, breakdown };
-  const artifact = performanceArtifactTarget();
-  await fs.mkdir(artifact.artifactDirectory, { recursive: true });
-  await writePerformanceArtifact(artifact.artifactPath, result, [fixture.slug, voyage!.sessionId]);
-  console.log(JSON.stringify(result));
-  expect(measuredP95Ms).toBeLessThan(budgets.preflightP95Ms);
+    const p95 = Object.fromEntries(modes.map((mode) => [mode,
+      rounded(percentile(samples[mode].map((sample) => sample.durationMs), .95))]));
+    const report = { purpose: "DEVELOPMENT_ONLY", budgetMs: budgets.preflightP95Ms, p95, samples };
+    const artifact = performanceArtifactTarget();
+    await fs.mkdir(artifact.artifactDirectory, {recursive: true});
+    await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
+    console.log(JSON.stringify({purpose: report.purpose, p95, counts: modes.map((mode) => samples[mode].length),
+      slow: modes.map((mode) => [...samples[mode]].sort((a,b) => b.durationMs-a.durationMs).slice(0,4))}));
+    expect(p95.priority).toBeLessThan(budgets.preflightP95Ms);
 });
-
