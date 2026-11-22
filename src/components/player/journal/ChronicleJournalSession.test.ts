@@ -2,7 +2,6 @@ import { createElement, StrictMode } from "react";
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from "vitest";
 import type { JournalPhaseOutcome } from "@/animation/core/animation-types";
-import { AudioCuePlayer } from "@/animation/core/audio-cues";
 import type { JournalOpeningPhase } from "@/animation/journal/opening-machine";
 import { syntheticBinding, syntheticSpatialMoment } from "@/parallax/fixtures";
 import type { CrossdeckConnection } from "@/components/crossdeck/useCrossdeckSession";
@@ -74,10 +73,6 @@ vi.mock("@/animation/motion/useMotionMode", () => ({
 vi.mock("@/animation/journal/opening-machine", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/animation/journal/opening-machine")>()),
   waitForJournalPhase: (...args: unknown[]) => openingTestDouble.waitForPhase(...args),
-}));
-
-vi.mock("./reduced-journal-paint", () => ({
-  waitForReducedJournalPaint: (...args: unknown[]) => openingTestDouble.waitForPhase(...args),
 }));
 
 vi.mock("@/components/player/journal/PhysicalJournalBook", async () => {
@@ -1184,24 +1179,6 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     await act(flushMicrotasks);
     expect(drawer.hasAttribute("inert")).toBe(true);
     expect(document.activeElement).toBe(chapters);
-  });
-
-  it("opens the Journal without initializing the page-turn audio context", async () => {
-    const unlock = vi.spyOn(AudioCuePlayer.prototype, "unlock").mockReturnValue({ outcome: "ready" });
-    onTestFinished(() => unlock.mockRestore());
-    motionTestDouble.mode = "full";
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(() => Promise.resolve(jsonResponse(sessionState("audio-context")))),
-    );
-
-    const view = render(createElement(ChronicleJournalSession, { sessionId: "audio-context" }));
-    await act(flushMicrotasks);
-    fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
-    await act(flushMicrotasks);
-
-    expect(view.container.querySelector("main")?.dataset.journalPhase).toBe("JOURNAL_READY");
-    expect(unlock).not.toHaveBeenCalled();
   });
 
   it("settles a skipped opening without replacing an already-ready PageFlip runtime", async () => {

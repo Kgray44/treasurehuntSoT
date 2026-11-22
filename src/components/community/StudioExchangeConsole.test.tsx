@@ -1,35 +1,143 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup } from "@testing-library/react";
-
-const motion = vi.hoisted(() => ({ mode: "reduced" as "full" | "gentle" | "reduced" }));
-
-vi.mock("@/animation/motion/useMotionMode", () => ({
-  useMotionMode: () => ({ mode: motion.mode }),
-}));
-
 import { StudioExchangeConsole } from "./StudioExchangeConsole";
+
+const motion = vi.hoisted(() => ({ mode: "reduced" as "full" | "reduced" }));
+vi.mock("@/animation/motion/useMotionMode", () => ({ useMotionMode: () => ({ mode: motion.mode }) }));
+
+const response = (body: unknown, status = 200) => ({ ok: status < 400, status, json: async () => body }) as Response;
 
 describe("Studio Exchange Console", () => {
   afterEach(() => {
     cleanup();
+    vi.unstubAllGlobals();
     motion.mode = "reduced";
   });
 
-  it("does not fabricate a successful package or install receipt", () => {
-    render(<StudioExchangeConsole authenticated />);
-    expect(screen.getByTestId("studio-community-exchange")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("radio", { name: "Preview sandbox (no changes)" }));
-    fireEvent.click(screen.getByRole("button", { name: "Open preview sandbox" }));
-    expect(screen.getByText("Preview sandbox opened without installing content.")).toBeInTheDocument();
-    expect(screen.getByText("Reduced motion is on. A static poster is shown.")).toBeInTheDocument();
+  it("requires Creator access without presenting a publication control", () => {
+    render(<StudioExchangeConsole authenticated={false} />);
+    expect(screen.getByRole("heading", { name: "Creator access is required." })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Sign in and return to the Exchange" })).toHaveAttribute(
+      "href",
+      "/sign-in?returnTo=%2Fstudio%2Fexchange",
+    );
+    expect(screen.queryByRole("button", { name: "Review exact package" })).not.toBeInTheDocument();
   });
 
-  it("derives preview controls from the effective motion policy", () => {
+  it("keeps the read-only preview responsive to the effective motion policy", () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => response({ sources: [], licenses: [], items: [] })),
+    );
+    const view = render(<StudioExchangeConsole authenticated />);
+    expect(screen.getByText("Reduced motion is on. A static poster is shown.")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Rotate right" })).not.toBeInTheDocument();
     motion.mode = "full";
-    render(<StudioExchangeConsole authenticated />);
-
-    expect(screen.getByRole("status")).toHaveTextContent("3D preview rotation 0 degrees");
+    view.rerender(<StudioExchangeConsole authenticated />);
     expect(screen.getByRole("button", { name: "Rotate right" })).toBeEnabled();
+  });
+
+  it("focuses the installed library after the options above it and the installed content settle", async () => {
+    const previousUrl = window.location.href;
+    window.history.replaceState(null, "", "/studio/exchange#installed-community");
+
+    let finishOptions = () => {};
+    const pendingOptions = new Promise<Response>((resolve) => {
+      finishOptions = () => resolve(response({ sources: [], licenses: [] }));
+    });
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((url: string) => (url.endsWith("/options") ? pendingOptions : Promise.resolve(response({ items: [] })))),
+    );
+
+    try {
+      render(<StudioExchangeConsole authenticated />);
+      await screen.findByText(/No Community items installed yet/);
+      const installedHeading = screen.getByRole("heading", { name: "Installed from Community" });
+      expect(installedHeading).not.toHaveFocus();
+      finishOptions();
+      await waitFor(() => expect(installedHeading).toHaveFocus());
+    } finally {
+      window.history.replaceState(null, "", previousUrl);
+    }
+  });
+
+  it("reviews the server package before sending the exact digest for moderation", async () => {
+    const calls: Array<{ url: string; body?: Record<string, unknown> }> = [];
+    const reviewedPackage = {
+      reviewDigest: "b".repeat(64),
+      sourceChecksum: "a".repeat(64),
+      included: { chapters: [{ title: "Opening" }] },
+      license: { key: "REMIX_WITH_ATTRIBUTION", name: "Remix with attribution", allowsModification: true },
+      attribution: [{ displayName: "Synthetic Creator", contributionType: "Creator" }],
+    };
+    let completeReview = (_result: Response) => {};
+    const pendingReview = new Promise<Response>((resolve) => {
+      completeReview = resolve;
+    });
+    let reviews = 0;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        const url = String(input);
+        calls.push({ url, ...(init?.body ? { body: JSON.parse(String(init.body)) as Record<string, unknown> } : {}) });
+        if (url.endsWith("/installed")) return response({ items: [] });
+        if (url.endsWith("/options"))
+          return response({
+            sources: [
+              { type: "CHRONICLE", id: "version-123", title: "Harbor Tale · 1.0", sourceChecksum: "a".repeat(64) },
+            ],
+            licenses: [
+              {
+                key: "REMIX_WITH_ATTRIBUTION",
+                displayName: "Remix with attribution",
+                requiresAttribution: true,
+                shareAlike: false,
+              },
+            ],
+          });
+        if (url.endsWith("/preflight")) return ++reviews === 2 ? pendingReview : response(reviewedPackage);
+        if (url === "/api/player/session") return response({ csrfToken: "synthetic-csrf" });
+        if (url.endsWith("/publish"))
+          return response(
+            {
+              listingId: "listing-123",
+              releaseId: "release-123",
+              publicationStatus: "READY_FOR_REVIEW",
+              listingUrl: "/community/harbor-tale",
+            },
+            201,
+          );
+        throw new Error(`Unexpected request: ${url}`);
+      }),
+    );
+    render(<StudioExchangeConsole authenticated />);
+    fireEvent.change(await screen.findByLabelText("Saved source"), { target: { value: "CHRONICLE:version-123" } });
+    fireEvent.change(screen.getByLabelText("Preview-safe description"), { target: { value: "A fictional harbor." } });
+    fireEvent.change(screen.getByLabelText("License"), { target: { value: "REMIX_WITH_ATTRIBUTION" } });
+    fireEvent.click(screen.getByLabelText("I own or have permission to distribute every included item."));
+    fireEvent.click(screen.getByLabelText(/I reviewed the full Chronicle for spoilers/));
+    fireEvent.click(screen.getByRole("button", { name: "Review exact package" }));
+    const reviewHeading = await screen.findByRole("heading", { name: "Review before submitting" });
+    await waitFor(() => expect(reviewHeading).toHaveFocus());
+    expect(screen.getByText(/Synthetic Creator/)).toBeInTheDocument();
+    expect(calls.some((call) => call.url.endsWith("/publish"))).toBe(false);
+
+    const details = screen.getByText("Inspect every included field").closest("details")!;
+    details.open = true;
+    fireEvent.click(screen.getByRole("button", { name: "Review exact package" }));
+    expect(reviewHeading).toBeInTheDocument();
+    expect(details).toHaveAttribute("open");
+    expect(screen.getByRole("button", { name: "Submit for moderation" })).toBeDisabled();
+    completeReview(response({ ...reviewedPackage, reviewDigest: "c".repeat(64) }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "Submit for moderation" })).toBeEnabled());
+    expect(reviewHeading).toHaveFocus();
+    expect(details).toHaveAttribute("open");
+
+    fireEvent.click(screen.getByRole("button", { name: "Submit for moderation" }));
+    await waitFor(() => expect(screen.getByText(/Submitted for independent moderation/)).toBeInTheDocument());
+    const publication = calls.find((call) => call.url.endsWith("/publish"))?.body;
+    expect(publication?.reviewDigest).toBe("c".repeat(64));
+    expect((publication?.publication as { publishedVersionId: string }).publishedVersionId).toBe("version-123");
   });
 });
