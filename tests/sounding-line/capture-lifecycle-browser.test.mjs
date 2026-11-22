@@ -238,6 +238,32 @@ test(
   },
 );
 
+test("browser authority rejects a backend allocation equal to its proxy port", async () => {
+  const proxyPort = await unusedPort();
+  let backendPort = await unusedPort();
+  while (backendPort === proxyPort) backendPort = await unusedPort();
+  const candidates = [proxyPort, backendPort];
+  let launchedPort;
+  await runBrowserAuthority({
+    root: workspace,
+    port: proxyPort,
+    browserArguments: [],
+    environment: {
+      SOUNDING_LINE_TASK_OWNED_HTTP: "1",
+      FOREVER_VALIDATION_ISOLATION: "1",
+      FOREVER_VALIDATION_PRODUCTION_IDENTITY: "1",
+      FOREVER_VALIDATION_NONCE_HASH: "a".repeat(64),
+    },
+    allocatePort: async () => candidates.shift(),
+    launch: (_command, argumentsList) => {
+      launchedPort = Number(argumentsList.at(-1));
+      throw new Error("Allocator probe stops before launching an app process");
+    },
+  });
+  assert.equal(launchedPort, backendPort);
+  assert.equal(candidates.length, 0);
+});
+
 test.after(async () => {
   await mkdir(path.join(workspace, "artifacts/sounding-line"), { recursive: true });
   await writeFile(

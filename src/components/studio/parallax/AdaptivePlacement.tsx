@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { ReceiptDetails } from "@/components/ui/ReceiptDetails";
 import type { SpatialDraft } from "@/parallax/authoring";
 import {
   enableAdaptiveAuthoring,
@@ -639,7 +640,9 @@ export function AdaptivePlacement({
           {mode === "ENGINEERING" && (
             <details>
               <summary>Typed recipe and resolution evidence</summary>
-              <pre className={styles.recipe}>{JSON.stringify({ adaptive: a, receipt: resolution }, null, 2)}</pre>
+              <div className={styles.recipe} tabIndex={0} role="region" aria-label="Recipe and resolution">
+                <ReceiptDetails value={{ adaptive: a, receipt: resolution }} />
+              </div>
             </details>
           )}
         </>

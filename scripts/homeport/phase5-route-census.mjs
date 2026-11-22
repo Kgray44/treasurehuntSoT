@@ -13,6 +13,8 @@ const sourceKinds = new Map([
   ["layout.ts", "layout"],
   ["not-found.tsx", "not-found"],
   ["not-found.ts", "not-found"],
+  ["loading.tsx", "loading"],
+  ["loading.ts", "loading"],
   ["error.tsx", "error"],
   ["error.ts", "error"],
 ]);

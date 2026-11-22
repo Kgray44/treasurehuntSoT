@@ -9152,7 +9152,11 @@
         "visibleOutcome": "Named environments show room-specific scenery; the Creator snaps a clue to a wall and returns to the same Library",
         "integrationOwner": "Parallax rooms and surface placement integration",
         "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
-        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
+        "sourcePaths": [
+          "src/components/ui/ReceiptDetails.tsx",
+          "src/components/studio/parallax",
+          "src/app/studio/parallax"
+        ],
         "projectionPaths": ["src/parallax"],
         "entryPoint": "/studio/library",
         "states": [
@@ -11024,6 +11028,7 @@
         "integrationOwner": "Parallax SC-07A direct spatial Community publishing",
         "systems": ["project-parallax", "harborlight", "project-homeport"],
         "sourcePaths": [
+          "src/components/ui/ReceiptDetails.tsx",
           "src/components/studio/parallax/SpatialCommunityPublisher.tsx",
           "src/components/studio/parallax/SpatialContentLibrary.tsx",
           "src/components/studio/parallax/SpatialStudio.tsx",

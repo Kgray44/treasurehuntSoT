@@ -1,8 +1,8 @@
 import { createHash } from "node:crypto";
-import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { format, resolveConfig } from "prettier";
+import { require as tsRequire } from "tsx/cjs/api";
 import { censusSummary, discoverAppRouteSources, routeIdForSource } from "./phase5-route-census.mjs";
 import {
   capabilityIds,
@@ -26,6 +26,10 @@ const startingSha = "54372224fc9bf4b4fb42797ca58a5a224ffdb92a";
 const sourceIndex = process.argv.indexOf("--source-sha");
 const implementationSourceSha = sourceIndex >= 0 ? process.argv[sourceIndex + 1] : "IMPLEMENTATION_SOURCE_PENDING";
 const final = process.argv.includes("--final");
+const reconcileCurrent = process.argv.includes("--reconcile-current");
+if (reconcileCurrent && (final || !/^[a-f0-9]{40}$/u.test(implementationSourceSha)))
+  throw new Error("Current route reconciliation needs an exact source SHA and does not certify browser results.");
+const { classifyRoute } = tsRequire("../../src/navigation/route-classification.ts", import.meta.url);
 const updatedAt = "2026-08-03T18:00:00.000Z";
 if (sourceIndex >= 0 && !implementationSourceSha) throw new Error("PHASE5_SOURCE_SHA_REQUIRED");
 const state = final ? "BRANCH_VALIDATED_NOT_MERGED" : "IMPLEMENTED_PENDING_BROWSER_VALIDATION";
@@ -89,7 +93,10 @@ function writeCsv(name, headers, records) {
   );
 }
 
+const shipwrightMigrationRoute = "/api/studio/tales/[taleId]/migrations/[blockId]";
+
 function sourceOwner(source) {
+  if (source.pathPattern === shipwrightMigrationRoute) return "shipwright";
   if (
     source.pathPattern.startsWith("/admin") ||
     source.pathPattern.startsWith("/api/admin") ||
@@ -130,6 +137,7 @@ const census = censusSummary(sources);
 const routeInventory = readJson("Homeport_Route_Inventory.json");
 const existingBySource = new Map(routeInventory.routes.map((route) => [route.implementationSource, route]));
 const sourceByFile = new Map(sources.map((source) => [source.sourceFile, source]));
+const originalRouteIds = new Set(routeInventory.routes.map((route) => route.routeId));
 
 for (const source of [...pages, ...handlers]) {
   let route = existingBySource.get(source.sourceFile);
@@ -144,7 +152,7 @@ for (const source of [...pages, ...handlers]) {
       classification: source.kind === "route" ? "API_OR_SERVICE" : classificationForPath(source.pathPattern),
       ownerProject: sourceOwner(source),
       productArea: sourceProductArea(source),
-      shellMode: source.pathPattern === "/admin" ? "TOKENIZED" : source.kind === "route" ? "N/A" : "WORKSPACE_STANDARD",
+      shellMode: source.kind === "route" ? "N/A" : classifyRoute(source.pathPattern).shellMode,
       logicalParent: null,
       currentVisibleEntries: [],
       currentDesktopPath: [],
@@ -159,7 +167,7 @@ for (const source of [...pages, ...handlers]) {
       currentSupportedStates: source.kind === "route" ? ["SERVICE_RESPONSE"] : ["CURRENT_DEFAULT"],
       currentJourneys: [],
       currentVisualEvidenceIds: [],
-      currentMaturity: source.kind === "route" ? "INTERNAL_ONLY" : "COMPLETE",
+      currentMaturity: source.kind === "route" ? "INTERNAL_ONLY" : "PARTIAL",
       directUrlRequired: true,
       orphanedOrdinaryRoute: false,
       targetDisposition: "PHASE_5_SOURCE_PARITY",
@@ -171,8 +179,8 @@ for (const source of [...pages, ...handlers]) {
     existingBySource.set(source.sourceFile, route);
   }
   route.routePattern = source.pathPattern;
-  route.ownerProject = sourceOwner(source);
-  route.productArea = sourceProductArea(source);
+  if (!reconcileCurrent || source.pathPattern === shipwrightMigrationRoute) route.ownerProject = sourceOwner(source);
+  if (!reconcileCurrent) route.productArea = sourceProductArea(source);
   // Phase 5 originally emitted CURRENT_GOVERNED for newly discovered pages,
   // but that value is not part of the canonical route-maturity vocabulary.
   // Normalize the two historical records through this generator so reruns
@@ -199,6 +207,7 @@ const pageInventory = pages.map((source) => {
   return { source, route, policy };
 });
 const routeByPath = new Map(pageInventory.map((item) => [item.source.pathPattern, item.route]));
+const policyByPath = new Map(pageInventory.map((item) => [item.source.pathPattern, item.policy]));
 if (routeByPath.size !== pages.length) throw new Error("PHASE5_DUPLICATE_PAGE_PATTERN");
 
 function routeId(pathPattern) {
@@ -246,8 +255,8 @@ function fullEdge(binding, overrides = {}) {
     fragmentContract: "NONE_OR_SOURCE_GOVERNED",
     allowedWhen: "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
     forbiddenWhen: binding.requiredCapabilities.length ? "REQUIRED_CAPABILITY_ABSENT" : "SOURCE_CONTROL_HIDDEN",
-    safeReturn: routeByPath.get(binding.sourcePath)?.returnOrBackRoute ?? "/",
-    stableFallback: routeByPath.get(binding.targetPath)?.returnOrBackRoute ?? "/",
+    safeReturn: policyByPath.get(binding.sourcePath)?.returnFallback ?? "/",
+    stableFallback: policyByPath.get(binding.targetPath)?.returnFallback ?? "/",
     browserJourneyIds: journeyByArea(binding.targetPath),
     evidenceIds: [],
     currentStatus: state,
@@ -519,6 +528,10 @@ for (const { source, route, policy } of pageInventory) {
       : null);
   route.directUrlRequired = !["USER_NAVIGABLE", "CONTEXTUAL_DYNAMIC"].includes(policy.classification);
   route.orphanedOrdinaryRoute = false;
+  if (reconcileCurrent) {
+    route.currentSourceReconciliation = { sourceSha: implementationSourceSha, state: "SOURCE_RECONCILED" };
+    continue;
+  }
   route.targetDisposition = "PHASE_5_ROUTE_REACHABILITY";
   route.status = state;
   route.notes = appendNote(
@@ -548,6 +561,11 @@ for (const { source, route, policy } of pageInventory) {
 
 for (const source of handlers) {
   const route = existingBySource.get(source.sourceFile);
+  if (reconcileCurrent) {
+    if (!originalRouteIds.has(route.routeId))
+      route.currentSourceReconciliation = { sourceSha: implementationSourceSha, state: "SOURCE_RECONCILED" };
+    continue;
+  }
   route.phase5Implementation = {
     phase: "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
     startingSha,
@@ -559,7 +577,7 @@ for (const source of handlers) {
   };
 }
 routeInventory.classifications = routeClassifications;
-routeInventory.knownOwners = unique([...routeInventory.knownOwners, "project-admiralty"]);
+routeInventory.knownOwners = unique([...routeInventory.knownOwners, "project-admiralty", "shipwright"]);
 routeInventory.totals = {
   ...routeInventory.totals,
   routeFiles: routeInventory.routes.length,
@@ -569,18 +587,25 @@ routeInventory.totals = {
   sourceDiscoveredServices: handlers.length,
   orphanedOrdinaryRoutes: 0,
 };
-routeInventory.phase5Implementation = {
-  phase: "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
-  startingSha,
-  architectureFreezeSha,
-  implementationSourceSha,
-  state,
-  updatedAt,
-  census,
-  sourceParity: routeInventory.routes.length === pages.length + handlers.length,
-  noSchemaChange: true,
-  phase6NotStarted: true,
-};
+if (reconcileCurrent) {
+  routeInventory.currentSourceReconciliation = {
+    sourceSha: implementationSourceSha,
+    state: "SOURCE_RECONCILED",
+    census,
+  };
+} else
+  routeInventory.phase5Implementation = {
+    phase: "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
+    startingSha,
+    architectureFreezeSha,
+    implementationSourceSha,
+    state,
+    updatedAt,
+    census,
+    sourceParity: routeInventory.routes.length === pages.length + handlers.length,
+    noSchemaChange: true,
+    phase6NotStarted: true,
+  };
 
 function edgeAllowed(edge, profile) {
   if (edge.authenticationState === "TOKENIZED") return false;
@@ -1013,9 +1038,14 @@ const phase5Envelope = {
 };
 
 const navigationMap = readJson("Homeport_Navigation_Map.json");
-navigationMap.phase5Implementation = phase5Envelope;
+if (!reconcileCurrent) navigationMap.phase5Implementation = phase5Envelope;
 navigationMap.phase5RouteEdges = edges;
 await writeJson("Homeport_Navigation_Map.json", navigationMap);
+
+if (reconcileCurrent) {
+  process.stdout.write(`Reconciled ${pages.length} current pages and ${handlers.length} service routes.\n`);
+  process.exit(0);
+}
 
 for (const catalogName of ["Homeport_Screen_Catalog.json", "Homeport_Screen_Contract_Catalog.json"]) {
   const catalog = readJson(catalogName);
@@ -1343,8 +1373,6 @@ for (const suiteId of ["unit.homeport", "component.homeport", "browser.homeport"
   suite.currentImplementationState = "phase-5-homeport-route-reachability-contract-family";
 }
 await writeJson("suites.json", suites, testingRoot);
-
-execFileSync(process.execPath, ["scripts/sounding-line/test-registry.mjs"], { cwd: root, stdio: "inherit" });
 
 process.stdout.write(
   `${JSON.stringify(
