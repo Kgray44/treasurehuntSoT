@@ -7,6 +7,7 @@ import {
   EvidenceStrip,
   Identifier,
   SearchForm,
+  chartroomSearchResultsId,
   StatusBadge,
   TextLink,
 } from "@/components/admiralty/AdminPrimitives";
@@ -26,6 +27,7 @@ export default async function InvestigatePage({ searchParams }: { searchParams: 
         value={query}
         label="What are you investigating?"
         placeholder="Account, Chronicle, Voyage, Community case, release, or known identifier"
+        jumpToResults
       />
       <aside className="chartroom-callout">
         <strong>Use exact IDs only when they are your starting clue.</strong>
@@ -34,11 +36,12 @@ export default async function InvestigatePage({ searchParams }: { searchParams: 
       {!query ? (
         <EmptyState
           title="Start with one clue"
+          resultTarget
           detail="Admiralty fans the bounded query only to owner projections authorized for this operator."
         />
       ) : result?.data?.results.length ? (
         <>
-          <div className="chartroom-investigation">
+          <div className="chartroom-investigation" id={chartroomSearchResultsId} tabIndex={-1}>
             {Object.entries(grouped).map(([domain, items]) => (
               <section key={domain}>
                 <header>
@@ -66,6 +69,7 @@ export default async function InvestigatePage({ searchParams }: { searchParams: 
       ) : (
         <EmptyState
           title="No authorized match"
+          resultTarget
           detail="No owner projection returned a matching result for this role."
         />
       )}

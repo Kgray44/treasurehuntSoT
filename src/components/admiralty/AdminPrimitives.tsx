@@ -118,31 +118,41 @@ export function Metric({
 export function EmptyState({
   title = "No evidence recorded",
   detail = "This source returned no matching records.",
+  resultTarget = false,
 }: {
   title?: string;
   detail?: string;
+  resultTarget?: boolean;
 }) {
   return (
-    <div className="chartroom-empty">
+    <div
+      className="chartroom-empty"
+      id={resultTarget ? chartroomSearchResultsId : undefined}
+      tabIndex={resultTarget ? -1 : undefined}
+    >
       <strong>{title}</strong>
       <p>{detail}</p>
     </div>
   );
 }
 
+export const chartroomSearchResultsId = "chartroom-search-results";
+
 export function SearchForm({
   value,
   placeholder,
   label = "Search",
   extra,
+  jumpToResults = false,
 }: {
   value?: string;
   placeholder: string;
   label?: string;
   extra?: React.ReactNode;
+  jumpToResults?: boolean;
 }) {
   return (
-    <form className="chartroom-search" method="get">
+    <form className="chartroom-search" method="get" action={jumpToResults ? `#${chartroomSearchResultsId}` : undefined}>
       <label htmlFor="chartroom-query">{label}</label>
       <div>
         <input

@@ -9,6 +9,7 @@ import {
   Metric,
   Panel,
   SearchForm,
+  chartroomSearchResultsId,
   StatusBadge,
   TextLink,
   dateTime,
@@ -85,15 +86,21 @@ export default async function CommunityAdminPage({
           </p>
         </Panel>
       </div>
-      <SearchForm value={query} placeholder="Listing ID, slug, title, or creator" label="Search Community content" />
+      <SearchForm
+        value={query}
+        placeholder="Listing ID, slug, title, or creator"
+        label="Search Community content"
+        jumpToResults
+      />
       {!query ? (
         <EmptyState
           title="Search the catalog"
+          resultTarget
           detail="Enter a known listing, slug, title, creator, or exact identifier."
         />
       ) : result?.data?.results.length ? (
         <>
-          <div className="chartroom-table-wrap" tabIndex={0}>
+          <div className="chartroom-table-wrap" id={chartroomSearchResultsId} tabIndex={0}>
             <table>
               <thead>
                 <tr>
@@ -137,7 +144,7 @@ export default async function CommunityAdminPage({
           <EvidenceStrip evidence={result.evidence} />
         </>
       ) : (
-        <EmptyState title="No matching Community content" />
+        <EmptyState title="No matching Community content" resultTarget />
       )}
       <EvidenceStrip evidence={overview.evidence} />
     </ChartroomPage>
