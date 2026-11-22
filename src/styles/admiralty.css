@@ -505,6 +505,9 @@
   padding: 1rem;
   background: rgb(7 27 25 / 88%);
 }
+#chartroom-search-results {
+  scroll-margin-top: calc(var(--shell-header-height, 4.75rem) + 1rem);
+}
 .chartroom-search > label,
 .chartroom-filter label,
 .chartroom-support label,

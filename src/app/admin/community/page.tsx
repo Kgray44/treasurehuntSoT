@@ -3,16 +3,20 @@ import { getCommunityOverview, searchCommunity } from "@/admiralty/ports/harborl
 import { boundedQuery } from "@/admiralty/read-models";
 import {
   ChartroomPage,
-  EmptyState,
   EvidenceStrip,
   Identifier,
   Metric,
   Panel,
-  SearchForm,
   StatusBadge,
   TextLink,
   dateTime,
 } from "@/components/admiralty/AdminPrimitives";
+import {
+  ProjectionSearchEmpty,
+  ProjectionSearchForm,
+  projectionSearchResultsId,
+} from "@/components/admiralty/ProjectionSearchForm";
+import { ProjectionSearchResult } from "@/components/admiralty/ProjectionSearchResult";
 
 export default async function CommunityAdminPage({
   searchParams,
@@ -85,15 +89,19 @@ export default async function CommunityAdminPage({
           </p>
         </Panel>
       </div>
-      <SearchForm value={query} placeholder="Listing ID, slug, title, or creator" label="Search Community content" />
+      <ProjectionSearchForm
+        value={query}
+        placeholder="Listing ID, slug, title, or creator"
+        label="Search Community content"
+      />
       {!query ? (
-        <EmptyState
+        <ProjectionSearchEmpty
           title="Search the catalog"
           detail="Enter a known listing, slug, title, creator, or exact identifier."
         />
       ) : result?.data?.results.length ? (
         <>
-          <div className="chartroom-table-wrap" tabIndex={0}>
+          <ProjectionSearchResult className="chartroom-table-wrap" id={projectionSearchResultsId} tabIndex={0}>
             <table>
               <thead>
                 <tr>
@@ -133,11 +141,11 @@ export default async function CommunityAdminPage({
                 ))}
               </tbody>
             </table>
-          </div>
+          </ProjectionSearchResult>
           <EvidenceStrip evidence={result.evidence} />
         </>
       ) : (
-        <EmptyState title="No matching Community content" />
+        <ProjectionSearchEmpty title="No matching Community content" />
       )}
       <EvidenceStrip evidence={overview.evidence} />
     </ChartroomPage>

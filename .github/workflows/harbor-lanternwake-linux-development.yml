@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Creator moderation and Crossdeck disconnect focused Linux reproduction
+run-name: Creator moderation and Crossdeck disconnect focused Linux verification
 
 on:
   push:
@@ -17,13 +17,13 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 4276e68dc4bdbd63e3dc88f3e415712b4ff84a96
+      CANDIDATE_SHA: 14b30bfcac8c0069ee09bbc1c89b57e10df7dcbe
       BASE_SHA: c6ad7cb674e8fe1d8780d5c7c66a46061c3f6f0d
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 4276e68dc4bdbd63e3dc88f3e415712b4ff84a96
+          ref: 14b30bfcac8c0069ee09bbc1c89b57e10df7dcbe
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -57,7 +57,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Reproduce the two remaining browser cases
+      - name: Verify the corrected Creator and Crossdeck browser cases
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'

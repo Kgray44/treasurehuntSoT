@@ -16,6 +16,7 @@ import {
 import type { SurfaceDto } from "@/crossdeck/service";
 import { useCrossdeckContinuity } from "./CrossdeckContinuity";
 import styles from "./CrossdeckDevices.module.css";
+import layoutStyles from "./CrossdeckHandoff.module.css";
 import { roleNames } from "@/crossdeck/experiences";
 import { ChartGestureCamera } from "./ChartGestureCamera";
 import { useChartGestureEnabled } from "./ChartGesturePreference";
@@ -71,6 +72,7 @@ function CrossdeckHandoffSession({
   const picker = useRef<HTMLDialogElement>(null);
   const pickerTitle = useId();
   const sendTrigger = useRef<HTMLButtonElement>(null);
+  const connectedViewOptions = useRef<HTMLDetailsElement>(null);
   const [confirmation, setConfirmation] = useState("");
   const [message, setMessage] = useState("");
   const [online, setOnline] = useState(false);
@@ -201,6 +203,7 @@ function CrossdeckHandoffSession({
       if (lock.current || !transport.current || !current.current) return;
       const signalOnly = ["gesture-arm", "gesture-receive", "gesture-cancel"].includes(payload.action);
       if (payload.action.startsWith("gesture-") && pending.current && !retry) return;
+      const recoverOrigin = payload.action === "recover" ? document.activeElement : null;
       lock.current = true;
       setBusy(true);
       if (!signalOnly)
@@ -253,6 +256,21 @@ function CrossdeckHandoffSession({
         if (current.current && next.revision < current.current.revision) return current.current;
         current.current = next;
         setSnapshot(next);
+        const options = connectedViewOptions.current;
+        if (
+          options?.open &&
+          payload.action === "recover" &&
+          payload.object.family === "MAP" &&
+          next.presentations.some(
+            (item) => objectKey(item.object) === objectKey(payload.object) && item.custody === next.surfaceId,
+          )
+        ) {
+          const active = document.activeElement;
+          options.open = false;
+          if (active === recoverOrigin || active === document.body || options.contains(active)) {
+            options.querySelector("summary")?.focus({ preventScroll: true });
+          }
+        }
         const connectedNow = navigator.onLine !== false;
         setOnline(connectedNow);
         connectionRef.current?.(connectedNow ? "live" : "offline");
@@ -500,7 +518,7 @@ function CrossdeckHandoffSession({
     </div>
   );
   return (
-    <section className={styles.handoff} aria-label="Send to your devices">
+    <section className={`${styles.handoff} ${layoutStyles.handoff}`} aria-label="Send to your devices">
       {gestureEnabled && (
         <ChartGestureCamera
           key={ownId}
@@ -517,7 +535,7 @@ function CrossdeckHandoffSession({
       {gestureFeedbackRoot && heldFeedback ? createPortal(heldFeedback, gestureFeedbackRoot) : heldFeedback}
       <button
         ref={sendTrigger}
-        className={styles.sendTrigger}
+        className={`${styles.sendTrigger} ${layoutStyles.sendTrigger}`}
         type="button"
         onClick={() => picker.current?.showModal()}
       >
@@ -665,7 +683,11 @@ function CrossdeckHandoffSession({
       ))}
       {outgoing.slice(-1).map((handoff) => {
         const receipt = (
-          <div className={styles.receipt} key={handoff.id} role={gestureReceipt === handoff.id ? "status" : undefined}>
+          <div
+            className={`${styles.receipt} ${layoutStyles.receipt}`}
+            key={handoff.id}
+            role={gestureReceipt === handoff.id ? "status" : undefined}
+          >
             {gestureReceipt === handoff.id && handoff.state === "COMMITTED" && (
               <span className={gestureStyles.release} aria-hidden="true" />
             )}
@@ -706,7 +728,7 @@ function CrossdeckHandoffSession({
           : receipt;
       })}
       {snapshot?.presentations.length ? (
-        <details className={styles.viewOptions}>
+        <details className={`${styles.viewOptions} ${layoutStyles.viewOptions}`} ref={connectedViewOptions}>
           <summary>Connected view options</summary>
           {snapshot.presentations.map((p) => (
             <div key={objectKey(p.object)}>
