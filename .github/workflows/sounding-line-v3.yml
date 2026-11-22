@@ -118,7 +118,10 @@ jobs:
             import { readFileSync } from "node:fs";
             const root = "Development_Docs/Projects/Project_Homeport/";
             const { records } = JSON.parse(readFileSync(root + "Homeport_Visual_Baseline_Manifest.json", "utf8"));
-            for (const file of new Set(records.map(record => record.committedScreenshotPath))) {
+            const files = records.map(record => record.evidenceId.startsWith("HP-OWCR1-EV-")
+              ? root + "evidence/phase7-owner-correction-round1/" + record.screenshot
+              : record.committedScreenshotPath ?? record.capturePath);
+            for (const file of new Set(files)) {
               if (file?.startsWith(root + "evidence/") && !file.includes("\n")) console.log("/" + file);
             }
           ' | git sparse-checkout add --stdin

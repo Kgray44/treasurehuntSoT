@@ -256,11 +256,17 @@ test("floating assistance moves, resizes, restores and keeps its composer at the
   }
   await move.focus();
   await move.press("Shift+ArrowRight");
+  const feedback = host.locator('[aria-live="polite"]').filter({ hasText: /^Window moved$/ });
+  await expect(feedback).toBeVisible();
+  await expect(feedback).toHaveCSS("clip-path", "none");
   expect((await host.boundingBox())!.x).toBeCloseTo(moved.x + 40, 0);
   const corner = page.getByRole("button", { name: "Resize floating Spatial Assistant bottom right", exact: true });
   await corner.focus();
   await corner.press("Shift+ArrowLeft");
   await corner.press("Shift+ArrowUp");
+  const resizeFeedback = host.locator('[aria-live="polite"]').filter({ hasText: /^Window resized$/ });
+  await expect(resizeFeedback).toBeVisible();
+  await expect(resizeFeedback).toHaveCSS("clip-path", "none");
   const resized = (await host.boundingBox())!;
   expect(resized.width).toBeCloseTo(moved.width - 40, 0);
   expect(resized.height).toBeCloseTo(moved.height - 40, 0);

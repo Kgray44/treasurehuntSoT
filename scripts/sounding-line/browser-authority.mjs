@@ -327,6 +327,7 @@ export async function runBrowserAuthority({
   fixtureProject = "chromium",
   environment = process.env,
   port,
+  allocatePort = availablePort,
   now = Date.now,
   sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds)),
   launch = spawnOwnedProcess,
@@ -341,8 +342,14 @@ export async function runBrowserAuthority({
   const diagnosticStartedAt = performance.now();
   const progress = (event, fields) => authorityDiagnostic(diagnosticStartedAt, event, fields);
   const useTaskOwnedCookieAdapter = taskOwnedCookieAdapterRequired(environment);
-  const browserPort = port ?? (await availablePort());
-  const serverPort = useTaskOwnedCookieAdapter ? await availablePort() : browserPort;
+  const browserPort = port ?? (await allocatePort());
+  let serverPort = browserPort;
+  if (useTaskOwnedCookieAdapter) {
+    // The kernel can reissue the just-released browser port when both requests ask for port zero.
+    for (let attempt = 0; attempt < 8 && serverPort === browserPort; attempt += 1) serverPort = await allocatePort();
+    if (serverPort === browserPort)
+      throw new Error("SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:DISTINCT_LOOPBACK_PORTS_UNAVAILABLE");
+  }
   const baseURL = `http://127.0.0.1:${browserPort}`;
   const serverBaseURL = `http://127.0.0.1:${serverPort}`;
   // The trusted host retains workflow outputs; product children never receive it.
