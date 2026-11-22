@@ -59,7 +59,10 @@ jobs:
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install chromium
       - name: Measure the unchanged Phase 3 journeys on the Metal compositor
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
         run: |
+          sysctl hw.memsize
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
