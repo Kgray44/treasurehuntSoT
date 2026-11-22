@@ -99,7 +99,7 @@ export function spawnOwnedProcess(command, args, { root, env, cleanupOptions = {
           "-File",
           fileURLToPath(new URL("./owned-process-windows.ps1", import.meta.url)),
         ]
-      : [fileURLToPath(new URL("./owned-process-linux.py", import.meta.url))],
+      : [fileURLToPath(new URL(process.platform === "darwin" ? "./owned-process-darwin-diagnostic.py" : "./owned-process-linux.py", import.meta.url))],
     {
       cwd: root,
       env,
@@ -213,7 +213,7 @@ export async function stopOwnedProcess(child, { gracefulMs = 2000, forceMs = 300
     escalated,
     ...(record?.guardianReceipt ? { payloadExitCode: record.guardianReceipt.payloadExitCode } : {}),
     elapsedMs: Math.round(performance.now() - started),
-    ownership: record ? (record.windows ? "WINDOWS_JOB_OBJECT" : "LINUX_SUBREAPER_AND_PIDFD") : "INJECTED",
+    ownership: record ? (record.windows ? "WINDOWS_JOB_OBJECT" : process.platform === "darwin" ? "DARWIN_DIAGNOSTIC_PROCESS_GROUP" : "LINUX_SUBREAPER_AND_PIDFD") : "INJECTED",
   };
   if (record && receipt.status === "PASS") record.finalReceipt = receipt;
   return receipt;
