@@ -288,8 +288,8 @@ function taskOwnedProductionHttpEnvironment(profileId, sha) {
   }
   if (profileId === "generic") {
     environment.SOUNDING_LINE_INTERNAL_RUNTIME = "1";
-    Object.assign(environment, isolatedBrowserFixtureCredentials(profileId));
   }
+  Object.assign(environment, isolatedBrowserFixtureCredentials(profileId));
   if (suiteProfile.cookieAdapter === "isolated-loopback") {
     environment.SOUNDING_LINE_TASK_OWNED_HTTP = "1";
     environment.FOREVER_VALIDATION_PRODUCTION_IDENTITY = "1";
