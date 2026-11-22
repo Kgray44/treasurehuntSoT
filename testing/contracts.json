@@ -114,8 +114,8 @@
             ],
             "witness": {
               "role": "heading",
-              "name": "Community",
-              "text": "Community"
+              "name": "Search the catalog",
+              "text": "Search the catalog"
             }
           },
           "INSTALLER": {
@@ -141,8 +141,8 @@
             ],
             "witness": {
               "role": "heading",
-              "name": "Templates",
-              "text": "Templates"
+              "name": "Search Templates",
+              "text": "Search Templates"
             }
           }
         },
