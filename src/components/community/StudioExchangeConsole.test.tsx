@@ -64,6 +64,18 @@ describe("Studio Exchange Console", () => {
 
   it("reviews the server package before sending the exact digest for moderation", async () => {
     const calls: Array<{ url: string; body?: Record<string, unknown> }> = [];
+    const reviewedPackage = {
+      reviewDigest: "b".repeat(64),
+      sourceChecksum: "a".repeat(64),
+      included: { chapters: [{ title: "Opening" }] },
+      license: { key: "REMIX_WITH_ATTRIBUTION", name: "Remix with attribution", allowsModification: true },
+      attribution: [{ displayName: "Synthetic Creator", contributionType: "Creator" }],
+    };
+    let completeReview = (_result: Response) => {};
+    const pendingReview = new Promise<Response>((resolve) => {
+      completeReview = resolve;
+    });
+    let reviews = 0;
     vi.stubGlobal(
       "fetch",
       vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -84,14 +96,7 @@ describe("Studio Exchange Console", () => {
               },
             ],
           });
-        if (url.endsWith("/preflight"))
-          return response({
-            reviewDigest: "b".repeat(64),
-            sourceChecksum: "a".repeat(64),
-            included: { chapters: [{ title: "Opening" }] },
-            license: { key: "REMIX_WITH_ATTRIBUTION", name: "Remix with attribution", allowsModification: true },
-            attribution: [{ displayName: "Synthetic Creator", contributionType: "Creator" }],
-          });
+        if (url.endsWith("/preflight")) return ++reviews === 2 ? pendingReview : response(reviewedPackage);
         if (url === "/api/player/session") return response({ csrfToken: "synthetic-csrf" });
         if (url.endsWith("/publish"))
           return response(
@@ -117,10 +122,22 @@ describe("Studio Exchange Console", () => {
     await waitFor(() => expect(reviewHeading).toHaveFocus());
     expect(screen.getByText(/Synthetic Creator/)).toBeInTheDocument();
     expect(calls.some((call) => call.url.endsWith("/publish"))).toBe(false);
+
+    const details = screen.getByText("Inspect every included field").closest("details")!;
+    details.open = true;
+    fireEvent.click(screen.getByRole("button", { name: "Review exact package" }));
+    expect(reviewHeading).toBeInTheDocument();
+    expect(details).toHaveAttribute("open");
+    expect(screen.getByRole("button", { name: "Submit for moderation" })).toBeDisabled();
+    completeReview(response({ ...reviewedPackage, reviewDigest: "c".repeat(64) }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "Submit for moderation" })).toBeEnabled());
+    expect(reviewHeading).toHaveFocus();
+    expect(details).toHaveAttribute("open");
+
     fireEvent.click(screen.getByRole("button", { name: "Submit for moderation" }));
     await waitFor(() => expect(screen.getByText(/Submitted for independent moderation/)).toBeInTheDocument());
     const publication = calls.find((call) => call.url.endsWith("/publish"))?.body;
-    expect(publication?.reviewDigest).toBe("b".repeat(64));
+    expect(publication?.reviewDigest).toBe("c".repeat(64));
     expect((publication?.publication as { publishedVersionId: string }).publishedVersionId).toBe("version-123");
   });
 });

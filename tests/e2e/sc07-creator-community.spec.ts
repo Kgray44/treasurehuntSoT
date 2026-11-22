@@ -225,8 +225,13 @@ test("only the owner with Creator access submits the exact saved item for modera
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: test.info().outputPath("creator-package-review.png"), fullPage: true });
   await page.setViewportSize({ width: 1440, height: 900 });
+  const desktopPreflight = page.waitForResponse(
+    (response) => new URL(response.url()).pathname === "/api/community/creator-reuse/preflight",
+  );
   await page.getByRole("button", { name: "Review exact package" }).press("Enter");
+  expect((await desktopPreflight).ok()).toBe(true);
   await expectFocusedHeadingBelowMasthead(reviewHeading);
+  await expect(packageReview.locator("details")).toHaveAttribute("open", "");
 
   const publishRequest = {
     publication: preflight.request().postDataJSON(),
