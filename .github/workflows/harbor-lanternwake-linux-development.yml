@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake focused Linux frame attribution by Journal phase
+run-name: Creator moderation and Crossdeck disconnect focused Linux reproduction
 
 on:
   push:
@@ -13,18 +13,17 @@ permissions:
 
 jobs:
   benchmark:
-    name: Phase 3 performance only (development)
+    name: Creator moderation and Crossdeck disconnect (development)
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: d341008736e39e04fd9e5b0278be3878eb58ef87
-      BASE_SHA: aaf7aa6e80d0c71c02018432c1e8a66ef5e1e21f
-      FOREVER_VALIDATION_SOURCE_SHA: d341008736e39e04fd9e5b0278be3878eb58ef87
+      CANDIDATE_SHA: 4276e68dc4bdbd63e3dc88f3e415712b4ff84a96
+      BASE_SHA: c6ad7cb674e8fe1d8780d5c7c66a46061c3f6f0d
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: d341008736e39e04fd9e5b0278be3878eb58ef87
+          ref: 4276e68dc4bdbd63e3dc88f3e415712b4ff84a96
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,21 +57,13 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Run the unchanged Phase 3 performance spec
+      - name: Reproduce the two remaining browser cases
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
           await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/crossdeck-phase2.spec.ts", "tests/e2e/sc07-creator-community.spec.ts"] },
             { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
           );
           EOF
-      - name: Retain sanitized performance metrics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lanternwake-linux-performance-metrics
-          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
-          if-no-files-found: ignore
-          retention-days: 30
