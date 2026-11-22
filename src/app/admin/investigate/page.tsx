@@ -3,14 +3,16 @@ import { admiraltyPageOperator } from "@/admiralty/page-authorization";
 import { boundedQuery } from "@/admiralty/read-models";
 import {
   ChartroomPage,
-  EmptyState,
   EvidenceStrip,
   Identifier,
-  SearchForm,
-  chartroomSearchResultsId,
   StatusBadge,
   TextLink,
 } from "@/components/admiralty/AdminPrimitives";
+import {
+  ProjectionSearchEmpty,
+  ProjectionSearchForm,
+  projectionSearchResultsId,
+} from "@/components/admiralty/ProjectionSearchForm";
 
 export default async function InvestigatePage({ searchParams }: { searchParams: Promise<{ q?: string | string[] }> }) {
   const operator = await admiraltyPageOperator("PLATFORM_OBSERVE");
@@ -23,25 +25,23 @@ export default async function InvestigatePage({ searchParams }: { searchParams: 
       title="Investigate"
       description="Start with a person, Chronicle, Voyage, case, release, or time-linked activity. Exact IDs remain an advanced option."
     >
-      <SearchForm
+      <ProjectionSearchForm
         value={query}
         label="What are you investigating?"
         placeholder="Account, Chronicle, Voyage, Community case, release, or known identifier"
-        jumpToResults
       />
       <aside className="chartroom-callout">
         <strong>Use exact IDs only when they are your starting clue.</strong>
         <p>Admiralty sends the bounded query only to owner projections available to your current role.</p>
       </aside>
       {!query ? (
-        <EmptyState
+        <ProjectionSearchEmpty
           title="Start with one clue"
-          resultTarget
           detail="Admiralty fans the bounded query only to owner projections authorized for this operator."
         />
       ) : result?.data?.results.length ? (
         <>
-          <div className="chartroom-investigation" id={chartroomSearchResultsId} tabIndex={-1}>
+          <div className="chartroom-investigation" id={projectionSearchResultsId} tabIndex={-1}>
             {Object.entries(grouped).map(([domain, items]) => (
               <section key={domain}>
                 <header>
@@ -67,9 +67,8 @@ export default async function InvestigatePage({ searchParams }: { searchParams: 
           <EvidenceStrip evidence={result.evidence} />
         </>
       ) : (
-        <EmptyState
+        <ProjectionSearchEmpty
           title="No authorized match"
-          resultTarget
           detail="No owner projection returned a matching result for this role."
         />
       )}

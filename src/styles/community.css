@@ -1985,12 +1985,8 @@ html[data-motion-preference="reduced"] .community-card:hover {
 }
 .community-workflow__form label:first-child,
 .community-workflow__form label:nth-child(2),
-.community-workflow__form button,
-.community-workflow__form-status {
+.community-workflow__form button {
   grid-column: 1 / -1;
-}
-.community-workflow__form-status {
-  margin: 0;
 }
 .community-workflow label,
 .community-workflow__panel form label {

@@ -3,6 +3,7 @@
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { VoyageLogConsentPanel } from "./VoyageLogConsentPanel";
 import { VoyageLogMediaPanel } from "./VoyageLogMediaPanel";
+import styles from "./VoyageLogEditor.module.css";
 
 type Participant = { id: string; displayNameSnapshot: string; isChild: boolean };
 type VoyageLog = {
@@ -200,7 +201,7 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
             Approximate location{" "}
             <input name="approximateLocation" maxLength={140} defaultValue={log.approximateLocation ?? ""} />
           </label>
-          <p className="community-workflow__form-status" role="status">
+          <p className={styles.formStatus} role="status">
             {draftMessage}
           </p>
           <button type="submit" disabled={!csrf}>

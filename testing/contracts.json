@@ -2426,6 +2426,7 @@
         "entryPoint": "/community/voyage-logs/owner/parallax-compat-private-log",
         "systems": ["project-homeport", "harborlight"],
         "sourcePaths": [
+          "src/components/community/VoyageLogEditor.module.css",
           "src/app/community/voyage-logs/consent/page.tsx",
           "src/app/community/voyage-logs/owner/[id]/page.tsx",
           "src/components/community/VoyageLogConsentPanel.tsx",
@@ -6463,6 +6464,7 @@
         "entryPoint": "/admin",
         "systems": ["project-admiralty", "harborlight"],
         "sourcePaths": [
+          "src/components/admiralty/ProjectionSearchForm.tsx",
           "src/app/admin/page.tsx",
           "src/app/admin/layout.tsx",
           "src/app/admin/community/page.tsx",
