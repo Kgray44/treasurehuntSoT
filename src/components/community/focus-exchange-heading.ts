@@ -7,10 +7,20 @@ export function focusExchangeHeading(heading: HTMLHeadingElement) {
     return;
   }
   const documentRoot = heading.ownerDocument.documentElement;
+  const clearance = () =>
+    Math.max(0, masthead.getBoundingClientRect().bottom) +
+    Number.parseFloat(viewport.getComputedStyle(documentRoot).fontSize);
+  const align = (offset: number) => {
+    heading.style.scrollMarginBlockStart = `${offset}px`;
+    heading.scrollIntoView?.({ block: "start", behavior: "instant" });
+  };
   viewport.requestAnimationFrame(() => {
     if (heading.ownerDocument.activeElement !== heading) return;
-    const padding = Number.parseFloat(viewport.getComputedStyle(documentRoot).fontSize);
-    const top = viewport.scrollY + heading.getBoundingClientRect().top - masthead.getBoundingClientRect().bottom;
-    viewport.scrollTo({ top: top - padding, behavior: "instant" });
+    align(clearance());
+    viewport.requestAnimationFrame(() => {
+      if (heading.ownerDocument.activeElement !== heading) return;
+      const offset = clearance();
+      if (heading.getBoundingClientRect().top < offset - 1) align(offset);
+    });
   });
 }
