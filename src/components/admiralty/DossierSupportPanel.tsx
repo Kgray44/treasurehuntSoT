@@ -18,7 +18,6 @@ const labels: Record<SupportAccessScope, string> = {
 const scopes = Object.keys(labels) as SupportAccessScope[];
 
 type ProjectionField = Readonly<{ label: string; value: string }>;
-type SupportAction = "verify" | "request" | "read";
 
 function projectionFields(value: unknown, prefix = "", fields: ProjectionField[] = []): ProjectionField[] {
   if (fields.length >= 80) return fields;
@@ -81,7 +80,6 @@ export function DossierSupportPanel({
   const [password, setPassword] = useState("");
   const [assuranceActive, setAssuranceActive] = useState(false);
   const [notice, setNotice] = useState("");
-  const [noticeAction, setNoticeAction] = useState<SupportAction | null>(null);
   const [projection, setProjection] = useState<unknown>(null);
   const [chronicleId, setChronicleId] = useState("");
   const [sourceEditionId, setSourceEditionId] = useState("");
@@ -104,9 +102,8 @@ export function DossierSupportPanel({
     return result;
   }
 
-  async function run(kind: SupportAction, action: () => Promise<void>) {
+  async function run(action: () => Promise<void>) {
     setBusy(true);
-    setNoticeAction(kind);
     setNotice("");
     try {
       await action();
@@ -117,22 +114,18 @@ export function DossierSupportPanel({
     }
   }
 
-  function noticeFor(kind: SupportAction) {
-    const text = noticeAction === kind ? notice : "";
-    return (
-      <span role="status" className={text ? "chartroom-notice" : undefined}>
-        {text}
-      </span>
-    );
-  }
-
   return (
     <div className="chartroom-support">
+      {notice ? (
+        <p role="status" className="chartroom-notice">
+          {notice}
+        </p>
+      ) : null}
       {canRequest || canUse ? (
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            void run("verify", async () => {
+            void run(async () => {
               await post("/api/admin/assurance", { password });
               setAssuranceActive(true);
               setPassword("");
@@ -155,7 +148,6 @@ export function DossierSupportPanel({
               onChange={(event) => setPassword(event.target.value)}
             />
           </label>
-          {noticeFor("verify")}
           <button type="submit" disabled={busy || !password}>
             Verify for privileged work
           </button>
@@ -165,7 +157,7 @@ export function DossierSupportPanel({
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            void run("request", async () => {
+            void run(async () => {
               const result = await post("/api/admin/support/requests", {
                 targetAccountId,
                 purpose,
@@ -208,7 +200,6 @@ export function DossierSupportPanel({
               </label>
             ))}
           </fieldset>
-          {noticeFor("request")}
           <button type="submit" disabled={busy || !selected.length}>
             Request owner consent
           </button>
@@ -220,7 +211,7 @@ export function DossierSupportPanel({
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            void run("read", async () => {
+            void run(async () => {
               const tideglass = scope === "TIDEGLASS_DIAGNOSTICS";
               const result = await post(
                 tideglass ? "/api/admin/support/tideglass" : "/api/admin/support/read",
@@ -269,7 +260,6 @@ export function DossierSupportPanel({
               </label>
             </fieldset>
           ) : null}
-          {noticeFor("read")}
           <button type="submit" disabled={busy}>
             Read approved category
           </button>

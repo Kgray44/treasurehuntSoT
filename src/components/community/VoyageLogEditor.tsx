@@ -3,7 +3,6 @@
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { VoyageLogConsentPanel } from "./VoyageLogConsentPanel";
 import { VoyageLogMediaPanel } from "./VoyageLogMediaPanel";
-import styles from "./VoyageLogEditor.module.css";
 
 type Participant = { id: string; displayNameSnapshot: string; isChild: boolean };
 type VoyageLog = {
@@ -27,7 +26,6 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
   const [csrf, setCsrf] = useState("");
   const [log, setLog] = useState<VoyageLog | null>(null);
   const [message, setMessage] = useState("Loading private Voyage Log editor…");
-  const [draftMessage, setDraftMessage] = useState("");
   const [participantName, setParticipantName] = useState("");
 
   const refresh = useCallback(async () => {
@@ -62,7 +60,6 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!log || !csrf) return;
-    setDraftMessage("");
     const fields = new FormData(event.currentTarget);
     const response = await fetch(`/api/community/voyage-logs/owner/${encodeURIComponent(log.id)}`, {
       method: "PATCH",
@@ -77,16 +74,16 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
       }),
     });
     if (response.status === 409) {
+      setMessage("Another edit was saved first. Reloaded the current private draft.");
       await refresh();
-      setDraftMessage("Another edit was saved first. Reloaded the current private draft.");
       return;
     }
     if (!response.ok) {
-      setDraftMessage("The draft could not be saved.");
+      setMessage("The draft could not be saved.");
       return;
     }
     await refresh();
-    setDraftMessage("Draft saved. Publication eligibility is checked again when you publish.");
+    setMessage("Draft saved. Publication eligibility is checked again when you publish.");
   }
 
   async function addParticipant(event: FormEvent<HTMLFormElement>) {
@@ -201,9 +198,6 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
             Approximate location{" "}
             <input name="approximateLocation" maxLength={140} defaultValue={log.approximateLocation ?? ""} />
           </label>
-          <p className={styles.formStatus} role="status">
-            {draftMessage}
-          </p>
           <button type="submit" disabled={!csrf}>
             Save revision
           </button>

@@ -1,7 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { db } from "@/lib/db";
 import { CommunityError, stableJson } from "./domain";
-import { assertArtifactExchangeType } from "./artifact-exchange-policy";
 import { beginInstallOperation, commitInstallOperation, createInstallPlan, type InstallMode } from "./exchange";
 import { assertPublicationScanStatus, verifyCommunityPackage, type CommunityPackageFile } from "./package";
 import { assertTrustedCommunityScanReceipts, scanCommunityPackageFiles } from "./scanner";
@@ -40,7 +39,6 @@ export async function preflightCommunityPublication(
     include: { listing: true },
   });
   if (!release) throw new CommunityError("COMMUNITY_ACCESS_DENIED", "You cannot publish this release.");
-  assertArtifactExchangeType(release.listing.itemType);
   if (!release.sourcePublishedTaleVersionId)
     throw new CommunityError("COMMUNITY_SOURCE_NOT_IMMUTABLE", "A published Chronicle version is required.");
   const drydock = assertCommunityDrydockPublicationGate(
@@ -54,16 +52,6 @@ export async function preflightCommunityPublication(
     }),
   );
   const verified = verifyCommunityPackage(manifest, files);
-  if (
-    verified.manifest.releaseId !== release.id ||
-    verified.manifest.semanticVersion !== release.semanticVersion ||
-    !verified.manifest.items.some((item) => item.type === release.listing.itemType) ||
-    verified.manifest.items.some((item) => item.type !== release.listing.itemType && item.type !== "ARTIFACT_2D")
-  )
-    throw new CommunityError(
-      "COMMUNITY_SOURCE_VERSION_MISMATCH",
-      "This binary package does not match the selected artifact release.",
-    );
   const scan = await scanCommunityPackageFiles(files);
   assertTrustedCommunityScanReceipts(scan.receipts);
   assertPublicationScanStatus(scan.result, files);
@@ -148,7 +136,6 @@ export async function reviewVerifiedCommunityPackage(
       "The selected package is not a finalized, clean Exchange package.",
     );
 
-  assertArtifactExchangeType(release.listing.itemType);
   const manifest = JSON.parse(persistedPackage.manifest) as {
     items: Array<{
       id: string;
@@ -217,12 +204,6 @@ export async function installVerifiedCommunityPackage(
     finalizationSucceeded: boolean;
   },
 ) {
-  const release = await exchangeDb.communityRelease.findUnique({
-    where: { id: input.releaseId },
-    select: { listing: { select: { itemType: true } } },
-  });
-  if (!release) throw new CommunityError("COMMUNITY_PACKAGE_RECEIPT_INVALID", "This artifact release is unavailable.");
-  assertArtifactExchangeType(release.listing.itemType);
   const persistedPackage = await exchangeDb.communityPackage.findUnique({ where: { id: input.packageId } });
   if (
     !persistedPackage ||

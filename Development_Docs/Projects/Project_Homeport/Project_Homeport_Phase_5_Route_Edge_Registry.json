@@ -4,7 +4,7 @@
   "phase": 5,
   "startingSha": "54372224fc9bf4b4fb42797ca58a5a224ffdb92a",
   "architectureFreezeSha": "bbe9659cc5077c834510c3e4db77aa362e45b6fd",
-  "implementationSourceSha": "7050cd38047f47af9d43b5aa487d1b8a2f487b51",
+  "implementationSourceSha": "383c45ee2e4934f6aae2e697f2e93bc7f9cea1b3",
   "implementationStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
   "generatedAt": "2026-08-03T18:00:00.000Z",
   "edgeTypes": [

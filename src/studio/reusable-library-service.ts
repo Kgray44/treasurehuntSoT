@@ -1,5 +1,4 @@
 import { db } from "@/lib/db";
-import { containsInstalledCommunityReuse, isInstalledCommunityChronicle } from "@/community/creator-installed-library";
 import { randomUUID } from "node:crypto";
 import {
   applyReusableInsertion,
@@ -320,20 +319,6 @@ function collectDependencyIds(
     Object.entries(value).forEach(([childKey, childValue]) => collectDependencyIds(childValue, dependencies, childKey));
 }
 
-async function assertIndependentCapture(
-  taleId: string,
-  blockIds: ReadonlySet<string>,
-  chapterIds?: ReadonlySet<string>,
-) {
-  if (
-    (await isInstalledCommunityChronicle(taleId)) ||
-    (await containsInstalledCommunityReuse({ taleId, blockIds, chapterIds }))
-  )
-    throw new Error(
-      "Keep editing this work privately. Saving it as a new reusable item requires verified upstream rights and credit.",
-    );
-}
-
 export async function createBlockPreset(
   ownerAccountId: string,
   taleId: string,
@@ -370,7 +355,6 @@ export async function createBlockPreset(
     },
   });
   if (!sourceBlock) throw new Error("The selected Passage is not available in this Chronicle's saved draft.");
-  await assertIndependentCapture(taleId, new Set([sourceBlock.id]));
 
   const itemId = randomUUID();
   const versionId = randomUUID();
@@ -459,7 +443,6 @@ export async function createBlockFragment(
   });
   if (sourceBlocks.length !== selectedIds.length)
     throw new Error("Every Passage in a reusable fragment must belong to this Chronicle's saved draft.");
-  await assertIndependentCapture(taleId, selected);
 
   const blocks: Block[] = sourceBlocks.map((sourceBlock) => ({
     id: sourceBlock.id,
@@ -574,7 +557,6 @@ export async function createChapterTemplate(
   });
   if (!chapter) throw new Error("The selected Chapter is not available in this Chronicle's saved draft.");
   const blockIds = new Set(chapter.blocks.map((block) => block.id));
-  await assertIndependentCapture(taleId, blockIds, new Set([chapter.id]));
   const blocks: Block[] = chapter.blocks.map((block) => ({
     id: block.id,
     blockType: block.blockType,
