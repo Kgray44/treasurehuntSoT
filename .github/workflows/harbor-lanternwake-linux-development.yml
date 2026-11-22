@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake visible parchment handoff comparison on Linux
+run-name: Journal PR 905 exact Product Experience development capture
 
 on:
   push:
@@ -13,18 +13,18 @@ permissions:
 
 jobs:
   benchmark:
-    name: Phase 3 performance only (development)
+    name: Source-bound Journal experience capture
     runs-on: ubuntu-24.04
-    timeout-minutes: 22
+    timeout-minutes: 36
     env:
-      CANDIDATE_SHA: 775524e51ecbbe89de3fbfedb2c1b2c205c83c13
+      CANDIDATE_SHA: f43f2a525ffa35baf4c8c6cc4ad45ea6dadab812
       BASE_SHA: 9e612bd42dee2561d75dfac9263ac3307d5dee24
-      FOREVER_VALIDATION_SOURCE_SHA: 775524e51ecbbe89de3fbfedb2c1b2c205c83c13
+      FOREVER_VALIDATION_SOURCE_SHA: f43f2a525ffa35baf4c8c6cc4ad45ea6dadab812
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 775524e51ecbbe89de3fbfedb2c1b2c205c83c13
+          ref: f43f2a525ffa35baf4c8c6cc4ad45ea6dadab812
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,21 +58,38 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Compare the rendered folio during the same settling motion
+      - name: Capture real source-bound Product Experience journeys for PR 905
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
+          import {execFileSync} from "node:child_process";
+          import {writeFile} from "node:fs/promises";
+          import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
+          const root = process.cwd();
+          const plan = JSON.parse(execFileSync(process.execPath, [
+            "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
+            "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
+          ], {encoding: "utf8"}));
+          if (!plan.applicable || plan.sourceDigest !== "6c77f18370b24e82724e7ef35050c74629451804d1f82f2a69bdc74860ae9646")
+            throw new Error("Exact source-bound Product Experience plan required");
+          plan.outputDirectory = "artifacts/sounding-line/journal-905-experience";
+          delete process.env.GH_TOKEN;
+          delete process.env.GITHUB_TOKEN;
+          const receipt = await runTrustedExperienceReplay({
+            root, plan, validateReplay: false,
+            environment: { SOUNDING_LINE_BASE_SHA: plan.baseSha },
+          });
+          if (receipt.status !== "PASS") throw new Error("The actual browser capture did not complete");
+          await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
+            JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
+              sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
+              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "DEVELOPMENT_CAPTURE"}, null, 2) + "\n");
           EOF
-      - name: Retain sanitized performance metrics
+      - name: Retain source-bound synthetic browser review evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lanternwake-linux-settle-paper
-          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
+          name: journal-905-source-bound-experience
+          path: artifacts/sounding-line/journal-905-experience/**
           if-no-files-found: ignore
           retention-days: 30
