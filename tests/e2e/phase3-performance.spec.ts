@@ -34,6 +34,7 @@ type LayoutShiftSample = Readonly<{ atMs: number; score: number; phase: string |
 type VisualProbeResult = Readonly<{
   elapsedMs: number;
   frameDurationsMs: readonly number[];
+  phaseFrames: Record<string, { count: number; slow: number }>;
   longTaskDurationsMs: readonly number[];
   cls: number;
   layoutShifts: readonly LayoutShiftSample[];
@@ -209,6 +210,7 @@ async function startVisualProbe(page: Page) {
       startedAt: number;
       lastFrameAt: number | null;
       frameDurationsMs: number[];
+      phaseFrames: Record<string, { count: number; slow: number }>;
       longTaskDurationsMs: number[];
       cls: number;
       layoutShifts: LayoutShiftSample[];
@@ -229,13 +231,22 @@ async function startVisualProbe(page: Page) {
       startedAt: window.performance.now(),
       lastFrameAt: null,
       frameDurationsMs: [],
+      phaseFrames: {},
       longTaskDurationsMs: [],
       cls: 0,
       layoutShifts: [],
       frame: 0,
     } as unknown as Probe;
+    const shell = document.querySelector<HTMLElement>(".chronicle-journal-shell");
     const sampleFrame = (at: number) => {
-      if (probe.lastFrameAt !== null) probe.frameDurationsMs.push(at - probe.lastFrameAt);
+      if (probe.lastFrameAt !== null) {
+        const interval = at - probe.lastFrameAt;
+        probe.frameDurationsMs.push(interval);
+        const phase = shell?.dataset.journalPhase ?? "outside-journal";
+        const counts = (probe.phaseFrames[phase] ??= { count: 0, slow: 0 });
+        counts.count += 1;
+        if (interval > 25) counts.slow += 1;
+      }
       probe.lastFrameAt = at;
       probe.frame = requestAnimationFrame(sampleFrame);
     };
@@ -279,6 +290,7 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
       __phase3VisualProbe?: {
         startedAt: number;
         frameDurationsMs: number[];
+      phaseFrames: Record<string, { count: number; slow: number }>;
         longTaskDurationsMs: number[];
         cls: number;
         layoutShifts: VisualProbeResult["layoutShifts"];
@@ -300,6 +312,7 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
     return {
       elapsedMs: window.performance.now() - probe.startedAt,
       frameDurationsMs: probe.frameDurationsMs,
+      phaseFrames: probe.phaseFrames,
       longTaskDurationsMs: probe.longTaskDurationsMs,
       cls: probe.cls,
       layoutShifts: probe.layoutShifts,
@@ -788,10 +801,12 @@ phase3Test(
       measurements: {
         desktop: desktopRuns.map((run) => ({
           frameP95Ms: rounded(percentile(run.frameDurationsMs, 0.95)),
+          phaseFrames: run.phaseFrames,
           layoutShifts: run.layoutShifts,
         })),
         mobile: mobileRuns.map((run) => ({
           frameP95Ms: rounded(percentile(run.frameDurationsMs, 0.95)),
+          phaseFrames: run.phaseFrames,
           layoutShifts: run.layoutShifts,
         })),
         skip: { layoutShifts: skipVisual.layoutShifts, cleanup: skip.observations },
