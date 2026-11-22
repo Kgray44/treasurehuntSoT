@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake Mac Metal handoff attribution
+run-name: Lanternwake Mac Metal animation timeout attribution
 
 on:
   push:
@@ -17,14 +17,14 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: a04b6cca5dc3fc53150448572f086808451333c5
+      CANDIDATE_SHA: 5b510d6b5437bfa38c0d9b497ce692e9e5b14570
       BASE_SHA: aaf7aa6e80d0c71c02018432c1e8a66ef5e1e21f
-      FOREVER_VALIDATION_SOURCE_SHA: a04b6cca5dc3fc53150448572f086808451333c5
+      FOREVER_VALIDATION_SOURCE_SHA: 5b510d6b5437bfa38c0d9b497ce692e9e5b14570
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: a04b6cca5dc3fc53150448572f086808451333c5
+          ref: 5b510d6b5437bfa38c0d9b497ce692e9e5b14570
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false

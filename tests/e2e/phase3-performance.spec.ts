@@ -411,6 +411,7 @@ async function measureOpening(control: Locator): Promise<OpeningMeasurement> {
         () => {
           const snapshot = {
             activePhase: shell.dataset.journalPhase,
+            timedOutAnimations: shell.dataset.diagnosticOpeningTimeout,
             outcome: shell.dataset.journalOpeningOutcome,
             readyReason: shell.dataset.journalReadyReason,
             phases: [...phases],

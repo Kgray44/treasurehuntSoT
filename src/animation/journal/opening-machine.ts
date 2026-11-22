@@ -604,7 +604,24 @@ export async function waitForJournalPhase(
     };
     const onAbort = () => settle({ status: "aborted", phase });
     signal.addEventListener("abort", onAbort, { once: true });
-    timeout = setTimeout(() => settle({ status: "timed-out", phase, timeoutMs }), timeoutMs);
+    timeout = setTimeout(() => {
+      root.dataset.diagnosticOpeningTimeout = JSON.stringify({
+        phase, timeoutMs, observedElapsedMs: Math.round(clockNow() - startedAt), mode,
+        tracked: [...finiteAnimations].map((animation) => ({
+          type: animation.constructor.name,
+          property: animation instanceof CSSTransition ? animation.transitionProperty : null,
+          state: animation.playState,
+          pending: animation.pending,
+          currentTime: animation.currentTime,
+          startTime: animation.startTime,
+          timeline: animation.timeline?.currentTime,
+          timing: animation.effect?.getComputedTiming(),
+          connected: animation.effect instanceof KeyframeEffect && animation.effect.target instanceof Element
+            ? animation.effect.target.isConnected : null,
+        })),
+      });
+      settle({ status: "timed-out", phase, timeoutMs });
+    }, timeoutMs);
     void Promise.all(trackers.map((tracker) => tracker.promise)).then(
       () =>
         settle({
