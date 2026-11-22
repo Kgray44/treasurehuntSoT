@@ -22,6 +22,8 @@ jobs:
       FOREVER_VALIDATION_SOURCE_SHA: 05f92b75885b35b5344dcbf76cf8993f2a840607
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
+      - name: Allow repository evidence paths on disposable Windows
+        run: git config --global core.longpaths true
       - uses: actions/checkout@v4
         with:
           ref: 05f92b75885b35b5344dcbf76cf8993f2a840607
