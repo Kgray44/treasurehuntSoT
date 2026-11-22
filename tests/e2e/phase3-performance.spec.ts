@@ -651,7 +651,7 @@ phase3Test(
         reasons: compositing.status === "fulfilled" ? compositing.value.compositingReasonIds : [],
       };
     };
-    const snapshots = [];
+    const snapshots: { phase: string; layers: number; drawing: number; area: number; large: Awaited<ReturnType<typeof describe>>[] }[] = [];
     const capture = async (phase: string) => {
       await expect(scene).toHaveAttribute("data-journal-phase", phase);
       await waitAnimationFrames(page, 4);
