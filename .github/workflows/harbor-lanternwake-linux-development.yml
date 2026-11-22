@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Journal PR 905 exact Product Experience development capture
+run-name: Journal PR 905 guarded readiness unit and component tests
 
 on:
   push:
@@ -13,18 +13,18 @@ permissions:
 
 jobs:
   benchmark:
-    name: Source-bound Journal experience capture
+    name: Focused Journal readiness regression
     runs-on: ubuntu-24.04
-    timeout-minutes: 36
+    timeout-minutes: 12
     env:
-      CANDIDATE_SHA: f43f2a525ffa35baf4c8c6cc4ad45ea6dadab812
+      CANDIDATE_SHA: e7a17fab39173fbd4a18ba53332e2033bf3f69eb
       BASE_SHA: 9e612bd42dee2561d75dfac9263ac3307d5dee24
-      FOREVER_VALIDATION_SOURCE_SHA: f43f2a525ffa35baf4c8c6cc4ad45ea6dadab812
+      FOREVER_VALIDATION_SOURCE_SHA: e7a17fab39173fbd4a18ba53332e2033bf3f69eb
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: f43f2a525ffa35baf4c8c6cc4ad45ea6dadab812
+          ref: e7a17fab39173fbd4a18ba53332e2033bf3f69eb
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -54,42 +54,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
-        run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium
-      - name: Capture real source-bound Product Experience journeys for PR 905
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Run registered Journal unit and component suites for the exact candidate
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
-          import {execFileSync} from "node:child_process";
-          import {writeFile} from "node:fs/promises";
-          import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
-          const root = process.cwd();
-          const plan = JSON.parse(execFileSync(process.execPath, [
-            "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
-            "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
-          ], {encoding: "utf8"}));
-          if (!plan.applicable || plan.sourceDigest !== "6c77f18370b24e82724e7ef35050c74629451804d1f82f2a69bdc74860ae9646")
-            throw new Error("Exact source-bound Product Experience plan required");
-          plan.outputDirectory = "artifacts/sounding-line/journal-905-experience";
-          delete process.env.GH_TOKEN;
-          delete process.env.GITHUB_TOKEN;
-          const receipt = await runTrustedExperienceReplay({
-            root, plan, validateReplay: false,
-            environment: { SOUNDING_LINE_BASE_SHA: plan.baseSha },
-          });
-          if (receipt.status !== "PASS") throw new Error("The actual browser capture did not complete");
-          await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
-            JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
-              sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
-              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "DEVELOPMENT_CAPTURE"}, null, 2) + "\n");
+          import {changes, git, registry, select} from "./scripts/sounding-line-v3/plan.mjs";
+          import {runJob} from "./scripts/sounding-line-v3/checks.mjs";
+          const base = process.env.BASE_SHA;
+          const tree = process.env.CANDIDATE_SHA;
+          const entries = changes(base, tree);
+          const jobs = select(entries, (file) => git(["show", tree + ":" + file]), {},
+            registry(tree), (file) => git(["show", base + ":" + file])).jobs;
+          const selected = jobs.filter(({id}) => ["unit.journal", "component.journal"].includes(id));
+          if (selected.length !== 2) throw new Error("Both registered Journal suites are required");
+          for (const job of selected) await runJob(job, {base, tree, entries});
           EOF
-      - name: Retain source-bound synthetic browser review evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: journal-905-source-bound-experience
-          path: artifacts/sounding-line/journal-905-experience/**
-          if-no-files-found: ignore
-          retention-days: 30

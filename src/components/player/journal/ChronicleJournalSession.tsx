@@ -613,7 +613,10 @@ function ChronicleJournalSessionIdentity({
     async (policy: JournalOpeningPolicy, focusOrigin?: HTMLElement | null) => {
       const rootElement = root.current;
       if (openingBusy.current || !rootElement) return;
-      const hasReadableReducedBook = policy.composition === "reduced" && book.current?.readiness().status === "reduced";
+      const hasReadableReducedBook =
+        policy.composition === "reduced" &&
+        rootElement.dataset.journalPhase === "JOURNAL_READY" &&
+        rootElement.dataset.pageFlipReadiness === "reduced";
       audio.current.unlock();
       openingBusy.current = true;
       activeOpeningPolicy.current = policy;
