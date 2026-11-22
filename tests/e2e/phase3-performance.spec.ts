@@ -564,9 +564,8 @@ async function measuredFullOpening(page: Page, control: Locator) {
   return { ...opening, visual };
 }
 
-// Live screencasting adds frame capture work while Chromium is being timed.
-// Keep the failure trace, DOM snapshots, and failure screenshot for diagnostics.
-phase3Test.use({ video: "off", trace: { mode: "retain-on-failure", screenshots: false } });
+// Capture actions and failures without recording the page during samples.
+phase3Test.use({ video: "off", trace: { mode: "retain-on-failure", screenshots: false, snapshots: false } });
 
 phase3Test(
   "canonical production Journal performance and lifecycle budgets",
