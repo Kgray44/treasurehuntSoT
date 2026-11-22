@@ -408,7 +408,27 @@ async function measureOpening(control: Locator): Promise<OpeningMeasurement> {
         }
       });
       const timeout = window.setTimeout(
-        () => finish(new Error("The Journal opening did not hand off to a readable page.")),
+        () => {
+          const snapshot = {
+            activePhase: shell.dataset.journalPhase,
+            outcome: shell.dataset.journalOpeningOutcome,
+            readyReason: shell.dataset.journalReadyReason,
+            phases: [...phases],
+            started: startedAt !== null,
+            responseMs,
+            visibility: document.visibilityState,
+            motion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+            bookStatus: shell.querySelector(".main-journal-book")?.getAttribute("data-pageflip-status"),
+            running: shell.getAnimations({subtree:true}).filter(a=>a.playState==="running" || a.pending).map(a=>({
+              name: a instanceof CSSAnimation ? a.animationName : a instanceof CSSTransition ? a.transitionProperty : "",
+              target: (a.effect instanceof KeyframeEffect && a.effect.target instanceof HTMLElement)
+                ? a.effect.target.getAttribute("data-opening-actor") : null,
+              currentTime: a.currentTime,
+              duration: a.effect?.getComputedTiming().duration,
+            })).slice(0,16),
+          };
+          finish(new Error("The Journal opening did not hand off to a readable page. " + JSON.stringify(snapshot)));
+        },
         12_000,
       );
       observer.observe(shell, {
