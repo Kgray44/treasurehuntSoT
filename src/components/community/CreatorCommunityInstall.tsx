@@ -171,6 +171,7 @@ export function CreatorCommunityInstall({
               type="button"
               ref={installButtonRef}
               aria-disabled={busy || undefined}
+              style={busy ? { cursor: "not-allowed", opacity: 0.55 } : undefined}
               onClick={() => void install()}
             >
               {busy ? "Installing…" : itemType === "CHRONICLE" ? "Copy to my Studio" : "Install to my reusable Library"}
