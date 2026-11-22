@@ -39,6 +39,18 @@ export const browserSuiteProfiles = Object.freeze({
     ]),
     fixtureArguments: [],
   }),
+  "sc07-community": Object.freeze({
+    id: "sc07-community",
+    bootstrap: true,
+    taskOwnedProductionHttp: true,
+    validationIsolation: true,
+    cookieAdapter: "isolated-loopback",
+    preparers: Object.freeze([
+      Object.freeze({ runtime: "node", script: "scripts/sounding-line/prepare-validation-isolation.mjs" }),
+      Object.freeze({ runtime: "tsx", script: "scripts/sounding-line/prepare-sc07-experience.ts" }),
+    ]),
+    fixtureArguments: [],
+  }),
   "harborlight-phase2": Object.freeze({
     id: "harborlight-phase2",
     bootstrap: true,
@@ -165,6 +177,8 @@ export function resolveBrowserSuiteDispatches(browserTests) {
 }
 
 export function isolatedBrowserFixtureCredentials(profileId) {
+  if (profileId === "sc07-community")
+    return { SC07_EXPERIENCE_PASSWORD: `synthetic-${randomBytes(24).toString("base64url")}` };
   return profileId === "generic"
     ? { PHASE2_LEGACY_ACCESS_CODE: `synthetic-${randomBytes(24).toString("base64url")}` }
     : {};
