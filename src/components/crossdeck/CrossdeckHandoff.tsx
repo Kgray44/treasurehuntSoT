@@ -16,6 +16,7 @@ import {
 import type { SurfaceDto } from "@/crossdeck/service";
 import { useCrossdeckContinuity } from "./CrossdeckContinuity";
 import styles from "./CrossdeckDevices.module.css";
+import layoutStyles from "./CrossdeckHandoff.module.css";
 import { roleNames } from "@/crossdeck/experiences";
 import { ChartGestureCamera } from "./ChartGestureCamera";
 import { useChartGestureEnabled } from "./ChartGesturePreference";
@@ -517,7 +518,7 @@ function CrossdeckHandoffSession({
     </div>
   );
   return (
-    <section className={styles.handoff} aria-label="Send to your devices">
+    <section className={`${styles.handoff} ${layoutStyles.handoff}`} aria-label="Send to your devices">
       {gestureEnabled && (
         <ChartGestureCamera
           key={ownId}
@@ -534,7 +535,7 @@ function CrossdeckHandoffSession({
       {gestureFeedbackRoot && heldFeedback ? createPortal(heldFeedback, gestureFeedbackRoot) : heldFeedback}
       <button
         ref={sendTrigger}
-        className={styles.sendTrigger}
+        className={`${styles.sendTrigger} ${layoutStyles.sendTrigger}`}
         type="button"
         onClick={() => picker.current?.showModal()}
       >
@@ -682,7 +683,11 @@ function CrossdeckHandoffSession({
       ))}
       {outgoing.slice(-1).map((handoff) => {
         const receipt = (
-          <div className={styles.receipt} key={handoff.id} role={gestureReceipt === handoff.id ? "status" : undefined}>
+          <div
+            className={`${styles.receipt} ${layoutStyles.receipt}`}
+            key={handoff.id}
+            role={gestureReceipt === handoff.id ? "status" : undefined}
+          >
             {gestureReceipt === handoff.id && handoff.state === "COMMITTED" && (
               <span className={gestureStyles.release} aria-hidden="true" />
             )}
@@ -723,7 +728,7 @@ function CrossdeckHandoffSession({
           : receipt;
       })}
       {snapshot?.presentations.length ? (
-        <details className={styles.viewOptions} ref={connectedViewOptions}>
+        <details className={`${styles.viewOptions} ${layoutStyles.viewOptions}`} ref={connectedViewOptions}>
           <summary>Connected view options</summary>
           {snapshot.presentations.map((p) => (
             <div key={objectKey(p.object)}>

@@ -6862,6 +6862,7 @@
         "integrationOwner": "Crossdeck experience refit integration",
         "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
         "sourcePaths": [
+          "src/components/crossdeck/CrossdeckHandoff.module.css",
           "src/crossdeck",
           "src/components/crossdeck",
           "src/components/player/journal/ChronicleJournalSession.tsx",
@@ -8391,6 +8392,7 @@
         "integrationOwner": "Crossdeck experience refit integration",
         "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
         "sourcePaths": [
+          "src/components/crossdeck/CrossdeckHandoff.module.css",
           "src/crossdeck",
           "src/components/crossdeck",
           "src/components/player/journal/ChronicleJournalSession.tsx",

@@ -1,5 +1,5 @@
 // @sounding-line-registration owner=project-crossdeck suite=browser.crossdeck contracts=crossdeck.phase2.continuity,crossdeck.refit.companion,spatial-pilot.experience,homeport.shell.crossdeck-companion
-import { test, expect, type Page, type Locator, type TestInfo } from "@playwright/test";
+import { test, expect, type Page, type Locator, type Route, type TestInfo } from "@playwright/test";
 import { mkdir, writeFile, lstat, realpath, open } from "node:fs/promises";
 import { constants as fileConstants } from "node:fs";
 import { createHash } from "node:crypto";
@@ -13,7 +13,7 @@ import { authenticateClosure, openClosureJournal, openClosureMap } from "./fixtu
 import {
   assertDesktopHandoffReceiptReadable,
   assertPhoneJournalReadingArea,
-  assertRecoveredDesktopPassageHeading,
+  assertDesktopPassageHeadingUnobscured,
 } from "./fixtures/journal-layout";
 
 test.describe.configure({ mode: "serial", timeout: 180_000 });
@@ -563,11 +563,37 @@ for (const motion of ["no-preference", "reduce"] as const)
         data: { lastSeenAt: new Date(Date.now() - STALE_MS - 1000) },
       });
       await sending.getByText("Connected view options", { exact: true }).click();
-      await sending.getByRole("button", { name: /^Recover .* here$/ }).click();
+      const recover = sending.getByRole("button", { name: /^Recover .* here$/ });
+      await expect(recover).toBeVisible();
+      await expect(sending.getByRole("button", { name: "Close companion view", exact: true })).toBeVisible();
+      await assertDesktopPassageHeadingUnobscured(d, "Follow the lanterns");
+      await capture(d, "12a-recovery-options-open");
+      let releaseRecovery!: () => void;
+      const recoveryGate = new Promise<void>((resolve) => {
+        releaseRecovery = resolve;
+      });
+      const syncRoute = "**/api/crossdeck/sync?*";
+      const holdRecovery = async (route: Route) => {
+        const request = route.request();
+        if (request.method() === "POST" && request.postDataJSON()?.payload?.action === "recover") {
+          await recoveryGate;
+        }
+        await route.continue();
+      };
+      await d.route(syncRoute, holdRecovery);
+      try {
+        await recover.click();
+        await expect(sending.getByText("Updating your connected screens…", { exact: true })).toBeVisible();
+        await assertDesktopPassageHeadingUnobscured(d, "Follow the lanterns");
+        await capture(d, "12b-recovery-in-progress");
+      } finally {
+        releaseRecovery();
+        await d.unroute(syncRoute, holdRecovery);
+      }
       await expect(d.locator(".journal-objects-drawer.open [data-landfall-player-chart]:visible")).toBeVisible({
         timeout: 15000,
       });
-      await assertRecoveredDesktopPassageHeading(d, "Follow the lanterns");
+      await assertDesktopPassageHeadingUnobscured(d, "Follow the lanterns");
       await capture(d, "13-recovered-chart");
       await phone.setOffline(false);
       await p.reload();
