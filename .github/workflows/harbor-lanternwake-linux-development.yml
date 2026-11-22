@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake reduced Journal preflight attribution on Linux
+run-name: Lanternwake compiled real-pointer Skip and replay on Linux
 
 on:
   push:
@@ -17,14 +17,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: f295ebb12b0863f38f5ec0559cc3994eac7b164d
-      BASE_SHA: aaf7aa6e80d0c71c02018432c1e8a66ef5e1e21f
-      FOREVER_VALIDATION_SOURCE_SHA: f295ebb12b0863f38f5ec0559cc3994eac7b164d
+      CANDIDATE_SHA: 432f7127ec302db3f50c11749d3cc9931f74d06b
+      BASE_SHA: 9e612bd42dee2561d75dfac9263ac3307d5dee24
+      FOREVER_VALIDATION_SOURCE_SHA: 432f7127ec302db3f50c11749d3cc9931f74d06b
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: f295ebb12b0863f38f5ec0559cc3994eac7b164d
+          ref: 432f7127ec302db3f50c11749d3cc9931f74d06b
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,7 +58,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Measure reduced Journal readiness and rendering opportunities
+      - name: Measure the compiled Skip with a real pointer click
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -72,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lanternwake-linux-reduced-preflight-attribution
+          name: lanternwake-linux-compiled-trusted-skip-metrics
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
           if-no-files-found: ignore
           retention-days: 30
