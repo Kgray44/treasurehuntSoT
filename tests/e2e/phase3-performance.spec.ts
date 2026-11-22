@@ -1,6 +1,5 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { performance } from "node:perf_hooks";
 
 import { devices, type Locator, type Page } from "@playwright/test";
 
@@ -227,7 +226,7 @@ async function startVisualProbe(page: Page) {
     }
 
     const probe = {
-      startedAt: performance.now(),
+      startedAt: window.performance.now(),
       lastFrameAt: null,
       frameDurationsMs: [],
       longTaskDurationsMs: [],
@@ -299,7 +298,7 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
     delete probeWindow.__phase3VisualProbe;
     if (probe.frameDurationsMs.length === 0) throw new Error("No animation-frame intervals were measured.");
     return {
-      elapsedMs: performance.now() - probe.startedAt,
+      elapsedMs: window.performance.now() - probe.startedAt,
       frameDurationsMs: probe.frameDurationsMs,
       longTaskDurationsMs: probe.longTaskDurationsMs,
       cls: probe.cls,
