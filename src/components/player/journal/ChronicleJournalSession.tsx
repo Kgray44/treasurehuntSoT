@@ -1159,7 +1159,7 @@ function ChronicleJournalSessionIdentity({
           ref={root}
           data-experience-voyage={state.session.id}
           data-experience-version={state.session.versionId}
-          className={`voyage-shell chronicle-journal-shell mode-${state.journal.mode}`}
+          className={`voyage-shell chronicle-journal-shell mode-${state.journal.mode}${readyReceipt?.reason === "skipped" ? " journal-resetting" : ""}`}
           data-journal-phase={openingPhase}
           data-journal-opening-outcome={openingOutcome}
           data-journal-ready-reason={readyReceipt?.reason}
