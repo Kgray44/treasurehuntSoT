@@ -595,6 +595,7 @@ function ChronicleJournalSessionIdentity({
     async (policy: JournalOpeningPolicy, focusOrigin?: HTMLElement | null) => {
       const rootElement = root.current;
       if (openingBusy.current || !rootElement) return;
+      const hasReadableReducedBook = policy.composition === "reduced" && book.current?.readiness().status === "reduced";
       audio.current.unlock();
       openingBusy.current = true;
       activeOpeningPolicy.current = policy;
@@ -614,6 +615,9 @@ function ChronicleJournalSessionIdentity({
         phases: policy.phases,
         mode,
         signal: controller.signal,
+        waitForPhase: hasReadableReducedBook
+          ? (root, phase, phaseMode, signal) => waitForJournalPhase(root, phase, phaseMode, signal, { paintFrames: 1 })
+          : waitForJournalPhase,
         // JOURNAL_READY is committed only after the public PageFlip readiness handoff below.
         onPhase: (phase) => flushSync(() => setOpeningPhase(phase === "JOURNAL_READY" ? "BOOK_SETTLING" : phase)),
       });
@@ -663,16 +667,20 @@ function ChronicleJournalSessionIdentity({
         const readinessFallback = ["fallback", "reduced"].includes(readiness.readinessStatus);
         const settledOutcome =
           result.status === "completed-fallback" || readinessFallback ? "completed-fallback" : result.status;
-        settleJournalReady(
-          policy,
-          settledOutcome,
-          settledOutcome,
-          readinessFallback
-            ? "Page turning is using its readable fallback. The Voyage Journal is ready."
-            : result.status === "completed-fallback"
-              ? "Motion was reduced. The Voyage Journal is open in its readable final state."
-              : "",
-        );
+        const publishReady = () =>
+          settleJournalReady(
+            policy,
+            settledOutcome,
+            settledOutcome,
+            readinessFallback
+              ? "Page turning is using its readable fallback. The Voyage Journal is ready."
+              : result.status === "completed-fallback"
+                ? "Motion was reduced. The Voyage Journal is open in its readable final state."
+                : "",
+          );
+        // Publish within the first available frame when the static book is already readable.
+        if (hasReadableReducedBook && readiness.readinessStatus === "reduced") flushSync(publishReady);
+        else publishReady();
         return;
       }
 
