@@ -580,6 +580,7 @@ async function measuredFullOpening(page: Page, control: Locator) {
 // Use the regular Chromium build and keep recording work out of frame measurements.
 phase3Test.use({
   channel: "chromium",
+  launchOptions: { args: ["--use-gl=angle", "--use-angle=swiftshader"] },
   video: "off",
   trace: { mode: "retain-on-failure", screenshots: false, snapshots: false },
 });
@@ -588,6 +589,14 @@ phase3Test(
   "canonical production Journal performance and lifecycle budgets",
   async ({ page, phase3, browser, browserName }) => {
     expect(browserName).toBe("chromium");
+    const rendererProbe = await browser.newBrowserCDPSession();
+    const { gpu } = await rendererProbe.send("SystemInfo.getInfo");
+    await rendererProbe.detach();
+    console.log(JSON.stringify({ purpose: "DEVELOPMENT_ONLY", renderBackend: gpu.auxAttributes?.glRenderer,
+      compositor: gpu.featureStatus.gpu_compositing, rasterization: gpu.featureStatus.rasterization }));
+    expect(gpu.auxAttributes?.glRenderer).toMatch(/SwiftShader/);
+    expect(gpu.featureStatus.gpu_compositing).toBe("enabled");
+    expect(gpu.featureStatus.rasterization).toBe("enabled");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
     expect(process.env.FOREVER_PHASE3_PERFORMANCE_BASE_URL).toBe("http://127.0.0.1:3200");
     const artifact = performanceArtifactTarget();
