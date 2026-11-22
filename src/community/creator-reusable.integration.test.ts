@@ -306,3 +306,45 @@ describe.skipIf(!isolated)("SC-07 Creator reusable Community journey", () => {
     },
   );
 });
+
+describe.skipIf(!isolated)("SC-07 experience fixture", () => {
+  it("provisions separate publisher, moderator, and installer identities and fresh work for each viewport", async () => {
+    const { seedSc07Experience } = await import("../../tests/fixtures/sc07-experience");
+    const fixtures = await seedSc07Experience("synthetic-fixture-password-only");
+    const devices = [fixtures.DESKTOP, fixtures.MOBILE];
+    expect(
+      new Set(
+        devices.flatMap(({ publisher, moderator, installer }) => [
+          publisher.accountId,
+          moderator.accountId,
+          installer.accountId,
+        ]),
+      ).size,
+    ).toBe(6);
+    for (const fixture of devices) {
+      const { publisher, moderator, installer, saved, pending, approved } = fixture;
+      const source = await db.reusableAuthoringItem.findUniqueOrThrow({ where: { id: saved.itemId } });
+      expect(source.ownerAccountId).toBe(publisher.accountId);
+      expect(
+        await db.accountRoleAssignment.count({
+          where: { accountId: moderator.accountId, role: "MODERATION_OPERATOR" },
+        }),
+      ).toBe(1);
+      expect(
+        await db.accountRoleAssignment.count({
+          where: { accountId: installer.accountId, role: "MODERATION_OPERATOR" },
+        }),
+      ).toBe(0);
+      expect(await getPublicListingBySlug(pending.slug)).toBeNull();
+      expect(
+        await reviewCreatorReusablePublication(
+          { accountId: moderator.accountId, roles: ["MODERATOR"] },
+          pending.listingId,
+        ),
+      ).toMatchObject({ packageChecksum: pending.packageChecksum });
+      expect(await reviewCreatorReusableInstallation(installer.accountId, approved.listingId)).toMatchObject({
+        packageChecksum: approved.packageChecksum,
+      });
+    }
+  });
+});
