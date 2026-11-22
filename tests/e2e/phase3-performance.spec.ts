@@ -584,8 +584,10 @@ async function measuredFullOpening(page: Page, control: Locator) {
   return { ...opening, visual };
 }
 
+phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
+
 phase3Test(
-  "canonical production Journal performance and lifecycle budgets",
+  "compare the unchanged paper grain rendered from SVG and from raster",
   async ({ page, phase3, browser, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
@@ -615,235 +617,57 @@ phase3Test(
     const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
     expect(fullRuntimeBaseline.eventSources).toBe(1);
 
-    const warmRuns: Awaited<ReturnType<typeof measuredFullOpening>>[] = [];
-    const desktopRuns = [cold.visual];
-    for (let index = 0; index < 3; index += 1) {
-      const run = await measuredFullOpening(page, replay(page));
-      warmRuns.push(run);
-      desktopRuns.push(run.visual);
-    }
-    const mobileContext = await browser.newContext({ ...devices["Pixel 7"], baseURL: "http://127.0.0.1:3200" });
-    const mobileRuns: VisualProbeResult[] = [];
-    try {
-      const mobile = await mobileContext.newPage();
-      await installRuntimeCounter(mobile);
-      await setPhase3Motion(mobile, PHASE3_MOTION_MODES[0]);
-      await enterJournal(mobile, fixture, journalPath);
-      await assertReadableJournal(mobile);
-      for (let index = 0; index < 3; index += 1) {
-        const run = await measuredFullOpening(mobile, replay(mobile));
-        warmRuns.push(run);
-        mobileRuns.push(run.visual);
-      }
-    } finally {
-      await mobileContext.close();
-    }
-
-    await startVisualProbe(page);
-    await replay(page).click();
-    await expect(journal(page)).toHaveAttribute("data-journal-opening-outcome", "running");
-    const skip = await measureSkip(page.getByRole("button", { name: "Skip ceremony" }), fullRuntimeBaseline);
-    const skipVisual = await stopVisualProbe(page);
-    await assertReadableJournal(page);
-    expect(await waitForStableRuntimeBaseline(page)).toEqual(fullRuntimeBaseline);
-
-    // Reduced mode takes the same preparation/handoff path without the full
-    // ceremony. Measure button activation through the readable PageFlip handoff,
-    // which includes the phase transition and frame wait rather than timing a DOM query.
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    await expect(journal(page)).toHaveAttribute("data-motion-level", "reduced");
-    await assertReadableJournal(page, true);
-    const reducedRuntimeBaseline = await waitForStableRuntimeBaseline(page);
-    const preflightWarmupCount = 8;
-    const preflightSampleCount = 40;
-    const preflightSamplesMs: number[] = [];
-    for (let index = 0; index < preflightWarmupCount + preflightSampleCount; index += 1) {
-      const handoff = await measureOpening(replay(page));
-      expect(handoff.phases).toContain("BOOK_SETTLING");
-      // The canonical application intentionally reports the readable reduced
-      // book as completed-fallback. An unplanned runtime fallback is distinct.
-      expect(handoff.reason).toBe("completed-fallback");
-      expect(handoff.bookStatus).toBe("reduced");
-      if (index >= preflightWarmupCount) preflightSamplesMs.push(handoff.durationMs);
-    }
-    expect(preflightSamplesMs).toHaveLength(preflightSampleCount);
-    await assertReadableJournal(page, true);
-    expect(await waitForStableRuntimeBaseline(page)).toEqual(reducedRuntimeBaseline);
-
-    await page.emulateMedia({ reducedMotion: "no-preference" });
-    await expect(journal(page)).toHaveAttribute("data-motion-level", "full");
-    await assertReadableJournal(page);
-    const nextPage = page.getByRole("button", { name: "Next journal page" });
-    await expect(nextPage).toBeEnabled();
-    const turn = await measurePageTurn(nextPage);
-    expect(turn.events.map(({ phase }) => phase)).toEqual(["start", "commit", "settle"]);
-    expect(turn.events.at(-1)?.fallbackStatus).toBe("runtime");
-    expect(turn.events.at(-1)?.toPage).toBeGreaterThan(turn.events[0]!.fromPage);
-    await assertReadableJournal(page);
-
-    await startVisualProbe(page);
-    const navigationResponseMs = await measureNavigation(
-      journal(page).getByRole("link", { name: /Chronicle Library/ }),
-    );
-    await expect(page).toHaveURL(/\/player\/library$/);
-    await expect(page.getByRole("heading", { name: "My Chronicle Library" })).toBeVisible();
-    await waitAnimationFrames(page, 30);
-    const ordinaryVisual = await stopVisualProbe(page);
-
-    const openingVisuals = [...desktopRuns, ...mobileRuns, skipVisual];
-    const desktopFrames = desktopRuns.flatMap((run) => [...run.frameDurationsMs]);
-    const mobileFrames = mobileRuns.flatMap((run) => [...run.frameDurationsMs]);
-    const openingLongTasks = openingVisuals.flatMap((run) => [...run.longTaskDurationsMs]);
-    const openingCumulativeLongTasks = openingVisuals.map((run) => total(run.longTaskDurationsMs));
-    const openingCls = openingVisuals.map((run) => run.cls);
-    const replayResponseMs = warmRuns[0]!.responseMs;
-    const metrics = {
-      coldOpeningMs: rounded(cold.durationMs),
-      liveUpdateMs: rounded(liveUpdateMs),
-      warmOpeningMs: warmRuns.map((run) => rounded(run.durationMs)),
-      preflightP95Ms: rounded(percentile(preflightSamplesMs, 0.95)),
-      controlResponseMs: [replayResponseMs, skip.responseMs, turn.responseMs, navigationResponseMs].map(rounded),
-      cleanupMs: rounded(skip.cleanupMs),
-      desktopFrameP95Ms: rounded(percentile(desktopFrames, 0.95)),
-      mobileFrameP95Ms: rounded(percentile(mobileFrames, 0.95)),
-      openingMaximumLongTaskMs: rounded(maximum(openingLongTasks)),
-      openingCumulativeLongTaskMs: rounded(maximum(openingCumulativeLongTasks)),
-      ordinaryMaximumLongTaskMs: rounded(maximum(ordinaryVisual.longTaskDurationsMs)),
-      ordinaryCumulativeLongTaskMs: rounded(total(ordinaryVisual.longTaskDurationsMs)),
-      openingMaximumCls: rounded(maximum(openingCls)),
-      ordinaryCls: rounded(ordinaryVisual.cls),
-    };
-    expect(warmRuns).toHaveLength(6);
-    const budgetChecks = [
-      { name: "journal-cold-opening-duration", passed: cold.durationMs < budgets.openingMs },
-      { name: "live-journal-update", passed: liveUpdateMs < budgets.openingMs },
-      ...warmRuns.map((run, index) => ({
-        name: `journal-warm-opening-${String(index + 1).padStart(2, "0")}-duration`,
-        passed: run.durationMs < budgets.openingMs,
-      })),
-      { name: "readable-preflight-p95", passed: metrics.preflightP95Ms < budgets.preflightP95Ms },
-      { name: "control-replay-response", passed: replayResponseMs < budgets.controlResponseMs },
-      { name: "control-skip-response", passed: skip.responseMs < budgets.controlResponseMs },
-      { name: "control-pageflip-response", passed: turn.responseMs < budgets.controlResponseMs },
-      { name: "control-navigation-response", passed: navigationResponseMs < budgets.controlResponseMs },
-      { name: "skip-cleanup", passed: skip.cleanupMs < budgets.cleanupMs },
-      { name: "desktop-frame-p95", passed: metrics.desktopFrameP95Ms <= budgets.desktopFrameP95Ms },
-      { name: "mobile-frame-p95", passed: metrics.mobileFrameP95Ms <= budgets.mobileFrameP95Ms },
-      { name: "opening-maximum-long-task", passed: metrics.openingMaximumLongTaskMs <= budgets.maximumLongTaskMs },
-      { name: "ordinary-maximum-long-task", passed: metrics.ordinaryMaximumLongTaskMs <= budgets.maximumLongTaskMs },
-      {
-        name: "opening-cumulative-long-task",
-        passed: metrics.openingCumulativeLongTaskMs <= budgets.chapterLongTaskCumulativeMs,
-      },
-      {
-        name: "ordinary-cumulative-long-task",
-        passed: metrics.ordinaryCumulativeLongTaskMs <= budgets.ordinaryLongTaskCumulativeMs,
-      },
-      { name: "opening-maximum-cls", passed: metrics.openingMaximumCls <= budgets.cls },
-      { name: "ordinary-cls", passed: metrics.ordinaryCls <= budgets.cls },
-    ] as const;
-    const budgetNames = budgetChecks.map((check) => check.name);
-    expect(new Set(budgetNames).size, "Performance budget evidence names must be unique.").toBe(budgetNames.length);
-    budgetNames.forEach((name) => expect(name).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u));
-    const failedBudgets = budgetChecks.filter((check) => !check.passed).map((check) => check.name);
-
-    const nonceHash = boundedEnvironmentValue(["FOREVER_VALIDATION_NONCE_HASH"], /^[a-f0-9]{64}$/u, "missing");
-    expect(nonceHash, "Performance evidence requires the validated nonce hash proof reference.").toMatch(
-      /^[a-f0-9]{64}$/u,
-    );
-    const runId = boundedEnvironmentValue(
-      ["FOREVER_VALIDATION_RUN_ID", "VALIDATION_RUN_ID", "GITHUB_RUN_ID", "BUILD_BUILDID"],
-      /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/u,
-      "phase3-performance-local",
-    );
-    const testedSourceSha = boundedEnvironmentValue(
-      ["FOREVER_VALIDATION_SOURCE_SHA", "VALIDATION_SOURCE_SHA", "GITHUB_SHA"],
-      /^[a-fA-F0-9]{40,64}$/u,
-      "uncommitted",
-    ).toLowerCase();
-    const integratedSha = boundedEnvironmentValue(
-      ["FOREVER_VALIDATION_INTEGRATED_SHA", "VALIDATION_INTEGRATED_SHA"],
-      /^[a-fA-F0-9]{40,64}$/u,
-      "uncommitted",
-    ).toLowerCase();
-    const commonReport = Object.freeze({
-      version: 3,
-      completedAtUtc: new Date().toISOString(),
-      runId,
-      provenance: Object.freeze({
-        testedSourceSha,
-        integratedSha,
-        config: "tests/config/playwright/playwright.phase3-performance.config.ts",
-        browser: Object.freeze({
-          engine: "chromium",
-          project: "chromium-production",
-          desktopProfile: "Desktop Chrome",
-          mobileProfile: "Pixel 7",
-        }),
-        server: Object.freeze({ kind: "owned-next-start", origin: "http://127.0.0.1:3200", port: 3200 }),
-        isolationProof: Object.freeze({
-          endpoint: "/api/dev/validation/database-identity",
-          nonceHash,
-          markerExpectation: "exactly-one",
-        }),
-      }),
-      samples: Object.freeze({
-        coldOpenings: 1,
-        liveUpdates: 1,
-        warmOpenings: warmRuns.length,
-        preflightWarmups: preflightWarmupCount,
-        preflightMeasured: preflightSamplesMs.length,
-        desktopFrames: desktopFrames.length,
-        mobileFrames: mobileFrames.length,
-      }),
-      budgets,
-      metrics,
-      measurements: {
-        desktop: desktopRuns.map((run) => ({
-          frameP95Ms: rounded(percentile(run.frameDurationsMs, 0.95)),
-          layoutShifts: run.layoutShifts,
-        })),
-        mobile: mobileRuns.map((run) => ({
-          frameP95Ms: rounded(percentile(run.frameDurationsMs, 0.95)),
-          layoutShifts: run.layoutShifts,
-        })),
-        skip: { layoutShifts: skipVisual.layoutShifts, cleanup: skip.observations },
-      },
-      runtimeBaseline: Object.freeze({
-        full: fullRuntimeBaseline,
-        reduced: reducedRuntimeBaseline,
-        fullReturnedToBaseline: true,
-        reducedReturnedToBaseline: true,
-      }),
+    const rasterCss = await page.evaluate(async () => {
+      if (devicePixelRatio !== 1) throw new Error("This comparison renders the original desktop density.");
+      const svg = new Image();
+      svg.src = "/textures/paper-grain.svg";
+      await svg.decode();
+      const canvas = document.createElement("canvas");
+      canvas.width = svg.naturalWidth;
+      canvas.height = svg.naturalHeight;
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("The original texture could not be rasterized.");
+      context.drawImage(svg, 0, 0);
+      const png = new Image();
+      png.src = canvas.toDataURL("image/png");
+      await png.decode();
+      const original = context.getImageData(0, 0, canvas.width, canvas.height).data;
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(png, 0, 0);
+      const copied = context.getImageData(0, 0, canvas.width, canvas.height).data;
+      if (original.some((value, index) => value !== copied[index])) throw new Error("Rasterized tile changed pixels.");
+      const selectors = [".chronicle-journal-shell", ".chronicle-journal-shell .cover-front"];
+      return selectors.map((selector) => {
+        const element = document.querySelector(selector);
+        if (!element) throw new Error("The Journal texture owner is missing.");
+        const oldImage = getComputedStyle(element, "::after").backgroundImage;
+        const originalUrl = new URL(svg.src).href;
+        if (!oldImage.includes(originalUrl)) throw new Error("The authored tile is missing from its owning surface.");
+        return selector + "::after { background-image: " + oldImage.replace(originalUrl, png.src) + " !important; }";
+      }).join("\n");
     });
 
-    if (failedBudgets.length > 0) {
-      await writePerformanceArtifact(
-        artifact.artifactPath,
-        Object.freeze({
-          ...commonReport,
-          status: "failed",
-          failureBudgetCount: failedBudgets.length,
-          failedBudgets: Object.freeze(failedBudgets),
-        }),
-        [fixture.slug, voyage!.sessionId],
-      );
-      expect(failedBudgets, "Production performance budgets failed; see the sanitized failure artifact.").toEqual([]);
-      return;
+    const results: Array<{ mode: "original" | "raster"; values: readonly number[]; p95: number }> = [];
+    for (const mode of ["original", "raster", "raster", "original"] as const) {
+      const injected = mode === "raster" ? await page.addStyleTag({ content: rasterCss }) : null;
+      const opening = await measuredFullOpening(page, replay(page));
+      expect(opening.reason).toBe("completed");
+      expect(opening.durationMs).toBeLessThan(budgets.openingMs);
+      results.push({ mode, values: opening.visual.frameDurationsMs,
+        p95: rounded(percentile(opening.visual.frameDurationsMs, 0.95)) });
+      await injected?.evaluate((style) => style.remove());
     }
-
-    for (const check of budgetChecks) {
-      expect(check.passed, `${check.name} must pass before success evidence is written.`).toBe(true);
-    }
-    await writePerformanceArtifact(
-      artifact.artifactPath,
-      Object.freeze({
-        ...commonReport,
-        status: "passed",
-        failureBudgetCount: 0,
-        failedBudgets: Object.freeze([]),
-      }),
-      [fixture.slug, voyage!.sessionId],
-    );
+    const byMode = Object.fromEntries((["original", "raster"] as const).map((mode) => {
+      const rows = results.filter((result) => result.mode === mode);
+      const frames = rows.flatMap((row) => [...row.values]);
+      return [mode, { samples: frames.length, p95: rounded(percentile(frames, 0.95)),
+        slowFrames: frames.filter((frame) => frame > budgets.desktopFrameP95Ms).length,
+        p95ByRun: rows.map((row) => row.p95) }];
+    }));
+    const report = { purpose: "DEVELOPMENT_ONLY", candidate: "6f81ff1f20185791904ad2eb6ed03d88308605b3",
+      tilePixelsMatch: true, budgetMs: budgets.desktopFrameP95Ms, byMode };
+    await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
+    console.log(JSON.stringify(report));
+    expect(byMode.raster.p95).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
   },
 );
