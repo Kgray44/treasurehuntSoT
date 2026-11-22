@@ -593,10 +593,10 @@ phase3Test(
     const { gpu } = await rendererProbe.send("SystemInfo.getInfo");
     await rendererProbe.detach();
     console.log(JSON.stringify({ purpose: "DEVELOPMENT_ONLY", renderBackend: gpu.auxAttributes?.glRenderer,
-      compositor: gpu.featureStatus.gpu_compositing, rasterization: gpu.featureStatus.rasterization }));
+      compositor: gpu.featureStatus?.gpu_compositing, rasterization: gpu.featureStatus?.rasterization }));
     expect(gpu.auxAttributes?.glRenderer).toMatch(/SwiftShader/);
-    expect(gpu.featureStatus.gpu_compositing).toBe("enabled");
-    expect(gpu.featureStatus.rasterization).toBe("enabled");
+    expect(gpu.featureStatus?.gpu_compositing).toBe("enabled");
+    expect(gpu.featureStatus?.rasterization).toBe("enabled");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
     expect(process.env.FOREVER_PHASE3_PERFORMANCE_BASE_URL).toBe("http://127.0.0.1:3200");
     const artifact = performanceArtifactTarget();
