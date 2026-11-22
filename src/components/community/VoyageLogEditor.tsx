@@ -26,6 +26,7 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
   const [csrf, setCsrf] = useState("");
   const [log, setLog] = useState<VoyageLog | null>(null);
   const [message, setMessage] = useState("Loading private Voyage Log editor…");
+  const [draftMessage, setDraftMessage] = useState("");
   const [participantName, setParticipantName] = useState("");
 
   const refresh = useCallback(async () => {
@@ -60,6 +61,7 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!log || !csrf) return;
+    setDraftMessage("");
     const fields = new FormData(event.currentTarget);
     const response = await fetch(`/api/community/voyage-logs/owner/${encodeURIComponent(log.id)}`, {
       method: "PATCH",
@@ -74,16 +76,16 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
       }),
     });
     if (response.status === 409) {
-      setMessage("Another edit was saved first. Reloaded the current private draft.");
       await refresh();
+      setDraftMessage("Another edit was saved first. Reloaded the current private draft.");
       return;
     }
     if (!response.ok) {
-      setMessage("The draft could not be saved.");
+      setDraftMessage("The draft could not be saved.");
       return;
     }
     await refresh();
-    setMessage("Draft saved. Publication eligibility is checked again when you publish.");
+    setDraftMessage("Draft saved. Publication eligibility is checked again when you publish.");
   }
 
   async function addParticipant(event: FormEvent<HTMLFormElement>) {
@@ -198,6 +200,9 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
             Approximate location{" "}
             <input name="approximateLocation" maxLength={140} defaultValue={log.approximateLocation ?? ""} />
           </label>
+          <p className="community-workflow__form-status" role="status">
+            {draftMessage}
+          </p>
           <button type="submit" disabled={!csrf}>
             Save revision
           </button>

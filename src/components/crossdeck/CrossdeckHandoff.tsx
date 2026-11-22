@@ -71,6 +71,7 @@ function CrossdeckHandoffSession({
   const picker = useRef<HTMLDialogElement>(null);
   const pickerTitle = useId();
   const sendTrigger = useRef<HTMLButtonElement>(null);
+  const connectedViewOptions = useRef<HTMLDetailsElement>(null);
   const [confirmation, setConfirmation] = useState("");
   const [message, setMessage] = useState("");
   const [online, setOnline] = useState(false);
@@ -201,6 +202,7 @@ function CrossdeckHandoffSession({
       if (lock.current || !transport.current || !current.current) return;
       const signalOnly = ["gesture-arm", "gesture-receive", "gesture-cancel"].includes(payload.action);
       if (payload.action.startsWith("gesture-") && pending.current && !retry) return;
+      const recoverOrigin = payload.action === "recover" ? document.activeElement : null;
       lock.current = true;
       setBusy(true);
       if (!signalOnly)
@@ -253,6 +255,21 @@ function CrossdeckHandoffSession({
         if (current.current && next.revision < current.current.revision) return current.current;
         current.current = next;
         setSnapshot(next);
+        const options = connectedViewOptions.current;
+        if (
+          options?.open &&
+          payload.action === "recover" &&
+          payload.object.family === "MAP" &&
+          next.presentations.some(
+            (item) => objectKey(item.object) === objectKey(payload.object) && item.custody === next.surfaceId,
+          )
+        ) {
+          const active = document.activeElement;
+          options.open = false;
+          if (active === recoverOrigin || active === document.body || options.contains(active)) {
+            options.querySelector("summary")?.focus({ preventScroll: true });
+          }
+        }
         const connectedNow = navigator.onLine !== false;
         setOnline(connectedNow);
         connectionRef.current?.(connectedNow ? "live" : "offline");
@@ -706,7 +723,7 @@ function CrossdeckHandoffSession({
           : receipt;
       })}
       {snapshot?.presentations.length ? (
-        <details className={styles.viewOptions}>
+        <details className={styles.viewOptions} ref={connectedViewOptions}>
           <summary>Connected view options</summary>
           {snapshot.presentations.map((p) => (
             <div key={objectKey(p.object)}>

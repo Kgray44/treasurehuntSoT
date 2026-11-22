@@ -1450,6 +1450,10 @@ html[data-voyage-theme="light"] .button--quiet {
   background: linear-gradient(120deg, #f8edcf, #d7bd79);
   color: #1e2925;
 }
+.passport-intro h2 {
+  color: inherit;
+}
+
 .passport-intro p {
   color: #29332d;
 }
