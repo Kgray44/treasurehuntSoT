@@ -9,7 +9,9 @@ const fixtureId = randomUUID();
 const username = `harborlight-${fixtureId.slice(0, 12)}`;
 const password = `Harborlight-${fixtureId}-safe`;
 
-test("Harborlight Studio access and dedicated Chronicle publication remain isolated", async ({ browser }) => {
+test("Harborlight Studio access and Exchange package installation are isolated and authoritative", async ({
+  browser,
+}) => {
   const anonymous = await browser.newContext();
   const anonymousPage = await anonymous.newPage();
   await anonymousPage.goto("/studio/exchange");
@@ -66,9 +68,7 @@ test("Harborlight Studio access and dedicated Chronicle publication remain isola
   await page.goto("/studio/exchange");
   await expect(page.getByRole("heading", { name: "Open the Exchange" })).toBeVisible();
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(page.getByRole("figure", { name: "Preview sandbox" }).getByRole("status")).toHaveText(
-    "Reduced motion is on. A static poster is shown.",
-  );
+  await expect(page.getByRole("status")).toHaveText("Reduced motion is on. A static poster is shown.");
 
   const profile = await creator.request.post("/api/community/profile", {
     headers,
@@ -103,10 +103,95 @@ test("Harborlight Studio access and dedicated Chronicle publication remain isola
       attribution: [{ displayName: "Synthetic Harborlight Creator", contributionType: "Author" }],
     },
   });
-  expect(release.status(), await release.text()).toBe(400);
-  expect(await release.json()).toMatchObject({ code: "COMMUNITY_DEDICATED_FLOW_REQUIRED" });
-  expect(await db.communityRelease.count({ where: { listingId: listingBody.id } })).toBe(0);
+  expect(release.status(), await release.text()).toBe(201);
+  const releaseBody = (await release.json()) as { id: string; manifestChecksum: string };
 
+  const bytes = new TextEncoder().encode("synthetic Harborlight package");
+  const manifest = {
+    schemaVersion: 1 as const,
+    packageId: `pkg-${fixtureId}`,
+    releaseId: releaseBody.id,
+    semanticVersion: "1.0.0",
+    license: { key: "CC-BY-4.0", version: 1 },
+    attribution: [{ displayName: "Synthetic Harborlight Creator", contributionType: "Author" }],
+    items: [
+      {
+        id: "chronicle",
+        type: "CHRONICLE" as const,
+        path: "chronicle.txt",
+        checksum: sha256(bytes),
+        mediaType: "text/plain",
+        byteLength: bytes.byteLength,
+        dependencies: [],
+      },
+    ],
+  };
+  const files = [{ path: "chronicle.txt", mediaType: "text/plain", base64: Buffer.from(bytes).toString("base64") }];
+  const preflight = await creator.request.post("/api/community/exchange/publication/preflight", {
+    headers,
+    data: { releaseId: releaseBody.id, manifest, files },
+  });
+  expect(preflight.status(), await preflight.text()).toBe(200);
+  const packaged = await creator.request.post("/api/community/exchange/publication/package", {
+    headers,
+    data: { releaseId: releaseBody.id, manifest, files },
+  });
+  expect(packaged.status(), await packaged.text()).toBe(201);
+  const packageBody = (await packaged.json()) as { packageId: string; packageChecksum: string };
+  expect(packageBody.packageChecksum).toBe(packageChecksum(manifest));
+
+  const reviewInput = {
+    packageManifest: manifest,
+    packageChecksum: packageBody.packageChecksum,
+    mode: "EDITABLE_COPY",
+    destinationRevision: "synthetic-draft-v1",
+    currentDestinationRevision: "synthetic-draft-v1",
+    license: {
+      key: "CC-BY-4.0",
+      allowsModification: true,
+      allowsPublicUse: true,
+      allowsCommercialUse: false,
+      requiresAttribution: true,
+      shareAlike: false,
+    },
+    releaseId: releaseBody.id,
+    packageId: packageBody.packageId,
+  };
+  const review = await creator.request.post("/api/community/exchange/installation/review", {
+    headers,
+    data: reviewInput,
+  });
+  expect(review.status(), await review.text()).toBe(200);
+  const plan = (await review.json()) as { idMappings: Record<string, string>; obligations: string[] };
+  expect(plan.idMappings.chronicle).not.toBe("chronicle");
+  expect(plan.obligations).toContain("Preserve package attribution.");
+
+  const commit = await creator.request.post("/api/community/exchange/installation/commit", {
+    headers,
+    data: {
+      ...reviewInput,
+      requestId: randomUUID(),
+      finalizationSucceeded: true,
+    },
+  });
+  expect(commit.status(), await commit.text()).toBe(201);
+  expect(await db.communityInstallation.count({ where: { releaseId: releaseBody.id, accountId: account.id } })).toBe(1);
+  expect(
+    await db.communityRelease.findUniqueOrThrow({ where: { id: releaseBody.id }, select: { manifestChecksum: true } }),
+  ).toEqual({
+    manifestChecksum: releaseBody.manifestChecksum,
+  });
+
+  const rejected = await creator.request.post("/api/community/exchange/installation/review", {
+    headers,
+    data: {
+      ...reviewInput,
+      packageChecksum: createHash("sha256").update("wrong").digest("hex"),
+      mode: "LIBRARY_REFERENCE",
+    },
+  });
+  // A client cannot substitute a checksum while asking for a trusted review.
+  expect(rejected.status()).toBe(400);
   await page.reload();
   await expect(page.getByRole("heading", { name: "Open the Exchange" })).toBeVisible();
   await creator.close();
@@ -286,9 +371,7 @@ test("H2: hash-attested synthetic 2D artifact publication persists its immutable
   ).resolves.toEqual({ scanStatus: "CLEAN", releaseId: release.id });
   await page.goto("/studio/exchange");
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(page.getByRole("figure", { name: "Preview sandbox" }).getByRole("status")).toHaveText(
-    "Reduced motion is on. A static poster is shown.",
-  );
+  await expect(page.getByRole("status")).toHaveText("Reduced motion is on. A static poster is shown.");
   await page.reload();
   expect(await db.communityPackageItem.count({ where: { packageId: result.packageId, itemType: "ARTIFACT_2D" } })).toBe(
     1,

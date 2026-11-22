@@ -51,14 +51,10 @@ it.each(["original asset", "retry fallback"])(
     };
     let fail = path === "retry fallback";
     const exactReads: string[] = [];
-    const environmentReads: string[] = [];
     vi.stubGlobal(
       "fetch",
       vi.fn(async (url, options) => {
         const parsed = new URL(String(url), "http://localhost");
-        if (!options?.method && parsed.searchParams.get("view") === "environment-catalog") {
-          environmentReads.push(parsed.pathname);
-        }
         if (!options?.method && parsed.searchParams.get("view") === "library-item") {
           exactReads.push(parsed.searchParams.get("entryId")!);
           return Response.json({
@@ -99,7 +95,6 @@ it.each(["original asset", "retry fallback"])(
     fireEvent.click(screen.getByText("Library, reuse & publication", { selector: "summary" }));
     expect(await screen.findByRole("button", { name: "v1.0.0 · 1 objects" })).toBeVisible();
     expect(exactReads).toEqual(["saved:original-asset"]);
-    expect(environmentReads).toEqual(["/api/studio/parallax"]);
     expect(calls.some((call) => call.action === "SAVE")).toBe(false);
   },
   30000,

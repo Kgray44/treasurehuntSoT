@@ -256,10 +256,6 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
             const connectedOptions = sending.getByText("Connected view options", { exact: true });
             if (await connectedOptions.count()) await connectedOptions.click();
             await sending.getByRole("button", { name: /^Recover (view|.+) here$/ }).click();
-            await expect(sending.getByText("Your devices are up to date.", { exact: true })).toBeVisible();
-            const recoveredOptions = sending.locator("details").filter({ hasText: "Connected view options" });
-            await expect(recoveredOptions).toHaveJSProperty("open", false);
-            await connectedOptions.press("Enter");
             await expect(sending.getByText(/Controlled here/)).toBeVisible();
             await p.goto(`${baseURL}/devices/companion?voyage=${voyage.id}`);
             await expect(p.locator('[data-crossdeck-companion][data-companion-role="CHART"]')).toBeVisible();

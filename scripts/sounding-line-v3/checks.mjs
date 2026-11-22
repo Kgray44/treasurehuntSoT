@@ -141,24 +141,12 @@ function checkDocs({ base, tree, entries, read }) {
   if (invalid.length) throw new Error(invalid.join("\n"));
 }
 
-export function browserProfileBatches(profile, files, fullBrowser) {
-  const extended = "tests/e2e/phase3-lifecycle-extended.spec.ts";
-  if (fullBrowser || profile !== "lanternwake-phase3" || !files.includes(extended)) return [files];
-  const audioSuite = "Project Lanternwake Phase 3 audio lifecycle";
-  // Complementary filters retain every extended case within separate runner deadlines.
-  return [
-    files.filter((file) => file !== extended),
-    [extended, "--grep-invert", audioSuite],
-    [extended, "--grep", audioSuite],
-  ].filter((batch) => batch.length);
-}
-
-async function runBrowserProfile(profileId, browserArgs, tree, fullBrowser, shard) {
+async function runBrowserProfile(profileId, files, tree, fullBrowser, shard) {
   const { browserSuiteProfiles, isolatedBrowserFixtureCredentials } = await import(
     "../sounding-line/browser-suite-profiles.mjs"
   );
   const profile = browserSuiteProfiles[profileId];
-  if (!profile?.validationIsolation || !browserArgs.length)
+  if (!profile?.validationIsolation || !files.length)
     throw new Error("Missing browser profile or test files: " + profileId);
   const profileRoot = resolve("artifacts", "sounding-line", profileId + "-" + tree.slice(0, 12));
   mkdirSync(profileRoot, { recursive: true });
@@ -200,7 +188,7 @@ async function runBrowserProfile(profileId, browserArgs, tree, fullBrowser, shar
       ...profile.fixtureArguments.flatMap((file) => ["--fixture", file]),
       ...(profile.fixtureProject ? ["--fixture-project", profile.fixtureProject] : []),
       "--",
-      ...browserArgs,
+      ...files,
       ...(profile.browserArguments ?? []),
       ...(shard && shard !== "1/1" ? ["--shard=" + shard] : []),
       "--project",
@@ -383,9 +371,7 @@ export async function runJob(job, context) {
       const profileFailures = [];
       for (const { profile, specs } of profiles) {
         try {
-          for (const browserArgs of browserProfileBatches(profile, specs, fullBrowser)) {
-            await runBrowserProfile(profile, browserArgs, tree, fullBrowser, job.shard);
-          }
+          await runBrowserProfile(profile, specs, tree, fullBrowser, job.shard);
         } catch (error) {
           if (!fullBrowser) throw error;
           profileFailures.push(profile);

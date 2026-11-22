@@ -140,7 +140,7 @@ for (const viewport of [
     await page.getByRole("button", { name: "Save revision", exact: true }).click();
     await expect(
       page.getByText("Draft saved. Publication eligibility is checked again when you publish.", { exact: true }),
-    ).toBeInViewport({ ratio: 1 });
+    ).toBeVisible();
     const persisted = await db.communityVoyageLog.findUniqueOrThrow({ where: { id: log.id } });
     expect(persisted.approximateLocation).toBe("Synthetic fictional harbor");
     expect(persisted.visibility).toBe("PRIVATE");

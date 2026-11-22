@@ -1,33 +1,33 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { cache } from "react";
 import { CommunityCardGrid } from "@/components/community/CommunityCardGrid";
 import { CommunityPageFrame } from "@/components/community/CommunityPageFrame";
 import { CommunitySocialControls } from "@/components/community/CommunitySocialControls";
-import { getHomeportCreatorDetail, getHomeportCreatorSharingInfo } from "@/community/homeport";
+import { getHomeportCreatorDetail } from "@/community/homeport";
 import { harborSharingMetadata } from "@/community/sharing-metadata";
 import { requireCanonicalAccountIdentity } from "@/platform/auth";
 
 export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ handle: string }> };
-const viewerAccountId = cache(async () => (await requireCanonicalAccountIdentity())?.accountId ?? null);
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const creator = await getHomeportCreatorSharingInfo((await params).handle, await viewerAccountId());
+  const identity = await requireCanonicalAccountIdentity();
+  const creator = await getHomeportCreatorDetail((await params).handle, identity?.accountId);
   return creator
     ? harborSharingMetadata({
         kind: "creator",
         visibility: "COMMUNITY",
-        canonicalPath: creator.canonicalPath,
-        title: creator.title,
+        canonicalPath: creator.card.destination,
+        title: creator.card.title,
         safeDescription: creator.biography,
       })
     : harborSharingMetadata({ kind: "creator", visibility: "PRIVATE", canonicalPath: "/community/creators" });
 }
 
 export default async function CreatorPage({ params }: Props) {
-  const creator = await getHomeportCreatorDetail((await params).handle, await viewerAccountId());
+  const identity = await requireCanonicalAccountIdentity();
+  const creator = await getHomeportCreatorDetail((await params).handle, identity?.accountId);
   if (!creator) notFound();
   return (
     <CommunityPageFrame
