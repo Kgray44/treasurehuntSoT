@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake focused Linux development benchmark
+run-name: Lanternwake focused Linux benchmark without Playwright screencasting
 
 on:
   push:
@@ -17,13 +17,13 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: cf6b1d6bbae4352100bbc58e5614600784747943
+      CANDIDATE_SHA: e581851a59d2b2eff0e6b9d630727e71c70791b3
       BASE_SHA: aaf7aa6e80d0c71c02018432c1e8a66ef5e1e21f
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: cf6b1d6bbae4352100bbc58e5614600784747943
+          ref: e581851a59d2b2eff0e6b9d630727e71c70791b3
           fetch-depth: 2
           persist-credentials: false
       - uses: actions/setup-node@v4
