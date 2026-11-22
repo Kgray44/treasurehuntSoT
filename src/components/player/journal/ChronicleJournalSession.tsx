@@ -34,6 +34,7 @@ import type {
 } from "@/components/animation/PageFlipBook";
 import { resolveStoryMotion } from "@/animation/presentation/story-motion";
 import { PhysicalJournalBook } from "@/components/player/journal/PhysicalJournalBook";
+import { waitForReducedJournalPaint } from "./reduced-journal-paint";
 import { ChronicleJournalPageContent, type JournalAsset } from "@/components/player/journal/ChronicleJournalPage";
 import { LandfallJournalChart, LandfallJournalProvider } from "@/components/player/journal/LandfallJournalChart";
 import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
@@ -595,8 +596,6 @@ function ChronicleJournalSessionIdentity({
     async (policy: JournalOpeningPolicy, focusOrigin?: HTMLElement | null) => {
       const rootElement = root.current;
       if (openingBusy.current || !rootElement) return;
-      const hasReadableReducedBook = policy.composition === "reduced" && book.current?.readiness().status === "reduced";
-      audio.current.unlock();
       openingBusy.current = true;
       activeOpeningPolicy.current = policy;
       openingFocusOrigin.current =
@@ -613,11 +612,9 @@ function ChronicleJournalSessionIdentity({
       const result = await runJournalOpeningPhases({
         root: rootElement,
         phases: policy.phases,
+        waitForPhase: policy.composition === "reduced" ? waitForReducedJournalPaint : waitForJournalPhase,
         mode,
         signal: controller.signal,
-        waitForPhase: hasReadableReducedBook
-          ? (root, phase, phaseMode, signal) => waitForJournalPhase(root, phase, phaseMode, signal, { paintFrames: 1 })
-          : waitForJournalPhase,
         // JOURNAL_READY is committed only after the public PageFlip readiness handoff below.
         onPhase: (phase) => flushSync(() => setOpeningPhase(phase === "JOURNAL_READY" ? "BOOK_SETTLING" : phase)),
       });
@@ -667,20 +664,16 @@ function ChronicleJournalSessionIdentity({
         const readinessFallback = ["fallback", "reduced"].includes(readiness.readinessStatus);
         const settledOutcome =
           result.status === "completed-fallback" || readinessFallback ? "completed-fallback" : result.status;
-        const publishReady = () =>
-          settleJournalReady(
-            policy,
-            settledOutcome,
-            settledOutcome,
-            readinessFallback
-              ? "Page turning is using its readable fallback. The Voyage Journal is ready."
-              : result.status === "completed-fallback"
-                ? "Motion was reduced. The Voyage Journal is open in its readable final state."
-                : "",
-          );
-        // Publish within the first available frame when the static book is already readable.
-        if (hasReadableReducedBook && readiness.readinessStatus === "reduced") flushSync(publishReady);
-        else publishReady();
+        settleJournalReady(
+          policy,
+          settledOutcome,
+          settledOutcome,
+          readinessFallback
+            ? "Page turning is using its readable fallback. The Voyage Journal is ready."
+            : result.status === "completed-fallback"
+              ? "Motion was reduced. The Voyage Journal is open in its readable final state."
+              : "",
+        );
         return;
       }
 
@@ -1167,7 +1160,7 @@ function ChronicleJournalSessionIdentity({
           ref={root}
           data-experience-voyage={state.session.id}
           data-experience-version={state.session.versionId}
-          className={`voyage-shell chronicle-journal-shell mode-${state.journal.mode}${readyReceipt?.reason === "skipped" ? " journal-resetting" : ""}`}
+          className={`voyage-shell chronicle-journal-shell mode-${state.journal.mode} ${styles.journalShell}`}
           data-journal-phase={openingPhase}
           data-journal-opening-outcome={openingOutcome}
           data-journal-ready-reason={readyReceipt?.reason}
@@ -1181,7 +1174,7 @@ function ChronicleJournalSessionIdentity({
             } as React.CSSProperties
           }
         >
-          <div className="ocean-depth" aria-hidden="true">
+          <div className={`ocean-depth ${styles.oceanBackdrop}`} aria-hidden="true">
             <div data-scene-part="sky" />
             <div data-scene-part="horizon" />
             <div data-scene-part="ocean" />

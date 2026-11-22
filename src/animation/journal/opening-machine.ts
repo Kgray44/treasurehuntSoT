@@ -377,7 +377,7 @@ function scheduleFrame(callback: FrameRequestCallback) {
 
 const paintAcquisitionTimeoutMs = 100;
 
-function nextPaint(signal: AbortSignal, paintFrames: 1 | 2) {
+function nextPaint(signal: AbortSignal) {
   return new Promise<"painted" | "aborted">((resolve) => {
     let settled = false;
     let paintTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -404,10 +404,6 @@ function nextPaint(signal: AbortSignal, paintFrames: 1 | 2) {
     paintTimeout = setTimeout(() => settle("painted"), paintAcquisitionTimeoutMs);
     cancelPendingFrame = scheduleFrame(() => {
       if (settled) return;
-      if (paintFrames === 1) {
-        settle("painted");
-        return;
-      }
       cancelPendingFrame = scheduleFrame(() => settle("painted"));
     });
   });
@@ -533,10 +529,9 @@ export async function waitForJournalPhase(
   phase: JournalOpeningPhase,
   mode: MotionMode,
   signal: AbortSignal,
-  { paintFrames = 2 }: { paintFrames?: 1 | 2 } = {},
 ): Promise<JournalPhaseOutcome> {
   const startedAt = clockNow();
-  if ((await nextPaint(signal, paintFrames)) === "aborted") return { status: "aborted", phase };
+  if ((await nextPaint(signal)) === "aborted") return { status: "aborted", phase };
   if (signal.aborted) return { status: "aborted", phase };
   const contract = journalPhaseContracts[phase];
   if (contract.actors.length === 0) {

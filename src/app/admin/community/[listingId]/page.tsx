@@ -15,7 +15,6 @@ import {
 } from "@/components/admiralty/AdminPrimitives";
 import { ModerationActionPanel } from "@/components/admiralty/ModerationActionPanel";
 import { SpatialPublicationReviewPanel } from "@/components/admiralty/SpatialPublicationReviewPanel";
-import { CreatorPublicationReviewPanel } from "@/components/community/CreatorPublicationReviewPanel";
 
 function stringList(value: string) {
   try {
@@ -24,12 +23,6 @@ function stringList(value: string) {
   } catch {
     return [];
   }
-}
-
-function creatorTypeLabel(type: string) {
-  if (type === "STORY_BLOCK_PRESET") return "Passage preset";
-  if (type === "CHRONICLE_TEMPLATE") return "Chapter template";
-  return humanize(type);
 }
 
 export default async function CommunityListingPage({ params }: { params: Promise<{ listingId: string }> }) {
@@ -41,17 +34,8 @@ export default async function CommunityListingPage({ params }: { params: Promise
   const spatialPending =
     ["SPATIAL_ASSET", "SPATIAL_SCENE", "SPATIAL_ENVIRONMENT"].includes(listing.itemType) &&
     ["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus);
-  const creatorPublication = ["CHRONICLE", "CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"].includes(listing.itemType);
-  const creatorPending =
-    creatorPublication && ["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus);
-  const recordedCreatorDecision =
-    creatorPublication &&
-    listing.currentReleaseId &&
-    (listing.publicationStatus === "PUBLISHED" || listing.publicationStatus === "REJECTED")
-      ? listing.publicationStatus
-      : null;
   const assuranceActive =
-    (spatialPending || creatorPending) && operator.capabilities.includes("COMMUNITY_MODERATE")
+    spatialPending && operator.capabilities.includes("COMMUNITY_MODERATE")
       ? (await privilegedAssuranceState(operator)).recent
       : false;
   return (
@@ -60,10 +44,10 @@ export default async function CommunityListingPage({ params }: { params: Promise
       title={listing.title}
       description={listing.shortDescription ?? "No description recorded."}
     >
-      <div className="chartroom-identity" style={creatorPublication ? { flexWrap: "wrap" } : undefined}>
+      <div className="chartroom-identity">
         <div>
           <StatusBadge state={listing.publicationStatus} />
-          <h2 style={creatorPublication ? { overflowWrap: "anywhere" } : undefined}>{listing.slug}</h2>
+          <h2>{listing.slug}</h2>
         </div>
         <Identifier value={listing.id} label="listing ID" />
       </div>
@@ -71,7 +55,7 @@ export default async function CommunityListingPage({ params }: { params: Promise
         <Panel title="Catalog state">
           <DetailList
             items={[
-              { label: "Type", value: creatorTypeLabel(listing.itemType) },
+              { label: "Type", value: humanize(listing.itemType) },
               { label: "Visibility", value: humanize(listing.visibility) },
               { label: "Moderation", value: <StatusBadge state={listing.moderationStatus} /> },
               { label: "Spoiler level", value: humanize(listing.spoilerLevel) },
@@ -118,23 +102,6 @@ export default async function CommunityListingPage({ params }: { params: Promise
           />
         </Panel>
       )}
-      {(creatorPending || recordedCreatorDecision) && (
-        <Panel
-          title="Creator publication review"
-          kicker="Exact saved content, rights and spoilers before public release"
-        >
-          <CreatorPublicationReviewPanel
-            key={listing.currentReleaseId}
-            listingId={listing.id}
-            slug={listing.slug}
-            itemType={listing.itemType as "CHRONICLE" | "CHRONICLE_TEMPLATE" | "STORY_BLOCK_PRESET"}
-            csrfToken={operator.csrfToken}
-            enabled={creatorPending && operator.capabilities.includes("COMMUNITY_MODERATE")}
-            assuranceActive={assuranceActive}
-            recordedDecision={recordedCreatorDecision}
-          />
-        </Panel>
-      )}
       <Panel title="Releases" kicker="Manifest contents, license snapshots, and attribution prose excluded">
         {listing.releases.length ? (
           <div className="chartroom-table-wrap" tabIndex={0}>
@@ -166,13 +133,9 @@ export default async function CommunityListingPage({ params }: { params: Promise
                       <StatusBadge state={release.moderationStatus} />
                     </td>
                     <td>
-                      {listing.currentReleaseId === release.id && (spatialPending || creatorPending)
+                      {spatialPending && listing.currentReleaseId === release.id
                         ? "Awaiting approval"
-                        : listing.currentReleaseId === release.id &&
-                            creatorPublication &&
-                            listing.publicationStatus === "REJECTED"
-                          ? "Rejected before publication"
-                          : dateTime(release.publishedAt)}
+                        : dateTime(release.publishedAt)}
                       <small>
                         {release.deprecatedAt
                           ? `Deprecated ${dateTime(release.deprecatedAt)}`

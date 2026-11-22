@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake compiled reduced-motion preflight on Linux
+run-name: Lanternwake unchanged desktop frame budget on hosted Windows
 
 on:
   push:
@@ -14,17 +14,17 @@ permissions:
 jobs:
   benchmark:
     name: Phase 3 performance only (development)
-    runs-on: ubuntu-24.04
+    runs-on: windows-2025
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: c4fc84572efff5ba184752a64c199a063397dd6f
-      BASE_SHA: 9e612bd42dee2561d75dfac9263ac3307d5dee24
-      FOREVER_VALIDATION_SOURCE_SHA: c4fc84572efff5ba184752a64c199a063397dd6f
+      CANDIDATE_SHA: 05f92b75885b35b5344dcbf76cf8993f2a840607
+      BASE_SHA: aaf7aa6e80d0c71c02018432c1e8a66ef5e1e21f
+      FOREVER_VALIDATION_SOURCE_SHA: 05f92b75885b35b5344dcbf76cf8993f2a840607
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: c4fc84572efff5ba184752a64c199a063397dd6f
+          ref: 05f92b75885b35b5344dcbf76cf8993f2a840607
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -57,22 +57,23 @@ jobs:
       - name: Install locked dependencies and Chromium
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium
-      - name: Measure compiled reduced-motion readiness at the original limit
+          npx --no-install playwright install chromium
+      - name: Measure the original cold and warm desktop frame workload
         run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          node --input-type=module <<'EOF'
+          if ((git rev-parse HEAD).Trim() -ne $env:CANDIDATE_SHA) { throw "Unexpected source identity" }
+          @'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
           await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
+            { id: "lanternwake-windows-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
             { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
           );
-          EOF
+          '@ | node --input-type=module
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Retain sanitized performance metrics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lanternwake-linux-compiled-preflight-metrics
+          name: lanternwake-hosted-windows-desktop-metrics
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
           if-no-files-found: ignore
           retention-days: 30

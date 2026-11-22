@@ -3,3 +3,22 @@
     var(--focus-ring),
     0 20px 45px rgba(0, 0, 0, 0.5);
 }
+
+/* Blend the static texture with the ocean backdrop before composing the moving Journal. */
+.journalShell:global(.voyage-shell)::after {
+  content: none;
+}
+
+.oceanBackdrop {
+  isolation: isolate;
+}
+
+.oceanBackdrop::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  opacity: calc(0.16 * var(--texture-opacity));
+  background-image: url("/textures/paper-grain.svg");
+  mix-blend-mode: soft-light;
+}
