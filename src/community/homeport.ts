@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { cache } from "react";
 import {
   communityFacetCounts,
   databaseCommunitySearchProvider,
@@ -279,7 +280,7 @@ export async function listHomeportCreatorCards(viewerAccountId?: string | null) 
   return visible.map((profile) => creatorCard(profile, workCounts.get(profile.id) ?? 0));
 }
 
-export async function getHomeportCreatorDetail(handle: string, viewerAccountId?: string | null) {
+const getVisibleCreatorProfile = cache(async (handle: string, viewerAccountId?: string | null) => {
   const profile = await db.communityProfile.findFirst({
     where: {
       normalizedHandle: handle.normalize("NFKC").toLocaleLowerCase("en-US"),
@@ -299,7 +300,23 @@ export async function getHomeportCreatorDetail(handle: string, viewerAccountId?:
       updatedAt: true,
     },
   });
-  if (!profile || (await isBlocked(viewerAccountId, profile.accountId))) return null;
+  return profile && !(await isBlocked(viewerAccountId, profile.accountId)) ? profile : null;
+});
+
+export async function getHomeportCreatorSharingInfo(handle: string, viewerAccountId?: string | null) {
+  const profile = await getVisibleCreatorProfile(handle, viewerAccountId);
+  return profile
+    ? {
+        canonicalPath: creatorProfilePath(profile.handle),
+        title: profile.displayName,
+        biography: profile.biography ?? undefined,
+      }
+    : null;
+}
+
+export async function getHomeportCreatorDetail(handle: string, viewerAccountId?: string | null) {
+  const profile = await getVisibleCreatorProfile(handle, viewerAccountId);
+  if (!profile) return null;
   const [records, badgeGrants, followers, collections] = await Promise.all([
     databaseCommunitySearchProvider.search({
       filters: { creatorId: profile.id },
@@ -746,6 +763,10 @@ export function homeportCardFromDiscovery(record: DiscoveryRecord): HomeportComm
   };
 }
 
+function creatorProfilePath(handle: string) {
+  return `/community/creators/${encodeURIComponent(handle)}`;
+}
+
 function creatorCard(
   profile: {
     id: string;
@@ -759,7 +780,7 @@ function creatorCard(
   },
   workCount: number,
 ): HomeportCommunityCard {
-  const destination = `/community/creators/${encodeURIComponent(profile.handle)}`;
+  const destination = creatorProfilePath(profile.handle);
   return {
     id: profile.id,
     variant: "CREATOR",
