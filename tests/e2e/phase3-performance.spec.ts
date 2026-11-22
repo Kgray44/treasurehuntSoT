@@ -586,7 +586,7 @@ phase3Test.use({
 });
 
 phase3Test(
-  "unchanged desktop Journal frame budget on Linux ARM64",
+  "unchanged desktop Journal frame budget on hosted Windows",
   async ({ page, phase3, browser, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
@@ -624,7 +624,8 @@ phase3Test(
       desktopRuns.push(run.visual);
     }
     expect(warmRuns).toHaveLength(3);
-    expect(process.arch).toBe("arm64");
+    expect(process.platform).toBe("win32");
+    expect(process.arch).toBe("x64");
     const desktopFrameP95Ms = rounded(percentile(desktopRuns.flatMap((run) => [...run.frameDurationsMs]), 0.95));
     const report = {
       purpose: "DEVELOPMENT_ONLY",
