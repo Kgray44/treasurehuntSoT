@@ -85,7 +85,7 @@ function parseFrontmatter(text) {
   return Object.fromEntries(
     match[1]
       .split(/\r?\n/)
-      .filter(Boolean)
+      .filter((line) => line.includes(":"))
       .map((line) => {
         const pivot = line.indexOf(":");
         return [line.slice(0, pivot).trim(), line.slice(pivot + 1).trim()];
