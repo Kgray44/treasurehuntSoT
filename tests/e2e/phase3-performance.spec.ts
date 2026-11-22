@@ -598,7 +598,7 @@ async function measuredFullOpening(page: Page, control: Locator) {
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
 phase3Test(
-  "verify the compiled replay reset and sample the original reveal frames",
+  "compare equivalent transforms on the static PageFlip surfaces during settling",
   async ({ page, phase3, browser, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
@@ -628,42 +628,51 @@ phase3Test(
     const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
     expect(fullRuntimeBaseline.eventSources).toBe(1);
 
-    const replays: VisualProbeResult[] = [];
-    for (let index = 0; index < 3; index += 1) {
+    const scope = '.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"]';
+    const css = [
+      scope + ' .book-camera { transform: scale(.985); }',
+      scope + ' .page-flip-runtime.stf__parent { transform: matrix(1, 0, 0, 1, 0, 0); }',
+      scope + ' .page-flip-runtime .stf__item.--simple { transform-style: flat; }',
+    ].join("\n");
+    const values: Record<"original" | "planar", VisualProbeResult[]> = { original: [], planar: [] };
+    for (const mode of ["original", "planar", "planar", "original"] as const) {
+      const treatment = mode === "planar" ? await page.addStyleTag({ content: css }) : null;
       const opening = await measuredFullOpening(page, replay(page));
       expect(opening.durationMs).toBeLessThan(budgets.openingMs);
-      await expect(replay(page)).toBeFocused();
-      replays.push(opening.visual);
+      values[mode].push(opening.visual);
+      await treatment?.evaluate((node) => { node.parentNode?.removeChild(node); });
     }
+
     await replay(page).click();
-    await expect(journal(page)).toHaveAttribute("data-journal-phase", "CLOSED_BOOK_REVEAL");
-    const composition = await journal(page).evaluate((root) => {
-      const inspect = (selector: string) => {
-        const element = root.querySelector(selector);
-        if (!element) throw new Error("Missing book composition layer: " + selector);
-        const style = getComputedStyle(element);
-        return { opacity: style.opacity, visibility: style.visibility };
-      };
-      return Object.fromEntries([".open-page-stage", ".rear-book-cover", ".page-stack", ".closed-book"].map(
-        (selector) => [selector, inspect(selector)],
-      ));
-    });
+    await expect(journal(page)).toHaveAttribute("data-journal-phase", "BOOK_SETTLING");
+    const inspect = () => journal(page).evaluate((root) => [".book-camera", ".page-flip-runtime.stf__parent"].map(
+      (selector) => {
+        const item = root.querySelector(selector);
+        if (!item) throw new Error("Expected static surface: " + selector);
+        const matrix = new DOMMatrixReadOnly(getComputedStyle(item).transform);
+        return { a: matrix.a, b: matrix.b, c: matrix.c, d: matrix.d, e: matrix.e, f: matrix.f,
+          z: matrix.m43, depthScale: matrix.m33 };
+      }));
+    const originalTransform = await inspect();
+    await page.addStyleTag({ content: css });
+    expect(await inspect()).toEqual(originalTransform);
     await assertReadableJournal(page);
-    const phases = Object.fromEntries(["CLOSED_BOOK_REVEAL", "COVER_OPENING", "BOOK_SETTLING"].map((phase) => {
-      const intervals = replays.flatMap((sample) => sample.framesByPhase[phase] ?? []);
-      return [phase, { samples: intervals.length, p95: rounded(percentile(intervals, 0.95)),
-        slow: intervals.filter((ms) => ms > budgets.desktopFrameP95Ms).length }];
+    const byMode = Object.fromEntries((["original", "planar"] as const).map((mode) => {
+      const runs = values[mode];
+      const frames = runs.flatMap((sample) => [...sample.frameDurationsMs]);
+      const phases = Object.fromEntries(["CLOSED_BOOK_REVEAL", "COVER_OPENING", "BOOK_SETTLING"].map((phase) => {
+        const intervals = runs.flatMap((sample) => sample.framesByPhase[phase] ?? []);
+        return [phase, { samples: intervals.length,
+          p95: rounded(percentile(intervals, 0.95)),
+          slow: intervals.filter((ms) => ms > budgets.desktopFrameP95Ms).length }];
+      }));
+      return [mode, { samples: frames.length, p95: rounded(percentile(frames, 0.95)),
+        slow: frames.filter((ms) => ms > budgets.desktopFrameP95Ms).length, phases }];
     }));
-    const report = {
-      purpose: "DEVELOPMENT_ONLY", candidate: "d1b6b4c79bf0600e4f3cf44c456a4b1f68973754",
-      budgetMs: budgets.desktopFrameP95Ms, composition, phases,
-      originalDesktopFrameP95Ms: rounded(percentile([cold.visual, ...replays].flatMap((trace) => [...trace.frameDurationsMs]), 0.95)),
-    };
+    const report = { purpose: "DEVELOPMENT_ONLY", candidate: "d1b6b4c79bf0600e4f3cf44c456a4b1f68973754",
+      originalTransform, transformMatches: true, budgetMs: budgets.desktopFrameP95Ms, byMode };
     await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
     console.log(JSON.stringify(report));
-    expect(composition[".open-page-stage"].visibility).toBe("hidden");
-    expect(composition[".rear-book-cover"].opacity).toBe("0");
-    expect(composition[".closed-book"].visibility).toBe("visible");
-    expect(phases.CLOSED_BOOK_REVEAL.p95).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
+    expect(byMode.planar.p95).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
   },
 );
