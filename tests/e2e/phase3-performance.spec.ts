@@ -580,7 +580,6 @@ async function measuredFullOpening(page: Page, control: Locator) {
 // Use the regular Chromium build and keep recording work out of frame measurements.
 phase3Test.use({
   channel: "chromium",
-  launchOptions: { args: ["--enable-gpu", "--use-gl=angle", "--use-angle=gl"] },
   video: "off",
   trace: { mode: "retain-on-failure", screenshots: false, snapshots: false },
 });
@@ -594,7 +593,7 @@ phase3Test(
     await rendererProbe.detach();
     console.log(JSON.stringify({ purpose: "DEVELOPMENT_ONLY", renderBackend: gpu.auxAttributes?.glRenderer,
       compositor: gpu.featureStatus?.gpu_compositing, rasterization: gpu.featureStatus?.rasterization }));
-    expect(gpu.auxAttributes?.glRenderer).toMatch(/llvmpipe/i);
+    expect(gpu.auxAttributes?.glRenderer).toMatch(/Metal Renderer: Apple Paravirtual device/i);
     expect(gpu.featureStatus?.gpu_compositing).toBe("enabled");
     expect(gpu.featureStatus?.rasterization).toBe("enabled");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");

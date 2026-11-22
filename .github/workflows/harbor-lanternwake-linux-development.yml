@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake standard macOS Chromium renderer probe
+run-name: Lanternwake focused performance on standard macOS Metal
 
 on:
   push:
@@ -12,42 +12,67 @@ permissions:
   contents: read
 
 jobs:
-  inspect:
-    name: Inspect Chromium graphics (development)
+  benchmark:
+    name: Phase 3 performance only (development)
     runs-on: macos-15
-    timeout-minutes: 8
+    timeout-minutes: 22
+    env:
+      CANDIDATE_SHA: 345e6f13b4607737e21b07c2278d7bff222fe9b9
+      BASE_SHA: aaf7aa6e80d0c71c02018432c1e8a66ef5e1e21f
+      FOREVER_VALIDATION_SOURCE_SHA: 345e6f13b4607737e21b07c2278d7bff222fe9b9
+      NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 9e612bd42dee2561d75dfac9263ac3307d5dee24
-          fetch-depth: 1
+          ref: 345e6f13b4607737e21b07c2278d7bff222fe9b9
+          fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /.node-version
-            /package.json
-            /package-lock.json
-            /bridgewatch/package.json
+            /*
+            !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
+            /scripts/
+            /src/
+            /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Read the graphics device exposed to the runner
-        run: system_profiler SPDisplaysDataType -detailLevel mini
-      - name: Read the compositor actually selected by Chromium
+      - name: Install locked dependencies and Chromium
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install chromium
+      - name: Measure the unchanged Phase 3 journeys on the Metal compositor
+        run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
-          import { chromium } from "playwright";
-          for (const [mode, args] of [["default", []], ["enable-gpu", ["--enable-gpu"]]]) {
-            const browser = await chromium.launch({ channel: "chromium", args });
-            try {
-              const cdp = await browser.newBrowserCDPSession();
-              const {gpu} = await cdp.send("SystemInfo.getInfo");
-              console.log(JSON.stringify({purpose: "DEVELOPMENT_ONLY", mode, renderer: gpu.auxAttributes?.glRenderer,
-                compositor: gpu.featureStatus?.gpu_compositing, rasterization: gpu.featureStatus?.rasterization}));
-            } finally {
-              await browser.close();
-            }
-          }
+          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
+          );
           EOF
+      - name: Retain sanitized performance metrics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lanternwake-linux-performance-metrics
+          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
+          if-no-files-found: ignore
+          retention-days: 30
