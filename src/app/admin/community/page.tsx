@@ -16,6 +16,7 @@ import {
   ProjectionSearchForm,
   projectionSearchResultsId,
 } from "@/components/admiralty/ProjectionSearchForm";
+import { ProjectionSearchResult } from "@/components/admiralty/ProjectionSearchResult";
 
 export default async function CommunityAdminPage({
   searchParams,
@@ -100,7 +101,7 @@ export default async function CommunityAdminPage({
         />
       ) : result?.data?.results.length ? (
         <>
-          <div className="chartroom-table-wrap" id={projectionSearchResultsId} tabIndex={0}>
+          <ProjectionSearchResult className="chartroom-table-wrap" id={projectionSearchResultsId} tabIndex={0}>
             <table>
               <thead>
                 <tr>
@@ -140,7 +141,7 @@ export default async function CommunityAdminPage({
                 ))}
               </tbody>
             </table>
-          </div>
+          </ProjectionSearchResult>
           <EvidenceStrip evidence={result.evidence} />
         </>
       ) : (
