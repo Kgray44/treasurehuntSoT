@@ -34,6 +34,7 @@ type LayoutShiftSample = Readonly<{ atMs: number; score: number; phase: string |
 type VisualProbeResult = Readonly<{
   elapsedMs: number;
   frameDurationsMs: readonly number[];
+  framesByPhase: Record<string, number[]>;
   longTaskDurationsMs: readonly number[];
   cls: number;
   layoutShifts: readonly LayoutShiftSample[];
@@ -210,6 +211,7 @@ async function startVisualProbe(page: Page) {
       startedAt: number;
       lastFrameAt: number | null;
       frameDurationsMs: number[];
+      framesByPhase: Record<string, number[]>;
       longTaskDurationsMs: number[];
       cls: number;
       layoutShifts: LayoutShiftSample[];
@@ -230,13 +232,20 @@ async function startVisualProbe(page: Page) {
       startedAt: window.performance.now(),
       lastFrameAt: null,
       frameDurationsMs: [],
+      framesByPhase: {},
       longTaskDurationsMs: [],
       cls: 0,
       layoutShifts: [],
       frame: 0,
     } as unknown as Probe;
+    const scene = document.querySelector<HTMLElement>(".chronicle-journal-shell");
     const sampleFrame = (at: number) => {
-      if (probe.lastFrameAt !== null) probe.frameDurationsMs.push(at - probe.lastFrameAt);
+      if (probe.lastFrameAt !== null) {
+        const elapsed = at - probe.lastFrameAt;
+        const phase = scene?.dataset.journalPhase ?? "UNMOUNTED";
+        probe.frameDurationsMs.push(elapsed);
+        (probe.framesByPhase[phase] ??= []).push(elapsed);
+      }
       probe.lastFrameAt = at;
       probe.frame = requestAnimationFrame(sampleFrame);
     };
@@ -280,6 +289,7 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
       __phase3VisualProbe?: {
         startedAt: number;
         frameDurationsMs: number[];
+      framesByPhase: Record<string, number[]>;
         longTaskDurationsMs: number[];
         cls: number;
         layoutShifts: VisualProbeResult["layoutShifts"];
@@ -301,6 +311,7 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
     return {
       elapsedMs: window.performance.now() - probe.startedAt,
       frameDurationsMs: probe.frameDurationsMs,
+      framesByPhase: probe.framesByPhase,
       longTaskDurationsMs: probe.longTaskDurationsMs,
       cls: probe.cls,
       layoutShifts: probe.layoutShifts,
@@ -587,7 +598,7 @@ async function measuredFullOpening(page: Page, control: Locator) {
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
 phase3Test(
-  "compare the unchanged paper grain rendered from SVG and from raster",
+  "compare a real Journal replay starting from settled and reset book states",
   async ({ page, phase3, browser, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
@@ -617,57 +628,57 @@ phase3Test(
     const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
     expect(fullRuntimeBaseline.eventSources).toBe(1);
 
-    const rasterCss = await page.evaluate(async () => {
-      if (devicePixelRatio !== 1) throw new Error("This comparison renders the original desktop density.");
-      const svg = new Image();
-      svg.src = "/textures/paper-grain.svg";
-      await svg.decode();
-      const canvas = document.createElement("canvas");
-      canvas.width = svg.naturalWidth;
-      canvas.height = svg.naturalHeight;
-      const context = canvas.getContext("2d");
-      if (!context) throw new Error("The original texture could not be rasterized.");
-      context.drawImage(svg, 0, 0);
-      const png = new Image();
-      png.src = canvas.toDataURL("image/png");
-      await png.decode();
-      const original = context.getImageData(0, 0, canvas.width, canvas.height).data;
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      context.drawImage(png, 0, 0);
-      const copied = context.getImageData(0, 0, canvas.width, canvas.height).data;
-      if (original.some((value, index) => value !== copied[index])) throw new Error("Rasterized tile changed pixels.");
-      const selectors = [".chronicle-journal-shell", ".chronicle-journal-shell .cover-front"];
-      return selectors.map((selector) => {
-        const element = document.querySelector(selector);
-        if (!element) throw new Error("The Journal texture owner is missing.");
-        const oldImage = getComputedStyle(element, "::after").backgroundImage;
-        const originalUrl = new URL(svg.src).href;
-        if (!oldImage.includes(originalUrl)) throw new Error("The authored tile is missing from its owning surface.");
-        return selector + "::after { background-image: " + oldImage.replace(originalUrl, png.src) + " !important; }";
-      }).join("\n");
-    });
+    const css = [
+      '.chronicle-journal-shell[data-journal-phase="ENTRY_ACTIVATED"]',
+      ':is(.closed-book, .front-cover, .opening-sealed-page, .opening-wax-seal, .open-page-stage,',
+      '.book-shadow, .rear-book-cover, .page-stack, .book-binding, .persistent-interface,',
+      '.persistent-mobile-interface, .persistent-objective, .section-masthead, .chapter-tabs)',
+      '{ transition: none !important; animation: none !important; }',
+    ].join(" ");
 
-    const results: Array<{ mode: "original" | "raster"; values: readonly number[]; p95: number }> = [];
-    for (const mode of ["original", "raster", "raster", "original"] as const) {
-      const injected = mode === "raster" ? await page.addStyleTag({ content: rasterCss }) : null;
+    const values: Record<"original" | "reset", VisualProbeResult[]> = { original: [], reset: [] };
+    for (const mode of ["original", "reset", "reset", "original"] as const) {
+      const treatment = mode === "reset" ? await page.addStyleTag({ content: css }) : null;
       const opening = await measuredFullOpening(page, replay(page));
-      expect(opening.reason).toBe("completed");
       expect(opening.durationMs).toBeLessThan(budgets.openingMs);
-      results.push({ mode, values: opening.visual.frameDurationsMs,
-        p95: rounded(percentile(opening.visual.frameDurationsMs, 0.95)) });
-      await injected?.evaluate((node) => { node.parentNode?.removeChild(node); });
+      values[mode].push(opening.visual);
+      await treatment?.evaluate((node) => { node.parentNode?.removeChild(node); });
     }
-    const byMode = Object.fromEntries((["original", "raster"] as const).map((mode) => {
-      const rows = results.filter((result) => result.mode === mode);
-      const frames = rows.flatMap((row) => [...row.values]);
+
+    await page.addStyleTag({ content: css });
+    await replay(page).click();
+    await expect(journal(page)).toHaveAttribute("data-journal-phase", "CLOSED_BOOK_REVEAL");
+    const composition = await journal(page).evaluate((root) => {
+      const inspect = (selector: string) => {
+        const element = root.querySelector(selector);
+        if (!element) throw new Error("Missing book composition layer: " + selector);
+        const style = getComputedStyle(element);
+        return { opacity: style.opacity, visibility: style.visibility };
+      };
+      return Object.fromEntries([".open-page-stage", ".rear-book-cover", ".page-stack", ".closed-book"].map(
+        (selector) => [selector, inspect(selector)],
+      ));
+    });
+    await assertReadableJournal(page);
+
+    const byMode = Object.fromEntries((["original", "reset"] as const).map((mode) => {
+      const runs = values[mode];
+      const frames = runs.flatMap((sample) => [...sample.frameDurationsMs]);
+      const phases = Object.fromEntries(["CLOSED_BOOK_REVEAL", "COVER_OPENING", "BOOK_SETTLING"].map((phase) => {
+        const intervals = runs.flatMap((sample) => sample.framesByPhase[phase] ?? []);
+        return [phase, { samples: intervals.length,
+          p95: rounded(percentile(intervals, 0.95)),
+          slow: intervals.filter((ms) => ms > budgets.desktopFrameP95Ms).length }];
+      }));
       return [mode, { samples: frames.length, p95: rounded(percentile(frames, 0.95)),
-        slowFrames: frames.filter((frame) => frame > budgets.desktopFrameP95Ms).length,
-        p95ByRun: rows.map((row) => row.p95) }];
+        slow: frames.filter((ms) => ms > budgets.desktopFrameP95Ms).length, phases }];
     }));
-    const report = { purpose: "DEVELOPMENT_ONLY", candidate: "6f81ff1f20185791904ad2eb6ed03d88308605b3",
-      tilePixelsMatch: true, budgetMs: budgets.desktopFrameP95Ms, byMode };
+    const report = { purpose: "DEVELOPMENT_ONLY", budgetMs: budgets.desktopFrameP95Ms, composition, byMode };
     await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
     console.log(JSON.stringify(report));
-    expect(byMode.raster.p95).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
+    expect(composition[".open-page-stage"].visibility).toBe("hidden");
+    expect(composition[".rear-book-cover"].opacity).toBe("0");
+    expect(composition[".closed-book"].visibility).toBe("visible");
+    expect(byMode.reset.p95).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
   },
 );

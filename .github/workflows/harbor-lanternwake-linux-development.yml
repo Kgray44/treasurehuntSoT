@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake exact paper-grain rendering comparison on Linux
+run-name: Lanternwake replay book-stage reset comparison on Linux
 
 on:
   push:
@@ -17,14 +17,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 98affc32aa4adf5c246ff22f400afc1b82a5122e
+      CANDIDATE_SHA: a2fb7ad47adbea9a4daa22da9e3a5ff85974fabd
       BASE_SHA: 9e612bd42dee2561d75dfac9263ac3307d5dee24
-      FOREVER_VALIDATION_SOURCE_SHA: 98affc32aa4adf5c246ff22f400afc1b82a5122e
+      FOREVER_VALIDATION_SOURCE_SHA: a2fb7ad47adbea9a4daa22da9e3a5ff85974fabd
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 98affc32aa4adf5c246ff22f400afc1b82a5122e
+          ref: a2fb7ad47adbea9a4daa22da9e3a5ff85974fabd
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,7 +58,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Compare desktop openings with the original texture and its exact bitmap
+      - name: Compare the real desktop replay with earlier book reset
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -72,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lanternwake-linux-grain-ab
+          name: lanternwake-linux-replay-reset
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
           if-no-files-found: ignore
           retention-days: 30
