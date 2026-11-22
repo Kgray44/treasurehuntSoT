@@ -113,9 +113,9 @@
               }
             ],
             "witness": {
-              "role": "heading",
-              "name": "Search the catalog",
-              "text": "Search the catalog"
+              "role": "main",
+              "name": "",
+              "text": "Community catalog, creator, report, moderation, release, queue, and provider evidence"
             }
           },
           "INSTALLER": {
