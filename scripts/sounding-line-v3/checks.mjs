@@ -141,6 +141,13 @@ function checkDocs({ base, tree, entries, read }) {
   if (invalid.length) throw new Error(invalid.join("\n"));
 }
 
+export function browserProfileBatches(profile, files, fullBrowser) {
+  const extended = "tests/e2e/phase3-lifecycle-extended.spec.ts";
+  if (fullBrowser || profile !== "lanternwake-phase3" || !files.includes(extended)) return [files];
+  // The twenty-cycle lifecycle cases need their own ordinary browser deadline.
+  return [files.filter((file) => file !== extended), [extended]].filter((batch) => batch.length);
+}
+
 async function runBrowserProfile(profileId, files, tree, fullBrowser, shard) {
   const { browserSuiteProfiles, isolatedBrowserFixtureCredentials } = await import(
     "../sounding-line/browser-suite-profiles.mjs"
@@ -371,7 +378,9 @@ export async function runJob(job, context) {
       const profileFailures = [];
       for (const { profile, specs } of profiles) {
         try {
-          await runBrowserProfile(profile, specs, tree, fullBrowser, job.shard);
+          for (const files of browserProfileBatches(profile, specs, fullBrowser)) {
+            await runBrowserProfile(profile, files, tree, fullBrowser, job.shard);
+          }
         } catch (error) {
           if (!fullBrowser) throw error;
           profileFailures.push(profile);
