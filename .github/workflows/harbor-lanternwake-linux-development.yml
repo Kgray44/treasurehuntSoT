@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake compositor layer attribution on Linux
+run-name: Lanternwake exact paper-grain rendering comparison on Linux
 
 on:
   push:
@@ -17,14 +17,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: af4a0b54821ba0b307da85cf81aa0f5243065bd6
+      CANDIDATE_SHA: 672ac1c3140429b04c0b0488fdcf91addd5c889f
       BASE_SHA: 9e612bd42dee2561d75dfac9263ac3307d5dee24
-      FOREVER_VALIDATION_SOURCE_SHA: af4a0b54821ba0b307da85cf81aa0f5243065bd6
+      FOREVER_VALIDATION_SOURCE_SHA: 672ac1c3140429b04c0b0488fdcf91addd5c889f
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: af4a0b54821ba0b307da85cf81aa0f5243065bd6
+          ref: 672ac1c3140429b04c0b0488fdcf91addd5c889f
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,7 +58,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Map the Journal compositor layers through one cold opening and one replay
+      - name: Compare desktop openings with the original texture and its exact bitmap
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -72,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lanternwake-linux-compositor-layers
+          name: lanternwake-linux-grain-ab
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
           if-no-files-found: ignore
           retention-days: 30

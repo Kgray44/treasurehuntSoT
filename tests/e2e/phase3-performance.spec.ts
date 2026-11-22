@@ -587,7 +587,7 @@ async function measuredFullOpening(page: Page, control: Locator) {
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
 phase3Test(
-  "map slow Journal compositor layers to their application owners",
+  "compare the unchanged paper grain rendered from SVG and from raster",
   async ({ page, phase3, browser, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
@@ -617,65 +617,57 @@ phase3Test(
     const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
     expect(fullRuntimeBaseline.eventSources).toBe(1);
 
-    const session = await page.context().newCDPSession(page);
-    type Layer = { layerId: string; backendNodeId?: number; width: number; height: number;
-      offsetX: number; offsetY: number; drawsContent: boolean; paintCount: number };
-    let layerTree: Layer[] = [];
-    const painted = new Map<string, number>();
-    session.on("LayerTree.layerTreeDidChange", ({ layers }) => { if (layers) layerTree = layers; });
-    session.on("LayerTree.layerPainted", ({ layerId }) => {
-      painted.set(layerId, (painted.get(layerId) ?? 0) + 1);
+    const rasterCss = await page.evaluate(async () => {
+      if (devicePixelRatio !== 1) throw new Error("This comparison renders the original desktop density.");
+      const svg = new Image();
+      svg.src = "/textures/paper-grain.svg";
+      await svg.decode();
+      const canvas = document.createElement("canvas");
+      canvas.width = svg.naturalWidth;
+      canvas.height = svg.naturalHeight;
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("The original texture could not be rasterized.");
+      context.drawImage(svg, 0, 0);
+      const png = new Image();
+      png.src = canvas.toDataURL("image/png");
+      await png.decode();
+      const original = context.getImageData(0, 0, canvas.width, canvas.height).data;
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(png, 0, 0);
+      const copied = context.getImageData(0, 0, canvas.width, canvas.height).data;
+      if (original.some((value, index) => value !== copied[index])) throw new Error("Rasterized tile changed pixels.");
+      const selectors = [".chronicle-journal-shell", ".chronicle-journal-shell .cover-front"];
+      return selectors.map((selector) => {
+        const element = document.querySelector(selector);
+        if (!element) throw new Error("The Journal texture owner is missing.");
+        const oldImage = getComputedStyle(element, "::after").backgroundImage;
+        const originalUrl = new URL(svg.src).href;
+        if (!oldImage.includes(originalUrl)) throw new Error("The authored tile is missing from its owning surface.");
+        return selector + "::after { background-image: " + oldImage.replace(originalUrl, png.src) + " !important; }";
+      }).join("\n");
     });
-    await session.send("DOM.enable");
-    await session.send("LayerTree.enable");
-    const scene = journal(page);
-    const describe = async (layer: Layer) => {
-      const [description, compositing] = await Promise.allSettled([
-        layer.backendNodeId === undefined
-          ? Promise.resolve(undefined)
-          : session.send("DOM.describeNode", { backendNodeId: layer.backendNodeId }),
-        session.send("LayerTree.compositingReasons", { layerId: layer.layerId }),
-      ]);
-      const node = description.status === "fulfilled" ? description.value?.node : undefined;
-      const attrs = node?.attributes ?? [];
-      const classes = attrs[attrs.indexOf("class") + 1] ?? "";
-      const actor = attrs[attrs.indexOf("data-opening-actor") + 1] ?? "";
-      const part = attrs[attrs.indexOf("data-scene-part") + 1] ?? "";
-      const safe = (value: string) => value.split(/\s+/u).filter((part) => /^[\w-]+$/u.test(part)).slice(0, 8);
-      return {
-        layer: layer.layerId, tag: node?.nodeName ?? null, classes: attrs.includes("class") ? safe(classes) : [],
-        actor: attrs.includes("data-opening-actor") ? safe(actor) : [],
-        scenePart: attrs.includes("data-scene-part") ? safe(part) : [],
-        width: layer.width, height: layer.height, paintCount: layer.paintCount,
-        events: painted.get(layer.layerId) ?? 0,
-        reasons: compositing.status === "fulfilled" ? compositing.value.compositingReasonIds : [],
-      };
-    };
-    const snapshots: { phase: string; layers: number; drawing: number; area: number; large: Awaited<ReturnType<typeof describe>>[] }[] = [];
-    const capture = async (phase: string) => {
-      await expect(scene).toHaveAttribute("data-journal-phase", phase);
-      await waitAnimationFrames(page, 4);
-      await expect(scene).toHaveAttribute("data-journal-phase", phase);
-      const drawing = layerTree.filter((layer) => layer.drawsContent);
-      const ordered = [...drawing].sort((left, right) => right.width * right.height - left.width * left.height);
-      const large = await Promise.all(ordered.slice(0, 25).map(describe));
-      snapshots.push({ phase, layers: layerTree.length, drawing: drawing.length,
-        area: drawing.reduce((sum, layer) => sum + layer.width * layer.height, 0), large });
-    };
 
-    await capture("JOURNAL_READY");
-    await replay(page).click();
-    await capture("CLOSED_BOOK_REVEAL");
-    await capture("COVER_OPENING");
-    await capture("BOOK_SETTLING");
-    await assertReadableJournal(page);
-    await session.send("LayerTree.disable");
-    await session.detach();
-
-    expect(snapshots.slice(1).every((snapshot) => snapshot.drawing > 0)).toBe(true);
-    const report = { purpose: "DEVELOPMENT_ONLY", candidate: "6f81ff1f20185791904ad2eb6ed03d88308605b3", snapshots };
+    const results: Array<{ mode: "original" | "raster"; values: readonly number[]; p95: number }> = [];
+    for (const mode of ["original", "raster", "raster", "original"] as const) {
+      const injected = mode === "raster" ? await page.addStyleTag({ content: rasterCss }) : null;
+      const opening = await measuredFullOpening(page, replay(page));
+      expect(opening.reason).toBe("completed");
+      expect(opening.durationMs).toBeLessThan(budgets.openingMs);
+      results.push({ mode, values: opening.visual.frameDurationsMs,
+        p95: rounded(percentile(opening.visual.frameDurationsMs, 0.95)) });
+      await injected?.evaluate((style) => style.remove());
+    }
+    const byMode = Object.fromEntries((["original", "raster"] as const).map((mode) => {
+      const rows = results.filter((result) => result.mode === mode);
+      const frames = rows.flatMap((row) => [...row.values]);
+      return [mode, { samples: frames.length, p95: rounded(percentile(frames, 0.95)),
+        slowFrames: frames.filter((frame) => frame > budgets.desktopFrameP95Ms).length,
+        p95ByRun: rows.map((row) => row.p95) }];
+    }));
+    const report = { purpose: "DEVELOPMENT_ONLY", candidate: "6f81ff1f20185791904ad2eb6ed03d88308605b3",
+      tilePixelsMatch: true, budgetMs: budgets.desktopFrameP95Ms, byMode };
     await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
-    console.log(JSON.stringify({ purpose: report.purpose, snapshots: snapshots.map(({ phase, layers, drawing, area }) =>
-      ({ phase, layers, drawing, area })) }));
+    console.log(JSON.stringify(report));
+    expect(byMode.raster.p95).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
   },
 );
