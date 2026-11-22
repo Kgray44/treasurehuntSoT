@@ -808,7 +808,10 @@ phase3Test(
         }),
         [fixture.slug, voyage!.sessionId],
       );
-      expect(failedBudgets, "Production performance budgets failed; see the sanitized failure artifact.").toEqual([]);
+      expect(
+        failedBudgets,
+        `Production performance budgets failed. Observations and limits ${JSON.stringify({ metrics, budgets })}`,
+      ).toEqual([]);
       return;
     }
 
