@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Journal PR 905 desktop and phone handoff recordings
+run-name: Journal PR 905 handoff recordings after the entry control is visible
 
 on:
   push:
@@ -17,14 +17,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 88b13412a8d2d9ad4f345c0e65353d9713083a8e
+      CANDIDATE_SHA: 71b837a16e85f2363d259a886b0248ba6ad92a33
       BASE_SHA: 9e612bd42dee2561d75dfac9263ac3307d5dee24
-      FOREVER_VALIDATION_SOURCE_SHA: 88b13412a8d2d9ad4f345c0e65353d9713083a8e
+      FOREVER_VALIDATION_SOURCE_SHA: 71b837a16e85f2363d259a886b0248ba6ad92a33
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 88b13412a8d2d9ad4f345c0e65353d9713083a8e
+          ref: 71b837a16e85f2363d259a886b0248ba6ad92a33
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false

@@ -609,8 +609,10 @@ phase3Test("records the Journal Skip and replay handoffs across desktop and phon
       await installRuntimeCounter(page);
       await setPhase3Motion(page, PHASE3_MOTION_MODES[0]);
       await enterJournal(page, fixture, route);
-      if (await journal(page).getAttribute("data-journal-phase") === "ENTRY_IDLE") {
-        expect((await measureOpening(page.getByRole("button", { name: "Open the journal" }))).reason).toBe("completed");
+      const open = page.getByRole("button", { name: "Open the journal" });
+      await expect(open.or(replay(page)).first()).toBeVisible();
+      if (await open.isVisible()) {
+        expect((await measureOpening(open)).reason).toBe("completed");
       }
       await assertReadableJournal(page);
       const baseline = await waitForStableRuntimeBaseline(page);
