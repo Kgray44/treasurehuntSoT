@@ -14704,7 +14704,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-01-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/01-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/01-chronicle.png",
       "sha256": "9b5b57495d442ca9492f5c2740eba552da406b46ef6f50abffa69777ebc7faad",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -14720,7 +14720,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-01-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/01-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/01-chronicle.png",
       "sha256": "9b5b57495d442ca9492f5c2740eba552da406b46ef6f50abffa69777ebc7faad",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -14736,7 +14736,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-02-connect-in-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/02-connect-in-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/02-connect-in-chronicle.png",
       "sha256": "40ad311ff808bae0f8dbade9c425f8712465d9c217d875c4a5f270a62ef59e25",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -14752,7 +14752,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-02-connect-in-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/02-connect-in-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/02-connect-in-chronicle.png",
       "sha256": "40ad311ff808bae0f8dbade9c425f8712465d9c217d875c4a5f270a62ef59e25",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -14768,7 +14768,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-04-phone-connected.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/04-phone-connected.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/04-phone-connected.png",
       "sha256": "0c08d75c57d57b46040ca84d33bbd5a5bf67ac961c70b5fbbc074a2b3ddfbae1",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -14784,7 +14784,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-04-phone-connected.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/04-phone-connected.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/04-phone-connected.png",
       "sha256": "0c08d75c57d57b46040ca84d33bbd5a5bf67ac961c70b5fbbc074a2b3ddfbae1",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -14800,7 +14800,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-09-transfer-pending.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/09-transfer-pending.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/09-transfer-pending.png",
       "sha256": "5db23089ad1cfdc06f769ee89f47c0b42c27f2a451b63966e13f3237f743df47",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -14816,7 +14816,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-09-transfer-pending.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/09-transfer-pending.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/09-transfer-pending.png",
       "sha256": "5db23089ad1cfdc06f769ee89f47c0b42c27f2a451b63966e13f3237f743df47",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -14832,7 +14832,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-10-delivery-acknowledged.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/10-delivery-acknowledged.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/10-delivery-acknowledged.png",
       "sha256": "155a2dc9dc14e15e455b5a5e96de474dde17e32f7be118e6b8815f63c28853c9",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -14848,7 +14848,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-10-delivery-acknowledged.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/10-delivery-acknowledged.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/10-delivery-acknowledged.png",
       "sha256": "155a2dc9dc14e15e455b5a5e96de474dde17e32f7be118e6b8815f63c28853c9",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -14864,7 +14864,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-12a-recovery-options-open.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/12a-recovery-options-open.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/12a-recovery-options-open.png",
       "sha256": "7fee917bdc4cb45381ae12ebce93c8f51b42e491c722801a0f3e38affe5e32f2",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -14880,7 +14880,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-12a-recovery-options-open.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/12a-recovery-options-open.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/12a-recovery-options-open.png",
       "sha256": "7fee917bdc4cb45381ae12ebce93c8f51b42e491c722801a0f3e38affe5e32f2",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -14896,7 +14896,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-12b-recovery-in-progress.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/12b-recovery-in-progress.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/12b-recovery-in-progress.png",
       "sha256": "f1f25d84573b69b69af3fb9fafe50d0b6eca318578d61adf00ef702d99a37c01",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -14912,7 +14912,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-12b-recovery-in-progress.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/12b-recovery-in-progress.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/12b-recovery-in-progress.png",
       "sha256": "f1f25d84573b69b69af3fb9fafe50d0b6eca318578d61adf00ef702d99a37c01",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -14928,7 +14928,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-13-recovered-chart.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/13-recovered-chart.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/13-recovered-chart.png",
       "sha256": "34ba1b016941ca698ffdf86f8a560087b2ee10c3c85efd46508000de1ef9c2c0",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -14944,7 +14944,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-13-recovered-chart.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/13-recovered-chart.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/13-recovered-chart.png",
       "sha256": "34ba1b016941ca698ffdf86f8a560087b2ee10c3c85efd46508000de1ef9c2c0",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -14960,7 +14960,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-14-medium-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/14-medium-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/14-medium-chronicle.png",
       "sha256": "b8cfe36ca67ae03085fddb20387699d16c99b5792990cd517ec1186c47e65c8f",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -14976,7 +14976,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-14-medium-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/14-medium-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/14-medium-chronicle.png",
       "sha256": "b8cfe36ca67ae03085fddb20387699d16c99b5792990cd517ec1186c47e65c8f",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -14992,7 +14992,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-recording-page@a7bb9aabdfa438f3770212c01a4e21f6.webm",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/page@a7bb9aabdfa438f3770212c01a4e21f6.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/page@a7bb9aabdfa438f3770212c01a4e21f6.webm",
       "sha256": "641d5f1fa39418bc57e4740987a89d93aa9f31b6da0b0dfa5147f909476285c3",
       "type": "recording",
       "contractId": "crossdeck.phase2.continuity",
@@ -15004,7 +15004,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-recording-page@a7bb9aabdfa438f3770212c01a4e21f6.webm",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/page@a7bb9aabdfa438f3770212c01a4e21f6.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/page@a7bb9aabdfa438f3770212c01a4e21f6.webm",
       "sha256": "641d5f1fa39418bc57e4740987a89d93aa9f31b6da0b0dfa5147f909476285c3",
       "type": "recording",
       "contractId": "crossdeck.refit.companion",
@@ -15016,7 +15016,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-trace-desktop-trace.zip",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/desktop-trace.zip",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/desktop-trace.zip",
       "sha256": "0f6397dc08d47ea48abfc70d4911148266902af0668342b327686e79e0a8403b",
       "type": "trace",
       "contractId": "crossdeck.phase2.continuity",
@@ -15028,7 +15028,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-trace-desktop-trace.zip",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/desktop-trace.zip",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/desktop-trace.zip",
       "sha256": "0f6397dc08d47ea48abfc70d4911148266902af0668342b327686e79e0a8403b",
       "type": "trace",
       "contractId": "crossdeck.refit.companion",
@@ -15040,7 +15040,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-03-phone-sign-in.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/03-phone-sign-in.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/03-phone-sign-in.png",
       "sha256": "06fddc325dbc7f9d0d237b7879ada4ba2402dd8e56a58c9f9ff94d8ab105f380",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15056,7 +15056,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-03-phone-sign-in.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/03-phone-sign-in.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/03-phone-sign-in.png",
       "sha256": "06fddc325dbc7f9d0d237b7879ada4ba2402dd8e56a58c9f9ff94d8ab105f380",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15072,7 +15072,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-04-journal-companion.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/04-journal-companion.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/04-journal-companion.png",
       "sha256": "ec1fd26aaf717d741a3708e05f033944b63711248245c2eee112070f8b6d67ab",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15088,7 +15088,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-04-journal-companion.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/04-journal-companion.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/04-journal-companion.png",
       "sha256": "ec1fd26aaf717d741a3708e05f033944b63711248245c2eee112070f8b6d67ab",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15104,7 +15104,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-05-real-chronicle-lens.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/05-real-chronicle-lens.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/05-real-chronicle-lens.png",
       "sha256": "87c3cee102cd2a124ec252ba513843f3eedfa17b2ffface24010ea775f4b7bf7",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15120,7 +15120,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-05-real-chronicle-lens.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/05-real-chronicle-lens.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/05-real-chronicle-lens.png",
       "sha256": "87c3cee102cd2a124ec252ba513843f3eedfa17b2ffface24010ea775f4b7bf7",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15136,7 +15136,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-06-dedicated-chart.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/06-dedicated-chart.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/06-dedicated-chart.png",
       "sha256": "d9a080a68aab2d3ff9532a438ad31e8ecc463a3af7a16084fc3a89227d9e6e99",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15152,7 +15152,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-06-dedicated-chart.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/06-dedicated-chart.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/06-dedicated-chart.png",
       "sha256": "d9a080a68aab2d3ff9532a438ad31e8ecc463a3af7a16084fc3a89227d9e6e99",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15168,7 +15168,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-07-artifact.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/07-artifact.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/07-artifact.png",
       "sha256": "00bb59a75d6c38abb94a342ee615bcd93c30d61db999fa6a45a1ee319516f6a2",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15184,7 +15184,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-07-artifact.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/07-artifact.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/07-artifact.png",
       "sha256": "00bb59a75d6c38abb94a342ee615bcd93c30d61db999fa6a45a1ee319516f6a2",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15200,7 +15200,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-08-letter.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/08-letter.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/08-letter.png",
       "sha256": "5d81c8a5a1c17c28868fb2235a9c7ca315fdc3b706c03a151602b3c432579b8e",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15216,7 +15216,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-08-letter.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/08-letter.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/08-letter.png",
       "sha256": "5d81c8a5a1c17c28868fb2235a9c7ca315fdc3b706c03a151602b3c432579b8e",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15232,7 +15232,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-09-receive-offer.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/09-receive-offer.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/09-receive-offer.png",
       "sha256": "be61cfb6c6b09eabe2e98ef08b40f4ad71662960beb4b8ea19419a6454df8bb7",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15248,7 +15248,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-09-receive-offer.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/09-receive-offer.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/09-receive-offer.png",
       "sha256": "be61cfb6c6b09eabe2e98ef08b40f4ad71662960beb4b8ea19419a6454df8bb7",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15264,7 +15264,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-10-chart-received.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/10-chart-received.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/10-chart-received.png",
       "sha256": "7235e95d3c7622509589e78e3d7027441ddd67f691f87224186081a5b36a55e5",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15280,7 +15280,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-10-chart-received.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/10-chart-received.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/10-chart-received.png",
       "sha256": "7235e95d3c7622509589e78e3d7027441ddd67f691f87224186081a5b36a55e5",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15296,7 +15296,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-11-offline.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/11-offline.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/11-offline.png",
       "sha256": "e352881540cfa55fce4d2a418efa15583188b8f28940fca51a5f99f02c88c4c1",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15312,7 +15312,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-11-offline.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/11-offline.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/11-offline.png",
       "sha256": "e352881540cfa55fce4d2a418efa15583188b8f28940fca51a5f99f02c88c4c1",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15328,7 +15328,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-12-reconnected.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/12-reconnected.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/12-reconnected.png",
       "sha256": "7235e95d3c7622509589e78e3d7027441ddd67f691f87224186081a5b36a55e5",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15344,7 +15344,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-12-reconnected.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/12-reconnected.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/12-reconnected.png",
       "sha256": "7235e95d3c7622509589e78e3d7027441ddd67f691f87224186081a5b36a55e5",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15360,7 +15360,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-15-phone-landscape.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/15-phone-landscape.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/15-phone-landscape.png",
       "sha256": "b5258b4e29be89dd4cbc4a367656712a1549ae252b2ff3d71866a33de8908a57",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15376,7 +15376,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-15-phone-landscape.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/15-phone-landscape.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/15-phone-landscape.png",
       "sha256": "b5258b4e29be89dd4cbc4a367656712a1549ae252b2ff3d71866a33de8908a57",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15392,7 +15392,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-16-return-to-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/16-return-to-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/16-return-to-chronicle.png",
       "sha256": "b1d630dab778bae11565d590e93e77ec59a8abdac9df3e29c6a6770ade320823",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15408,7 +15408,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-16-return-to-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/16-return-to-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/16-return-to-chronicle.png",
       "sha256": "b1d630dab778bae11565d590e93e77ec59a8abdac9df3e29c6a6770ade320823",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15424,7 +15424,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-16-voyage-continued.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/16-voyage-continued.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/16-voyage-continued.png",
       "sha256": "d8166bf1af5de537758dd8a22d058dae3dcc890d612ab56a959bb4d626135632",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15440,7 +15440,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-16-voyage-continued.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/16-voyage-continued.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/16-voyage-continued.png",
       "sha256": "d8166bf1af5de537758dd8a22d058dae3dcc890d612ab56a959bb4d626135632",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15456,7 +15456,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-17-access-ended.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/17-access-ended.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/17-access-ended.png",
       "sha256": "8d42711450c09c59191fa6d66e17de741fb13328056ecaf13ffd3bb6baff3d23",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15472,7 +15472,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-17-access-ended.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/17-access-ended.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/17-access-ended.png",
       "sha256": "8d42711450c09c59191fa6d66e17de741fb13328056ecaf13ffd3bb6baff3d23",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15488,7 +15488,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-recording-page@2897bdb993e4114c725888f6850979dc.webm",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/page@2897bdb993e4114c725888f6850979dc.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/page@2897bdb993e4114c725888f6850979dc.webm",
       "sha256": "bf9201590fe13382c7a41609a449f288c3b4515c210d2da9ee991f31d9d7a7ae",
       "type": "recording",
       "contractId": "crossdeck.phase2.continuity",
@@ -15500,7 +15500,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-recording-page@2897bdb993e4114c725888f6850979dc.webm",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/page@2897bdb993e4114c725888f6850979dc.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/page@2897bdb993e4114c725888f6850979dc.webm",
       "sha256": "bf9201590fe13382c7a41609a449f288c3b4515c210d2da9ee991f31d9d7a7ae",
       "type": "recording",
       "contractId": "crossdeck.refit.companion",
@@ -15512,7 +15512,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-trace-phone-trace.zip",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/phone-trace.zip",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/phone-trace.zip",
       "sha256": "3bb46b377608fa3ca0afcfe52350afaaffb84363697f0cc9c93d6c7e386c50d8",
       "type": "trace",
       "contractId": "crossdeck.phase2.continuity",
@@ -15524,7 +15524,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-trace-phone-trace.zip",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/phone-trace.zip",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/phone-trace.zip",
       "sha256": "3bb46b377608fa3ca0afcfe52350afaaffb84363697f0cc9c93d6c7e386c50d8",
       "type": "trace",
       "contractId": "crossdeck.refit.companion",
@@ -15536,7 +15536,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-01-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/01-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/01-chronicle.png",
       "sha256": "a183248e84d5792b765ff8bd8cbbb200f168b5486a3d2e5881812e0f852f9465",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15552,7 +15552,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-01-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/01-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/01-chronicle.png",
       "sha256": "a183248e84d5792b765ff8bd8cbbb200f168b5486a3d2e5881812e0f852f9465",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15568,7 +15568,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-02-connect-in-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/02-connect-in-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/02-connect-in-chronicle.png",
       "sha256": "2d6767cdcc76e6bbba5f910de390ff26221758dbe240b49b04f599bda64cdf49",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15584,7 +15584,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-02-connect-in-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/02-connect-in-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/02-connect-in-chronicle.png",
       "sha256": "2d6767cdcc76e6bbba5f910de390ff26221758dbe240b49b04f599bda64cdf49",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15600,7 +15600,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-04-phone-connected.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/04-phone-connected.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/04-phone-connected.png",
       "sha256": "778aa8fc77a4885912bcf4bd71dde4eca21737db1f4b980901ff6fffcbdb7b73",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15616,7 +15616,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-04-phone-connected.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/04-phone-connected.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/04-phone-connected.png",
       "sha256": "778aa8fc77a4885912bcf4bd71dde4eca21737db1f4b980901ff6fffcbdb7b73",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15632,7 +15632,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-09-transfer-pending.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/09-transfer-pending.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/09-transfer-pending.png",
       "sha256": "a94985b752e896fc22af0b9832e11eca3161a12307828c06c215bc116625b729",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15648,7 +15648,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-09-transfer-pending.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/09-transfer-pending.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/09-transfer-pending.png",
       "sha256": "a94985b752e896fc22af0b9832e11eca3161a12307828c06c215bc116625b729",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15664,7 +15664,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-10-delivery-acknowledged.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/10-delivery-acknowledged.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/10-delivery-acknowledged.png",
       "sha256": "3a9b418eeec763b3f39290a6800b8fd11c8afcd45774e4bf0eda30633d03e49f",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15680,7 +15680,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-10-delivery-acknowledged.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/10-delivery-acknowledged.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/10-delivery-acknowledged.png",
       "sha256": "3a9b418eeec763b3f39290a6800b8fd11c8afcd45774e4bf0eda30633d03e49f",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15696,7 +15696,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-12a-recovery-options-open.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/12a-recovery-options-open.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/12a-recovery-options-open.png",
       "sha256": "fcffc26622119302bd58787ab53df77647709ad1595b318d8b20a9b5b963f2da",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15712,7 +15712,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-12a-recovery-options-open.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/12a-recovery-options-open.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/12a-recovery-options-open.png",
       "sha256": "fcffc26622119302bd58787ab53df77647709ad1595b318d8b20a9b5b963f2da",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15728,7 +15728,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-12b-recovery-in-progress.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/12b-recovery-in-progress.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/12b-recovery-in-progress.png",
       "sha256": "300e90590a8f92c65f7697173a85897492949b238770e0c70cacffd1438103a6",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15744,7 +15744,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-12b-recovery-in-progress.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/12b-recovery-in-progress.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/12b-recovery-in-progress.png",
       "sha256": "300e90590a8f92c65f7697173a85897492949b238770e0c70cacffd1438103a6",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15760,7 +15760,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-13-recovered-chart.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/13-recovered-chart.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/13-recovered-chart.png",
       "sha256": "d665689a1ece3750c7722e0d71bde4f8ee5ce1088d09af4786b498778c270879",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15776,7 +15776,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-13-recovered-chart.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/13-recovered-chart.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/13-recovered-chart.png",
       "sha256": "d665689a1ece3750c7722e0d71bde4f8ee5ce1088d09af4786b498778c270879",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15792,7 +15792,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-14-medium-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/14-medium-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/14-medium-chronicle.png",
       "sha256": "b8c54a249a01d2c7c0d6597de497fed5011ba962defac0e53e955e444d42962c",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15808,7 +15808,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-14-medium-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/14-medium-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/14-medium-chronicle.png",
       "sha256": "b8c54a249a01d2c7c0d6597de497fed5011ba962defac0e53e955e444d42962c",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15824,7 +15824,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-recording-page@b74d1e36754bff60674c39a9fc1e06dc.webm",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/page@b74d1e36754bff60674c39a9fc1e06dc.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/page@b74d1e36754bff60674c39a9fc1e06dc.webm",
       "sha256": "d7a3957388d8968fd513008fb70f11bec26522dbad25a8df8e06bf9e1ec6d1d8",
       "type": "recording",
       "contractId": "crossdeck.phase2.continuity",
@@ -15836,7 +15836,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-recording-page@b74d1e36754bff60674c39a9fc1e06dc.webm",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/page@b74d1e36754bff60674c39a9fc1e06dc.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/page@b74d1e36754bff60674c39a9fc1e06dc.webm",
       "sha256": "d7a3957388d8968fd513008fb70f11bec26522dbad25a8df8e06bf9e1ec6d1d8",
       "type": "recording",
       "contractId": "crossdeck.refit.companion",
@@ -15848,7 +15848,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-trace-desktop-trace.zip",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/desktop-trace.zip",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/desktop-trace.zip",
       "sha256": "13281bd866a0f09f561d5eee11c290731393a46f2605b5db70cfb87d7168da4d",
       "type": "trace",
       "contractId": "crossdeck.phase2.continuity",
@@ -15860,7 +15860,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-trace-desktop-trace.zip",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/desktop-trace.zip",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/desktop-trace.zip",
       "sha256": "13281bd866a0f09f561d5eee11c290731393a46f2605b5db70cfb87d7168da4d",
       "type": "trace",
       "contractId": "crossdeck.refit.companion",
@@ -15872,7 +15872,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-03-phone-sign-in.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/03-phone-sign-in.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/03-phone-sign-in.png",
       "sha256": "06fddc325dbc7f9d0d237b7879ada4ba2402dd8e56a58c9f9ff94d8ab105f380",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15888,7 +15888,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-03-phone-sign-in.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/03-phone-sign-in.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/03-phone-sign-in.png",
       "sha256": "06fddc325dbc7f9d0d237b7879ada4ba2402dd8e56a58c9f9ff94d8ab105f380",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15904,7 +15904,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-04-journal-companion.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/04-journal-companion.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/04-journal-companion.png",
       "sha256": "fa5111a2e9e68542fba72200cbcf73726b47ddc87b3c6c377ea1e4104e767d3a",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15920,7 +15920,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-04-journal-companion.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/04-journal-companion.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/04-journal-companion.png",
       "sha256": "fa5111a2e9e68542fba72200cbcf73726b47ddc87b3c6c377ea1e4104e767d3a",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15936,7 +15936,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-05-real-chronicle-lens.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/05-real-chronicle-lens.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/05-real-chronicle-lens.png",
       "sha256": "6de2c3575044c70c99406eddb99a773ffdc760624389fadb7a93aa98c46aa4ee",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15952,7 +15952,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-05-real-chronicle-lens.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/05-real-chronicle-lens.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/05-real-chronicle-lens.png",
       "sha256": "6de2c3575044c70c99406eddb99a773ffdc760624389fadb7a93aa98c46aa4ee",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -15968,7 +15968,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-06-dedicated-chart.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/06-dedicated-chart.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/06-dedicated-chart.png",
       "sha256": "b1c99cccfd9492a83e408ea478086876919b7b3b9a485507d7f6bd5c58110a4c",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -15984,7 +15984,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-06-dedicated-chart.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/06-dedicated-chart.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/06-dedicated-chart.png",
       "sha256": "b1c99cccfd9492a83e408ea478086876919b7b3b9a485507d7f6bd5c58110a4c",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16000,7 +16000,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-07-artifact.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/07-artifact.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/07-artifact.png",
       "sha256": "40aa69926907da9ae9f22975aa29b28b411f8ec7c179f73d21fdf3819e19810f",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16016,7 +16016,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-07-artifact.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/07-artifact.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/07-artifact.png",
       "sha256": "40aa69926907da9ae9f22975aa29b28b411f8ec7c179f73d21fdf3819e19810f",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16032,7 +16032,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-08-letter.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/08-letter.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/08-letter.png",
       "sha256": "d89dc34b9c2259d05028c967851a95c820c2877a7fec3203c40609f7f3feac70",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16048,7 +16048,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-08-letter.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/08-letter.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/08-letter.png",
       "sha256": "d89dc34b9c2259d05028c967851a95c820c2877a7fec3203c40609f7f3feac70",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16064,7 +16064,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-09-receive-offer.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/09-receive-offer.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/09-receive-offer.png",
       "sha256": "5e9365670ea8e69d2bf2bbf08cf3527c7a1abd0a5fb20e3f4399cfb19330e7b6",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16080,7 +16080,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-09-receive-offer.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/09-receive-offer.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/09-receive-offer.png",
       "sha256": "5e9365670ea8e69d2bf2bbf08cf3527c7a1abd0a5fb20e3f4399cfb19330e7b6",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16096,7 +16096,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-10-chart-received.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/10-chart-received.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/10-chart-received.png",
       "sha256": "774e02f25251e80929152b1116b4e48157fdd8238d5e72d469abcc80f5afd62a",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16112,7 +16112,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-10-chart-received.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/10-chart-received.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/10-chart-received.png",
       "sha256": "774e02f25251e80929152b1116b4e48157fdd8238d5e72d469abcc80f5afd62a",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16128,7 +16128,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-11-offline.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/11-offline.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/11-offline.png",
       "sha256": "32301360463a1c4f318ca4e47f599d9155517d716baacb0e8cacf06c7e81865b",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16144,7 +16144,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-11-offline.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/11-offline.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/11-offline.png",
       "sha256": "32301360463a1c4f318ca4e47f599d9155517d716baacb0e8cacf06c7e81865b",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16160,7 +16160,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-12-reconnected.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/12-reconnected.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/12-reconnected.png",
       "sha256": "774e02f25251e80929152b1116b4e48157fdd8238d5e72d469abcc80f5afd62a",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16176,7 +16176,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-12-reconnected.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/12-reconnected.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/12-reconnected.png",
       "sha256": "774e02f25251e80929152b1116b4e48157fdd8238d5e72d469abcc80f5afd62a",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16192,7 +16192,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-15-phone-landscape.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/15-phone-landscape.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/15-phone-landscape.png",
       "sha256": "4c20c1d1b45c4464d55474a795dfc55c48cebee8d8780c765cedcaaef109bfd9",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16208,7 +16208,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-15-phone-landscape.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/15-phone-landscape.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/15-phone-landscape.png",
       "sha256": "4c20c1d1b45c4464d55474a795dfc55c48cebee8d8780c765cedcaaef109bfd9",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16224,7 +16224,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-16-return-to-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/16-return-to-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/16-return-to-chronicle.png",
       "sha256": "2077c3376db9f44de70025e10e1f1fda78630b77fc2f45edf6f3df037df150b3",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16240,7 +16240,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-16-return-to-chronicle.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/16-return-to-chronicle.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/16-return-to-chronicle.png",
       "sha256": "2077c3376db9f44de70025e10e1f1fda78630b77fc2f45edf6f3df037df150b3",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16256,7 +16256,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-16-voyage-continued.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/16-voyage-continued.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/16-voyage-continued.png",
       "sha256": "bcda87de058f411ff44444dc457cb9e979cdabe7e699468675700d8468dd33a0",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16272,7 +16272,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-16-voyage-continued.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/16-voyage-continued.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/16-voyage-continued.png",
       "sha256": "bcda87de058f411ff44444dc457cb9e979cdabe7e699468675700d8468dd33a0",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16288,7 +16288,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-17-access-ended.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/17-access-ended.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/17-access-ended.png",
       "sha256": "8d42711450c09c59191fa6d66e17de741fb13328056ecaf13ffd3bb6baff3d23",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16304,7 +16304,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-17-access-ended.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/17-access-ended.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/17-access-ended.png",
       "sha256": "8d42711450c09c59191fa6d66e17de741fb13328056ecaf13ffd3bb6baff3d23",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16320,7 +16320,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-recording-page@c9a6041cd98063b9270869b26bc4f24c.webm",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/page@c9a6041cd98063b9270869b26bc4f24c.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/page@c9a6041cd98063b9270869b26bc4f24c.webm",
       "sha256": "84cbdfa395f9c9211e6d80ddd48eb71436e84dc52050d2eaa13f66e0ba605ac6",
       "type": "recording",
       "contractId": "crossdeck.phase2.continuity",
@@ -16332,7 +16332,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-recording-page@c9a6041cd98063b9270869b26bc4f24c.webm",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/page@c9a6041cd98063b9270869b26bc4f24c.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/page@c9a6041cd98063b9270869b26bc4f24c.webm",
       "sha256": "84cbdfa395f9c9211e6d80ddd48eb71436e84dc52050d2eaa13f66e0ba605ac6",
       "type": "recording",
       "contractId": "crossdeck.refit.companion",
@@ -16344,7 +16344,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-trace-phone-trace.zip",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/phone-trace.zip",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/phone-trace.zip",
       "sha256": "8b678948d978cb616063ae06704b07dcd462230b9fab5239ae6c761138a3d78c",
       "type": "trace",
       "contractId": "crossdeck.phase2.continuity",
@@ -16356,7 +16356,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-trace-phone-trace.zip",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/phone-trace.zip",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/phone-trace.zip",
       "sha256": "8b678948d978cb616063ae06704b07dcd462230b9fab5239ae6c761138a3d78c",
       "type": "trace",
       "contractId": "crossdeck.refit.companion",
@@ -16368,7 +16368,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-screenshot-01-pairing-before-cancel.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/01-pairing-before-cancel.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/01-pairing-before-cancel.png",
       "sha256": "7ad5dfd8b7fec3a0b058306a916c8d8ef78c5706c8d96d16682857442bda0de5",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16384,7 +16384,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-01-pairing-before-cancel.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/01-pairing-before-cancel.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/01-pairing-before-cancel.png",
       "sha256": "7ad5dfd8b7fec3a0b058306a916c8d8ef78c5706c8d96d16682857442bda0de5",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16400,7 +16400,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-screenshot-02-phone-connected.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/02-phone-connected.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/02-phone-connected.png",
       "sha256": "1990450802019547da250a4d028fd845294c81c0d88a9ffc9af17df66d603006",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16416,7 +16416,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-02-phone-connected.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/02-phone-connected.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/02-phone-connected.png",
       "sha256": "1990450802019547da250a4d028fd845294c81c0d88a9ffc9af17df66d603006",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16432,7 +16432,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-screenshot-06-declined-transfer.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/06-declined-transfer.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/06-declined-transfer.png",
       "sha256": "190a90495ac7af0e3a599649f70fdfcef2c11e59005029917bd367b714fcc3fd",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16448,7 +16448,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-06-declined-transfer.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/06-declined-transfer.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/06-declined-transfer.png",
       "sha256": "190a90495ac7af0e3a599649f70fdfcef2c11e59005029917bd367b714fcc3fd",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16464,7 +16464,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-screenshot-08-send-authorized-crew-chart.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/08-send-authorized-crew-chart.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/08-send-authorized-crew-chart.png",
       "sha256": "6a45e2e2b8a2db5c4467df10aba6447bed06b6216987c7a5cb0cdc0a34696a4c",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16480,7 +16480,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-08-send-authorized-crew-chart.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/08-send-authorized-crew-chart.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/08-send-authorized-crew-chart.png",
       "sha256": "6a45e2e2b8a2db5c4467df10aba6447bed06b6216987c7a5cb0cdc0a34696a4c",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16496,7 +16496,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-screenshot-08-crew-transfer-pending.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/08-crew-transfer-pending.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/08-crew-transfer-pending.png",
       "sha256": "849ff4c9e4ddc897bc843bcf5bdc060adf5a2f1250dc3849711702a63adf8d32",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16512,7 +16512,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-08-crew-transfer-pending.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/08-crew-transfer-pending.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/08-crew-transfer-pending.png",
       "sha256": "849ff4c9e4ddc897bc843bcf5bdc060adf5a2f1250dc3849711702a63adf8d32",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16528,7 +16528,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-screenshot-09-crew-delivery-acknowledged.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/09-crew-delivery-acknowledged.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/09-crew-delivery-acknowledged.png",
       "sha256": "2ef8fe2e7de307afff10a9e5b1510d26952011eabd06541884873c297bf45db2",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16544,7 +16544,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-09-crew-delivery-acknowledged.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/09-crew-delivery-acknowledged.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/09-crew-delivery-acknowledged.png",
       "sha256": "2ef8fe2e7de307afff10a9e5b1510d26952011eabd06541884873c297bf45db2",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16560,7 +16560,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-recording-page@cbb91ed8b3b3dece93c3ea50e421c6c3.webm",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/page@cbb91ed8b3b3dece93c3ea50e421c6c3.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/page@cbb91ed8b3b3dece93c3ea50e421c6c3.webm",
       "sha256": "40d6d68b82f326b786c6434969f89f41b7c5c27badd8567d9d8af69ed3ade0a6",
       "type": "recording",
       "contractId": "crossdeck.phase2.continuity",
@@ -16572,7 +16572,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-recording-page@cbb91ed8b3b3dece93c3ea50e421c6c3.webm",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/page@cbb91ed8b3b3dece93c3ea50e421c6c3.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/page@cbb91ed8b3b3dece93c3ea50e421c6c3.webm",
       "sha256": "40d6d68b82f326b786c6434969f89f41b7c5c27badd8567d9d8af69ed3ade0a6",
       "type": "recording",
       "contractId": "crossdeck.refit.companion",
@@ -16584,7 +16584,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-trace-desktop-trace.zip",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/desktop-trace.zip",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/desktop-trace.zip",
       "sha256": "0947a424c0087468d5096734ad4065bac94c46e8eef9f741fe948bfdbc74d86a",
       "type": "trace",
       "contractId": "crossdeck.phase2.continuity",
@@ -16596,7 +16596,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-trace-desktop-trace.zip",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/desktop-trace.zip",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/desktop-trace.zip",
       "sha256": "0947a424c0087468d5096734ad4065bac94c46e8eef9f741fe948bfdbc74d86a",
       "type": "trace",
       "contractId": "crossdeck.refit.companion",
@@ -16608,7 +16608,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-02-expired-code-refused.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/02-expired-code-refused.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/02-expired-code-refused.png",
       "sha256": "1c1eb7ddddf9883a1f412807bb0d85f8a4cefcfbcdd49954a044d65456a128e9",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16624,7 +16624,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-02-expired-code-refused.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/02-expired-code-refused.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/02-expired-code-refused.png",
       "sha256": "1c1eb7ddddf9883a1f412807bb0d85f8a4cefcfbcdd49954a044d65456a128e9",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16640,7 +16640,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-02-paired-phone.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/02-paired-phone.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/02-paired-phone.png",
       "sha256": "fa5111a2e9e68542fba72200cbcf73726b47ddc87b3c6c377ea1e4104e767d3a",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16656,7 +16656,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-02-paired-phone.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/02-paired-phone.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/02-paired-phone.png",
       "sha256": "fa5111a2e9e68542fba72200cbcf73726b47ddc87b3c6c377ea1e4104e767d3a",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16672,7 +16672,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-03-unavailable-purposes.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/03-unavailable-purposes.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/03-unavailable-purposes.png",
       "sha256": "df84fdcb53ad08b7542b6b20677b664618de9197f9bef1d14c632ed8240fdbb8",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16688,7 +16688,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-03-unavailable-purposes.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/03-unavailable-purposes.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/03-unavailable-purposes.png",
       "sha256": "df84fdcb53ad08b7542b6b20677b664618de9197f9bef1d14c632ed8240fdbb8",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16704,7 +16704,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-04-private-note-confirmation.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/04-private-note-confirmation.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/04-private-note-confirmation.png",
       "sha256": "f28fa740ad85b77ae7e060bdc959a5d79fcd0a0f65af73ebbf87b0571990a7a2",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16720,7 +16720,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-04-private-note-confirmation.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/04-private-note-confirmation.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/04-private-note-confirmation.png",
       "sha256": "f28fa740ad85b77ae7e060bdc959a5d79fcd0a0f65af73ebbf87b0571990a7a2",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16736,7 +16736,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-05-canceled-transfer.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/05-canceled-transfer.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/05-canceled-transfer.png",
       "sha256": "97ba0b5e72a17909a19c830de5981933206b2e17f2ac9a920da0e7275dab47b2",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16752,7 +16752,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-05-canceled-transfer.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/05-canceled-transfer.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/05-canceled-transfer.png",
       "sha256": "97ba0b5e72a17909a19c830de5981933206b2e17f2ac9a920da0e7275dab47b2",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16768,7 +16768,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-07-shared-empty-state.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/07-shared-empty-state.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/07-shared-empty-state.png",
       "sha256": "93cf73b2bace60e42d18330c5140c7cd5b4a5fc9fdedafb92f1c5e3489a1e286",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16784,7 +16784,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-07-shared-empty-state.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/07-shared-empty-state.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/07-shared-empty-state.png",
       "sha256": "93cf73b2bace60e42d18330c5140c7cd5b4a5fc9fdedafb92f1c5e3489a1e286",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16800,7 +16800,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-08-crew-receive-pending.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/08-crew-receive-pending.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/08-crew-receive-pending.png",
       "sha256": "ddb636821dc404cfb8843182e6165193b126754a65c20f4b3e2c9e1b82cf3baa",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16816,7 +16816,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-08-crew-receive-pending.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/08-crew-receive-pending.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/08-crew-receive-pending.png",
       "sha256": "ddb636821dc404cfb8843182e6165193b126754a65c20f4b3e2c9e1b82cf3baa",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16832,7 +16832,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-09-restricted-crew-chart-received.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/09-restricted-crew-chart-received.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/09-restricted-crew-chart-received.png",
       "sha256": "a233691ec486e49c86aa1d4c2716883f5c657d46ccd456d6c29768986443ff61",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16848,7 +16848,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-09-restricted-crew-chart-received.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/09-restricted-crew-chart-received.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/09-restricted-crew-chart-received.png",
       "sha256": "a233691ec486e49c86aa1d4c2716883f5c657d46ccd456d6c29768986443ff61",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16864,7 +16864,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-10-authorized-personal-return.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/10-authorized-personal-return.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/10-authorized-personal-return.png",
       "sha256": "44a7c42a4c5a4a0d7ca23290cfdb9fb07f67c68271fed27a1499db6c146b4d6d",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16880,7 +16880,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-10-authorized-personal-return.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/10-authorized-personal-return.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/10-authorized-personal-return.png",
       "sha256": "44a7c42a4c5a4a0d7ca23290cfdb9fb07f67c68271fed27a1499db6c146b4d6d",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16896,7 +16896,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-11-current-surface-revoked.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/11-current-surface-revoked.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/11-current-surface-revoked.png",
       "sha256": "d13ce8a86856d3ae942399a108733b2724e89ad1e5abde564f632ed416ec9b0f",
       "type": "screenshot",
       "contractId": "crossdeck.phase2.continuity",
@@ -16912,7 +16912,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-11-current-surface-revoked.png",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/11-current-surface-revoked.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/11-current-surface-revoked.png",
       "sha256": "d13ce8a86856d3ae942399a108733b2724e89ad1e5abde564f632ed416ec9b0f",
       "type": "screenshot",
       "contractId": "crossdeck.refit.companion",
@@ -16928,7 +16928,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-recording-page@a3fafb5ca3d67ec9a1118d36b835ebf5.webm",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/page@a3fafb5ca3d67ec9a1118d36b835ebf5.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/page@a3fafb5ca3d67ec9a1118d36b835ebf5.webm",
       "sha256": "4be9d5460dbfbc3237333f4c68c22f376f6a90d8fe1c3aeb4c63d8ff30634f41",
       "type": "recording",
       "contractId": "crossdeck.phase2.continuity",
@@ -16940,7 +16940,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-recording-page@a3fafb5ca3d67ec9a1118d36b835ebf5.webm",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/page@a3fafb5ca3d67ec9a1118d36b835ebf5.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/page@a3fafb5ca3d67ec9a1118d36b835ebf5.webm",
       "sha256": "4be9d5460dbfbc3237333f4c68c22f376f6a90d8fe1c3aeb4c63d8ff30634f41",
       "type": "recording",
       "contractId": "crossdeck.refit.companion",
@@ -16952,7 +16952,7 @@
     },
     {
       "id": "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-trace-phone-trace.zip",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/phone-trace.zip",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/phone-trace.zip",
       "sha256": "7e9b9b40c002cbc9fd92f862af9c8a846b100a1358d1f37b994a81968f5ba26c",
       "type": "trace",
       "contractId": "crossdeck.phase2.continuity",
@@ -16964,7 +16964,7 @@
     },
     {
       "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-trace-phone-trace.zip",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/phone-trace.zip",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/phone-trace.zip",
       "sha256": "7e9b9b40c002cbc9fd92f862af9c8a846b100a1358d1f37b994a81968f5ba26c",
       "type": "trace",
       "contractId": "crossdeck.refit.companion",
@@ -28222,7 +28222,7 @@
     },
     "browserContexts": 6,
     "report": {
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/playwright-report.json",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/playwright-report.json",
       "sha256": "94192252becdef4fe8dd568aabcd08cf8a3fff992754befdb9692be667648626"
     },
     "cases": [
@@ -28412,7 +28412,7 @@
           }
         },
         "witness": {
-          "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-no-preference/paired-witness.json",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-no-preference/paired-witness.json",
           "sha256": "612af0da56ca486be2d582729a11eb2024c9354d707ddde85338effd567b30a6"
         },
         "artifactIds": [
@@ -28658,7 +28658,7 @@
           }
         },
         "witness": {
-          "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-reduce/paired-witness.json",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-reduce/paired-witness.json",
           "sha256": "da03ba7e890d759fde045e9ad4f6707865dd387e3cf8df24fc65af6943f09ac0"
         },
         "artifactIds": [
@@ -28871,7 +28871,7 @@
           }
         },
         "witness": {
-          "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/refit-recovery/paired-witness.json",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/refit-recovery/paired-witness.json",
           "sha256": "6b78b83a06a88794e99a4cb36d271e70a389a6e5d438487fa06b6668db793edc"
         },
         "artifactIds": [
@@ -28919,11 +28919,11 @@
       }
     ],
     "runtime": {
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/runtime.original.json",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/runtime.original.json",
       "sha256": "96ee162969bfc8fba267556582933ca3b0a3013943cecbd6f507e6818e828758"
     },
     "profile": {
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/paired/profile.original.json",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc07-893/c84d3f273410/batch-2/generic/playwright-report/profile.original.json",
       "sha256": "76fe3bbff751d4171afa117aa4eae65dea67523d0486e7031136a48df70f8f0e"
     }
   }
