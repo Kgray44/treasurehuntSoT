@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Lanternwake focused performance on standard macOS Metal
+run-name: Lanternwake Metal performance on disposable macOS
 
 on:
   push:
@@ -17,14 +17,14 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 345e6f13b4607737e21b07c2278d7bff222fe9b9
+      CANDIDATE_SHA: 77d46e68a92392d29f8d08d8c42dfbaffece432a
       BASE_SHA: aaf7aa6e80d0c71c02018432c1e8a66ef5e1e21f
-      FOREVER_VALIDATION_SOURCE_SHA: 345e6f13b4607737e21b07c2278d7bff222fe9b9
+      FOREVER_VALIDATION_SOURCE_SHA: 77d46e68a92392d29f8d08d8c42dfbaffece432a
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 345e6f13b4607737e21b07c2278d7bff222fe9b9
+          ref: 77d46e68a92392d29f8d08d8c42dfbaffece432a
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
