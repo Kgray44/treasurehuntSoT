@@ -598,7 +598,7 @@ async function measuredFullOpening(page: Page, control: Locator) {
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
 phase3Test(
-  "isolate the painted surfaces during desktop Journal Book Settling",
+  "compare complete desktop Journal motion with sequenced paint",
   async ({ page, phase3, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
@@ -629,58 +629,77 @@ phase3Test(
     expect(fullRuntimeBaseline.eventSources).toBe(1);
 
 
-    const phaseScope = '.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"]';
-    const selectors = {
-      current: [],
-      pages: [".open-page-stage .page-flip-book"],
-      cover: [".closed-book > *", ".rear-book-cover", ".page-stack", ".book-shadow", ".book-binding"],
-      chrome: [".persistent-interface > *", ".persistent-objective > *", ".journal-workspace .section-masthead > *",
-        ".chapter-tabs > *", ".journal-opening-status > *"],
-    };
-    type Mode = keyof typeof selectors;
-    const order: Mode[] = ["current", "pages", "cover", "chrome", "chrome", "cover", "pages", "current"];
-    const rows = [];
-    for (const mode of order) {
-      await page.evaluate(({ phaseScope, selectors }) => {
-        const root = document.querySelector(".chronicle-journal-shell");
-        if (!root) throw new Error("Missing Journal root");
-        const typedWindow = window as Window & { journalIsolationCounts?: number[] };
-        delete typedWindow.journalIsolationCounts;
-        const listener = new MutationObserver(() => {
-          if (!root.matches(phaseScope)) return;
-          typedWindow.journalIsolationCounts = selectors.map((selector) => root.querySelectorAll(selector).length);
-          listener.disconnect();
-        });
-        listener.observe(root, { attributes: true, attributeFilter: ["data-journal-phase"] });
-      }, { phaseScope, selectors: selectors[mode] });
-      const styles = selectors[mode].map((target) => phaseScope + " " + target + " { visibility: hidden !important; }");
-      const tag = styles.length ? await page.addStyleTag({ content: styles.join("\n") }) : null;
+
+    const scope = '.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"]';
+    const sequential = [
+      scope + " .closed-book { visibility: hidden; transition: opacity 380ms ease, transform 395ms cubic-bezier(.16,.78,.2,1), visibility 0s linear 400ms; }",
+      scope + " .open-page-stage { transition-delay: 400ms, 400ms, 400ms; }",
+      scope + " :is(.book-shadow, .rear-book-cover, .page-stack, .book-binding) { transition-delay: 400ms; }",
+    ].join("\n");
+    const measured = [];
+    for (const treatment of [false, true, true, false]) {
+      const override = treatment ? await page.addStyleTag({ content: sequential }) : null;
       try {
         await waitForStableRuntimeBaseline(page);
         const run = await measuredFullOpening(page, replay(page));
+        const frames = run.visual.frameDurationsMs;
         const settling = run.visual.framesByPhase.BOOK_SETTLING ?? [];
         expect(settling.length).toBeGreaterThan(20);
         expect(run.durationMs).toBeLessThan(budgets.openingMs);
         await expect(replay(page)).toBeFocused();
-        const elements = await page.evaluate(
-          () => (window as Window & { journalIsolationCounts?: number[] }).journalIsolationCounts,
-        );
-        expect(elements, "Count the selected elements during Book Settling").toBeDefined();
-        if (mode !== "current") expect(elements!.some((count) => count > 0)).toBe(true);
-        rows.push({
-          mode, elements, intervalCount: run.visual.frameDurationsMs.length,
-          desktopP95: rounded(percentile(run.visual.frameDurationsMs, 0.95)),
-          settlingP95: rounded(percentile(settling, 0.95)),
-          settlingSlow: settling.filter((ms) => ms > budgets.desktopFrameP95Ms).length,
-          settlingCount: settling.length,
-          openingMs: rounded(run.durationMs),
-        });
+        measured.push({ treatment, count: frames.length, desktopP95: rounded(percentile(frames, .95)),
+          desktopSlow: frames.filter(ms => ms > budgets.desktopFrameP95Ms).length,
+          settlingCount: settling.length, settlingP95: rounded(percentile(settling, .95)),
+          settlingSlow: settling.filter(ms => ms > budgets.desktopFrameP95Ms).length,
+          animationMs: rounded(run.durationMs) });
       } finally {
-        await tag?.evaluate((node) => { node.parentNode?.removeChild(node); });
+        await override?.evaluate((node) => { node.parentNode?.removeChild(node); });
       }
     }
-    const report = { purpose: "DEVELOPMENT_ONLY", candidate: process.env.FOREVER_VALIDATION_SOURCE_SHA, rows };
+    const snapshots = [];
+    for (const treatment of [false,true]) {
+      const override = treatment ? await page.addStyleTag({ content: sequential }) : null;
+      try {
+        await replay(page).click();
+        await expect(journal(page)).toHaveAttribute("data-journal-phase", "BOOK_SETTLING");
+        const states = await journal(page).evaluate((root) => new Promise<{
+          covered: number; open: number; overlap: number; count: number;
+        }>((resolve) => {
+          const cover = root.querySelector(".closed-book");
+          const spread = root.querySelector(".open-page-stage");
+          if (!cover || !spread) throw new Error("Missing book faces");
+          let covered = 0, open = 0, overlap = 0, count = 0;
+          const visual = (element: Element) => {
+            const style = getComputedStyle(element);
+            return style.visibility === "visible" && Number(style.opacity) > 0.05;
+          };
+          function sample() {
+            if (root.getAttribute("data-journal-phase") !== "BOOK_SETTLING") {
+              resolve({ covered, open, overlap, count });
+              return;
+            }
+            const coverPainted = visual(cover!);
+            const spreadPainted = visual(spread!);
+            if (coverPainted) covered++;
+            if (spreadPainted) open++;
+            if (coverPainted && spreadPainted) overlap++;
+            count++;
+            requestAnimationFrame(sample);
+          }
+          sample();
+        }));
+        expect(states.covered + states.open).toBeGreaterThan(20);
+        expect(states.open).toBeGreaterThan(8);
+        await assertReadableJournal(page);
+        await expect(replay(page)).toBeFocused();
+        snapshots.push({ treatment, ...states });
+      } finally {
+        await override?.evaluate((node) => { node.parentNode?.removeChild(node); });
+      }
+    }
+    const report = { purpose: "DEVELOPMENT_ONLY", candidate: process.env.FOREVER_VALIDATION_SOURCE_SHA,
+      measured, snapshots, budget: budgets.desktopFrameP95Ms };
     await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
-    console.log("JOURNAL_SURFACE_ISOLATION " + JSON.stringify(report));
+    console.log("JOURNAL_SEQUENTIAL_PAINT " + JSON.stringify(report));
   },
 );
