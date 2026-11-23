@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Compare hidden sealed-page pruning under the original Journal workload
+run-name: Compare current main and Native with the unchanged Journal benchmark on hosted Metal
 
 on:
   push:
@@ -13,90 +13,16 @@ permissions:
 
 jobs:
   benchmark:
-    name: Verify sealed paper culling and visible reveal
-    runs-on: ubuntu-24.04
-    timeout-minutes: 22
-    env:
-      CANDIDATE_SHA: 8f2da4c82ccf3da4ad61347a4a1bd1190438e834
-      BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      FOREVER_VALIDATION_SOURCE_SHA: 8f2da4c82ccf3da4ad61347a4a1bd1190438e834
-      NEXT_TELEMETRY_DISABLED: "1"
-      EXPECTED_TREE: a1190215fed36c3da7d29af5d1680ad2d0c95cbc
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: 8f2da4c82ccf3da4ad61347a4a1bd1190438e834
-          fetch-depth: 2
-          persist-credentials: false
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /*
-            !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
-            /scripts/
-            /src/
-            /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
-        run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium
-      - name: Verify mainline ancestry and stage the proven browser probe
-        run: |
-          git fetch --no-tags --depth=8 --filter=blob:none origin refs/heads/main:refs/remotes/origin/main
-          test "$(git rev-parse origin/main)" = "$BASE_SHA"
-          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "$EXPECTED_TREE"
-          git fetch --no-tags --depth=1 origin "${{ github.sha }}"
-          git show "${{ github.sha }}:tests/e2e/parallax-shared-consumers.spec.ts" > tests/e2e/parallax-shared-consumers.spec.ts
-          test "$(git hash-object tests/e2e/parallax-shared-consumers.spec.ts)" = "3a8bfb8246d1d86adfc3208f4991e5d9fb59b994"
-      - name: Verify sealed paper culling before visible reveal
-        run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-shared-consumers.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
-          EOF
-      - name: Retain sanitized performance metrics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: journal-culled-sealed-page
-          path: artifacts/sounding-line/journal-culled-sealed-page/**
-          if-no-files-found: ignore
-          retention-days: 30
-  canonical-budget:
-    name: Original recorded workload (${{ matrix.lane }})
+    name: Canonical recorded workload on hosted Metal (${{ matrix.lane }})
+    runs-on: macos-15
     strategy:
       fail-fast: false
       matrix:
         include:
-          - lane: control
+          - lane: main
             source: 627a4e651641b6765ac789d378672ea6e903c120
-          - lane: culled-sealed-page
-            source: 8f2da4c82ccf3da4ad61347a4a1bd1190438e834
-    runs-on: ubuntu-24.04
+          - lane: native
+            source: e68eb73782ba4e13ac3fca30972c6f72f02d7314
     timeout-minutes: 22
     env:
       CANDIDATE_SHA: ${{ matrix.source }}
@@ -139,14 +65,38 @@ jobs:
       - name: Install locked dependencies and Chromium
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium
-      - name: Preserve canonical benchmark and unmodified recording settings
+          npx --no-install playwright install chromium
+      - name: Confirm Metal and preserve the full canonical benchmark
         run: |
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          test "$(git rev-parse HEAD:tests/config/playwright/playwright.phase3-performance.config.ts)" = "4347403eaf7ccbcc7fe0cf1dca8f62f148f24857"
           git fetch --no-tags --depth=1 origin 186e0d868f5cb1aaf542e7885486f7e5ce144f16
           git show 186e0d868f5cb1aaf542e7885486f7e5ce144f16:tests/e2e/phase3-performance.spec.ts > tests/e2e/phase3-performance.spec.ts
           test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "ce468f106d9bf65548db3ad638af36c7a9cd5196"
-      - name: Measure all required budgets with original recording
+          node --input-type=module <<'EOF'
+          import { chromium } from "playwright";
+          const browser = await chromium.launch();
+          try {
+            const session = await browser.newBrowserCDPSession();
+            const {gpu}=await session.send("SystemInfo.getInfo");
+            const receipt={
+              renderer:gpu.auxAttributes?.glRenderer,
+              compositor:gpu.featureStatus?.gpu_compositing,
+              raster:gpu.featureStatus?.rasterization,
+            };
+            console.log("LANTERNWAKE_HOSTED_METAL "+JSON.stringify(receipt));
+            if (!receipt.renderer?.includes("Metal") || !receipt.compositor?.startsWith("enabled") || !receipt.raster?.startsWith("enabled"))
+              throw Error("The hosted Chromium instance did not expose a hardware Metal compositor and rasterizer.");
+          } finally {
+            await browser.close();
+          }
+          EOF
+      - name: Measure every original budget with normal recording
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
         run: |
+          sysctl hw.memsize
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
@@ -159,7 +109,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-canonical-sealed-page-${{ matrix.lane }}
-          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
+          name: journal-hosted-metal-${{ matrix.lane }}
+          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
           if-no-files-found: ignore
           retention-days: 30
+
