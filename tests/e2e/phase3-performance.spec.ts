@@ -598,7 +598,7 @@ async function measuredFullOpening(page: Page, control: Locator) {
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
 
-phase3Test("attribute long tasks during the real return to Chronicle Library", async ({ page, phase3 }) => {
+phase3Test("correlate Library return tasks with Chromium draw intervals", async ({ page, phase3 }) => {
   expect(process.env.FOREVER_PHASE3_PERFORMANCE_BASE_URL).toBe("http://127.0.0.1:3200");
   expect(process.env.FOREVER_VALIDATION_ISOLATION).toBe("1");
   await phase3.proveIsolation();
@@ -634,7 +634,7 @@ phase3Test("attribute long tasks during the real return to Chronicle Library", a
   const cdp=await page.context().newCDPSession(page);
   const completion=new Promise<{stream?:string}>(resolve=>cdp.once("Tracing.tracingComplete",resolve));
   await cdp.send("Tracing.start",{transferMode:"ReturnAsStream",traceConfig:{recordMode:"recordUntilFull",
-    includedCategories:["devtools.timeline","blink.user_timing","toplevel","loading","v8"]}});
+    includedCategories:["devtools.timeline","blink.user_timing","toplevel","loading","v8","viz","cc"]}});
   let navigationResponseMs: number;
   let visual: Awaited<ReturnType<typeof stopVisualProbe>>;
   try{
@@ -655,7 +655,7 @@ phase3Test("attribute long tasks during the real return to Chronicle Library", a
     for(;;){
       const chunk=await cdp.send("IO.read",{handle:complete.stream,size:262144});
       const buffer=Buffer.from(chunk.data,chunk.base64Encoded?"base64":"utf8");
-      if((size+=buffer.length)>16*1024*1024)throw new Error("Navigation trace exceeds the receipt limit");
+      if((size+=buffer.length)>32*1024*1024)throw new Error("Navigation trace exceeds the receipt limit");
       bytes.push(buffer);
       if(chunk.eof)break;
     }
@@ -678,11 +678,25 @@ phase3Test("attribute long tasks during the real return to Chronicle Library", a
       children:main.filter(row=>row!==task&&row.ts>=task.ts&&row.ts+row.dur!<=task.ts+task.dur!)
         .sort((first,second)=>second.dur!-first.dur!).slice(0,14)
         .map(({name,ts,dur})=>({name,atMs:rounded((ts-start.ts)/1000),durationMs:rounded(dur!/1000)}))}));
+
+  const rendererDraws=events.filter(row=>row.ph==="X" && row.name==="DirectRenderer::DrawFrame" &&
+    typeof row.dur==="number" && row.ts < end.ts && row.ts+row.dur>start.ts);
+  const compositor=rendererDraws.map(row=>({atMs:rounded((row.ts-start.ts)/1000),durationMs:rounded(row.dur!/1000)}));
+  const slowTaskOverlap=durations.map(task=>{
+    const beginning=task.atMs, ending=beginning+task.durationMs;
+    const overlaps=compositor.map(draw=>Math.max(0,Math.min(ending,draw.atMs+draw.durationMs)-Math.max(beginning,draw.atMs)));
+    return { taskAtMs:beginning, taskDurationMs:task.durationMs, overlappingDrawCount:overlaps.filter(Boolean).length,
+      overlappingDrawMs:rounded(total(overlaps)) };
+  });
+  const compositorSummary={frameCount:rendererDraws.length,
+    p95:rendererDraws.length?rounded(percentile(rendererDraws.map(frame=>frame.dur!/1000),.95)):null,
+    longest:rendererDraws.length?rounded(maximum(rendererDraws.map(frame=>frame.dur!/1000))):null,
+    slowTaskOverlap, slowDraws:compositor.filter(frame=>frame.durationMs>=10).slice(0,25)};
   const report={purpose:"DEVELOPMENT_ONLY",candidate:process.env.FOREVER_VALIDATION_SOURCE_SHA,
     route:"Chronicle Library", responseMs:rounded(navigationResponseMs), longTasksMs:visual.longTaskDurationsMs,
     totalLongTaskMs:rounded(total(visual.longTaskDurationsMs)), durationMs:rounded((end.ts-start.ts)/1000),
-    traceBytes:size, taskSpans:durations};
+    traceBytes:size, compositor:compositorSummary, taskSpans:durations};
   await writePerformanceArtifact(artifact.artifactPath,report,[fixture.slug,voyage!.sessionId]);
-  console.log("JOURNAL_LIBRARY_RETURN_TRACE " + JSON.stringify(report));
+  console.log("JOURNAL_LIBRARY_COMPOSITOR " + JSON.stringify(report));
   expect(report.totalLongTaskMs).toBeLessThanOrEqual(budgets.ordinaryLongTaskCumulativeMs);
 });

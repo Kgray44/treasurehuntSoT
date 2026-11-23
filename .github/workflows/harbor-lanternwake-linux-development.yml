@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Attribute ordinary Chronicle Library return long tasks
+run-name: Chronicle Library return compositor correlation
 
 on:
   push:
@@ -58,7 +58,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Trace the real PageFlip-to-library transition on the candidate source
+      - name: Correlate real PageFlip-to-library long tasks with draw work
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -72,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-library-return-trace
+          name: journal-library-compositor
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
