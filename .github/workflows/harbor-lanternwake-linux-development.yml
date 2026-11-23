@@ -17,14 +17,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 38
     env:
-      CANDIDATE_SHA: e415a429a2da99453790adbdf126bb9cdaf07f8d
+      CANDIDATE_SHA: 64eab87edfc4b89d257a32acd447cd72fafc13f2
       BASE_SHA: 5be59f18590f2c48a4a7672a14a25dee5bf0e82d
-      FOREVER_VALIDATION_SOURCE_SHA: e415a429a2da99453790adbdf126bb9cdaf07f8d
+      FOREVER_VALIDATION_SOURCE_SHA: 64eab87edfc4b89d257a32acd447cd72fafc13f2
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: e415a429a2da99453790adbdf126bb9cdaf07f8d
+          ref: 64eab87edfc4b89d257a32acd447cd72fafc13f2
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -61,7 +61,7 @@ jobs:
       - name: Verify visible account ID and keyboard clipboard readback in Chromium
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "d89e996eddd1a5b31d712f1f748ce6f2e9bf2711"
+          test "$(git rev-parse HEAD^{tree})" = "f57eb272bc633c7e19229bfaea0cd4e90f411bc8"
           test "$(git rev-parse HEAD:native)" = "6795af566a32e2196088551de5b5c89840cc589f"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           node --input-type=module <<'EOF'
