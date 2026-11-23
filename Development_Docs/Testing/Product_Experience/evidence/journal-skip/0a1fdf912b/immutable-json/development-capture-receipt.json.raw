@@ -1,0 +1,18 @@
+{
+  "candidate": "0a1fdf912bc30f3bde4accd5284ff125f7155227",
+  "base": "d0f21b9dfc4a7390c34f94beedc72904e1431f1f",
+  "status": "PASS",
+  "sourceDigest": "e8cd334f089255752e02cbcc5420d8b367eae3816c0ad5bfd319674cb9d020bb",
+  "contractDigest": "353a6515594fe39c41300eb093e5e1f78ac6e9293a6d3494a77131cd9f20f41f",
+  "profiles": [
+    "generic"
+  ],
+  "contracts": [
+    "crossdeck.refit.published-lens",
+    "crossdeck.phase2.continuity",
+    "homeport.shell.crossdeck-companion",
+    "homeport.shell.crossdeck-companion-mobile",
+    "crossdeck.refit.companion"
+  ],
+  "workflowRole": "DEVELOPMENT_CAPTURE"
+}
