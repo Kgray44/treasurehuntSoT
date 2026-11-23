@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Verify in-test Metal and isolate recorder overhead on exact protected and Native trees
+run-name: Verify pre-rendered Journal cue and mute behavior on the audio trial
 
 on:
   push:
@@ -13,32 +13,19 @@ permissions:
 
 jobs:
   benchmark:
-    name: Journal benchmark with in-test renderer verification (${{ matrix.lane }})
-    runs-on: macos-15
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - lane: main-normal
-            source: 627a4e651641b6765ac789d378672ea6e903c120
-            recording: normal
-          - lane: native-normal
-            source: e68eb73782ba4e13ac3fca30972c6f72f02d7314
-            recording: normal
-          - lane: native-reduced
-            source: e68eb73782ba4e13ac3fca30972c6f72f02d7314
-            recording: reduced
+    name: Verify real cue playback and muted silence
+    runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: ${{ matrix.source }}
+      CANDIDATE_SHA: 348def7124c8d5290aab763c183ebc5c6548dbdf
       BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      FOREVER_VALIDATION_SOURCE_SHA: ${{ matrix.source }}
+      FOREVER_VALIDATION_SOURCE_SHA: 348def7124c8d5290aab763c183ebc5c6548dbdf
       NEXT_TELEMETRY_DISABLED: "1"
-      JOURNAL_DIAGNOSTIC_RECORDING: ${{ matrix.recording }}
+      EXPECTED_TREE: babcf2e595c4644645bf99422db3efbf1354fac3
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ matrix.source }}
+          ref: 348def7124c8d5290aab763c183ebc5c6548dbdf
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -71,82 +58,23 @@ jobs:
       - name: Install locked dependencies and Chromium
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install chromium
-      - name: Apply the selected recorder settings to the root Playwright config
+          npx --no-install playwright install --with-deps chromium
+      - name: Verify mainline ancestry and stage the proven browser probe
         run: |
-          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD:tests/config/playwright/playwright.phase3-performance.config.ts)" = "4347403eaf7ccbcc7fe0cf1dca8f62f148f24857"
-          git fetch --no-tags --depth=1 origin 186e0d868f5cb1aaf542e7885486f7e5ce144f16
-          git show 186e0d868f5cb1aaf542e7885486f7e5ce144f16:tests/e2e/phase3-performance.spec.ts > tests/e2e/phase3-performance.spec.ts
-          test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "ce468f106d9bf65548db3ad638af36c7a9cd5196"
-          test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
-          node --input-type=module <<'EOF'
-          import fs from "node:fs";
-          const replace = (source, from, to) => {
-            if (source.split(from).length!==2) throw Error("Unexpected diagnostic source anchor");
-            return source.replace(from,to);
-          };
-          const configPath="playwright.config.ts";
-          let config=fs.readFileSync(configPath,"utf8");
-          config=replace(config,'use: { baseURL, trace:','use: { baseURL, channel: "chromium", trace:');
-          if (process.env.JOURNAL_DIAGNOSTIC_RECORDING==="reduced") {
-            config=replace(config,'trace: "retain-on-failure"','trace: {mode:"retain-on-failure",screenshots:false,snapshots:false}');
-            config=replace(config,'video: "retain-on-failure"','video: "off"');
-          } else if (process.env.JOURNAL_DIAGNOSTIC_RECORDING!=="normal") throw Error("Unknown recorder mode");
-          fs.writeFileSync(configPath,config);
-          const specPath="tests/e2e/phase3-performance.spec.ts";
-          const spec=fs.readFileSync(specPath,"utf8");
-          const probe=[
-            '    expect(browserName).toBe("chromium");',
-            '    const rendererSession = await browser.newBrowserCDPSession();',
-            '    const {gpu}=await rendererSession.send("SystemInfo.getInfo");',
-            '    await rendererSession.detach();',
-            '    const activeRenderer = {renderer:gpu.auxAttributes?.glRenderer,compositor:gpu.featureStatus?.gpu_compositing,raster:gpu.featureStatus?.rasterization};',
-            '    console.log("LANTERNWAKE_MEASURED_RENDERER "+JSON.stringify(activeRenderer));',
-            '    expect(activeRenderer.renderer).toMatch(/Metal/i);',
-            '    expect(activeRenderer.compositor).toMatch(/^enabled/);',
-            '    expect(activeRenderer.raster).toMatch(/^enabled/);',
-          ].join("\n");
-          fs.writeFileSync(specPath,replace(spec.trimEnd()+"\n",'    expect(browserName).toBe("chromium");',probe));
-          EOF
-      - name: Select the existing Darwin diagnostic guardian for this isolated macOS job
+          git fetch --no-tags --depth=8 --filter=blob:none origin refs/heads/main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "$EXPECTED_TREE"
+          git fetch --no-tags --depth=1 origin "${{ github.sha }}"
+          git show "${{ github.sha }}:tests/e2e/phase3-player-motion.spec.ts" > tests/e2e/phase3-player-motion.spec.ts
+          test "$(git hash-object tests/e2e/phase3-player-motion.spec.ts)" = "cfefd487aaa8ff2d3b43f02e431fb14c37f5ade6"
+      - name: Serve the real Journal and play the existing cue
         run: |
-          git fetch --no-tags --depth=1 origin f3edff6df19885a14acf5f97990ed355be5777a2
-          git show f3edff6df19885a14acf5f97990ed355be5777a2:scripts/sounding-line/owned-process-darwin-diagnostic.py > scripts/sounding-line/owned-process-darwin-diagnostic.py
-          node --input-type=module <<'EOF'
-          import fs from "node:fs";
-          if (process.platform !== "darwin" || process.env.GITHUB_ACTIONS !== "true") throw Error("Ephemeral macOS is required");
-          const file = "scripts/sounding-line/owned-process.mjs";
-          let source = fs.readFileSync(file,"utf8");
-          const replacements = [
-            ['new URL("./owned-process-linux.py", import.meta.url)', 'new URL(process.platform === "darwin" ? "./owned-process-darwin-diagnostic.py" : "./owned-process-linux.py", import.meta.url)'],
-            ['record.windows ? "WINDOWS_JOB_OBJECT" : "LINUX_SUBREAPER_AND_PIDFD"', 'record.windows ? "WINDOWS_JOB_OBJECT" : process.platform === "darwin" ? "DARWIN_DIAGNOSTIC_PROCESS_GROUP" : "LINUX_SUBREAPER_AND_PIDFD"'],
-          ];
-          for (const [before, after] of replacements) {
-            if (source.split(before).length !== 2) throw Error("Unexpected launcher anchor");
-            source = source.replace(before, after);
-          }
-          fs.writeFileSync(file,source);
-          EOF
-      - name: Measure all original budgets with this verified renderer
-        env:
-          NODE_OPTIONS: "--max-old-space-size=4096"
-        run: |
-          sysctl hw.memsize
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
           await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-player-motion.spec.ts"] },
             { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
           );
           EOF
-      - name: Retain sanitized performance metrics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: journal-hosted-metal-${{ matrix.lane }}
-          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
-          if-no-files-found: ignore
-          retention-days: 30
