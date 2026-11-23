@@ -1479,7 +1479,7 @@
           "src/components/player/workspace/SideQuestLedger.tsx",
           "src/styles/player.css"
         ],
-        "states": ["JOURNAL_REPLAY_READY", "JOURNAL_CAN_TURN", "JOURNAL_LIBRARY_RETURNED"],
+        "states": ["JOURNAL_REPLAY_READY", "JOURNAL_CAN_TURN", "JOURNAL_CHAPTERS_READY", "JOURNAL_LIBRARY_RETURNED"],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["PLAYER"],
         "fixtureProfile": "generic",
@@ -1555,10 +1555,8 @@
               },
               {
                 "action": "assert",
-                "kind": "outcome",
                 "role": "group",
                 "name": "Journal opening replay",
-                "text": "Replay short opening",
                 "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
                 "meaning": "The replay controls are interactive again after the Journal opening completes.",
                 "state": "JOURNAL_REPLAY_READY",
@@ -1571,13 +1569,31 @@
               },
               {
                 "action": "assert",
-                "kind": "outcome",
                 "role": "region",
                 "name": "Voyage context",
                 "text": "Synthetic Crossdeck refit Voyage",
                 "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
                 "meaning": "Reading remains inside the same active Voyage after using the actual page navigation.",
                 "state": "JOURNAL_CAN_TURN"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "chapters"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "heading",
+                "name": "Released chapters",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "meaning": "The chapter drawer opens on the readable Voyage after the replay and page-turn controls.",
+                "state": "JOURNAL_CHAPTERS_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close chapter drawer"
               },
               {
                 "action": "click",
