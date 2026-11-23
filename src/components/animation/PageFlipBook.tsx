@@ -20,6 +20,7 @@ import {
   type PageFlipPageTargetCapability,
   type PageFlipPageTargetAuthority,
 } from "./pageflip-boundary";
+import { loadPageFlipWithOwnedFrames } from "./pageflip-render-lifecycle";
 
 export type PageFlipBookHandle = {
   next: () => void;
@@ -927,6 +928,7 @@ export const PageFlipBook = forwardRef<
     publishReadiness("initializing");
 
     let book: PageFlipInstance | null = null;
+    let releaseFrames: (() => void) | null = null;
     let disposed = false;
     let destroyed = false;
     let countedAsMounted = false;
@@ -951,6 +953,8 @@ export const PageFlipBook = forwardRef<
       const ownedBook = book;
       const ownedBoundary = boundaryController;
       book = null;
+      releaseFrames?.();
+      releaseFrames = null;
       if (ownedBook) {
         currentPage.current = clampPage(currentPage.current, pagesLength.current);
         if (instance.current === ownedBook) instance.current = null;
@@ -1069,7 +1073,11 @@ export const PageFlipBook = forwardRef<
             startPage,
           });
           book = initializedBook;
-          initializedBook.loadFromHTML(clones);
+          releaseFrames = loadPageFlipWithOwnedFrames(
+            initializedBook,
+            clones,
+            element.ownerDocument.defaultView ?? window,
+          );
           return initializedBook;
         });
         if (initialized.status !== "applied") throw new Error(`PageFlip runtime lease denied: ${initialized.reason}`);
