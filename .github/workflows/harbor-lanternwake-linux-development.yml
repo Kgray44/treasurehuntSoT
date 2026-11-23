@@ -1,105 +1,37 @@
-name: Lanternwake isolated Linux benchmark
-run-name: Recapture Journal returns and reduced-motion Home with both repairs
-
+name: Ordinary verification scope for canonical Journal candidate
+run-name: Read the ordinary Sounding Line plan for the exact Journal repairs
 on:
   push:
     branches:
       - codex/lanternwake-focused-development-cf6b1d6bbae4
     paths:
       - .github/workflows/harbor-lanternwake-linux-development.yml
-
 permissions:
   contents: read
-
 jobs:
-  benchmark:
-    name: Source-bound Journal experience capture
+  ordinary-plan:
     runs-on: ubuntu-24.04
-    timeout-minutes: 36
-    env:
-      CANDIDATE_SHA: ef6d31b1b80e9ffbdf980ddc2b63f45514965760
-      BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
-      FOREVER_VALIDATION_SOURCE_SHA: ef6d31b1b80e9ffbdf980ddc2b63f45514965760
-      NEXT_TELEMETRY_DISABLED: "1"
-      SOUNDING_LINE_PR_NUMBER: "906"
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ef6d31b1b80e9ffbdf980ddc2b63f45514965760
-          fetch-depth: 16
+          fetch-depth: 4
           persist-credentials: false
-          sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /*
-            !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
-            /scripts/
-            /src/
-            /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
+            scripts
+            testing
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Verify the actual protected base and its candidate ancestry
+      - name: Print the source-only candidate ordinary plan
+        env:
+          BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
+          CANDIDATE_SHA: ef6d31b1b80e9ffbdf980ddc2b63f45514965760
         run: |
-          git fetch --no-tags --filter=blob:none --depth=16 origin refs/heads/main:refs/remotes/origin/main
+          git fetch --no-tags --filter=blob:none --depth=4 origin refs/heads/main:refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "$BASE_SHA"
-          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
-      - name: Install locked dependencies and Chromium
-        run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium
-      - name: Capture real source-bound Product Experience journeys for PR 906
-        run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          node --input-type=module <<'EOF'
-          import {execFileSync} from "node:child_process";
-          import {writeFile} from "node:fs/promises";
-          import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
-          import {recognizeExceptionExecution} from "./scripts/sounding-line/experience-exception.mjs";
-          const root = process.cwd();
-          if (recognizeExceptionExecution({root, baseSha: process.env.BASE_SHA, candidateSha: process.env.CANDIDATE_SHA}))
-            throw new Error("Current source was classified as a separate exception campaign");
-          const plan = JSON.parse(execFileSync(process.execPath, [
-            "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
-            "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
-          ], {encoding: "utf8"}));
-          if (!plan.applicable || plan.sourceDigest !== "130e633947cb7b6ed66572184f0ee61a765fbad3912b50339ed707f3c6d7404e" ||
-              plan.contractDigest !== "4578d749590b9033c43bf566138577f9d32cb249722f3050f98608db287253de")
-            throw new Error("Exact source-bound Product Experience plan required");
-          plan.outputDirectory = "artifacts/sounding-line/journal-906-experience";
-          delete process.env.GH_TOKEN;
-          delete process.env.GITHUB_TOKEN;
-          const receipt = await runTrustedExperienceReplay({
-            root, plan, validateReplay: false,
-            environment: { SOUNDING_LINE_BASE_SHA: plan.baseSha },
-          });
-          if (receipt.status !== "PASS") throw new Error("The actual browser capture did not complete");
-          await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
-            JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
-              sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
-              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "DEVELOPMENT_CAPTURE"}, null, 2) + "\n");
-          EOF
-      - name: Retain source-bound synthetic browser review evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: journal-906-source-bound-experience
-          path: artifacts/sounding-line/journal-906-experience/**
-          if-no-files-found: ignore
-          retention-days: 30
+          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
+          node scripts/sounding-line-v3/cli.mjs plan --base "$BASE_SHA" --head "$CANDIDATE_SHA" --json |
+            jq -c '{base,tree,category,projects,jobs:[.jobs[]|{id,kind,fileCount:(.files|length)}],notes}'
