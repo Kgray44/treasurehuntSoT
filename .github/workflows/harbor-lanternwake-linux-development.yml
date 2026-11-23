@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Journal PR 906 capture with verified protected-base ancestry
+run-name: Reproduce reduced-motion Home return on protected main
 
 on:
   push:
@@ -17,15 +17,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 36
     env:
-      CANDIDATE_SHA: 096eb29385f4400b7dab72488c27b7550baccacc
+      CANDIDATE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
       BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
-      FOREVER_VALIDATION_SOURCE_SHA: 096eb29385f4400b7dab72488c27b7550baccacc
+      FOREVER_VALIDATION_SOURCE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
       NEXT_TELEMETRY_DISABLED: "1"
-      SOUNDING_LINE_PR_NUMBER: "906"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 096eb29385f4400b7dab72488c27b7550baccacc
+          ref: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
           fetch-depth: 16
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -64,7 +63,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Capture real source-bound Product Experience journeys for PR 906
+      - name: Capture the declared reduced-motion Home journey on the protected baseline
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -75,14 +74,16 @@ jobs:
           const root = process.cwd();
           if (recognizeExceptionExecution({root, baseSha: process.env.BASE_SHA, candidateSha: process.env.CANDIDATE_SHA}))
             throw new Error("Current source was classified as a separate exception campaign");
-          const plan = JSON.parse(execFileSync(process.execPath, [
-            "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
-            "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
-          ], {encoding: "utf8"}));
-          if (!plan.applicable || plan.sourceDigest !== "66d5c89ee0e3dddc70d4b4925f028015a6bf4a1f270b983c033af8169be3f00d" ||
-              plan.contractDigest !== "b3fa8aac613b29e9e30612873559d6567c7309aa408ad39f93aefbd7ab54f2d1")
-            throw new Error("Exact source-bound Product Experience plan required");
-          plan.outputDirectory = "artifacts/sounding-line/journal-906-experience";
+
+          const {planProductExperience,experienceDigest} = await import("./scripts/sounding-line/product-experience.mjs");
+          const plan = planProductExperience({root,baseSha:process.env.BASE_SHA,candidateSha:process.env.CANDIDATE_SHA,
+            changedPaths:["src/animation/platform/RouteMotionBoundary.tsx"]});
+          const selected = plan.contracts.filter(contract => contract.id === "homeport.transition.reduced-motion");
+          if(!plan.applicable || selected.length!==1 || plan.baseSha!==plan.candidateSha)
+            throw new Error("Baseline comparison must execute the single existing contract on protected main");
+          plan.contracts=selected;
+          plan.contractDigest=experienceDigest(selected);
+          plan.outputDirectory="artifacts/sounding-line/journal-906-baseline-comparison";
           delete process.env.GH_TOKEN;
           delete process.env.GITHUB_TOKEN;
           const receipt = await runTrustedExperienceReplay({
@@ -93,13 +94,13 @@ jobs:
           await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
             JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
               sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
-              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "DEVELOPMENT_CAPTURE"}, null, 2) + "\n");
+              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "BASELINE_DIAGNOSTIC"}, null, 2) + "\n");
           EOF
       - name: Retain source-bound synthetic browser review evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-906-source-bound-experience
-          path: artifacts/sounding-line/journal-906-experience/**
+          name: journal-906-protected-baseline
+          path: artifacts/sounding-line/journal-906-baseline-comparison/**
           if-no-files-found: ignore
           retention-days: 30
