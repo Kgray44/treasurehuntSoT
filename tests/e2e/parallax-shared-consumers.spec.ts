@@ -89,11 +89,23 @@ test("locate hidden draws and animation ownership on the exact protected Journal
         };
       }));
       expect(draw.phase, "A layer sample must retain the requested phase").toBe(awaitedPhase);
+      const paper = draw.surfaces[".opening-sealed-page"][0];
+      expect(paper).toBeDefined();
+      if(awaitedPhase === "CLOSED_BOOK_REVEAL") {
+        expect(paper.visibility).toBe("hidden");
+        expect(paper.effectiveOpacity).toBe(0);
+        expect(layers.some(layer => layer.className === paper.className)).toBe(false);
+      }
+      if(awaitedPhase === "SEALED_PAGE_REVEAL") {
+        expect(paper.visibility).toBe("visible");
+        expect(paper.effectiveOpacity).toBeGreaterThan(0.05);
+      }
       paths.push({ name, offsetMs, ...draw, layers, drawingCount: currentLayers.filter(x => x.drawsContent).length });
     }
 
     await page.getByRole("button", { name: "Open the journal" }).click();
     await sample("cold-reveal", "CLOSED_BOOK_REVEAL", 180);
+    await sample("cold-paper-visible", "SEALED_PAGE_REVEAL", 420);
     await sample("cold-settle", "BOOK_SETTLING", 380);
     await expect(journal).toHaveAttribute("data-journal-ready-reason", "completed", { timeout: 15_000 });
 
@@ -106,7 +118,7 @@ test("locate hidden draws and animation ownership on the exact protected Journal
     await sample("ready", "JOURNAL_READY", 0);
     await page.getByRole("button", { name: "Next journal page" }).click({ trial: true });
 
-    const directory = "artifacts/sounding-line/journal-current-hidden-surfaces";
+    const directory = "artifacts/sounding-line/journal-culled-sealed-page";
     await mkdir(directory, { recursive: true });
     await writeFile(directory + "/owners.json", JSON.stringify({
       purpose: "DEVELOPMENT_ONLY",

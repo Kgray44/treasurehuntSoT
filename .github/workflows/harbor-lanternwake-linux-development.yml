@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Inspect hidden Journal compositor surfaces on protected main
+run-name: Compare hidden sealed-page pruning under the original Journal workload
 
 on:
   push:
@@ -13,19 +13,19 @@ permissions:
 
 jobs:
   benchmark:
-    name: Inspect current-main Journal compositor ownership
+    name: Verify sealed paper culling and visible reveal
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      BASE_SHA: d0f21b9dfc4a7390c34f94beedc72904e1431f1f
-      FOREVER_VALIDATION_SOURCE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+      CANDIDATE_SHA: 8f2da4c82ccf3da4ad61347a4a1bd1190438e834
+      BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+      FOREVER_VALIDATION_SOURCE_SHA: 8f2da4c82ccf3da4ad61347a4a1bd1190438e834
       NEXT_TELEMETRY_DISABLED: "1"
-      EXPECTED_TREE: b0a8802278c11399f703a2fddf6f5e52ca470a13
+      EXPECTED_TREE: a1190215fed36c3da7d29af5d1680ad2d0c95cbc
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 627a4e651641b6765ac789d378672ea6e903c120
+          ref: 8f2da4c82ccf3da4ad61347a4a1bd1190438e834
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -62,12 +62,13 @@ jobs:
       - name: Verify mainline ancestry and stage the proven browser probe
         run: |
           git fetch --no-tags --depth=8 --filter=blob:none origin refs/heads/main:refs/remotes/origin/main
-          test "$(git rev-parse origin/main)" = "$CANDIDATE_SHA"
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
           test "$(git rev-parse HEAD^{tree})" = "$EXPECTED_TREE"
           git fetch --no-tags --depth=1 origin "${{ github.sha }}"
           git show "${{ github.sha }}:tests/e2e/parallax-shared-consumers.spec.ts" > tests/e2e/parallax-shared-consumers.spec.ts
-          test "$(git hash-object tests/e2e/parallax-shared-consumers.spec.ts)" = "4a556bba983b77d3e9cdafa5f26fed74f33a9e4d"
-      - name: Attribute visible and hidden Journal compositor surfaces
+          test "$(git hash-object tests/e2e/parallax-shared-consumers.spec.ts)" = "3a8bfb8246d1d86adfc3208f4991e5d9fb59b994"
+      - name: Verify sealed paper culling before visible reveal
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -81,7 +82,84 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-current-hidden-surfaces
-          path: artifacts/sounding-line/journal-current-hidden-surfaces/**
+          name: journal-culled-sealed-page
+          path: artifacts/sounding-line/journal-culled-sealed-page/**
+          if-no-files-found: ignore
+          retention-days: 30
+  canonical-budget:
+    name: Original recorded workload (${{ matrix.lane }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - lane: control
+            source: 627a4e651641b6765ac789d378672ea6e903c120
+          - lane: culled-sealed-page
+            source: 8f2da4c82ccf3da4ad61347a4a1bd1190438e834
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    env:
+      CANDIDATE_SHA: ${{ matrix.source }}
+      BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+      FOREVER_VALIDATION_SOURCE_SHA: ${{ matrix.source }}
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.source }}
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
+            /scripts/
+            /src/
+            /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Install locked dependencies and Chromium
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install --with-deps chromium
+      - name: Preserve canonical benchmark and unmodified recording settings
+        run: |
+          git fetch --no-tags --depth=1 origin 186e0d868f5cb1aaf542e7885486f7e5ce144f16
+          git show 186e0d868f5cb1aaf542e7885486f7e5ce144f16:tests/e2e/phase3-performance.spec.ts > tests/e2e/phase3-performance.spec.ts
+          test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "ce468f106d9bf65548db3ad638af36c7a9cd5196"
+      - name: Measure all required budgets with original recording
+        run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          node --input-type=module <<'EOF'
+          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
+          );
+          EOF
+      - name: Retain sanitized performance metrics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: journal-canonical-sealed-page-${{ matrix.lane }}
+          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
