@@ -1,0 +1,763 @@
+{
+  "objective": "Choose manual creation, enter the actual editor immediately, and save Chronicle details from that editor",
+  "contract": {
+    "id": "chronicle.creation",
+    "name": "Chronicle creation choices and canonical inline details",
+    "authority": "one-voyage",
+    "owners": [
+      "one-voyage"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "A Creator beginning a Chronicle and shaping its details without mandatory setup",
+      "objective": "Choose manual creation, enter the actual editor immediately, and save Chronicle details from that editor",
+      "visibleOutcome": "A real owned untitled draft opens directly; its title and complete supported metadata remain editable and saved through the canonical editor",
+      "integrationOwner": "Chronicle Creator SC-00A",
+      "systems": [
+        "one-voyage"
+      ],
+      "sourcePaths": [
+        "src/components/studio/NewTaleForm.tsx",
+        "src/components/studio/ChronicleDetails.tsx",
+        "src/components/studio/ChronicleAuthoring.module.css",
+        "src/components/studio/StudioStatusHeader.tsx",
+        "src/components/studio/TaleEditor.tsx",
+        "src/components/studio/StudioHome.tsx",
+        "src/app/studio/tales/new",
+        "src/app/studio/tales",
+        "src/app/studio/library",
+        "src/components/studio/TaleEditorSection.tsx"
+      ],
+      "projectionPaths": [],
+      "entryPoint": "/studio/library",
+      "states": [
+        "CHOICES_READY",
+        "EDITOR_READY",
+        "DETAILS_SAVED",
+        "LIBRARY_RETURNED",
+        "RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "CREATOR"
+      ],
+      "accessibility": "Keyboard activation, Enter to apply title, Escape to cancel or close Details, restored focus, native form controls and visible save feedback remain usable on desktop and mobile.",
+      "fallback": "Manual creation requires no AI, imported document or whole-Chronicle template. The other three choices visibly say Coming soon and cannot create drafts.",
+      "navigation": "Creator Library opens Create a Chronicle; manual creation opens the existing TaleEditor; Details stays within that editor and returning reaches the same Creator Library.",
+      "designTarget": "Use the established premium Studio shell and theme tokens with spacious four-card composition, purposeful line icons, a prominent manual action, readable disabled choices, visible focus and restrained reduced-motion transitions.",
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+          "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+          "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+        }
+      ],
+      "homeportScreenIds": [
+        "screen-page-studio-library",
+        "screen-page-studio-tales-new"
+      ],
+      "homeportJourneyIds": [
+        "B"
+      ],
+      "browserTests": [
+        "tests/e2e/chronicle-creation.spec.ts",
+        "tests/e2e/chronicle-studio.spec.ts"
+      ],
+      "fixtureProfile": "generic",
+      "recordingRequired": true,
+      "limitations": [
+        "Only manual whole-Chronicle creation is available. Existing Chapter template insertion remains inside the editor. No Chronicle Architect, Story Import, Scene binding, physical device acceptance or owner acceptance is claimed."
+      ],
+      "roleSetup": {
+        "CREATOR": {
+          "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-creator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "heading",
+            "name": "Voyagewright Studio",
+            "text": "Voyagewright Studio"
+          }
+        }
+      },
+      "motion": {
+        "measurement": "Measure visible selection and saved-draft return feedback after keyboard activation in normal and reduced-motion contexts.",
+        "feedbackBudgetMs": 15000
+      },
+      "journeys": [
+        {
+          "id": "creation-and-inline-details",
+          "roles": [
+            "CREATOR"
+          ],
+          "outcome": "Creator inspects all creation choices without creating a draft, then authors and saves a real named draft in the editor and returns to the Library and creation entry",
+          "steps": [
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Create Chronicle"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Create a Chronicle",
+              "text": "Create a Chronicle",
+              "state": "CHOICES_READY",
+              "path": "/studio/tales/new",
+              "kind": "outcome",
+              "meaning": "The natural creation entry shows the four-choice experience without requiring metadata.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Create with AI Build alongside the future Chronicle Architect, from a first spark to a story worth sharing. Coming soon",
+              "text": "Coming soon",
+              "state": "CHOICES_READY"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "← Your Chronicles"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio",
+              "state": "RETURNED",
+              "path": "/studio/library",
+              "returnPath": true
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Create Chronicle"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Create a Chronicle",
+              "text": "Create a Chronicle",
+              "state": "CHOICES_READY"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Create Manually Begin with a blank canvas. Shape your Chapters and Passages as inspiration strikes. Begin creating →"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Untitled Chronicle",
+              "text": "Untitled Chronicle",
+              "state": "EDITOR_READY"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Rename Chronicle: Untitled Chronicle"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Chronicle title",
+              "value": "SC-00A Experience Chronicle"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Apply title"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Chronicle Details"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Short description",
+              "value": "A synthetic Chronicle saved from its actual editor."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Save details"
+            },
+            {
+              "action": "assert",
+              "role": "status",
+              "name": "Chronicle save status",
+              "text": "Saved at",
+              "state": "DETAILS_SAVED"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Close Chronicle Details"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "← Studio"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio",
+              "state": "LIBRARY_RETURNED",
+              "path": "/studio/library",
+              "kind": "outcome",
+              "meaning": "The Creator saved a real named Chronicle through the editor and returns to the same authenticated Library.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Create Chronicle"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Create a Chronicle",
+              "text": "Create a Chronicle",
+              "state": "RETURNED",
+              "path": "/studio/tales/new",
+              "returnPath": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "sourceDigest": "67fc86144dd2274d1eeb2582d357d2309917d9d8f4a5fcbcdcb14b8c76017d57",
+  "artifacts": [
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1.png",
+      "sha256": "90b2d8b7c074b4dc7b95a85c1c7748c9585fa311dd5b79bf097f85b6ca7ba27d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "CHOICES_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2.png",
+      "sha256": "90b2d8b7c074b4dc7b95a85c1c7748c9585fa311dd5b79bf097f85b6ca7ba27d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "CHOICES_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-4",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-4.png",
+      "sha256": "98a02f4a73c9f2cebf3cfb3786f4c1125586363b6c158f2e6ff5e985e2e66cdc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-6",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-6.png",
+      "sha256": "90b2d8b7c074b4dc7b95a85c1c7748c9585fa311dd5b79bf097f85b6ca7ba27d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "CHOICES_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8.png",
+      "sha256": "88c092f38f226eaca265be66daa715a4a5ef513bdb935f751ab91ab13bde09b1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "EDITOR_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15.png",
+      "sha256": "873ba1b334d38eafbc19b1d57cb1652b9c42f703d48b6db3876c0a50ce820175",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "DETAILS_SAVED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18.png",
+      "sha256": "162bf367205aeca66de86ef8ee7c797a9b91eed285087c30fc7a7b0df1ddc59a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "LIBRARY_RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-20",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-20.png",
+      "sha256": "c36fc8b8549aa964a81c4d78076b9a298d89178201c74c3e1bba5fe99f0da4c1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL.trace.zip",
+      "sha256": "5cf02c79a277a799d7826641ddf8a2d461e26a2a8dd6755c9dc0f9211600323d",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/page@13c78eecbe4cc6dd957cfd3607ce9b46.webm",
+      "sha256": "3dd901367042ec5c18940648d752c093d47ac68624cd1993ac159c6a2d6ae3f9",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-1",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-1.png",
+      "sha256": "5009f2cccd31c614380a4da652b8f6b09993bcfd582196ec6003cde9be6c8495",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "CHOICES_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-2",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-2.png",
+      "sha256": "5009f2cccd31c614380a4da652b8f6b09993bcfd582196ec6003cde9be6c8495",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "CHOICES_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-4",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-4.png",
+      "sha256": "27321b650368bec27645f7283bc8a6ff0d7bfad3aa2130999858ddd27a5072c4",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-6",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-6.png",
+      "sha256": "5009f2cccd31c614380a4da652b8f6b09993bcfd582196ec6003cde9be6c8495",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "CHOICES_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-EDITOR_READY-8",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-EDITOR_READY-8.png",
+      "sha256": "2ecfb6a99bf548bac5757d47279c90226cae10b2784bda010f09f7e5c78c4f30",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "EDITOR_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15.png",
+      "sha256": "a3c38ff43ba62bdd0e4ea5f1ed4f4046e9e550d206ad85ea6a41997dcf858592",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "DETAILS_SAVED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-LIBRARY_RETURNED-18",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-LIBRARY_RETURNED-18.png",
+      "sha256": "78a2bcd3144b43c5254f60a8e06fdf81c4ac1aa9eee89e448d13b3aab15691b9",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "LIBRARY_RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-20",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-20.png",
+      "sha256": "8e45c76f308f5b918aa45b0c2aeede0defa0b61d4b838592d39f63c7e6d74375",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-trace",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "42485cbaf06e3ea4c67170a595cb5cfdc6252bfd7039059ff6971ffff641da09",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/page@d6da5163d13dcd701152979a375d8f06.webm",
+      "sha256": "f62f3f90282aac6d8df0dbc3c3cb7a3714ad453455ffec30bba9b3112c8612a7",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1.png",
+      "sha256": "1fa1fb4671077a0e9d07bd40986bf409f2916e9e9ab4ffe90c5b6ae6ef735999",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "CHOICES_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-2",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-2.png",
+      "sha256": "1fa1fb4671077a0e9d07bd40986bf409f2916e9e9ab4ffe90c5b6ae6ef735999",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "CHOICES_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-4",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-4.png",
+      "sha256": "34dafd21fd6ed977fadd376200d3aaa69bdcd1274cfd5836178d2e522c25d26b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-6",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-6.png",
+      "sha256": "1fa1fb4671077a0e9d07bd40986bf409f2916e9e9ab4ffe90c5b6ae6ef735999",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "CHOICES_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8.png",
+      "sha256": "a39429ee492a2225ff4dae6511ba7cd573ae5386332015c44bdfd2a52a976027",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "EDITOR_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15.png",
+      "sha256": "a78b9030c11764d16034c01328eb4c2b81041b3f22f8135b82db00ae1f5caf44",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "DETAILS_SAVED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18.png",
+      "sha256": "a94b47120d79abbefd22e186f23f6007b11f04bfe90c5f6415e48b0cd6d8df49",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "LIBRARY_RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-20",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-20.png",
+      "sha256": "1fa1fb4671077a0e9d07bd40986bf409f2916e9e9ab4ffe90c5b6ae6ef735999",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-trace",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL.trace.zip",
+      "sha256": "c0e0de8957b6e7a64acef38c1b1b5cea04f2bf147b341484b27084ca54b9d66d",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-recording",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/page@e29da6eab8c3006a6fbe2501d4f482ea.webm",
+      "sha256": "423e66fe4a92eaeab81d29f50a2a7500a465aa2c1ea3f10258671ee77e1c88e6",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1.png",
+      "sha256": "1fa1fb4671077a0e9d07bd40986bf409f2916e9e9ab4ffe90c5b6ae6ef735999",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "CHOICES_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-2",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-2.png",
+      "sha256": "1fa1fb4671077a0e9d07bd40986bf409f2916e9e9ab4ffe90c5b6ae6ef735999",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "CHOICES_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-4",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-4.png",
+      "sha256": "a94b47120d79abbefd22e186f23f6007b11f04bfe90c5f6415e48b0cd6d8df49",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-6",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-6.png",
+      "sha256": "1fa1fb4671077a0e9d07bd40986bf409f2916e9e9ab4ffe90c5b6ae6ef735999",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "CHOICES_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8.png",
+      "sha256": "b69809a1353d99d95cbb046ecfa48ff915ea949354a07982b97ff6afa20b80ec",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "EDITOR_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15.png",
+      "sha256": "76234a2c67313172480609d495836327604d9f403bb17fdb289c27e759941441",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "DETAILS_SAVED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18.png",
+      "sha256": "a2fc528da4f4cd6ee6b01031e04a231c2cf3085b69848fba10f454c6cf6bef0e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "LIBRARY_RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-20",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-20.png",
+      "sha256": "1fa1fb4671077a0e9d07bd40986bf409f2916e9e9ab4ffe90c5b6ae6ef735999",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "9f9eed9d3b4cef1e5f0bbc225e4b02f74369324bbb2be982c7687e43af68562c",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording",
+      "path": "artifacts/sounding-line/journal-906-experience/generic/page@1e6cc720ad0474bfd941e4bc82e49a3b.webm",
+      "sha256": "93f95dda7ca3123db9b05d34e47512bd35fe0d8c4f919f0c3f8fb00e649e116b",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "chronicle.creation",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "5ba64b84c1989b8b8fe90b976a48c8d2c6f435179dc607e3dd293fee1460a5b3",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

@@ -8,3 +8,8 @@
   :global(:is(.book-shadow, .rear-book-cover, .page-stack, .book-binding)) {
   transition: none;
 }
+
+/* An abbreviated return settles the cover as the outgoing book fades. */
+.journalShell[data-motion-mode="full"][data-journal-phase="BOOK_SETTLING"] :global(.front-cover) {
+  transition-duration: 1350ms;
+}
