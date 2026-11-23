@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Capture the nine source-bound Journal performance repair experience contracts
+run-name: Verify all Journal budgets and plan experience coverage on staged Native
 
 on:
   push:
@@ -12,21 +12,20 @@ permissions:
   contents: read
 
 jobs:
-  benchmark:
-    name: Source-bound Journal experience capture
+  canonical-budget:
+    name: Tracked timing spec on the exact staged Native runtime
     runs-on: ubuntu-24.04
-    timeout-minutes: 36
+    timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 57746322bd9b1755f9ddcd7e559fb7ce6d255d37
+      CANDIDATE_SHA: a2c50a92a149e0522b17cd233f1284918c5c6824
       BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      FOREVER_VALIDATION_SOURCE_SHA: 57746322bd9b1755f9ddcd7e559fb7ce6d255d37
+      FOREVER_VALIDATION_SOURCE_SHA: a2c50a92a149e0522b17cd233f1284918c5c6824
       NEXT_TELEMETRY_DISABLED: "1"
-      SOUNDING_LINE_PR_NUMBER: "901"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 57746322bd9b1755f9ddcd7e559fb7ce6d255d37
-          fetch-depth: 16
+          ref: a2c50a92a149e0522b17cd233f1284918c5c6824
+          fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
@@ -55,56 +54,95 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Verify the actual protected base and its candidate ancestry
-        run: |
-          git fetch --no-tags --filter=blob:none --depth=16 origin refs/heads/main:refs/remotes/origin/main
-          test "$(git rev-parse origin/main)" = "$BASE_SHA"
-          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
       - name: Install locked dependencies and Chromium
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Capture real source-bound Product Experience journeys for PR 901
+      - name: Verify the exact tracked timing spec and browser config
+        run: |
+          test "$(git rev-parse HEAD^{tree})" = "a417df0be5bb4eccaebccddef3f256bb0c497d48"
+          test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "2e10c383fa2accb79fbad09f92d61631b23e2d78"
+          test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          npx --no-install prettier --check tests/e2e/phase3-performance.spec.ts
+      - name: Measure all unchanged Journal budgets
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
-          import {execFileSync} from "node:child_process";
-          import {writeFile} from "node:fs/promises";
-          import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
-          import {recognizeExceptionExecution} from "./scripts/sounding-line/experience-exception.mjs";
-          const root = process.cwd();
-          if (recognizeExceptionExecution({root, baseSha: process.env.BASE_SHA, candidateSha: process.env.CANDIDATE_SHA}))
-            throw new Error("Current source was classified as a separate exception campaign");
-          const plan = JSON.parse(execFileSync(process.execPath, [
-            "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
-            "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
-          ], {encoding: "utf8"}));
-          const expectedContracts = ["crossdeck.phase2.continuity","crossdeck.refit.companion","crossdeck.refit.published-lens","homeport.motion.authority","homeport.owner-correction.round1.workspaces","homeport.shell.crossdeck-companion","homeport.shell.crossdeck-companion-mobile","homeport.transition.reduced-motion","journal-ready-state"];
-          const actualContracts = plan.contracts.map(item => item.id).sort();
-          if (!plan.applicable || plan.baseSha !== process.env.BASE_SHA || plan.candidateSha !== process.env.CANDIDATE_SHA ||
-              plan.contractDigest !== "b345bf8b4c2cd246759fa0e7cdf21e45efd558339b9e608223c61d8635650410" || JSON.stringify(actualContracts) !== JSON.stringify(expectedContracts) ||
-              plan.sourceDigest !== "c3bfaaeabe9b1dca265d3c22d503a991053b4e96b20ab39478a7d6b040c0440f")
-            throw new Error("Unexpected experience source or contract selection");
-          console.log("JOURNAL_RENDERER_CAPTURE_PLAN " + JSON.stringify({baseSha:plan.baseSha,candidateSha:plan.candidateSha,
-            sourceDigest:plan.sourceDigest,contractDigest:plan.contractDigest,contracts:actualContracts}));
-          plan.outputDirectory = "artifacts/sounding-line/journal-901-experience";
-          delete process.env.GH_TOKEN;
-          delete process.env.GITHUB_TOKEN;
-          const receipt = await runTrustedExperienceReplay({
-            root, plan, validateReplay: false,
-            environment: { SOUNDING_LINE_BASE_SHA: plan.baseSha },
-          });
-          if (receipt.status !== "PASS") throw new Error("The actual browser capture did not complete");
-          await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
-            JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
-              sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
-              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "DEVELOPMENT_CAPTURE"}, null, 2) + "\n");
+          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
+          );
           EOF
-      - name: Retain source-bound synthetic browser review evidence
+      - name: Retain sanitized performance metrics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-901-source-bound-experience
-          path: artifacts/sounding-line/journal-901-experience/**
+          name: native-journal-reconciled-all-budgets
+          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
+  experience-plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: a2c50a92a149e0522b17cd233f1284918c5c6824
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/*/
+            /scripts/
+            /testing/
+            /src/
+            **/*.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Print the source-bound experience plan
+        env:
+          BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+          CANDIDATE_SHA: a2c50a92a149e0522b17cd233f1284918c5c6824
+        run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          git fetch --no-tags --depth=1 origin "$BASE_SHA"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "a417df0be5bb4eccaebccddef3f256bb0c497d48"
+          node --input-type=module > "$RUNNER_TEMP/native-experience-source-objects" <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { sourceSnapshotReadsPath } from "./scripts/sounding-line/product-experience.mjs";
+          const blobs=new Set();
+          for(const revision of [process.env.BASE_SHA,process.env.CANDIDATE_SHA]){
+            const tree=execFileSync("git",["ls-tree","-rz",revision],{encoding:"utf8",maxBuffer:32*1024*1024});
+            for(const entry of tree.split("\0").filter(Boolean)){
+              const [metadata,file]=entry.split("\t");
+              const [,type,oid]=metadata.split(" ");
+              if(type==="blob" && sourceSnapshotReadsPath(file)) blobs.add(oid);
+            }
+          }
+          console.log([...blobs].sort().join("\n"));
+          EOF
+          GIT_NO_LAZY_FETCH=1 git cat-file --batch-check < "$RUNNER_TEMP/native-experience-source-objects" |
+            awk '$2=="missing" { print $1 }' > "$RUNNER_TEMP/native-experience-missing-objects"
+          if [[ -s "$RUNNER_TEMP/native-experience-missing-objects" ]]; then
+            git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin < "$RUNNER_TEMP/native-experience-missing-objects"
+          fi
+          node --input-type=module <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { planProductExperience } from "./scripts/sounding-line/product-experience.mjs";
+          const root=process.cwd();
+          const baseSha=process.env.BASE_SHA;
+          const candidateSha=process.env.CANDIDATE_SHA;
+          const changedPaths=execFileSync("git",["diff","--name-only","--no-renames",baseSha,candidateSha],{encoding:"utf8"}).trim().split("\n");
+          const plan=planProductExperience({root,baseSha,candidateSha,changedPaths});
+          console.log("JOURNAL_EXPERIENCE_SCOPE "+JSON.stringify({
+            baseSha,candidateSha,changedPaths,applicable:plan.applicable,classification:plan.classification,
+            sourceDigest:plan.sourceDigest,contractDigest:plan.contractDigest,
+            contracts:(plan.contracts??[]).map(item=>({id:item.id,profile:item.experience?.executionProfile})),
+          }));
+          EOF
+
