@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Verify the staged Native runtime with exact Scene and Crossdeck browser journeys
+run-name: Reproduce the Creator review obscured after responsive form reflow
 
 on:
   push:
@@ -12,62 +12,26 @@ permissions:
   contents: read
 
 jobs:
-  browser-probe:
-    name: Native Scene authority and Voyage handoff
+  creator-focus-red:
     runs-on: ubuntu-24.04
-    timeout-minutes: 38
-    env:
-      CANDIDATE_SHA: 63dfced8401bee2b5ef6b1e3e024a69c0dc4ad22
-      BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: 63dfced8401bee2b5ef6b1e3e024a69c0dc4ad22
-      NEXT_TELEMETRY_DISABLED: "1"
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 63dfced8401bee2b5ef6b1e3e024a69c0dc4ad22
-          fetch-depth: 2
+          ref: 34965b97d2824fb8a2e21d84d1012acda5cce837
           persist-credentials: false
-          sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /*
-            !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
-            /scripts/
-            /src/
-            /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
+            src
+            tests
+            scripts
+            prisma
+            testing
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Reproduce the focused browser layout failure at the helper boundary
         run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install chromium
-      - name: Run the Native Scene receipt and real Voyage transfer suites
-        run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "b05848c656b6e4879c4ca665733135f75073b6c6"
-          test "$(git rev-parse HEAD:native)" = "6795af566a32e2196088551de5b5c89840cc589f"
-          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-native-authority.spec.ts","tests/e2e/crossdeck-refit-recovery.spec.ts","tests/e2e/crossdeck-phase2.spec.ts","tests/e2e/spatial-chronicle-pilot.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
-          EOF
+          test "$(git rev-parse HEAD)" = "34965b97d2824fb8a2e21d84d1012acda5cce837"
+          test "$(git rev-parse HEAD^{tree})" = "4073de6914319de1018f3ab7f0724df213633746"
+          npx --no-install vitest run src/components/community/focus-exchange-heading.test.ts
