@@ -139,13 +139,18 @@ jobs:
           if ! git cat-file -e "${publication}^{commit}"; then
             git fetch --no-tags --depth=1 --no-write-fetch-head --filter=blob:none origin "$publication"
           fi
-          git ls-tree -r "$publication" -- Experience_Images | awk '$2 == "blob" { print $3 }' |
-            sort -u | GIT_NO_LAZY_FETCH=1 git cat-file --batch-check |
-            awk '$2 == "missing" { print $1 }' > "$RUNNER_TEMP/homeport-publication-blobs"
-          if [[ -s "$RUNNER_TEMP/homeport-publication-blobs" ]]; then
-            git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin \
-              < "$RUNNER_TEMP/homeport-publication-blobs"
-          fi
+          # Materialize only the historical image paths and let Git fetch their objects.
+          # The candidate's worktree and index remain the inputs to verification.
+          staging="$(mktemp -d "$RUNNER_TEMP/homeport-publication.XXXXXX")"
+          trap 'rm -rf -- "$staging"' EXIT
+          mkdir -p "$staging/images"
+          export GIT_INDEX_FILE="$staging/historical-index"
+          git -c core.sparseCheckout=false read-tree "$publication"
+          git ls-tree -rz --name-only "$publication" -- Experience_Images |
+            git -c core.sparseCheckout=false checkout-index --prefix="$staging/images/" -z --stdin
+          unset GIT_INDEX_FILE
+          evidence=Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2
+          [[ "$(git hash-object "$staging/images/Experience_Images/manifest.json")" == "$(git rev-parse "HEAD:$evidence/experience-images-manifest.json")" ]]
 
       - uses: actions/cache/restore@v4
         if: ${{ matrix.cache != '' }}
