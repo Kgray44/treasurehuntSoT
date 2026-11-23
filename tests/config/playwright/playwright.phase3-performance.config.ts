@@ -22,6 +22,13 @@ if (!artifactRootFromEnv || !path.isAbsolute(artifactRootFromEnv)) {
 
 const artifactRoot = path.resolve(artifactRootFromEnv);
 
+// Development-only matrix. Require an explicit variant for every diagnostic runner.
+const compareBrowser = process.env.JOURNAL_COMPARE_BROWSER;
+const compareCapture = process.env.JOURNAL_COMPARE_CAPTURE;
+if (!["shell", "chromium"].includes(compareBrowser ?? "") || !["record", "no-record"].includes(compareCapture ?? ""))
+  throw new Error("The matched Journal run requires an explicit browser and capture mode.");
+console.log("JOURNAL_MATCHED_CONFIGURATION " + JSON.stringify({ browser: compareBrowser, capture: compareCapture }));
+
 export default defineConfig({
   testDir: "../../e2e",
   testMatch: "phase3-performance.spec.ts",
@@ -38,9 +45,10 @@ export default defineConfig({
   use: {
     ...devices["Desktop Chrome"],
     baseURL: REQUIRED_BASE_URL,
-    trace: "retain-on-failure",
+    ...(compareBrowser === "chromium" ? { channel: "chromium" } : {}),
+    trace: compareCapture === "record" ? "retain-on-failure" : "off",
     screenshot: "only-on-failure",
-    video: "retain-on-failure",
+    video: compareCapture === "record" ? "retain-on-failure" : "off",
   },
   projects: [{ name: "chromium-production", use: { browserName: "chromium" } }],
 });
