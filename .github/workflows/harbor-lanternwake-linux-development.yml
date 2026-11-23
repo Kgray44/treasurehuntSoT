@@ -1,88 +1,74 @@
-name: Lanternwake isolated Linux benchmark
-run-name: Smoke test explicit Journal Skip on protected main
-
+name: Native Scene Runtime experience planning
+run-name: Resolve Native Scene Runtime experience scope after the Journal Skip merge
 on:
   push:
     branches:
       - codex/lanternwake-focused-development-cf6b1d6bbae4
     paths:
       - .github/workflows/harbor-lanternwake-linux-development.yml
-
 permissions:
   contents: read
-
 jobs:
-  benchmark:
-    name: Verify landed tree and explicit Skip
+  experience-plan:
     runs-on: ubuntu-24.04
-    timeout-minutes: 22
-    env:
-      SKIP_LANE: patched
-      CANDIDATE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      BASE_SHA: d0f21b9dfc4a7390c34f94beedc72904e1431f1f
-      FOREVER_VALIDATION_SOURCE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      NEXT_TELEMETRY_DISABLED: "1"
-      EXPECTED_TREE: b0a8802278c11399f703a2fddf6f5e52ca470a13
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 627a4e651641b6765ac789d378672ea6e903c120
+          ref: e68eb73782ba4e13ac3fca30972c6f72f02d7314
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /*
             !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
             /scripts/
-            /src/
             /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
+            /src/
+            **/*.json
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
-        run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium
-      - name: Verify mainline ancestry and stage the proven browser probe
-        run: |
-          git fetch --no-tags --depth=8 --filter=blob:none origin refs/heads/main:refs/remotes/origin/main
-          git merge-base --is-ancestor "$CANDIDATE_SHA" origin/main
-          test "$(git rev-parse HEAD^{tree})" = "$EXPECTED_TREE"
-          git fetch --no-tags --depth=1 origin "ca984d10b6af4ff666f00e4ef80aa052e784a07a"
-          git show "ca984d10b6af4ff666f00e4ef80aa052e784a07a:tests/e2e/parallax-shared-consumers.spec.ts" > tests/e2e/parallax-shared-consumers.spec.ts
-          test "$(git hash-object tests/e2e/parallax-shared-consumers.spec.ts)" = "35f9d2758a71811d8c1195fe7578a9225c37aacb"
-      - name: Capture actual transition owners during requested Skip
+      - name: Print the source-bound experience plan
+        env:
+          BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+          CANDIDATE_SHA: e68eb73782ba4e13ac3fca30972c6f72f02d7314
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-shared-consumers.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
+          test "$(git rev-parse 'HEAD^2')" = "$BASE_SHA"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "491043e4d1c5b3d17f4957a9ae3ab43d44dfe068"
+          node --input-type=module > "$RUNNER_TEMP/native-experience-source-objects" <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { sourceSnapshotReadsPath } from "./scripts/sounding-line/product-experience.mjs";
+          const blobs=new Set();
+          for(const revision of [process.env.BASE_SHA,process.env.CANDIDATE_SHA]){
+            const tree=execFileSync("git",["ls-tree","-rz",revision],{encoding:"utf8",maxBuffer:32*1024*1024});
+            for(const entry of tree.split("\0").filter(Boolean)){
+              const [metadata,file]=entry.split("\t");
+              const [,type,oid]=metadata.split(" ");
+              if(type==="blob" && sourceSnapshotReadsPath(file)) blobs.add(oid);
+            }
+          }
+          console.log([...blobs].sort().join("\n"));
           EOF
-      - name: Retain sanitized performance metrics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: journal-skip-owners-landed
-          path: artifacts/sounding-line/journal-skip-owners/**
-          if-no-files-found: ignore
-          retention-days: 30
+          GIT_NO_LAZY_FETCH=1 git cat-file --batch-check < "$RUNNER_TEMP/native-experience-source-objects" |
+            awk '$2=="missing" { print $1 }' > "$RUNNER_TEMP/native-experience-missing-objects"
+          if [[ -s "$RUNNER_TEMP/native-experience-missing-objects" ]]; then
+            git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin < "$RUNNER_TEMP/native-experience-missing-objects"
+          fi
+          node --input-type=module <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { planProductExperience } from "./scripts/sounding-line/product-experience.mjs";
+          const root=process.cwd();
+          const baseSha=process.env.BASE_SHA;
+          const candidateSha=process.env.CANDIDATE_SHA;
+          const changedPaths=execFileSync("git",["diff","--name-only","--no-renames",baseSha,candidateSha],{encoding:"utf8"}).trim().split("\n");
+          const plan=planProductExperience({root,baseSha,candidateSha,changedPaths});
+          console.log("NATIVE_EXPERIENCE_SCOPE "+JSON.stringify({
+            baseSha,candidateSha,changedPaths,applicable:plan.applicable,classification:plan.classification,
+            sourceDigest:plan.sourceDigest,contractDigest:plan.contractDigest,
+            contracts:(plan.contracts??[]).map(item=>({id:item.id,profile:item.experience?.executionProfile})),
+          }));
+          EOF
+
