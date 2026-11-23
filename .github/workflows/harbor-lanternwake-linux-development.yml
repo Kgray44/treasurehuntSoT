@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   benchmark:
-    Recorded Journal perspective (${{ matrix.projection }})
+    name: Recorded Journal perspective (${{ matrix.projection }})
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
