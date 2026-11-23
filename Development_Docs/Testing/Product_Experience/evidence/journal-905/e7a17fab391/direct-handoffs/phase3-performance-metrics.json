@@ -1,0 +1,8 @@
+{
+  "purpose": "DIRECT_EXPERIENCE_OBSERVATION",
+  "candidate": "e7a17fab39173fbd4a18ba53332e2033bf3f69eb",
+  "views": [
+    { "device": "desktop", "completed": "completed", "reduced": "completed-fallback", "returnedFocus": true },
+    { "device": "mobile", "completed": "completed", "reduced": "completed-fallback", "returnedFocus": true }
+  ]
+}
