@@ -23,16 +23,10 @@ type ProbeCounters = Readonly<{
   activeIntervals: number;
   activeRafs: number;
   activeWaapi: number;
-  activeAudioContexts: number;
-  activeAudioNodes: number;
-  audioContextConstructs: number;
-  audioContextFailures: number;
-  audioResumeAttempts: number;
-  audioResumeFailures: number;
-  audioOscillatorCreates: number;
-  audioOscillatorStarts: number;
-  audioOscillatorStops: number;
-  audioNodeFailures: number;
+  activeJournalCues: number;
+  journalCueAttempts: number;
+  journalCueCompletions: number;
+  journalCueFailures: number;
 }>;
 
 type ExtendedSnapshot = ProbeCounters &
@@ -78,16 +72,10 @@ async function installExtendedLifecycleProbe(page: Page, audioMode: AudioFaultMo
         activeIntervals: number;
         activeRafs: number;
         activeWaapi: number;
-        activeAudioContexts: number;
-        activeAudioNodes: number;
-        audioContextConstructs: number;
-        audioContextFailures: number;
-        audioResumeAttempts: number;
-        audioResumeFailures: number;
-        audioOscillatorCreates: number;
-        audioOscillatorStarts: number;
-        audioOscillatorStops: number;
-        audioNodeFailures: number;
+        activeJournalCues: number;
+        journalCueAttempts: number;
+        journalCueCompletions: number;
+        journalCueFailures: number;
       };
       const probe: MutableProbe = {
         activeListeners: 0,
@@ -95,16 +83,10 @@ async function installExtendedLifecycleProbe(page: Page, audioMode: AudioFaultMo
         activeIntervals: 0,
         activeRafs: 0,
         activeWaapi: 0,
-        activeAudioContexts: 0,
-        activeAudioNodes: 0,
-        audioContextConstructs: 0,
-        audioContextFailures: 0,
-        audioResumeAttempts: 0,
-        audioResumeFailures: 0,
-        audioOscillatorCreates: 0,
-        audioOscillatorStarts: 0,
-        audioOscillatorStops: 0,
-        audioNodeFailures: 0,
+        activeJournalCues: 0,
+        journalCueAttempts: 0,
+        journalCueCompletions: 0,
+        journalCueFailures: 0,
       };
       Object.defineProperty(window, "__phase3ExtendedLifecycleProbe", {
         value: probe,
@@ -266,93 +248,39 @@ async function installExtendedLifecycleProbe(page: Page, audioMode: AudioFaultMo
         };
       }
 
-      const releaseNode = (node: { released: boolean }) => {
-        if (node.released) return;
-        node.released = true;
-        probe.activeAudioNodes = Math.max(0, probe.activeAudioNodes - 1);
+      const nativePlay = HTMLMediaElement.prototype.play;
+      const observedCues = new WeakSet<HTMLMediaElement>();
+      const activeCues = new WeakSet<HTMLMediaElement>();
+      const releaseCue = (cue: HTMLMediaElement) => {
+        if (activeCues.delete(cue)) probe.activeJournalCues -= 1;
       };
-      class FakeAudioParam {
-        setValueAtTime() {}
-        exponentialRampToValueAtTime() {}
-        cancelScheduledValues() {}
-        setTargetAtTime() {}
-      }
-      class FakeOscillator {
-        released = false;
-        type: OscillatorType = "sine";
-        frequency = new FakeAudioParam();
-        onended: (() => void) | null = null;
-        constructor(private readonly mode: AudioFaultMode) {
-          probe.activeAudioNodes += 1;
-          probe.audioOscillatorCreates += 1;
+
+      HTMLMediaElement.prototype.play = function () {
+        if (!this.src.endsWith("/sounds/journal-page-turn.wav")) return nativePlay.call(this);
+        probe.journalCueAttempts += 1;
+        if (initialAudioMode === "blocked" || initialAudioMode === "play-error") {
+          probe.journalCueFailures += 1;
+          const errorName = initialAudioMode === "blocked" ? "NotAllowedError" : "AbortError";
+          return Promise.reject(new DOMException("Injected Journal cue playback failure", errorName));
         }
-        connect() {}
-        disconnect() {
-          releaseNode(this);
+        if (!observedCues.has(this)) {
+          observedCues.add(this);
+          nativeAdd.call(this, "ended", () => {
+            probe.journalCueCompletions += 1;
+            releaseCue(this);
+          });
+          nativeAdd.call(this, "pause", () => releaseCue(this));
         }
-        start() {
-          if (this.mode === "play-error") {
-            probe.audioNodeFailures += 1;
-            throw new DOMException("Injected oscillator start failure", "NotSupportedError");
-          }
-          probe.audioOscillatorStarts += 1;
+        if (!activeCues.has(this)) {
+          activeCues.add(this);
+          probe.activeJournalCues += 1;
         }
-        stop() {
-          probe.audioOscillatorStops += 1;
-          this.onended?.();
-        }
-      }
-      class FakeGain {
-        released = false;
-        gain = new FakeAudioParam();
-        constructor() {
-          probe.activeAudioNodes += 1;
-        }
-        connect() {}
-        disconnect() {
-          releaseNode(this);
-        }
-      }
-      class FakeAudioContext {
-        currentTime = 0;
-        destination = {};
-        state: AudioContextState;
-        private closed = false;
-        constructor() {
-          probe.audioContextConstructs += 1;
-          if (initialAudioMode === "missing") {
-            probe.audioContextFailures += 1;
-            throw new DOMException("Injected AudioContext absence", "NotSupportedError");
-          }
-          this.state = initialAudioMode === "blocked" ? "suspended" : "running";
-          probe.activeAudioContexts += 1;
-        }
-        createOscillator() {
-          return new FakeOscillator(initialAudioMode) as unknown as OscillatorNode;
-        }
-        createGain() {
-          return new FakeGain() as unknown as GainNode;
-        }
-        resume() {
-          probe.audioResumeAttempts += 1;
-          if (initialAudioMode === "blocked") {
-            probe.audioResumeFailures += 1;
-            return Promise.reject(new DOMException("Injected autoplay block", "NotAllowedError"));
-          }
-          this.state = "running";
-          return Promise.resolve();
-        }
-        close() {
-          if (!this.closed) {
-            this.closed = true;
-            this.state = "closed";
-            probe.activeAudioContexts = Math.max(0, probe.activeAudioContexts - 1);
-          }
-          return Promise.resolve();
-        }
-      }
-      Object.defineProperty(window, "AudioContext", { value: FakeAudioContext, configurable: true });
-      Object.defineProperty(window, "webkitAudioContext", { value: FakeAudioContext, configurable: true });
+        return nativePlay.call(this).catch((error: unknown) => {
+          probe.journalCueFailures += 1;
+          releaseCue(this);
+          throw error;
+        });
+      };
     },
     { audioMode },
   );
@@ -402,8 +330,7 @@ function stableSnapshot(snapshot: ExtendedSnapshot) {
     activeIntervals: snapshot.activeIntervals,
     activeRafs: snapshot.activeRafs,
     activeWaapi: snapshot.activeWaapi,
-    activeAudioContexts: snapshot.activeAudioContexts,
-    activeAudioNodes: snapshot.activeAudioNodes,
+    activeJournalCues: snapshot.activeJournalCues,
     hosts: snapshot.hosts,
     targets: snapshot.targets,
     claims: snapshot.claims,
@@ -458,13 +385,9 @@ function stableLottieRemountSnapshot(snapshot: ExtendedSnapshot) {
 
 function stableAudioLifecycleSnapshot(snapshot: ExtendedSnapshot) {
   const {
-    // PageFlip's presentation animation belongs to the journal renderer, not
-    // to AudioCuePlayer. The test keeps exact audio-context, node, timer, and
-    // lifecycle ownership assertions below.
+    // PageFlip's presentation may remain active when media playback settles.
     activeDocumentAnimations: _activeDocumentAnimations,
     pendingDocumentAnimations: _pendingDocumentAnimations,
-    // PageFlip owns frame scheduling for the journal presentation. AudioCuePlayer
-    // is separately proven to release its contexts and nodes below.
     activeRafs: _activeRafs,
     ...stable
   } = stableSnapshot(snapshot);
@@ -1004,11 +927,12 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
 
 test.describe.serial("Project Lanternwake Phase 3 audio lifecycle", () => {
   for (const audioCase of [
-    { id: "success", mode: "success", muted: false, startsPerTurnPair: 2, failuresPerTurnPair: 0 },
-    { id: "blocked-context", mode: "blocked", muted: false, startsPerTurnPair: 0, failuresPerTurnPair: 0 },
-    { id: "missing-context", mode: "missing", muted: false, startsPerTurnPair: 0, failuresPerTurnPair: 0 },
-    { id: "oscillator-play-failure", mode: "play-error", muted: false, startsPerTurnPair: 0, failuresPerTurnPair: 2 },
-    { id: "muted", mode: "success", muted: true, startsPerTurnPair: 0, failuresPerTurnPair: 0 },
+    { id: "success", mode: "success", muted: false, reduced: false },
+    { id: "blocked-playback", mode: "blocked", muted: false, reduced: false },
+    { id: "missing-clip", mode: "missing", muted: false, reduced: false },
+    { id: "playback-interruption", mode: "play-error", muted: false, reduced: false },
+    { id: "muted", mode: "success", muted: true, reduced: false },
+    { id: "reduced-motion", mode: "success", muted: false, reduced: true },
   ] as const) {
     test(`audio ${audioCase.id} remains nonblocking and releases work for twenty page-turn cycles`, async ({
       page,
@@ -1016,8 +940,11 @@ test.describe.serial("Project Lanternwake Phase 3 audio lifecycle", () => {
     }) => {
       test.setTimeout(extendedTimeout);
       await installExtendedLifecycleProbe(page, audioCase.mode);
-      await setPhase3Motion(page, PHASE3_MOTION_MODES[0]);
+      await setPhase3Motion(page, PHASE3_MOTION_MODES[audioCase.reduced ? 2 : 0]);
       await page.addInitScript(({ muted }) => localStorage.setItem("forever-muted", String(muted)), audioCase);
+      if (audioCase.mode === "missing") {
+        await page.route("**/sounds/journal-page-turn.wav", (route) => route.fulfill({ status: 404, body: "" }));
+      }
       const fixture = await phase3.createCase(`P3-LIFE-AUDIO-${audioCase.id}`, "CHAPTER_RELEASED");
       await openPhase3Player(page, fixture, "journal");
       const journal = page.locator(".chronicle-journal-shell");
@@ -1028,14 +955,38 @@ test.describe.serial("Project Lanternwake Phase 3 audio lifecycle", () => {
       await expect(pagePosition).toHaveText(/^Page \d+ of \d+$/u);
       const initialPagePosition = await pagePosition.textContent();
       expect(initialPagePosition).toMatch(/^Page \d+ of \d+$/u);
+      expect((await readSnapshot(page)).journalCueAttempts).toBe(0);
+      const expectedAttempts = audioCase.muted || audioCase.reduced ? 0 : 1;
+      const expectedCompletions = audioCase.mode === "success" ? expectedAttempts : 0;
+      const expectedFailures = expectedAttempts - expectedCompletions;
+      const expectCueSettled = async (before: ExtendedSnapshot) => {
+        await expect
+          .poll(async () => {
+            const after = await readSnapshot(page);
+            return {
+              attempts: after.journalCueAttempts - before.journalCueAttempts,
+              completions: after.journalCueCompletions - before.journalCueCompletions,
+              failures: after.journalCueFailures - before.journalCueFailures,
+              active: after.activeJournalCues,
+            };
+          })
+          .toEqual({
+            attempts: expectedAttempts,
+            completions: expectedCompletions,
+            failures: expectedFailures,
+            active: 0,
+          });
+      };
       const turnPair = async () => {
-        const before = await readSnapshot(page);
+        const beforeForward = await readSnapshot(page);
         await next.click();
         await expect
           .poll(() => pagePosition.textContent(), {
             message: "The forward page turn did not reach a different semantic page.",
           })
           .not.toBe(initialPagePosition);
+        await expectCueSettled(beforeForward);
+        const beforeReverse = await readSnapshot(page);
         await previous.click();
         await expect
           .poll(() => pagePosition.textContent(), {
@@ -1043,29 +994,10 @@ test.describe.serial("Project Lanternwake Phase 3 audio lifecycle", () => {
           })
           .toBe(initialPagePosition);
         await expect(journal).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
-        const after = await readSnapshot(page);
-        expect(after.audioOscillatorStarts - before.audioOscillatorStarts).toBe(audioCase.startsPerTurnPair);
-        expect(after.audioNodeFailures - before.audioNodeFailures).toBe(audioCase.failuresPerTurnPair);
-        expect(after.activeAudioNodes).toBe(0);
+        await expectCueSettled(beforeReverse);
       };
-      const { finalSnapshot } = await runTwentyCycles(page, async () => turnPair(), stableAudioLifecycleSnapshot);
-      if (audioCase.mode === "blocked") {
-        expect(finalSnapshot.audioResumeAttempts).toBeGreaterThan(0);
-        expect(finalSnapshot.audioResumeFailures).toBe(finalSnapshot.audioResumeAttempts);
-      }
-      if (audioCase.mode === "missing") {
-        expect(finalSnapshot.audioContextConstructs).toBeGreaterThan(0);
-        expect(finalSnapshot.audioContextFailures).toBe(finalSnapshot.audioContextConstructs);
-        expect(finalSnapshot.activeAudioContexts).toBe(0);
-      }
-      if (audioCase.muted) {
-        expect(finalSnapshot.audioOscillatorStarts).toBe(0);
-      }
-      test.info().annotations.push({
-        type: "evidence-gap",
-        description:
-          "AudioCuePlayer synthesizes oscillator cues and has no decodeAudioData or media-buffer path; decode failure is not a reachable production category.",
-      });
+      const { finalSnapshot } = await runTwentyCycles(page, turnPair, stableAudioLifecycleSnapshot);
+      expect(finalSnapshot.journalCueAttempts).toBe(2 * (lifecycleCycles + 1) * expectedAttempts);
     });
   }
 });

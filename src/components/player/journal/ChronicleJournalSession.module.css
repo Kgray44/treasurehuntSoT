@@ -5,13 +5,41 @@
 }
 
 .journalShell[data-journal-phase="ENTRY_ACTIVATED"]
-  :global(:is(.book-shadow, .rear-book-cover, .page-stack, .book-binding)),
+  :global(:is(.book-shadow, .rear-book-cover, .page-stacks, .book-binding)),
 .journalShell[data-journal-ready-reason="skipped"]
-  :global(:is(.book-shadow, .rear-book-cover, .page-stack, .book-binding)) {
+  :global(:is(.book-shadow, .rear-book-cover, .page-stacks, .book-binding)) {
   transition: none;
 }
 
 /* An abbreviated return settles the cover as the outgoing book fades. */
 .journalShell[data-motion-mode="full"][data-journal-phase="BOOK_SETTLING"] :global(.front-cover) {
   transition-duration: 1350ms;
+}
+
+/* Blend the fixed grain into the static seascape once, outside the animated book. */
+.journalShell:global(.voyage-shell)::after {
+  content: none;
+}
+.journalShell :global(.ocean-depth) {
+  contain: paint;
+  isolation: isolate;
+  will-change: transform;
+}
+.journalShell :global(.ocean-depth)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: calc(0.16 * var(--texture-opacity));
+  background-image: url("/textures/paper-grain.svg");
+  mix-blend-mode: soft-light;
+}
+
+/* Use a seascape tint so the header does not sample the live backdrop. */
+.journalShell :global(.chronicle-session-header) {
+  background-color: #061519;
+  backdrop-filter: none;
+}
+
+:global(html[data-voyage-theme="light"]) .journalShell :global(.chronicle-session-header) {
+  background-color: #f5ead4;
 }
