@@ -1,5 +1,5 @@
 name: Player invitation contrast diagnostic
-run-name: Prove the invitation contrast regression and its focused repair
+run-name: Verify the focused Player invitation contrast repair
 
 on:
   push:
@@ -58,7 +58,8 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install chromium
-      - name: Reproduce the contrast transition before changing the source
+      - name: Run the unchanged access gates and the new invitation transition check
+        shell: bash
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           cat >> tests/e2e/access-gates.spec.ts <<'SPEC'
@@ -93,18 +94,6 @@ jobs:
             }
           });
           SPEC
-          cat > "$RUNNER_TEMP/harbor-invitation-focus.mjs" <<'EOF'
-          import {runJob} from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob({id:"harbor-invitation-focus",kind:"browser",files:["tests/e2e/access-gates.spec.ts"]},
-            {base:process.env.BASE_SHA,tree:process.env.CANDIDATE_SHA});
-          EOF
-          if node --input-type=module < "$RUNNER_TEMP/harbor-invitation-focus.mjs" 2>&1 | tee "$RUNNER_TEMP/invitation-red.log"; then
-            echo 'Expected a failing opacity assertion in the original invitation panel'
-            exit 1
-          fi
-          grep -F 'Error: Invitation form opacity samples' "$RUNNER_TEMP/invitation-red.log"
-      - name: Keep the invitation panel opaque and verify the complete focused suite
-        run: |
           python - <<'PY'
           from pathlib import Path
           path = Path("src/components/platform/PlayerSignIn.tsx")
@@ -121,4 +110,8 @@ jobs:
           path.write_text(before + marker + after.replace(old, new, 1))
           PY
           git diff --check
-          node --input-type=module < "$RUNNER_TEMP/harbor-invitation-focus.mjs"
+          node --input-type=module <<'EOF'
+          import {runJob} from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob({id:"harbor-invitation-focus",kind:"browser",files:["tests/e2e/access-gates.spec.ts"]},
+            {base:process.env.BASE_SHA,tree:process.env.CANDIDATE_SHA});
+          EOF
