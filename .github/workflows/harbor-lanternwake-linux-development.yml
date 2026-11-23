@@ -1,5 +1,5 @@
-name: Sounding Line browser dependency transport
-run-name: Qualify the standard Ubuntu archive for the required browser dependencies
+name: Lanternwake isolated Linux benchmark
+run-name: Capture exact prerequisite tree after the browser dependency acquisition repair
 
 on:
   push:
@@ -12,20 +12,21 @@ permissions:
   contents: read
 
 jobs:
-  browser-dependency-archive:
-    name: Verify unchanged Playwright package coverage through the Ubuntu archive
+  benchmark:
+    name: Source-bound shared prerequisite experience capture
     runs-on: ubuntu-24.04
-    timeout-minutes: 22
+    timeout-minutes: 75
     env:
-      CANDIDATE_SHA: f8873659a79379c17c86346bf2232428efe690fa
+      CANDIDATE_SHA: 9f493b11dba3ba75b0330bb681e085e343b056d6
       BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: f8873659a79379c17c86346bf2232428efe690fa
+      FOREVER_VALIDATION_SOURCE_SHA: 9f493b11dba3ba75b0330bb681e085e343b056d6
       NEXT_TELEMETRY_DISABLED: "1"
+      SOUNDING_LINE_PR_NUMBER: "901"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: f8873659a79379c17c86346bf2232428efe690fa
-          fetch-depth: 16
+          ref: 9f493b11dba3ba75b0330bb681e085e343b056d6
+          fetch-depth: 64
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
@@ -54,35 +55,57 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Install locked JavaScript dependencies
-        run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Use the Ubuntu HTTPS archive on the ephemeral runner
+      - name: Verify the actual protected base and its candidate ancestry
         run: |
-          source=/etc/apt/sources.list.d/ubuntu.sources
+          git fetch --no-tags --filter=blob:none --depth=64 origin refs/heads/main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
+      - name: Install locked dependencies and Chromium
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install chromium
+      - name: Capture real source-bound Product Experience journeys for PR 901
+        run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD:package-lock.json)" = "7e94051457947e82cf639d3162a7713d692bbce2"
-          grep -E '^(URIs|Suites|Signed-By):' "$source"
-          sudo sed -E -i 's|mirror[+]file:/etc/apt/apt-mirrors[.]txt|https://archive.ubuntu.com/ubuntu/|g; s|http://[^[:space:]]*[.]ec2[.]archive[.]ubuntu[.]com/ubuntu/?|https://archive.ubuntu.com/ubuntu/|g' "$source"
-          grep -E '^URIs:.*https://archive[.]ubuntu[.]com/ubuntu/' "$source"
-          grep -E '^(URIs|Suites|Signed-By):' "$source"
-      - name: Install full browser compatibility coverage
-        timeout-minutes: 18
-        run: npx --no-install playwright install --with-deps chromium webkit
-      - name: Launch both required engines with the locked Playwright version
-        run: |
-          npx --no-install playwright --version
+          test "$(git rev-parse HEAD^{tree})" = "3f8295823157d890db3a09338b1963df60c4c255"
           node --input-type=module <<'EOF'
-          import { chromium, webkit } from "playwright";
-          for (const engine of [chromium, webkit]) {
-            const browser = await engine.launch();
-            try {
-              const page = await browser.newPage();
-              await page.setContent("<h1>Browser dependency proof</h1>");
-              if (await page.getByRole("heading", { name: "Browser dependency proof" }).count() !== 1)
-                throw new Error("Installed browser did not render the probe");
-              console.log(engine.name(), browser.version(), "PASS");
-            } finally {
-              await browser.close();
-            }
-          }
+          import {execFileSync} from "node:child_process";
+          import {writeFile} from "node:fs/promises";
+          import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
+          import {recognizeExceptionExecution} from "./scripts/sounding-line/experience-exception.mjs";
+          const root = process.cwd();
+          if (recognizeExceptionExecution({root, baseSha: process.env.BASE_SHA, candidateSha: process.env.CANDIDATE_SHA}))
+            throw new Error("Current source was classified as a separate exception campaign");
+          const plan = JSON.parse(execFileSync(process.execPath, [
+            "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
+            "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
+          ], {encoding: "utf8"}));
+          const expectedContracts = ["admiralty.ai-economics","admiralty.phase1.registry","admiralty.phase2.account-dossier-support","admiralty.phase2.read-projection-redaction","chronicle.creation","crossdeck.phase2.continuity","crossdeck.refit.companion","crossdeck.refit.published-lens","harborlight.sc07.creator-community.experience","homeport.community.public-projection","homeport.motion.authority","homeport.owner-correction.round1.workspaces","homeport.passport.product-surface","homeport.phase7.account.canonical-lifecycle","homeport.shell.crossdeck-access-recovery","homeport.shell.crossdeck-companion","homeport.shell.crossdeck-companion-mobile","homeport.transition.auth-routes","homeport.transition.reduced-motion","journal-ready-state","parallax.authored-library-and-simulation.experience","parallax.floating-controls.experience","parallax.integration.pilot-owner-boundary","parallax.parametric-room-correction.experience","parallax.protected-photo-room.experience","parallax.rooms-and-surfaces.experience","parallax.sc00b.inspector.experience","parallax.scene-manager.experience","parallax.spatial-community-publishing.experience","reach.phase1.foundation","spatial-pilot.experience"];
+          const actualContracts = plan.contracts.map(item => item.id).sort();
+          if (!plan.applicable || plan.baseSha !== process.env.BASE_SHA || plan.candidateSha !== process.env.CANDIDATE_SHA ||
+              !/^[a-f0-9]{64}$/.test(plan.contractDigest) || JSON.stringify(actualContracts) !== JSON.stringify(expectedContracts) ||
+              !/^[a-f0-9]{64}$/.test(plan.sourceDigest))
+            throw new Error("Unexpected experience source or contract selection");
+          console.log("JOURNAL_RENDERER_CAPTURE_PLAN " + JSON.stringify({baseSha:plan.baseSha,candidateSha:plan.candidateSha,
+            sourceDigest:plan.sourceDigest,contractDigest:plan.contractDigest,contracts:actualContracts}));
+          plan.outputDirectory = "artifacts/sounding-line/harbor-shared-experience";
+          delete process.env.GH_TOKEN;
+          delete process.env.GITHUB_TOKEN;
+          const receipt = await runTrustedExperienceReplay({
+            root, plan, validateReplay: false,
+            environment: { SOUNDING_LINE_BASE_SHA: plan.baseSha },
+          });
+          if (receipt.status !== "PASS") throw new Error("The actual browser capture did not complete");
+          await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
+            JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
+              sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
+              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "DEVELOPMENT_CAPTURE"}, null, 2) + "\n");
           EOF
+      - name: Retain source-bound synthetic browser review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: harbor-shared-source-bound-experience
+          path: artifacts/sounding-line/harbor-shared-experience/**
+          if-no-files-found: ignore
+          retention-days: 30
