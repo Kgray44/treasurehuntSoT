@@ -84,9 +84,7 @@
         "name": "phase3-readonly-setup",
         "testDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/tests/e2e",
         "testIgnore": [],
-        "testMatch": [
-          "/phase3-readonly-setup\\.setup\\.ts/u"
-        ],
+        "testMatch": ["/phase3-readonly-setup\\.setup\\.ts/u"],
         "timeout": 240000
       },
       {
@@ -128,9 +126,7 @@
           "/harborlight-phase4\\.spec\\.ts/u",
           "/admiralty-phase1\\.spec\\.ts/u"
         ],
-        "testMatch": [
-          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
-        ],
+        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
         "timeout": 240000
       },
       {
@@ -166,9 +162,7 @@
         "name": "admiralty-phase1",
         "testDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/tests/e2e",
         "testIgnore": [],
-        "testMatch": [
-          "/admiralty-phase1\\.spec\\.ts/u"
-        ],
+        "testMatch": ["/admiralty-phase1\\.spec\\.ts/u"],
         "timeout": 240000
       },
       {
@@ -204,9 +198,7 @@
         "name": "harborlight-phase2",
         "testDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/tests/e2e",
         "testIgnore": [],
-        "testMatch": [
-          "/harborlight-phase2\\.spec\\.ts/u"
-        ],
+        "testMatch": ["/harborlight-phase2\\.spec\\.ts/u"],
         "timeout": 240000
       },
       {
@@ -242,9 +234,7 @@
         "name": "harborlight-phase3",
         "testDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/tests/e2e",
         "testIgnore": [],
-        "testMatch": [
-          "/harborlight-phase3\\.spec\\.ts/u"
-        ],
+        "testMatch": ["/harborlight-phase3\\.spec\\.ts/u"],
         "timeout": 240000
       },
       {
@@ -280,9 +270,7 @@
         "name": "harborlight-phase4",
         "testDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/tests/e2e",
         "testIgnore": [],
-        "testMatch": [
-          "/harborlight-phase4\\.spec\\.ts/u"
-        ],
+        "testMatch": ["/harborlight-phase4\\.spec\\.ts/u"],
         "timeout": 240000
       },
       {
@@ -318,18 +306,12 @@
         "name": "webkit-mobile",
         "testDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/tests/e2e",
         "testIgnore": [],
-        "testMatch": [
-          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
-        ],
+        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
         "timeout": 240000
       }
     ],
     "quiet": false,
-    "reporter": [
-      [
-        "json"
-      ]
-    ],
+    "reporter": [["json"]],
     "reportSlowTests": {
       "max": 5,
       "threshold": 300000
