@@ -1,5 +1,5 @@
 name: Route snapshot product-experience planning
-run-name: Plan the affected experience on the exact Journal snapshot candidate
+run-name: Exact route experience plan with batched source hydration
 on:
   push:
     branches:
@@ -34,6 +34,25 @@ jobs:
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           test "$(git rev-parse 'HEAD^')" = "$BASE_SHA"
+          node --input-type=module > "$RUNNER_TEMP/prune-experience-source-objects" <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { sourceSnapshotReadsPath } from "./scripts/sounding-line/product-experience.mjs";
+          const blobs=new Set();
+          for(const revision of [process.env.BASE_SHA,process.env.CANDIDATE_SHA]){
+            const tree=execFileSync("git",["ls-tree","-rz",revision],{encoding:"utf8",maxBuffer:32*1024*1024});
+            for(const entry of tree.split("\0").filter(Boolean)){
+              const [metadata,file]=entry.split("\t");
+              const [,type,oid]=metadata.split(" ");
+              if(type==="blob" && sourceSnapshotReadsPath(file)) blobs.add(oid);
+            }
+          }
+          console.log([...blobs].sort().join("\n"));
+          EOF
+          GIT_NO_LAZY_FETCH=1 git cat-file --batch-check < "$RUNNER_TEMP/prune-experience-source-objects" |
+            awk '$2=="missing" { print $1 }' > "$RUNNER_TEMP/prune-experience-missing-objects"
+          if [[ -s "$RUNNER_TEMP/prune-experience-missing-objects" ]]; then
+            git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin < "$RUNNER_TEMP/prune-experience-missing-objects"
+          fi
           node --input-type=module <<'EOF'
           import { execFileSync } from "node:child_process";
           import { planProductExperience } from "./scripts/sounding-line/product-experience.mjs";
