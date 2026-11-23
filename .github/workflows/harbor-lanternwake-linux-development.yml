@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Canonical Journal benchmark with a clean stationary backing handoff
+run-name: Matched Journal benchmark browser and recording comparison
 
 on:
   push:
@@ -15,8 +15,15 @@ jobs:
   benchmark:
     name: Phase 3 performance only (development)
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [shell, chromium]
+        capture: [record, no-record]
     timeout-minutes: 22
     env:
+      JOURNAL_COMPARE_BROWSER: ${{ matrix.browser }}
+      JOURNAL_COMPARE_CAPTURE: ${{ matrix.capture }}
       CANDIDATE_SHA: ${{ github.sha }}
       BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
       FOREVER_VALIDATION_SOURCE_SHA: ${{ github.sha }}
@@ -72,7 +79,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-staged-handoff-benchmark
+          name: journal-matched-${{ matrix.browser }}-${{ matrix.capture }}
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
