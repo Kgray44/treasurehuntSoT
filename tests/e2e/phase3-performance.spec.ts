@@ -16,6 +16,9 @@ import {
   type Phase3CaseFixture,
 } from "./fixtures/lanternwake-phase3";
 
+// Keep recorder work outside this timing spec. The functional Journal suites retain failure recordings.
+phase3Test.use({ trace: "off", video: "off" });
+
 const budgets = Object.freeze({
   openingMs: 10_000,
   preflightP95Ms: 50,
@@ -170,6 +173,7 @@ async function waitForStableRuntimeBaseline(page: Page) {
     if (
       previous &&
       JSON.stringify(current) === JSON.stringify(previous) &&
+      current.activeAnimations === 0 &&
       current.activePresentations === 0 &&
       current.temporaryPageClones === 0 &&
       current.lottiePlaying === 0
@@ -416,29 +420,39 @@ async function measureOpening(control: Locator): Promise<OpeningMeasurement> {
   });
 }
 
-async function measureSkip(control: Locator, baseline: RuntimeBaseline) {
-  return control.evaluate((button, expected) => {
+type SkipMeasurement = {
+  responseMs: number;
+  cleanupMs: number;
+  observations: { elapsedMs: number; counts: RuntimeBaseline; animations: string[] }[];
+};
+
+async function measureSkip(control: Locator, baseline: RuntimeBaseline): Promise<SkipMeasurement> {
+  await control.evaluate((button, expected) => {
     const shell = button.closest<HTMLElement>(".chronicle-journal-shell");
-    const probe = (window as unknown as Window & { __phase3RuntimeCounter?: JournalRuntimeProbe })
-      .__phase3RuntimeCounter;
+    const probeWindow = window as unknown as Window & {
+      __phase3RuntimeCounter?: JournalRuntimeProbe;
+      __phase3SkipMeasurement?: Promise<SkipMeasurement>;
+    };
+    const probe = probeWindow.__phase3RuntimeCounter;
     if (!shell || !probe) throw new Error("The active Journal and its cleanup probe are required.");
-    const startedAt = window.performance.now();
-    return new Promise<{
-      responseMs: number;
-      cleanupMs: number;
-      observations: { elapsedMs: number; counts: RuntimeBaseline; animations: string[] }[];
-    }>((resolve, reject) => {
-      const observations: { elapsedMs: number; counts: RuntimeBaseline; animations: string[] }[] = [];
+    probeWindow.__phase3SkipMeasurement = new Promise((resolve, reject) => {
+      const observations: SkipMeasurement["observations"] = [];
+      let startedAt: number | null = null;
       let previous = "";
       let responseMs: number | null = null;
       let frame = 0;
       let cleanFrames = 0;
+      const onClick = (event: Event) => {
+        if (event.isTrusted) startedAt = window.performance.now();
+      };
       const finish = () => {
         observer.disconnect();
+        button.removeEventListener("click", onClick, true);
         cancelAnimationFrame(frame);
         clearTimeout(timeout);
       };
       const inspectCleanup = () => {
+        if (startedAt === null) return;
         const current = probe.snapshot();
         const serialized = JSON.stringify(current);
         const clean = serialized === JSON.stringify(expected);
@@ -467,6 +481,7 @@ async function measureSkip(control: Locator, baseline: RuntimeBaseline) {
       };
       const observer = new MutationObserver(() => {
         if (
+          startedAt !== null &&
           responseMs === null &&
           shell.dataset.journalPhase === "JOURNAL_READY" &&
           shell.dataset.journalReadyReason === "skipped"
@@ -483,9 +498,17 @@ async function measureSkip(control: Locator, baseline: RuntimeBaseline) {
         attributes: true,
         attributeFilter: ["data-journal-phase", "data-journal-ready-reason"],
       });
-      (button as HTMLButtonElement).click();
+      button.addEventListener("click", onClick, { capture: true, once: true });
     });
   }, baseline);
+  await control.click();
+  return control.page().evaluate(() => {
+    const probeWindow = window as unknown as Window & { __phase3SkipMeasurement?: Promise<SkipMeasurement> };
+    const result = probeWindow.__phase3SkipMeasurement;
+    delete probeWindow.__phase3SkipMeasurement;
+    if (!result) throw new Error("The Journal's trusted Skip measurement is missing.");
+    return result;
+  });
 }
 
 async function measurePageTurn(control: Locator) {
@@ -566,8 +589,11 @@ async function measuredFullOpening(page: Page, control: Locator) {
 
 phase3Test(
   "canonical production Journal performance and lifecycle budgets",
-  async ({ page, phase3, browser, browserName }) => {
+  async ({ page, phase3, browser, browserName, trace, video }) => {
     expect(browserName).toBe("chromium");
+    expect(trace).toBe("off");
+    expect(video).toBe("off");
+    expect(page.video()).toBeNull();
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
     expect(process.env.FOREVER_PHASE3_PERFORMANCE_BASE_URL).toBe("http://127.0.0.1:3200");
     const artifact = performanceArtifactTarget();

@@ -1464,7 +1464,155 @@
       "name": "Player Journal ready state",
       "authority": "lanternwake",
       "owners": ["lanternwake"],
-      "critical": true
+      "critical": true,
+      "experience": {
+        "persona": "A signed-in Player returning to an active Voyage and resuming the physical Journal.",
+        "objective": "Replay the Journal opening, resume reading a real page, and return to the same account's Chronicle Library.",
+        "visibleOutcome": "The Journal restores its named replay controls and readable pages after the ceremony, accepts another page turn, and opens the Player's library.",
+        "integrationOwner": "Lanternwake Journal presentation, with Homeport retaining ownership of the shared route transition.",
+        "accessibility": "Keep the named replay and page controls reachable on desktop and phone, preserve the live Voyage identity, and provide the equivalent readable Journal in reduced motion.",
+        "fallback": "Reduced motion uses the readable static presentation and retains the same replay and return controls.",
+        "navigation": "Player sign-in → active Voyage Journal → replay the opening → turn a page → return to My Chronicle Library.",
+        "designTarget": "Preserve the existing physical book, ordered ceremony and readable page hierarchy. Keep the Journal header and existing library return in their established places.",
+        "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+        "systems": ["lanternwake"],
+        "sourcePaths": [
+          "src/components/animation/PageFlipBook.tsx",
+          "src/components/animation/pageflip-boundary.ts",
+          "src/components/player/journal/ChronicleJournalSession.tsx",
+          "src/components/player/journal/ChronicleJournalSession.module.css",
+          "src/components/player/journal/PhysicalJournalBook.tsx",
+          "src/components/player/workspace/JournalWorkspace.tsx",
+          "src/components/player/workspace/ShipsLog.tsx",
+          "src/components/player/workspace/SideQuestLedger.tsx",
+          "src/styles/player.css"
+        ],
+        "states": ["JOURNAL_REPLAY_READY", "JOURNAL_CAN_TURN", "JOURNAL_LIBRARY_RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "fixtureProfile": "generic",
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "crossdeck-review@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Crossdeck-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              },
+              {
+                "action": "wait",
+                "role": "navigation",
+                "name": "Journal tools"
+              }
+            ],
+            "witness": {
+              "role": "region",
+              "name": "Voyage context",
+              "text": "Synthetic Crossdeck refit Voyage"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+        "motion": {
+          "measurement": "Replay activation to the restored visible Journal replay controls.",
+          "feedbackBudgetMs": 10000,
+          "justification": "Match the existing full opening budget and observe the equivalent readable result when motion is reduced."
+        },
+        "recordingRequired": true,
+        "journeys": [
+          {
+            "id": "journal-replay-turn-and-library-return",
+            "roles": ["PLAYER"],
+            "outcome": "After an actual replay the same Voyage remains readable, its page navigation can be used, and the Player returns to the real Chronicle Library.",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Replay full opening"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "group",
+                "name": "Journal opening replay",
+                "text": "Replay short opening",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "meaning": "The replay controls are interactive again after the Journal opening completes.",
+                "state": "JOURNAL_REPLAY_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Next journal page"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "region",
+                "name": "Voyage context",
+                "text": "Synthetic Crossdeck refit Voyage",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "meaning": "Reading remains inside the same active Voyage after using the actual page navigation.",
+                "state": "JOURNAL_CAN_TURN"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Chronicle Library"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "My Chronicle Library",
+                "path": "/player/library",
+                "returnPath": true,
+                "state": "JOURNAL_LIBRARY_RETURNED"
+              }
+            ]
+          }
+        ],
+        "browserTests": [
+          "tests/e2e/phase3-performance.spec.ts",
+          "tests/e2e/phase3-lifecycle-extended.spec.ts",
+          "tests/e2e/crossdeck-experience-refit.spec.ts"
+        ],
+        "limitations": [
+          "The legacy PlayerExperience workspace panels have no live application entry. Their existing component tests cover compatibility; this browser journey exercises the canonical active Voyage Journal.",
+          "The accepted Homeport references apply to the shared frame. Judge the Journal pages and motion from the captured active Voyage."
+        ]
+      }
     },
     {
       "id": "drydock-progression",

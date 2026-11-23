@@ -97,8 +97,10 @@ export const PhysicalJournalBook = forwardRef<
       <div className="book-camera" data-opening-actor="book-camera">
         <div className="book-shadow" aria-hidden="true" />
         <div className="rear-book-cover" aria-hidden="true" />
-        <div className="page-stack page-stack-left" aria-hidden="true" />
-        <div className="page-stack page-stack-right" aria-hidden="true" />
+        <div className="page-stacks" aria-hidden="true">
+          <div className="page-stack page-stack-left" />
+          <div className="page-stack page-stack-right" />
+        </div>
         <div className="book-binding" aria-hidden="true">
           <span className="binding-fold" />
           <span className="binding-cord cord-one" />

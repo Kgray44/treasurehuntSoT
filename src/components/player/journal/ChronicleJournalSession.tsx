@@ -12,7 +12,6 @@ import type { CrossdeckConnection } from "@/components/crossdeck/useCrossdeckSes
 import { VoyageContext, type VoyageContextData } from "@/components/crossdeck/VoyageContext";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
-import { AudioCuePlayer } from "@/animation/core/audio-cues";
 import type { JournalPhaseOutcome, MotionMode } from "@/animation/core/animation-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import {
@@ -302,7 +301,7 @@ function ChronicleJournalSessionIdentity({
   const initializedPage = useRef(false);
   const processedSequence = useRef(0);
   const followingCurrent = useRef(true);
-  const audio = useRef(new AudioCuePlayer());
+  const pageTurnCue = useRef<HTMLAudioElement | null>(null);
   const readingRef = useRef<PlayerJournalReadingState>(emptyJournalReadingState);
   const stateRef = useRef<SessionState | null>(null);
   const [state, setState] = useState<SessionState | null>(null);
@@ -335,10 +334,13 @@ function ChronicleJournalSessionIdentity({
   const archiveMode = Boolean(state && (state.journal.mode === "historical" || state.session.status === "COMPLETED"));
 
   useEffect(() => {
-    const audioEngine = audio.current;
-    audioEngine.setMuted(localStorage.getItem("forever-muted") === "true");
+    if (localStorage.getItem("forever-muted") === "true") return;
+    const cue = new Audio("/sounds/journal-page-turn.wav");
+    cue.preload = "auto";
+    pageTurnCue.current = cue;
     return () => {
-      void audioEngine.close();
+      pageTurnCue.current = null;
+      cue.pause();
     };
   }, []);
 
@@ -617,7 +619,6 @@ function ChronicleJournalSessionIdentity({
         policy.composition === "reduced" &&
         rootElement.dataset.journalPhase === "JOURNAL_READY" &&
         rootElement.dataset.pageFlipReadiness === "reduced";
-      audio.current.unlock();
       openingBusy.current = true;
       activeOpeningPolicy.current = policy;
       openingFocusOrigin.current =
@@ -1414,14 +1415,11 @@ function ChronicleJournalSessionIdentity({
                 saveReading({ pageId: pages[page]?.id ?? null });
               }}
               onPageTurn={() => {
-                audio.current.unlock();
-                audio.current.playValidated({
-                  name: "page-turn",
-                  motionPolicy,
-                  motionOnly: true,
-                  presentationValidated: true,
-                  semanticLabel: "page-turn-complete",
-                  allowedSemanticLabels: ["page-turn-complete"],
+                const cue = pageTurnCue.current;
+                if (!cue || !motionPolicy.allowMotionCues) return;
+                cue.currentTime = 0;
+                void cue.play().catch(() => {
+                  // Audio remains optional when the browser blocks playback.
                 });
               }}
               onTurnLifecycle={(event: PageTurnLifecycleEvent) => {
