@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Diagnose the Homeport Round 2 publication selection under the V3 checkout
+run-name: Reproduce Homeport Journey T through the actual protected browser runner
 
 on:
   push:
@@ -12,49 +12,78 @@ permissions:
   contents: read
 
 jobs:
-  homeport-publication:
+  browser-probe:
+    name: Homeport Round 2 Journey T protected baseline
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - ref: refs/heads/main
-            sha: 627a4e651641b6765ac789d378672ea6e903c120
-          - ref: refs/pull/901/merge
-            sha: 5f4e676df32d72c96b28e8d9f1a64abd4c2b858f
+    timeout-minutes: 22
+    env:
+      CANDIDATE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+      BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+      FOREVER_VALIDATION_SOURCE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+      NEXT_TELEMETRY_DISABLED: "1"
+      HOMEPORT_PHASE7_CORRECTION_JOURNEYS: "T"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ matrix.ref }}
+          ref: 627a4e651641b6765ac789d378672ea6e903c120
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /*
             !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
             /scripts/
+            /src/
             /testing/
             /tests/
             /Development_Docs/**/*.json
             /Development_Docs/**/*.md
-      - name: Inspect exact publication history in the GitHub runner
-        env:
-          EXACT_REF: ${{ matrix.ref }}
-          EXACT_SHA: ${{ matrix.sha }}
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
+            /Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/experience-images-index.html
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Hydrate the Homeport publication as V3 does
+        timeout-minutes: 8
         run: |
-          set -eu
-          test "$(git rev-parse HEAD)" = "$EXACT_SHA"
-          file=Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/experience-images-manifest.json
-          expected=8e3900a734674cb58800878aaeaf91a0e9f2285e
-          echo "shallow before: $(git rev-parse --is-shallow-repository)"
-          git fetch --no-tags --filter=blob:none --unshallow origin "$EXACT_REF"
-          echo "shallow after: $(git rev-parse --is-shallow-repository)"
-          git merge-base --is-ancestor "$expected" HEAD
-          actual="$(git log --diff-filter=A --format=%H -- "$file")"
-          printf 'selected publication: %s\n' "$actual"
-          printf 'expected publication: %s\n' "$expected"
-          printf 'current tracked manifest blob: %s\n' "$(git rev-parse "HEAD:$file")"
-          printf 'selected image manifest blob: %s\n' "$(git rev-parse "$actual:Experience_Images/manifest.json")"
-          printf 'historical image manifest blob: %s\n' "$(git rev-parse "$expected:Experience_Images/manifest.json")"
-          test "$actual" = "$expected"
+          evidence=Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2
+          if [[ "$(git rev-parse --is-shallow-repository)" == true ]]; then
+            git fetch --no-tags --filter=blob:none --unshallow origin refs/heads/main
+          fi
+          publication="$(git log -1 --diff-filter=A --format=%H HEAD -- "$evidence/experience-images-manifest.json")"
+          test "$publication" = "8e3900a734674cb58800878aaeaf91a0e9f2285e"
+          git ls-tree -r "$publication" -- Experience_Images | awk '$2 == "blob" { print $3 }' |
+            sort -u | GIT_NO_LAZY_FETCH=1 git cat-file --batch-check |
+            awk '$2 == "missing" { print $1 }' > "$RUNNER_TEMP/homeport-publication-blobs"
+          if [[ -s "$RUNNER_TEMP/homeport-publication-blobs" ]]; then
+            git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin < "$RUNNER_TEMP/homeport-publication-blobs"
+          fi
+      - name: Install locked dependencies and Chromium
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install --with-deps chromium
+      - name: Run exact protected Homeport Journey T and verify its publication
+        run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          npx --no-install prettier --check tests/e2e/homeport-phase7-owner-correction-round2.spec.ts
+          node --input-type=module <<'EOF'
+          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/homeport-phase7-owner-correction-round2.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
+          );
+          EOF
