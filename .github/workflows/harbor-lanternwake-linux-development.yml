@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Canonical benchmark with a simpler outgoing Journal snapshot
+run-name: Journal-to-Library snapshot and focus witness
 
 on:
   push:
@@ -15,18 +15,8 @@ jobs:
   benchmark:
     name: Phase 3 performance only (development)
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - browser: shell
-            capture: record
-          - browser: chromium
-            capture: no-record
     timeout-minutes: 22
     env:
-      JOURNAL_COMPARE_BROWSER: ${{ matrix.browser }}
-      JOURNAL_COMPARE_CAPTURE: ${{ matrix.capture }}
       CANDIDATE_SHA: ${{ github.sha }}
       BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
       FOREVER_VALIDATION_SOURCE_SHA: ${{ github.sha }}
@@ -68,7 +58,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Run the full canonical Journal performance benchmark from the candidate source
+      - name: Verify the actual frozen Journal and settled Library interface
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -82,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-library-optimized-${{ matrix.browser }}-${{ matrix.capture }}
+          name: journal-library-snapshot-witness
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
