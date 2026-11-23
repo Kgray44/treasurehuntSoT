@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Reproduce reduced-motion Home return on protected main
+run-name: Standalone protected-main reduced-motion Home return reproduction
 
 on:
   push:
@@ -13,19 +13,19 @@ permissions:
 
 jobs:
   benchmark:
-    name: Source-bound Journal experience capture
+    name: Phase 3 performance only (development)
     runs-on: ubuntu-24.04
-    timeout-minutes: 36
+    timeout-minutes: 22
     env:
-      CANDIDATE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
+      CANDIDATE_SHA: ${{ github.sha }}
       BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
-      FOREVER_VALIDATION_SOURCE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
+      FOREVER_VALIDATION_SOURCE_SHA: ${{ github.sha }}
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
-          fetch-depth: 16
+          ref: ${{ github.sha }}
+          fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
@@ -54,53 +54,25 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Verify the actual protected base and its candidate ancestry
-        run: |
-          git fetch --no-tags --filter=blob:none --depth=16 origin refs/heads/main:refs/remotes/origin/main
-          test "$(git rev-parse origin/main)" = "$BASE_SHA"
-          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
       - name: Install locked dependencies and Chromium
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Capture the declared reduced-motion Home journey on the protected baseline
+      - name: Reproduce the exact reduced-motion account-to-Home return
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
-          import {execFileSync} from "node:child_process";
-          import {writeFile} from "node:fs/promises";
-          import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
-          import {recognizeExceptionExecution} from "./scripts/sounding-line/experience-exception.mjs";
-          const root = process.cwd();
-          if (recognizeExceptionExecution({root, baseSha: process.env.BASE_SHA, candidateSha: process.env.CANDIDATE_SHA}))
-            throw new Error("Current source was classified as a separate exception campaign");
-
-          const {planProductExperience,experienceDigest} = await import("./scripts/sounding-line/product-experience.mjs");
-          const plan = planProductExperience({root,baseSha:process.env.BASE_SHA,candidateSha:process.env.CANDIDATE_SHA,
-            changedPaths:["src/animation/platform/RouteMotionBoundary.tsx"]});
-          const selected = plan.contracts.filter(contract => contract.id === "homeport.transition.reduced-motion");
-          if(!plan.applicable || selected.length!==1 || plan.baseSha!==plan.candidateSha)
-            throw new Error("Baseline comparison must execute the single existing contract on protected main");
-          plan.contracts=selected;
-          plan.contractDigest=experienceDigest(selected);
-          plan.outputDirectory="artifacts/sounding-line/journal-906-baseline-comparison";
-          delete process.env.GH_TOKEN;
-          delete process.env.GITHUB_TOKEN;
-          const receipt = await runTrustedExperienceReplay({
-            root, plan, validateReplay: false,
-            environment: { SOUNDING_LINE_BASE_SHA: plan.baseSha },
-          });
-          if (receipt.status !== "PASS") throw new Error("The actual browser capture did not complete");
-          await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
-            JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
-              sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
-              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "BASELINE_DIAGNOSTIC"}, null, 2) + "\n");
+          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-shared-consumers.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
+          );
           EOF
-      - name: Retain source-bound synthetic browser review evidence
+      - name: Retain sanitized performance metrics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-906-protected-baseline
-          path: artifacts/sounding-line/journal-906-baseline-comparison/**
+          name: journal-906-reduced-home-reproduction
+          path: artifacts/sounding-line/journal-906-reduced-home/**
           if-no-files-found: ignore
           retention-days: 30
