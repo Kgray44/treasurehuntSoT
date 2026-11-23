@@ -1,31 +1,33 @@
-name: Lanternwake isolated Linux benchmark
-run-name: Run the complete V3 Lanternwake job with a fresh timing runtime
-
+name: Native Runtime focused hosted verification
+run-name: Verify Homeport publication and Sealed Hold on the independent verification candidate
 on:
   push:
     branches:
       - codex/lanternwake-focused-development-cf6b1d6bbae4
     paths:
       - .github/workflows/harbor-lanternwake-linux-development.yml
-
 permissions:
   contents: read
-
 jobs:
-  browser-probe:
-    name: Full Lanternwake V3 job with isolated benchmark
+  focused-native:
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    timeout-minutes: 28
+    strategy:
+      fail-fast: false
+      matrix:
+        scope: [homeport-browser, native-player]
+    name: Focused ${{ matrix.scope }}
     env:
-      CANDIDATE_SHA: 67ba7699f548aadbffbf7a10d947264ef3b98884
+      SOURCE_SHA: 6a833dd18ff134cc5b02da8025ffa074e9c1f695
+      SOURCE_TREE: d74499250852888705fdad2cf2dbfb004394e36f
       BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: 67ba7699f548aadbffbf7a10d947264ef3b98884
+      CHECK_SCOPE: ${{ matrix.scope }}
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 67ba7699f548aadbffbf7a10d947264ef3b98884
-          fetch-depth: 2
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 16
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
@@ -51,31 +53,55 @@ jobs:
             /Development_Docs/**/*.txt
             /Development_Docs/**/*.sql
             /Development_Docs/**/*.csv
+            /Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/experience-images-index.html
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
+      - name: Verify exact source tree
         run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium
-      - name: Run tracked runner assertions and the entire Lanternwake V3 browser job
-        run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "030f7ca800cb850b896e41ee2cfa6c5d30d67a13"
-          node --test tests/sounding-line-v3.test.mjs
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          test "$(git rev-parse 'HEAD^{tree}')" = "$SOURCE_TREE"
+          git merge-base --is-ancestor "$BASE_SHA" "$SOURCE_SHA"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          printf 'Candidate %s\nTree %s\nBase %s\n' "$SOURCE_SHA" "$SOURCE_TREE" "$BASE_SHA"
+      - name: Hydrate Homeport inventory evidence
+        if: ${{ matrix.scope == 'homeport-node' }}
+        run: |
+          node --input-type=module -e '
+            import { readFileSync } from "node:fs";
+            const root = "Development_Docs/Projects/Project_Homeport/";
+            const { records } = JSON.parse(readFileSync(root + "Homeport_Visual_Baseline_Manifest.json", "utf8"));
+            const files = records.map(record => record.evidenceId.startsWith("HP-OWCR1-EV-")
+              ? root + "evidence/phase7-owner-correction-round1/" + record.screenshot
+              : record.committedScreenshotPath ?? record.capturePath);
+            for (const file of new Set(files)) {
+              if (file?.startsWith(root + "evidence/") && !file.includes("\n")) console.log("/" + file);
+            }
+          ' | git sparse-checkout add --stdin
+          git sparse-checkout add "/Development_Docs/Projects/Project_Homeport/evidence/phase6/"
+      - name: Install production test dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Install Chromium
+        if: ${{ matrix.scope != 'homeport-node' }}
+        run: npx --no-install playwright install --with-deps chromium
+      - name: Run exact-tree focused checks with existing V3 runners
+        run: |
           node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "browser-lanternwake", kind: "browser-full", files: [] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
+          import { runJob, snapshotReader } from "./scripts/sounding-line-v3/checks.mjs";
+          import { changes, metadata, registry, select } from "./scripts/sounding-line-v3/plan.mjs";
+          if (process.env.CHECK_SCOPE === "homeport-browser") process.env.HOMEPORT_PHASE7_CORRECTION_JOURNEYS = "T";
+          const base = process.env.BASE_SHA;
+          const tree = process.env.SOURCE_SHA;
+          const entries = changes(base, tree);
+          const read = snapshotReader(tree);
+          const plan = select(entries, read, metadata([]), registry(tree), snapshotReader(base));
+          const job = {
+            "homeport-node": plan.jobs.find(job => job.id === "unit.homeport-node"),
+            "homeport-browser": { id:"focused-homeport-browser", kind:"browser",
+              files:["tests/e2e/homeport-phase7-owner-correction-round2.spec.ts"] },
+            "native-player": { id:"focused-native-player-browser", kind:"browser",
+              files:["tests/e2e/sealed-hold-phase4.spec.ts"] },
+          }[process.env.CHECK_SCOPE];
+          if (!job?.files.length) throw new Error("Scoped existing V3 job was unavailable");
+          await runJob(job, { base, tree, entries, read, plan });
           EOF
-      - name: Retain V3 benchmark receipt
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: journal-fresh-v3-runtime-benchmark
-          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
-          if-no-files-found: ignore
-          retention-days: 30
