@@ -1,5 +1,5 @@
-name: Homeport keyboard destination diagnostic
-run-name: Compare mobile Personal Information keyboard navigation on protected main and the candidate
+name: Lanternwake isolated Linux benchmark
+run-name: Capture the updated prerequisite and check mobile account orientation
 
 on:
   push:
@@ -12,19 +12,117 @@ permissions:
   contents: read
 
 jobs:
+  benchmark:
+    name: Source-bound shared prerequisite experience capture
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      CANDIDATE_SHA: f8873659a79379c17c86346bf2232428efe690fa
+      BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
+      FOREVER_VALIDATION_SOURCE_SHA: f8873659a79379c17c86346bf2232428efe690fa
+      NEXT_TELEMETRY_DISABLED: "1"
+      SOUNDING_LINE_PR_NUMBER: "901"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: f8873659a79379c17c86346bf2232428efe690fa
+          fetch-depth: 64
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
+            /scripts/
+            /src/
+            /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Verify the actual protected base and its candidate ancestry
+        run: |
+          git fetch --no-tags --filter=blob:none --depth=64 origin refs/heads/main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
+      - name: Install locked dependencies and Chromium
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install chromium
+      - name: Capture real source-bound Product Experience journeys for PR 901
+        run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "5b80a4eada0c94f8075ecd01fa2bb44c41558521"
+          node --input-type=module <<'EOF'
+          import {execFileSync} from "node:child_process";
+          import {writeFile} from "node:fs/promises";
+          import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
+          import {recognizeExceptionExecution} from "./scripts/sounding-line/experience-exception.mjs";
+          const root = process.cwd();
+          if (recognizeExceptionExecution({root, baseSha: process.env.BASE_SHA, candidateSha: process.env.CANDIDATE_SHA}))
+            throw new Error("Current source was classified as a separate exception campaign");
+          const plan = JSON.parse(execFileSync(process.execPath, [
+            "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
+            "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
+          ], {encoding: "utf8"}));
+          const expectedContracts = ["admiralty.ai-economics","admiralty.phase1.registry","admiralty.phase2.account-dossier-support","admiralty.phase2.read-projection-redaction","chronicle.creation","crossdeck.phase2.continuity","crossdeck.refit.companion","crossdeck.refit.published-lens","harborlight.sc07.creator-community.experience","homeport.community.public-projection","homeport.motion.authority","homeport.owner-correction.round1.workspaces","homeport.passport.product-surface","homeport.phase7.account.canonical-lifecycle","homeport.shell.crossdeck-access-recovery","homeport.shell.crossdeck-companion","homeport.shell.crossdeck-companion-mobile","homeport.transition.auth-routes","homeport.transition.reduced-motion","journal-ready-state","parallax.authored-library-and-simulation.experience","parallax.floating-controls.experience","parallax.integration.pilot-owner-boundary","parallax.parametric-room-correction.experience","parallax.protected-photo-room.experience","parallax.rooms-and-surfaces.experience","parallax.sc00b.inspector.experience","parallax.scene-manager.experience","parallax.spatial-community-publishing.experience","reach.phase1.foundation","spatial-pilot.experience"];
+          const actualContracts = plan.contracts.map(item => item.id).sort();
+          if (!plan.applicable || plan.baseSha !== process.env.BASE_SHA || plan.candidateSha !== process.env.CANDIDATE_SHA ||
+              !/^[a-f0-9]{64}$/.test(plan.contractDigest) || JSON.stringify(actualContracts) !== JSON.stringify(expectedContracts) ||
+              !/^[a-f0-9]{64}$/.test(plan.sourceDigest))
+            throw new Error("Unexpected experience source or contract selection");
+          console.log("JOURNAL_RENDERER_CAPTURE_PLAN " + JSON.stringify({baseSha:plan.baseSha,candidateSha:plan.candidateSha,
+            sourceDigest:plan.sourceDigest,contractDigest:plan.contractDigest,contracts:actualContracts}));
+          plan.outputDirectory = "artifacts/sounding-line/harbor-shared-experience";
+          delete process.env.GH_TOKEN;
+          delete process.env.GITHUB_TOKEN;
+          const receipt = await runTrustedExperienceReplay({
+            root, plan, validateReplay: false,
+            environment: { SOUNDING_LINE_BASE_SHA: plan.baseSha },
+          });
+          if (receipt.status !== "PASS") throw new Error("The actual browser capture did not complete");
+          await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
+            JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
+              sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
+              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "DEVELOPMENT_CAPTURE"}, null, 2) + "\n");
+          EOF
+      - name: Retain source-bound synthetic browser review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: harbor-shared-source-bound-experience
+          path: artifacts/sounding-line/harbor-shared-experience/**
+          if-no-files-found: ignore
+          retention-days: 30
+
   account-orientation-control:
     name: Keyboard entry into mobile Personal Information
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
+      CANDIDATE_SHA: f8873659a79379c17c86346bf2232428efe690fa
       BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
+      FOREVER_VALIDATION_SOURCE_SHA: f8873659a79379c17c86346bf2232428efe690fa
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
+          ref: f8873659a79379c17c86346bf2232428efe690fa
           fetch-depth: 16
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -70,7 +168,7 @@ jobs:
           import { authenticateClosure, closureAccount } from "./fixtures/landfall-closure";
           import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
           
-          test.use({ viewport: { width: 390, height: 844 }, reducedMotion: "reduce" });
+          test.use({ viewport: { width: 390, height: 844 } });
           test.afterAll(() => db.$disconnect());
           
           test("sample the account heading after real keyboard navigation", async ({ page, context, baseURL }) => {
@@ -79,6 +177,7 @@ jobs:
             const owner = await closureAccount(name);
             await activateWorkspaceCapability(owner.id, "CREATOR");
             await authenticateClosure(context, owner, baseURL!);
+            await page.emulateMedia({ reducedMotion: "reduce" });
             await page.goto("/account");
             await expect(page.getByRole("heading", { name, exact: true })).toBeVisible();
             const link = page.getByRole("link", { name: "Profile Personal Information", exact: true });
