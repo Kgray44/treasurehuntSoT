@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Reproduce spatial authoring and Creator focus failures on protected main
+run-name: Run the complete V3 Lanternwake job with a fresh timing runtime
 
 on:
   push:
@@ -13,18 +13,18 @@ permissions:
 
 jobs:
   browser-probe:
-    name: Exact protected-main spatial and Creator browser baseline
+    name: Full Lanternwake V3 job with isolated benchmark
     runs-on: ubuntu-24.04
-    timeout-minutes: 22
+    timeout-minutes: 90
     env:
-      CANDIDATE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
+      CANDIDATE_SHA: 67ba7699f548aadbffbf7a10d947264ef3b98884
       BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
+      FOREVER_VALIDATION_SOURCE_SHA: 67ba7699f548aadbffbf7a10d947264ef3b98884
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 00420421bacc6e9b923c5e50852a83a858886131
+          ref: 67ba7699f548aadbffbf7a10d947264ef3b98884
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,14 +58,24 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Run spatial authoring and Creator moderation against current main
+      - name: Run tracked runner assertions and the entire Lanternwake V3 browser job
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "030f7ca800cb850b896e41ee2cfa6c5d30d67a13"
+          node --test tests/sounding-line-v3.test.mjs
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
           await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-studio.spec.ts","tests/e2e/parallax-adaptive.spec.ts","tests/e2e/spatial-chronicle-pilot.spec.ts","tests/e2e/sc07-creator-community.spec.ts"] },
+            { id: "browser-lanternwake", kind: "browser-full", files: [] },
             { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
           );
           EOF
+      - name: Retain V3 benchmark receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: journal-fresh-v3-runtime-benchmark
+          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
+          if-no-files-found: ignore
+          retention-days: 30
