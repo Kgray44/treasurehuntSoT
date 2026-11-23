@@ -12,6 +12,8 @@ import type { JsonObject, StudioDraftInput } from "@/chronicle/types";
 import { parseJsonObject, parsePublishedSnapshot } from "@/chronicle/types";
 import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 import { parseReusableEnvelope } from "@/studio/reusable-content";
+import { spatialItemKind } from "@/parallax/contracts";
+import { validateSpatialMoment } from "@/parallax/publication";
 import { studioRegistryFromDrydock } from "@/drydock/contracts/registry";
 import { parseStoredLandfallDefinition, validateLandfallDefinition } from "@/landfall/definition";
 
@@ -518,23 +520,58 @@ export async function saveStudioDraft(
         throw new Error("Reusable content provenance must refer only to Passages and Chapters in this saved draft.");
       const version = await tx.reusableAuthoringItemVersion.findFirst({
         where: { id: usage.versionId, itemId: usage.itemId, item: { ownerAccountId: userId, archivedAt: null } },
-        select: { checksum: true, envelope: true },
+        select: { checksum: true, envelope: true, versionNumber: true, item: { select: { kind: true } } },
       });
       if (!version) throw new Error("The reusable source version is not available to this Creator.");
-      const source = parseReusableEnvelope(JSON.parse(version.envelope));
-      if (
-        source.itemId !== usage.itemId ||
-        source.versionId !== usage.versionId ||
-        source.ownerId !== userId ||
-        source.checksum !== version.checksum
-      )
-        throw new Error("The reusable source version could not be verified.");
-      const provenance = {
-        ...source.attribution,
-        sourceItemId: source.attribution.sourceItemId ?? source.itemId,
-        sourceVersionId: source.attribution.sourceVersionId ?? source.versionId,
-        modified: true,
-      };
+      const envelope: unknown = JSON.parse(version.envelope);
+      let provenance: NonNullable<StudioDraftInput["reusableUsage"]>["provenance"];
+      if (version.item.kind === spatialItemKind || usage.sourceKind === "SPATIAL_MOMENT") {
+        const [blockId] = usage.insertedBlockIds;
+        const block = input.chapters.flatMap((chapter) => chapter.blocks).find((passage) => passage.id === blockId);
+        if (
+          version.item.kind !== spatialItemKind ||
+          usage.sourceKind !== "SPATIAL_MOMENT" ||
+          version.versionNumber < 1 ||
+          usage.insertedBlockIds.length !== 1 ||
+          usage.insertedChapterIds.length ||
+          !block?.presentation.spatialMoment
+        )
+          throw new Error("The spatial source must pin one Passage attachment to an immutable version.");
+        const source = validateSpatialMoment(envelope);
+        const attached = validateSpatialMoment(block.presentation.spatialMoment, blockId);
+        if (
+          source.definition.id !== usage.itemId ||
+          source.definition.ownerPersonId !== userId ||
+          source.version.id !== usage.versionId ||
+          source.version.checksum !== version.checksum ||
+          attached.definition.id !== source.definition.id ||
+          attached.definition.ownerPersonId !== source.definition.ownerPersonId ||
+          attached.version.id !== source.version.id ||
+          attached.version.checksum !== source.version.checksum
+        )
+          throw new Error("The spatial source version could not be verified.");
+        provenance = {
+          sourceOwnerId: source.definition.ownerPersonId,
+          sourceItemId: source.definition.id,
+          sourceVersionId: source.version.id,
+          modified: Boolean(attached.attachment.overrides.narrative),
+        };
+      } else {
+        const source = parseReusableEnvelope(envelope);
+        if (
+          source.itemId !== usage.itemId ||
+          source.versionId !== usage.versionId ||
+          source.ownerId !== userId ||
+          source.checksum !== version.checksum
+        )
+          throw new Error("The reusable source version could not be verified.");
+        provenance = {
+          ...source.attribution,
+          sourceItemId: source.attribution.sourceItemId ?? source.itemId,
+          sourceVersionId: source.attribution.sourceVersionId ?? source.versionId,
+          modified: true,
+        };
+      }
       await tx.reusableAuthoringUsage.create({
         data: {
           draftId: draft.id,
