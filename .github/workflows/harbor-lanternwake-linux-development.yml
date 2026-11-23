@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Capture exact Native Scene candidate and smoke-test the landed prerequisite
+run-name: Verify prepublication formatting of the integrated Native tree
 
 on:
   push:
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   benchmark:
-    name: Source-bound Native Scene experience capture
+    name: Native candidate protected formatting preview
     runs-on: ubuntu-24.04
     timeout-minutes: 75
     env:
@@ -60,171 +60,11 @@ jobs:
           git fetch --no-tags --filter=blob:none --depth=64 origin refs/heads/main:refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "$BASE_SHA"
           git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
-      - name: Install locked dependencies and Chromium
-        run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install chromium
-      - name: Capture real source-bound Product Experience journeys for PR 896
-        run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "93f54fdc133a9cf55d338675e8df2e54b589e2bb"
-          node --input-type=module <<'EOF'
-          import {execFileSync} from "node:child_process";
-          import {writeFile} from "node:fs/promises";
-          import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
-          import {recognizeExceptionExecution} from "./scripts/sounding-line/experience-exception.mjs";
-          const root = process.cwd();
-          if (recognizeExceptionExecution({root, baseSha: process.env.BASE_SHA, candidateSha: process.env.CANDIDATE_SHA}))
-            throw new Error("Current source was classified as a separate exception campaign");
-          const plan = JSON.parse(execFileSync(process.execPath, [
-            "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
-            "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
-          ], {encoding: "utf8"}));
-          const expectedContracts = ["admiralty.ai-economics","admiralty.phase1.registry","admiralty.phase2.account-dossier-support","admiralty.phase2.read-projection-redaction","chronicle.creation","crossdeck.phase2.continuity","crossdeck.refit.companion","crossdeck.refit.published-lens","harborlight.sc07.creator-community.experience","homeport.community.public-projection","homeport.owner-correction.round1.workspaces","homeport.passport.product-surface","homeport.phase7.account.canonical-lifecycle","homeport.shell.crossdeck-access-recovery","homeport.shell.crossdeck-companion","homeport.shell.crossdeck-companion-mobile","homeport.transition.auth-routes","journal-ready-state","parallax.authored-library-and-simulation.experience","parallax.floating-controls.experience","parallax.integration.pilot-owner-boundary","parallax.parametric-room-correction.experience","parallax.protected-photo-room.experience","parallax.rooms-and-surfaces.experience","parallax.sc00b.inspector.experience","parallax.scene-manager.experience","parallax.spatial-community-publishing.experience","reach.phase1.foundation","spatial-pilot.experience"];
-          const actualContracts = plan.contracts.map(item => item.id).sort();
-          if (!plan.applicable || plan.baseSha !== process.env.BASE_SHA || plan.candidateSha !== process.env.CANDIDATE_SHA ||
-              !/^[a-f0-9]{64}$/.test(plan.contractDigest) || expectedContracts.some(id => !actualContracts.includes(id)) ||
-              !/^[a-f0-9]{64}$/.test(plan.sourceDigest))
-            throw new Error("Unexpected experience source or contract selection");
-          console.log("NATIVE_HARBOR_CAPTURE_PLAN " + JSON.stringify({baseSha:plan.baseSha,candidateSha:plan.candidateSha,
-            sourceDigest:plan.sourceDigest,contractDigest:plan.contractDigest,contracts:actualContracts}));
-          plan.outputDirectory = "artifacts/sounding-line/harbor-shared-experience";
-          delete process.env.GH_TOKEN;
-          delete process.env.GITHUB_TOKEN;
-          const receipt = await runTrustedExperienceReplay({
-            root, plan, validateReplay: false,
-            environment: { SOUNDING_LINE_BASE_SHA: plan.baseSha },
-          });
-          if (receipt.status !== "PASS") throw new Error("The actual browser capture did not complete");
-          await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
-            JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
-              sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
-              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "DEVELOPMENT_CAPTURE"}, null, 2) + "\n");
-          EOF
-      - name: Retain source-bound synthetic browser review evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: harbor-native-source-bound-experience
-          path: artifacts/sounding-line/harbor-shared-experience/**
-          if-no-files-found: ignore
-          retention-days: 30
-
-  browser-probe:
-    name: Native Scene authority and Voyage handoff on the landed base
-    runs-on: ubuntu-24.04
-    timeout-minutes: 38
-    env:
-      CANDIDATE_SHA: 6bb9a57d488f4d2bfd84942cb9e92e19a4317ba6
-      BASE_SHA: 5be59f18590f2c48a4a7672a14a25dee5bf0e82d
-      FOREVER_VALIDATION_SOURCE_SHA: 6bb9a57d488f4d2bfd84942cb9e92e19a4317ba6
-      NEXT_TELEMETRY_DISABLED: "1"
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: 6bb9a57d488f4d2bfd84942cb9e92e19a4317ba6
-          fetch-depth: 2
-          persist-credentials: false
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /*
-            !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
-            /scripts/
-            /src/
-            /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
-        run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install chromium
-      - name: Run the Native Scene receipt and real Voyage transfer suites
+      - name: Install pinned formatting dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Run the ordinary V3 format check for the exact Native source
+        shell: bash
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           test "$(git rev-parse HEAD^{tree})" = "93f54fdc133a9cf55d338675e8df2e54b589e2bb"
-          test "$(git rev-parse HEAD:native)" = "6795af566a32e2196088551de5b5c89840cc589f"
-          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-native-authority.spec.ts","tests/e2e/crossdeck-refit-recovery.spec.ts","tests/e2e/crossdeck-phase2.spec.ts","tests/e2e/spatial-chronicle-pilot.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
-          EOF
-
-  landed-smoke:
-    name: Protected #901 landed-tree browser smoke
-    runs-on: ubuntu-24.04
-    timeout-minutes: 38
-    env:
-      CANDIDATE_SHA: 5be59f18590f2c48a4a7672a14a25dee5bf0e82d
-      BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: 5be59f18590f2c48a4a7672a14a25dee5bf0e82d
-      NEXT_TELEMETRY_DISABLED: "1"
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: 5be59f18590f2c48a4a7672a14a25dee5bf0e82d
-          fetch-depth: 2
-          persist-credentials: false
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /*
-            !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
-            /scripts/
-            /src/
-            /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
-        run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install chromium
-      - name: Run the landed Player access and Journal lifecycle suites
-        run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "be89cfed8ae3f6aa879ec3e6d59c4975216952fa"
-          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$CANDIDATE_SHA"
-          node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/access-gates.spec.ts","tests/e2e/phase3-lifecycle-extended.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
-          EOF
+          SL_JOB=format node scripts/sounding-line-v3/cli.mjs ci-job --base "$BASE_SHA"
