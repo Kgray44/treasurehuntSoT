@@ -60,10 +60,17 @@ jobs:
           npx --no-install playwright install chromium
       - name: Measure unchanged timing budgets with and without redundant class writes
         run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "147f9767d537f1fc332e492a7299654d98fd336a"
-          test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "de58c0bc1a9ef6aa5e0ed79b82628f22d8d38fb2"
-          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          head="$(git rev-parse HEAD)"
+          tree="$(git rev-parse 'HEAD^{tree}')"
+          spec="$(git rev-parse HEAD:tests/e2e/phase3-performance.spec.ts)"
+          exported="$(git hash-object --no-filters tests/e2e/phase3-performance.spec.ts)"
+          main="$(git ls-remote --exit-code origin refs/heads/main | cut -f1)"
+          printf 'Source %s tree %s benchmark %s checked-out %s base %s\n' "$head" "$tree" "$spec" "$exported" "$main"
+          test "$head" = "$CANDIDATE_SHA"
+          test "$tree" = "147f9767d537f1fc332e492a7299654d98fd336a"
+          test "$spec" = "de58c0bc1a9ef6aa5e0ed79b82628f22d8d38fb2"
+          test "$exported" = "$spec"
+          test "$main" = "$BASE_SHA"
           nproc
           cat /sys/fs/cgroup/cpu.max
           mkdir -p "$RUNNER_TEMP/pageflip-class-comparison"
