@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ReceiptDetails } from "@/components/ui/ReceiptDetails";
 
 type Review = {
   listingId: string;
@@ -138,9 +139,14 @@ export function SpatialPublicationReviewPanel({
         }}
       >
         <summary>Inspect the full sanitized package</summary>
-        <pre style={{ maxHeight: "24rem", overflow: "auto" }} tabIndex={0} aria-label="Spatial release package JSON">
-          {JSON.stringify(review.included, null, 2)}
-        </pre>
+        <div
+          style={{ maxHeight: "24rem", overflow: "auto", overflowWrap: "anywhere" }}
+          tabIndex={0}
+          role="region"
+          aria-label="Spatial release package contents"
+        >
+          <ReceiptDetails value={review.included} />
+        </div>
       </details>
       <p>Package checksum: {review.packageChecksum}</p>
       {!packageInspected && <p role="status">Open and inspect the full package before confirming this review.</p>}

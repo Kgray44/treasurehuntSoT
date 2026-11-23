@@ -3,7 +3,9 @@ import { createHash, randomUUID } from "node:crypto";
 import AxeBuilder from "@axe-core/playwright";
 import { db } from "../../src/lib/db";
 import { syntheticSpatialMoment } from "../../src/parallax/fixtures";
-import { materializeSpatialVersion } from "../../src/parallax/publication";
+import { releaseSpatialVersion, saveSpatialDraft } from "../../src/parallax/library-service";
+import { validateSpatialMoment } from "../../src/parallax/publication";
+import { sceneDeliverySchema } from "../../src/parallax/scene-delivery";
 import {
   closureAccount,
   closureVoyage,
@@ -66,14 +68,16 @@ async function emulateNativeTransport(context: BrowserContext, platform: "IOS" |
 }
 
 /** The same guarded three-model fixture used by both direct D1 platforms and
- * the real Crossdeck companion journey. Only the owned synthetic edition changes. */
-async function publishModelScene(voyage: Awaited<ReturnType<typeof closureVoyage>>) {
+ * the real Crossdeck companion journey. Bind the isolated Voyage to the
+ * immutable release created by the canonical Creator save path. */
+async function publishModelScene(voyage: Awaited<ReturnType<typeof closureVoyage>>, ownerAccountId: string) {
   const version = await db.publishedTaleVersion.findUniqueOrThrow({ where: { id: voyage.versionId } });
   const snapshot = JSON.parse(version.contentSnapshot);
   const block = snapshot.chapters[0].blocks[0];
-  const moment = syntheticSpatialMoment(voyage.activeId);
-  const { checksum: _checksum, ...content } = moment.version;
+  const seed = syntheticSpatialMoment(voyage.activeId);
+  const { checksum: _checksum, ...content } = seed.version;
   void _checksum;
+  content.definitionId = `ncl01-scene:${voyage.taleId}`;
   const baseline = content.entities[0];
   content.entities = [
     { id: "middle-chest", name: "Middle-table chest", modelId: "treasure-chest", x: 0, z: 0, width: 0.4 },
@@ -95,8 +99,32 @@ async function publishModelScene(voyage: Awaited<ReturnType<typeof closureVoyage
       articulation: 0,
     },
   }));
-  moment.version = materializeSpatialVersion(content);
-  moment.attachment.versionChecksum = moment.version.checksum;
+  const revision = await saveSpatialDraft(
+    ownerAccountId,
+    {
+      content,
+      scope: "MY_LIBRARY",
+      chronicleId: null,
+      category: "MOMENT",
+      tags: [],
+      collection: "",
+      favorite: false,
+      lineage: null,
+    },
+    0,
+  );
+  const { version: released } = await releaseSpatialVersion(ownerAccountId, content.definitionId, revision);
+  const row = await db.reusableAuthoringItemVersion.findUniqueOrThrow({ where: { id: released.id } });
+  const persisted = validateSpatialMoment(JSON.parse(row.envelope));
+  expect(row.checksum).toBe(released.checksum);
+  expect(persisted.version).toEqual(released);
+  const moment = validateSpatialMoment(
+    {
+      ...persisted,
+      attachment: { ...persisted.attachment, id: seed.attachment.id, storyMomentId: voyage.activeId },
+    },
+    voyage.activeId,
+  );
   block.configuration = {
     heading: "The synthetic classroom trail",
     body: "Open the Lens and inspect an authored object.",
@@ -140,7 +168,7 @@ for (const platform of ["IOS", "ANDROID"] as const) {
       await emulateNativeTransport(context, platform);
       const voyage = await closureVoyage(account, account, "narrative");
       taleId = voyage.taleId;
-      const moment = await publishModelScene(voyage);
+      const moment = await publishModelScene(voyage, account.id);
       const before = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
       const beforeEvents = await db.taleSessionEvent.count({ where: { sessionId: voyage.id } });
       await authenticateClosure(context, account, baseURL!);
@@ -165,16 +193,27 @@ for (const platform of ["IOS", "ANDROID"] as const) {
             }),
           );
       });
-      const scene = await page.evaluate(
-        () =>
-          (
-            window as unknown as {
-              __ncl01D1: { scene: { identity: { versionChecksum: string }; entities: { id: string }[] } };
-            }
-          ).__ncl01D1.scene,
+      const scene = sceneDeliverySchema.parse(
+        await page.evaluate(() => (window as unknown as { __ncl01D1: { scene: unknown } }).__ncl01D1.scene),
       );
-      expect(scene.identity.versionChecksum).toBe(moment.version.checksum);
-      expect(scene.entities.map((entity) => entity.id)).toEqual(["middle-chest", "left-compass", "right-compass"]);
+      expect(scene.identity).toMatchObject({
+        definitionId: moment.definition.id,
+        versionId: moment.version.id,
+        versionChecksum: moment.version.checksum,
+      });
+      expect(scene.entities.map((entity) => [entity.id, entity.model?.assetId])).toEqual([
+        ["middle-chest", "treasure-chest"],
+        ["left-compass", "brass-compass"],
+        ["right-compass", "brass-compass"],
+      ]);
+      const originals = new Map(scene.entities.map(({ model }) => [model!.assetId, model!]));
+      for (const model of originals.values()) {
+        const asset = await context.request.get(new URL(model.url, baseURL!).href);
+        expect(asset.ok()).toBe(true);
+        const bytes = await asset.body();
+        expect(bytes.byteLength).toBe(model.byteLength);
+        expect(createHash("sha256").update(bytes).digest("hex")).toBe(model.sha256);
+      }
 
       const endpoint = `/api/player/playthroughs/${voyage.id}/parallax`;
       let releasePost!: () => void;
@@ -270,6 +309,7 @@ for (const platform of ["IOS", "ANDROID"] as const) {
     } finally {
       await context.close();
       if (taleId) await db.chronicle.delete({ where: { id: taleId } });
+      await db.reusableAuthoringItem.deleteMany({ where: { ownerAccountId: account.id } });
       await db.userAccount.delete({ where: { id: account.id } });
     }
   });
@@ -299,7 +339,7 @@ test("D1 real Crossdeck companion preserves canonical model Inspect and clears r
     await emulateNativeTransport(phone, "IOS");
     const voyage = await closureVoyage(account, account, "narrative");
     taleId = voyage.taleId;
-    const moment = await publishModelScene(voyage);
+    const moment = await publishModelScene(voyage, account.id);
     const before = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
     const beforeEvents = await db.taleSessionEvent.count({ where: { sessionId: voyage.id } });
     const beforeMembers = await db.playthroughMembership.count({ where: { playthroughId: voyage.id } });
@@ -497,6 +537,7 @@ test("D1 real Crossdeck companion preserves canonical model Inspect and clears r
     releasePost?.();
     const contexts = await Promise.allSettled(ownedContexts.map((context) => context.close()));
     if (taleId) await db.chronicle.delete({ where: { id: taleId } });
+    await db.reusableAuthoringItem.deleteMany({ where: { ownerAccountId: account.id } });
     await db.userAccount.delete({ where: { id: account.id } });
     for (const result of contexts) if (result.status === "rejected") throw result.reason;
   }

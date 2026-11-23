@@ -4,6 +4,7 @@ import { ChronicleLens, ChronicleLensDeviceLab } from "./ChronicleLens";
 import { syntheticBinding, syntheticSpatialMoment } from "@/parallax/fixtures";
 import { NativeDeviceLabSpatialAdapter } from "@/parallax/native-device-lab";
 import { evaluateSpatialEvidence } from "@/parallax/evidence";
+import { materializeSpatialVersion } from "@/parallax/publication";
 
 function deferred() {
   let resolve!: () => void;
@@ -13,7 +14,7 @@ function deferred() {
   return { promise, resolve };
 }
 function host(lab = false) {
-  const request = vi.fn(async (message: string) => {
+  const request = vi.fn(async (message: string): Promise<unknown> => {
     const { operation, payload } = JSON.parse(message);
     if (operation === "SPATIAL_START")
       return { accepted: true, sceneTransferVersion: lab ? 2 : 1, sessionId: payload.sessionId, epoch: payload.epoch };
@@ -155,6 +156,57 @@ it("returns a failed native Inspect to visible Player error and retries the iden
   await screen.findByText(/Interaction recorded/);
   expect(screen.getByText(/You are inspecting/)).toBeVisible();
   expect(record.mock.calls[1][0]).toEqual(record.mock.calls[0][0]);
+});
+
+it("preserves the authored clue in Guided View when the companion cannot load its original model", async () => {
+  const provider = host();
+  const reply = provider.request.getMockImplementation();
+  provider.request.mockImplementation(async (message) => {
+    const { operation, payload } = JSON.parse(message);
+    if (operation === "SPATIAL_STATE")
+      return {
+        supported: true,
+        permission: "GRANTED",
+        sceneTransferVersion: 1,
+        sceneDeliveryVersions: [1, 2],
+        capabilities: ["WORLD_TRACKING", "PLANE_PLACEMENT", "MODEL_GLB"],
+      };
+    if (operation === "SPATIAL_START")
+      return { accepted: true, sceneTransferVersion: 2, sessionId: payload.sessionId, epoch: payload.epoch };
+    // The native host reaches this reply when staging an original asset fails.
+    if (operation === "SPATIAL_SCENE_COMMIT") return { accepted: false };
+    return reply!(message);
+  });
+  const moment = syntheticSpatialMoment();
+  const { checksum: _checksum, ...content } = moment.version;
+  void _checksum;
+  content.entities[0].element = {
+    kind: "PHYSICAL_ASSET",
+    enabled: true,
+    modelId: "treasure-chest",
+    packageVersion: "1.0.0",
+    articulation: 0,
+  };
+  moment.version = materializeSpatialVersion(content);
+  moment.attachment.versionChecksum = moment.version.checksum;
+  const record = vi.fn();
+  render(
+    <ChronicleLens moment={moment} binding={syntheticBinding} replayOnly={false} record={record} onClose={() => {}} />,
+  );
+
+  fireEvent.click(await screen.findByRole("button", { name: "Use camera for local placement" }));
+  await waitFor(() => {
+    const operations = provider.messages().map((message) => message.operation);
+    expect(operations).toContain("SPATIAL_SCENE_COMMIT");
+    expect(operations).toContain("SPATIAL_SCENE_ABORT");
+    expect(operations).toContain("SPATIAL_STOP");
+  });
+  expect(await screen.findByText("Guided View")).toBeVisible();
+  expect(screen.getByText(moment.version.entities[0].content)).toBeVisible();
+  expect(screen.getByRole("button", { name: "Inspect" })).toBeEnabled();
+  await act(async () => event(provider.identity(), "INSPECT"));
+  expect(record).not.toHaveBeenCalled();
+  expect(screen.queryByText(/Interaction recorded/)).toBeNull();
 });
 
 it("does not let a completed old POST or stale intent stop or mark a reopened native Lens", async () => {

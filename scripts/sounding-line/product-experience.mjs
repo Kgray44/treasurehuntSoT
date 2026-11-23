@@ -5,6 +5,7 @@ import {
   validateReviewedIdentity,
   reviewedEvidenceAdoption,
 } from "./experience-reviewed-adoption.mjs";
+import { SC07_CONTRACT, SC07_PROFILE } from "./experience-sc07-context.mjs";
 import { REVIEW_DIMENSIONS } from "./experience-review-dimensions.mjs";
 import { inheritSourceFailure, sourceDiagnosticGit } from "./source-diagnostics.mjs";
 import { readSourceSnapshotBatches } from "./source-snapshot-batches.mjs";
@@ -455,8 +456,17 @@ export function validateExperienceContract(contract) {
   ])
     if (!Array.isArray(experience[key]) || (key !== "limitations" && !experience[key].length))
       fail("CONTRACT_FIELD_INVALID", `${contract.id}.${key}`);
+  const sc07Fixture = contract.id === SC07_CONTRACT && experience.fixtureProfile === SC07_PROFILE;
   for (const journey of experience.journeys) {
     if (!journey.id || !meaningful(journey.outcome) || !list(journey.steps)) fail("JOURNEY_INVALID", contract.id);
+    if (
+      journey.entryPoint !== undefined &&
+      (!sc07Fixture ||
+        typeof journey.entryPoint !== "string" ||
+        !/^\/(?!\/)[a-zA-Z0-9_/.-]*$/u.test(journey.entryPoint))
+    )
+      fail("ENTRY_POINT_INVALID", journey.id);
+
     validateRoomReloadJourney(contract, journey);
     validateRoomsSurfaceNavigation(contract, journey);
     validateSceneSavedConfirmation(contract, journey);
@@ -465,18 +475,23 @@ export function validateExperienceContract(contract) {
       fail("SEMANTIC_OUTCOME_REQUIRED", journey.id);
     for (const step of journey.steps) {
       if (step.action === "reload") continue;
-      if (!new Set(["click", "fill", "assert", "keyboard"]).has(step.action))
+      if (
+        !new Set(["click", "fill", "assert", "keyboard"]).has(step.action) &&
+        !(sc07Fixture && step.action === "select")
+      )
         fail("JOURNEY_ACTION_INVALID", journey.id);
       if (
         step.action !== "keyboard" &&
         !Object.hasOwn(step, "nativeSummary") &&
-        (!step.role || typeof step.name !== "string")
+        (!step.role || (typeof step.name !== "string" && !(sc07Fixture && meaningful(step.nameFromFixture))))
       )
         fail("VISIBLE_CONTROL_REQUIRED", journey.id);
       if (
         step.action === "assert" &&
         step.kind === "outcome" &&
-        (!meaningful(step.meaning) || !meaningful(step.text) || !step.path)
+        (!meaningful(step.meaning) ||
+          !(meaningful(step.text) || (sc07Fixture && meaningful(step.textFromFixture))) ||
+          !(step.path || (sc07Fixture && meaningful(step.pathFromFixture))))
       )
         fail("SEMANTIC_OUTCOME_REQUIRED", journey.id);
       if (step.returnPath && (step.action !== "assert" || !step.path))
@@ -1309,7 +1324,7 @@ export function validateExperienceEvidence({
             if (
               !run ||
               run.status !== "PASS" ||
-              run.entryPoint !== experience.entryPoint ||
+              run.entryPoint !== (journey.entryPoint ?? experience.entryPoint) ||
               run.outcome !== journey.outcome ||
               run.visibleActions < 1 ||
               !run.returnPathVerified ||

@@ -14,6 +14,12 @@ import { withVerificationStage, observeVerificationFailure } from "./verificatio
 import { runBrowserAuthority, writeBrowserReceiptAndExit } from "./browser-authority.mjs";
 import { browserSuiteProfiles } from "./browser-suite-profiles.mjs";
 import {
+  readSc07ReplayFixture,
+  resolveSc07ReplayContext,
+  SC07_CONTRACT,
+  SC07_PROFILE,
+} from "./experience-sc07-context.mjs";
+import {
   BROWSER_DIAGNOSTIC_CONTEXT,
   writeBrowserDiagnosticReceipt,
   readBrowserDiagnosticReceipt,
@@ -577,6 +583,7 @@ export async function runExperienceJourney({
   const unobscuredActions = [];
   for (const { index, step, applicable } of contextual.steps) {
     if (!applicable) continue;
+    if (step.feedbackBoundary && step.action !== "assert") fail("FEEDBACK_BOUNDARY_INVALID");
     if (step.action === "reload") {
       const savedURL = savedRoomReloadURL(page, reloadOrigin);
       await page.reload({ waitUntil: "domcontentloaded", timeout: 30000 });
@@ -596,9 +603,15 @@ export async function runExperienceJourney({
       }
     } else {
       const nativeSummary = Object.hasOwn(step, "nativeSummary");
+      const sc07Fixture = contract.id === SC07_CONTRACT && contract.experience.fixtureProfile === SC07_PROFILE;
+      const sc07Summary = sc07Fixture && step.role === "summary" && step.name === "Inspect every included field";
       const target = nativeSummary
         ? page.locator("details > summary").filter({ hasText: /^View & audio$/u })
-        : page.getByRole(step.role, { name: step.name, exact: true });
+        : sc07Summary
+          ? page.locator("details > summary").filter({ hasText: /^Inspect every included field$/u })
+          : sc07Fixture && step.action === "fill" && step.role === "label"
+            ? page.getByLabel(step.name, { exact: true })
+            : page.getByRole(step.role, { name: step.name, exact: true });
       if (nativeSummary) {
         await page
           .locator("details:not([open]) > summary")
@@ -642,7 +655,8 @@ export async function runExperienceJourney({
           if (nativeBefore.open !== false) fail("NATIVE_DISCLOSURE_NOT_CLOSED");
         }
         actionStarted = performance.now();
-        await target.press("Enter");
+        await target.press(sc07Fixture && step.role === "checkbox" ? "Space" : "Enter");
+        if (sc07Summary && !(await readNativeSummary(target)).open) fail("SC07_PACKAGE_DISCLOSURE_NOT_OPEN");
         if (nativeSummary) {
           const after = await readNativeSummary(target);
           if (
@@ -662,6 +676,8 @@ export async function runExperienceJourney({
           });
         }
         visibleActions++;
+      } else if (sc07Fixture && step.action === "select") {
+        await target.selectOption({ value: step.value });
       } else if (step.action === "fill") {
         await target.fill(step.value);
       } else if (step.action === "assert") {
@@ -735,6 +751,12 @@ export async function runExperienceJourney({
           if (!observedDeparture || step.kind === "outcome" || !changed) fail("RETURN_WITHOUT_DEPARTURE");
           returnPathVerified = true;
         }
+        if (step.feedbackBoundary) {
+          if (actionStarted === null) fail("FEEDBACK_BOUNDARY_INVALID");
+          // The visible outcome is verified. Measure feedback before reading continuity evidence.
+          maximumFeedbackMs = Math.max(maximumFeedbackMs, performance.now() - actionStarted);
+          actionStarted = null;
+        }
         if (step.kind === "outcome") outcomeContinuity.push(await readContinuity("outcome"));
         if (step.kind === "outcome")
           observations.push({
@@ -745,11 +767,6 @@ export async function runExperienceJourney({
             text: step.text ?? null,
           });
       }
-    }
-    if (step.feedbackBoundary) {
-      if (actionStarted === null || step.action !== "assert") fail("FEEDBACK_BOUNDARY_INVALID");
-      maximumFeedbackMs = Math.max(maximumFeedbackMs, performance.now() - actionStarted);
-      actionStarted = null;
     }
     if (step.state) {
       if (accessibilityCheck) stateAccessibility.push({ state: step.state, ...(await accessibilityCheck()) });
@@ -800,7 +817,7 @@ export async function runExperienceJourney({
       device,
       role,
       motionMode,
-      entryPoint: contract.experience.entryPoint,
+      entryPoint: journey.entryPoint ?? contract.experience.entryPoint,
       outcome: journey.outcome,
       observations,
       visibleActions,
@@ -921,6 +938,11 @@ export async function captureProductExperience({
   };
   const authenticatedStates = new Map(authenticationEntries);
   try {
+    const sc07Fixtures = plan.contracts.some(
+      ({ id, experience }) => id === SC07_CONTRACT && experience.fixtureProfile === SC07_PROFILE,
+    )
+      ? await readSc07ReplayFixture(root, plan.candidateSha)
+      : null;
     for (const contract of plan.pairedOnly ? [] : plan.contracts) {
       for (const device of contract.experience.devices) {
         if (!EXPERIENCE_VIEWPORTS[device]) fail("VIEWPORT_UNSUPPORTED");
@@ -941,7 +963,17 @@ export async function captureProductExperience({
               const progress = (event, operation) =>
                 experienceDiagnostic(diagnosticStartedAt, event, diagnosticContext, operation);
               progress("context.start");
-              const setup = role === "ANONYMOUS" ? null : contract.experience.roleSetup?.[role];
+              const roleSetup = role === "ANONYMOUS" ? null : contract.experience.roleSetup?.[role];
+              const sc07 =
+                sc07Fixtures && contract.id === SC07_CONTRACT
+                  ? resolveSc07ReplayContext(
+                      journey,
+                      roleSetup,
+                      sc07Fixtures[device],
+                      process.env.SC07_EXPERIENCE_PASSWORD,
+                    )
+                  : null;
+              const setup = sc07?.setup ?? roleSetup;
               const authenticationResume = roleSetupAuthenticationResume(setup);
               const authenticationKey = authenticationResume
                 ? digest(Buffer.from(JSON.stringify({ role, entryPoint: setup.entryPoint, steps: setup.steps })))
@@ -1025,13 +1057,13 @@ export async function captureProductExperience({
                   }
                 }
                 progress("operation.start", { actionKind: "navigate-journey-entry" });
-                await page.goto(contract.experience.entryPoint);
+                await page.goto(journey.entryPoint ?? contract.experience.entryPoint);
                 progress("operation.result", { actionKind: "navigate-journey-entry" });
                 const observed = await runExperienceJourney({
                   page,
                   baseURL,
                   contract,
-                  journey,
+                  journey: sc07?.journey ?? journey,
                   device,
                   artifactRoot,
                   root,

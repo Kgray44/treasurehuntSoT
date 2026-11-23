@@ -367,6 +367,7 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
       if (unsettled || !content) return;
       frame = requestAnimationFrame(() => {
         if (cancelled || ownedGeneration !== generation.current || isTypingTarget(document.activeElement)) return;
+        if (content.contains(content.ownerDocument.activeElement)) return;
         const destination = content.querySelector<HTMLElement>("[data-route-focus], h1") ?? content;
         if (!destination.hasAttribute("tabindex")) destination.setAttribute("tabindex", "-1");
         destination.focus({ preventScroll: true });

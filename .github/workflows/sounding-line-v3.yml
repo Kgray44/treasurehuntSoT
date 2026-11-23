@@ -118,7 +118,10 @@ jobs:
             import { readFileSync } from "node:fs";
             const root = "Development_Docs/Projects/Project_Homeport/";
             const { records } = JSON.parse(readFileSync(root + "Homeport_Visual_Baseline_Manifest.json", "utf8"));
-            for (const file of new Set(records.map(record => record.committedScreenshotPath))) {
+            const files = records.map(record => record.evidenceId.startsWith("HP-OWCR1-EV-")
+              ? root + "evidence/phase7-owner-correction-round1/" + record.screenshot
+              : record.committedScreenshotPath ?? record.capturePath);
+            for (const file of new Set(files)) {
               if (file?.startsWith(root + "evidence/") && !file.includes("\n")) console.log("/" + file);
             }
           ' | git sparse-checkout add --stdin
@@ -128,12 +131,14 @@ jobs:
         timeout-minutes: 8
         shell: bash
         run: |
-          evidence=Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2
-          if [[ "$(git rev-parse --is-shallow-repository)" == true ]]; then
-            git fetch --no-tags --filter=blob:none --unshallow origin "$GITHUB_REF"
-          fi
-          publication="$(git log -1 --diff-filter=A --format=%H HEAD -- "$evidence/experience-images-manifest.json")"
+          publication="$(node --input-type=module -e '
+            import { round3Baseline } from "./scripts/homeport/phase7-owner-correction-round3-model.mjs";
+            console.log(round3Baseline);
+          ')"
           [[ "$publication" =~ ^[a-f0-9]{40}$ ]]
+          if ! git cat-file -e "${publication}^{commit}"; then
+            git fetch --no-tags --depth=1 --no-write-fetch-head --filter=blob:none origin "$publication"
+          fi
           git ls-tree -r "$publication" -- Experience_Images | awk '$2 == "blob" { print $3 }' |
             sort -u | GIT_NO_LAZY_FETCH=1 git cat-file --batch-check |
             awk '$2 == "missing" { print $1 }' > "$RUNNER_TEMP/homeport-publication-blobs"

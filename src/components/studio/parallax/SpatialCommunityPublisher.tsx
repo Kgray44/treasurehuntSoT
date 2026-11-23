@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { ReceiptDetails } from "@/components/ui/ReceiptDetails";
+
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { SpatialSource } from "@/community/spatial-package";
 import styles from "./SpatialCommunityPublisher.module.css";
@@ -76,6 +78,8 @@ export function SpatialCommunityPublisher({
   const dialog = useRef<HTMLDialogElement>(null);
   const openingControl = useRef<HTMLElement | null>(null);
   const errorNotice = useRef<HTMLParagraphElement>(null);
+  const body = useRef<HTMLDivElement>(null);
+  const reviewHeading = useRef<HTMLHeadingElement>(null);
   const [stage, setStage] = useState(0);
   const [licenses, setLicenses] = useState<License[]>([]);
   const [profileReady, setProfileReady] = useState<boolean | null>(null);
@@ -109,6 +113,11 @@ export function SpatialCommunityPublisher({
             ? "SPATIAL COMPOSITION"
             : "SPATIAL ENVIRONMENT";
   const sourceVersionId = source.kind === "ENVIRONMENT" ? source.versionId : null;
+  useLayoutEffect(() => {
+    if (!reviewHeading.current || !body.current) return;
+    body.current.scrollTop = 0;
+    reviewHeading.current.focus({ preventScroll: true });
+  }, [stage]);
   useEffect(() => {
     openingControl.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const node = dialog.current;
@@ -376,7 +385,7 @@ export function SpatialCommunityPublisher({
                 </li>
               ))}
             </ol>
-            <div className={styles.body} tabIndex={0}>
+            <div ref={body} className={styles.body} tabIndex={0}>
               {stage === 0 && (
                 <section>
                   {profileReady === false && (
@@ -618,7 +627,9 @@ export function SpatialCommunityPublisher({
               {stage === 4 && review && (
                 <section>
                   <span className={styles.eyebrow}>SERVER-VERIFIED PACKAGE</span>
-                  <h3>Review before submitting</h3>
+                  <h3 ref={reviewHeading} tabIndex={-1}>
+                    Review before submitting
+                  </h3>
                   <p className={styles.callout}>
                     Submitting creates an immutable Community release for moderation. The listing becomes public only
                     after approval.
@@ -741,13 +752,9 @@ export function SpatialCommunityPublisher({
                   ))}
                   <details>
                     <summary>Inspect the sanitized package</summary>
-                    <pre tabIndex={0} aria-label="Sanitized Community package JSON">
-                      {JSON.stringify(
-                        review.included.map((item) => ({ path: item.path, preview: item.preview })),
-                        null,
-                        2,
-                      )}
-                    </pre>
+                    <div tabIndex={0} role="region" aria-label="Sanitized Community package contents">
+                      <ReceiptDetails value={review.included.map(({ path, preview }) => ({ path, preview }))} />
+                    </div>
                   </details>
                   <label className={styles.reviewCheck}>
                     <input

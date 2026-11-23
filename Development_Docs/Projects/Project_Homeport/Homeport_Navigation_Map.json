@@ -13,26 +13,11 @@
     "DEVELOPMENT"
   ],
   "naturalEntryFromGateway": [
-    {
-      "control": "Explore Chronicles",
-      "destination": "/tales"
-    },
-    {
-      "control": "Join with an Invitation",
-      "destination": "/player/sign-in#invitation-code"
-    },
-    {
-      "control": "Enter as Player",
-      "destination": "/player/sign-in"
-    },
-    {
-      "control": "Enter as Captain",
-      "destination": "/captain/sign-in"
-    },
-    {
-      "control": "Enter as Creator",
-      "destination": "/studio/sign-in"
-    },
+    { "control": "Explore Chronicles", "destination": "/tales" },
+    { "control": "Join with an Invitation", "destination": "/player/sign-in#invitation-code" },
+    { "control": "Enter as Player", "destination": "/player/sign-in" },
+    { "control": "Enter as Captain", "destination": "/captain/sign-in" },
+    { "control": "Enter as Creator", "destination": "/studio/sign-in" },
     "/tales",
     "/community"
   ],
@@ -71,10 +56,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-027",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-2",
@@ -92,10 +74,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
@@ -115,10 +94,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -138,10 +114,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-012",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
@@ -161,10 +134,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -184,10 +154,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-7",
@@ -205,10 +172,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -228,10 +192,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-9",
@@ -450,10 +411,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-21",
@@ -713,10 +671,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-36",
@@ -734,10 +689,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-37",
@@ -799,10 +751,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -822,10 +771,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-012",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
@@ -887,10 +833,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-44",
@@ -908,10 +851,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-028",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-J-REGISTRATION"]
     },
@@ -931,10 +871,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-46",
@@ -977,10 +914,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -1025,10 +959,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-012",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
@@ -1065,10 +996,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -1406,10 +1334,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-012",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
@@ -1429,10 +1354,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -1469,10 +1391,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-74",
@@ -1509,10 +1428,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-027",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-76",
@@ -1557,10 +1473,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-78",
@@ -1578,10 +1491,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-79",
@@ -1599,10 +1509,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-80",
@@ -1664,10 +1571,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
@@ -1687,10 +1591,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -1727,10 +1628,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-86",
@@ -1748,10 +1646,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-87",
@@ -1769,10 +1664,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-88",
@@ -1790,10 +1682,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-89",
@@ -1811,10 +1700,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-90",
@@ -1832,10 +1718,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-012",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
@@ -1855,10 +1738,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-92",
@@ -1876,10 +1756,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-93",
@@ -1897,10 +1774,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-94",
@@ -1918,10 +1792,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -1941,10 +1812,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-028",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-J-REGISTRATION"]
     },
@@ -1964,10 +1832,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-97",
@@ -1985,10 +1850,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
@@ -2008,10 +1870,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
@@ -2031,10 +1890,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
@@ -2054,10 +1910,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
@@ -2077,10 +1930,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
@@ -2100,10 +1950,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
@@ -2173,10 +2020,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -2196,10 +2040,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-012",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
@@ -2219,10 +2060,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-012",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
@@ -2242,10 +2080,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -2333,10 +2168,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -2356,10 +2188,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-012",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
@@ -2421,10 +2250,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-027",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-118",
@@ -2492,10 +2318,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-027",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-121",
@@ -2513,10 +2336,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-025",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-122",
@@ -2585,10 +2405,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-126",
@@ -2606,10 +2423,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-127",
@@ -2627,10 +2441,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-128",
@@ -2648,10 +2459,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-129",
@@ -2834,10 +2642,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
@@ -2857,10 +2662,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -2880,10 +2682,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -2903,10 +2702,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-012",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
@@ -2960,10 +2756,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-028",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-J-REGISTRATION"]
     },
@@ -3024,10 +2817,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-013",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-M-VERIFICATION-SUCCESS"]
     },
@@ -3081,10 +2871,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-151",
@@ -3102,10 +2889,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-152",
@@ -3123,10 +2907,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-025",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-153",
@@ -3163,10 +2944,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": [
         "HP-OWCR3-EV-AA-MOBILE-WORKSPACES",
@@ -3190,10 +2968,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
@@ -3213,10 +2988,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -3236,10 +3008,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-012",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
@@ -3259,10 +3028,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" }
     },
     {
       "nodeId": "nav-159",
@@ -3340,10 +3106,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
@@ -3363,10 +3126,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      },
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION" },
       "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
       "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
@@ -5773,8 +5533,8 @@
     },
     {
       "edgeId": "edge-account-artifacts",
-      "edgeType": "ACCOUNT_NAV",
-      "sourceRouteId": "route-page-root",
+      "edgeType": "SECTION_NAV",
+      "sourceRouteId": "route-page-passport",
       "targetRouteId": "route-page-passport-artifacts",
       "visibleControlId": "account-artifacts",
       "accessibleLabel": "Artifact Cabinet",
@@ -5792,13 +5552,13 @@
       "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
       "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
-      "safeReturn": "/",
+      "safeReturn": "/account",
       "stableFallback": "/passport",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
-      "sourceFile": "src/navigation/registry.ts",
-      "sourceNeedle": "account-artifacts"
+      "sourceFile": "src/components/wakebook/PassportLayout.tsx",
+      "sourceNeedle": "/passport/artifacts"
     },
     {
       "edgeId": "edge-account-create",
@@ -5859,9 +5619,38 @@
       "sourceNeedle": "account/data"
     },
     {
+      "edgeId": "edge-account-devices",
+      "edgeType": "MANUAL_CONTEXT_LINK",
+      "sourceRouteId": "route-page-account-sessions",
+      "targetRouteId": "route-page-account-devices",
+      "visibleControlId": "account-devices",
+      "accessibleLabel": "Manage devices",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "AUTHENTICATED",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/account",
+      "stableFallback": "/account",
+      "browserJourneyIds": ["HP-P5-JRN-F"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/app/account/sessions/page.tsx",
+      "sourceNeedle": "/account/devices"
+    },
+    {
       "edgeId": "edge-account-history",
-      "edgeType": "ACCOUNT_NAV",
-      "sourceRouteId": "route-page-root",
+      "edgeType": "SECTION_NAV",
+      "sourceRouteId": "route-page-passport",
       "targetRouteId": "route-page-passport-history",
       "visibleControlId": "account-history",
       "accessibleLabel": "Chronicle History",
@@ -5879,13 +5668,13 @@
       "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
       "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
-      "safeReturn": "/",
+      "safeReturn": "/account",
       "stableFallback": "/passport",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
-      "sourceFile": "src/navigation/registry.ts",
-      "sourceNeedle": "account-history"
+      "sourceFile": "src/components/wakebook/PassportLayout.tsx",
+      "sourceNeedle": "/passport/history"
     },
     {
       "edgeId": "edge-account-linked-identities",
@@ -7222,6 +7011,122 @@
       "sourceNeedle": "redirect("
     },
     {
+      "edgeId": "edge-device-companion",
+      "edgeType": "MANUAL_CONTEXT_LINK",
+      "sourceRouteId": "route-page-account-devices",
+      "targetRouteId": "route-page-devices-companion",
+      "visibleControlId": "device-companion",
+      "accessibleLabel": "Open companion",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "AUTHENTICATED",
+      "requiredCapabilities": ["PLAYER"],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
+      "safeReturn": "/account",
+      "stableFallback": "/account/devices",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/crossdeck/CrossdeckDevices.tsx",
+      "sourceNeedle": "companionHref(surface.voyageId)"
+    },
+    {
+      "edgeId": "edge-device-display",
+      "edgeType": "MANUAL_CONTEXT_LINK",
+      "sourceRouteId": "route-page-account-devices",
+      "targetRouteId": "route-page-devices-display",
+      "visibleControlId": "device-display",
+      "accessibleLabel": "Open crew display",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "AUTHENTICATED",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/account",
+      "stableFallback": "/account/devices",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/crossdeck/CrossdeckDevices.tsx",
+      "sourceNeedle": "/devices/display?voyage="
+    },
+    {
+      "edgeId": "edge-device-pair",
+      "edgeType": "MANUAL_CONTEXT_LINK",
+      "sourceRouteId": "route-page-account-devices",
+      "targetRouteId": "route-page-devices-pair",
+      "visibleControlId": "device-pair",
+      "accessibleLabel": "Connect a device",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "AUTHENTICATED",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/account",
+      "stableFallback": "/account/devices",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/crossdeck/CrossdeckDevices.tsx",
+      "sourceNeedle": "/devices/pair#code="
+    },
+    {
+      "edgeId": "edge-device-reach",
+      "edgeType": "MANUAL_CONTEXT_LINK",
+      "sourceRouteId": "route-page-devices-pair",
+      "targetRouteId": "route-page-devices-reach",
+      "visibleControlId": "device-reach",
+      "accessibleLabel": "Find the Hand",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "AUTHENTICATED",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/account/devices",
+      "stableFallback": "/devices/pair",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/app/devices/pair/page.tsx",
+      "sourceNeedle": "/devices/reach"
+    },
+    {
       "edgeId": "edge-district-artifacts",
       "edgeType": "DISTRICT_NAV",
       "sourceRouteId": "route-page-community",
@@ -7512,6 +7417,35 @@
       "sourceNeedle": "/community/voyage-logs"
     },
     {
+      "edgeId": "edge-dynamic-captain-voyages-playthroughid-muster",
+      "edgeType": "CARD_DETAIL",
+      "sourceRouteId": "route-page-captain-library",
+      "targetRouteId": "route-page-captain-voyages-playthroughid-muster",
+      "visibleControlId": "source-captain-muster",
+      "accessibleLabel": "Crew muster",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "AUTHENTICATED",
+      "requiredCapabilities": ["CAPTAIN"],
+      "sourceDataFamily": "source-captain-muster",
+      "dynamicParameterSource": "playthroughId",
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
+      "safeReturn": "/",
+      "stableFallback": "/captain/library",
+      "browserJourneyIds": ["HP-P5-JRN-D"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/platform/CaptainLibrary.tsx",
+      "sourceNeedle": "/muster"
+    },
+    {
       "edgeId": "edge-dynamic-community-collections-slug",
       "edgeType": "COLLECTION_ITEM",
       "sourceRouteId": "route-page-community-collections",
@@ -7655,6 +7589,93 @@
       "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
       "sourceFile": "src/components/community/CommunityCardGrid.tsx",
       "sourceNeedle": "card.destination"
+    },
+    {
+      "edgeId": "edge-dynamic-passport-history-recordid-book",
+      "edgeType": "CARD_DETAIL",
+      "sourceRouteId": "route-page-passport-history-recordId",
+      "targetRouteId": "route-page-passport-history-recordid-book",
+      "visibleControlId": "source-wakebook-book",
+      "accessibleLabel": "Open Voyage book",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "AUTHENTICATED",
+      "requiredCapabilities": [],
+      "sourceDataFamily": "source-wakebook-book",
+      "dynamicParameterSource": "recordId",
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/passport/history",
+      "stableFallback": "/passport/history/[recordId]",
+      "browserJourneyIds": ["HP-P5-JRN-F"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/wakebook/WakebookVoyageBook.tsx",
+      "sourceNeedle": "/book"
+    },
+    {
+      "edgeId": "edge-dynamic-passport-history-recordid-replay",
+      "edgeType": "CARD_DETAIL",
+      "sourceRouteId": "route-page-passport-history-recordId",
+      "targetRouteId": "route-page-passport-history-recordid-replay",
+      "visibleControlId": "source-wakebook-replay",
+      "accessibleLabel": "Replay Voyage",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "AUTHENTICATED",
+      "requiredCapabilities": [],
+      "sourceDataFamily": "source-wakebook-replay",
+      "dynamicParameterSource": "recordId",
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/passport/history",
+      "stableFallback": "/passport/history/[recordId]",
+      "browserJourneyIds": ["HP-P5-JRN-F"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/wakebook/WakebookVoyageDetail.tsx",
+      "sourceNeedle": "/replay"
+    },
+    {
+      "edgeId": "edge-dynamic-studio-tales-taleid-landfall",
+      "edgeType": "CARD_DETAIL",
+      "sourceRouteId": "route-page-studio-tales-taleid",
+      "targetRouteId": "route-page-studio-tales-taleid-landfall",
+      "visibleControlId": "source-studio-landfall",
+      "accessibleLabel": "Landfall",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "AUTHENTICATED",
+      "requiredCapabilities": ["CREATOR"],
+      "sourceDataFamily": "source-studio-landfall",
+      "dynamicParameterSource": "taleId",
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
+      "safeReturn": "/studio/library",
+      "stableFallback": "/studio/tales/[taleId]",
+      "browserJourneyIds": ["HP-P5-JRN-E"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/studio/TaleEditor.tsx",
+      "sourceNeedle": "Landfall"
     },
     {
       "edgeId": "edge-gateway-captain-adapter",
@@ -7860,6 +7881,35 @@
       "sourceNeedle": "passport/artifacts/"
     },
     {
+      "edgeId": "edge-passport-atlas",
+      "edgeType": "MANUAL_CONTEXT_LINK",
+      "sourceRouteId": "route-page-passport",
+      "targetRouteId": "route-page-passport-atlas",
+      "visibleControlId": "passport-atlas",
+      "accessibleLabel": "Voyage Atlas",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "AUTHENTICATED",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/account",
+      "stableFallback": "/passport",
+      "browserJourneyIds": ["HP-P5-JRN-F"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/wakebook/PassportLayout.tsx",
+      "sourceNeedle": "/passport/atlas"
+    },
+    {
       "edgeId": "edge-passport-history-comparison",
       "edgeType": "CONTEXTUAL_ACTION",
       "sourceRouteId": "route-page-passport-history-recordId",
@@ -7943,8 +7993,37 @@
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
-      "sourceFile": "src/homeport/personal-harbor-navigation.ts",
-      "sourceNeedle": "passport/memories"
+      "sourceFile": "src/components/wakebook/PassportLayout.tsx",
+      "sourceNeedle": "/passport/memories"
+    },
+    {
+      "edgeId": "edge-passport-people",
+      "edgeType": "MANUAL_CONTEXT_LINK",
+      "sourceRouteId": "route-page-passport",
+      "targetRouteId": "route-page-passport-people",
+      "visibleControlId": "passport-people",
+      "accessibleLabel": "People",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "AUTHENTICATED",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/account",
+      "stableFallback": "/passport",
+      "browserJourneyIds": ["HP-P5-JRN-F"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/wakebook/PassportLayout.tsx",
+      "sourceNeedle": "/passport/people"
     },
     {
       "edgeId": "edge-passport-saved",
@@ -7972,8 +8051,66 @@
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
-      "sourceFile": "src/homeport/personal-harbor-navigation.ts",
-      "sourceNeedle": "passport/saved"
+      "sourceFile": "src/components/wakebook/PassportLayout.tsx",
+      "sourceNeedle": "/passport/saved"
+    },
+    {
+      "edgeId": "edge-passport-statistics",
+      "edgeType": "MANUAL_CONTEXT_LINK",
+      "sourceRouteId": "route-page-passport",
+      "targetRouteId": "route-page-passport-statistics",
+      "visibleControlId": "passport-statistics",
+      "accessibleLabel": "Statistics",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "AUTHENTICATED",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/account",
+      "stableFallback": "/passport",
+      "browserJourneyIds": ["HP-P5-JRN-F"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/wakebook/PassportLayout.tsx",
+      "sourceNeedle": "/passport/statistics"
+    },
+    {
+      "edgeId": "edge-passport-timeline",
+      "edgeType": "MANUAL_CONTEXT_LINK",
+      "sourceRouteId": "route-page-passport",
+      "targetRouteId": "route-page-passport-timeline",
+      "visibleControlId": "passport-timeline",
+      "accessibleLabel": "Timeline",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "AUTHENTICATED",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/account",
+      "stableFallback": "/passport",
+      "browserJourneyIds": ["HP-P5-JRN-F"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/wakebook/PassportLayout.tsx",
+      "sourceNeedle": "/passport/timeline"
     },
     {
       "edgeId": "edge-play-history",
@@ -8240,6 +8377,35 @@
       "edgeId": "edge-return-account-data",
       "edgeType": "PARENT_RETURN",
       "sourceRouteId": "route-page-account-data",
+      "targetRouteId": "route-page-root",
+      "visibleControlId": "global-home",
+      "accessibleLabel": "Home",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/account",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/navigation/registry.ts",
+      "sourceNeedle": "global-home"
+    },
+    {
+      "edgeId": "edge-return-account-devices",
+      "edgeType": "PARENT_RETURN",
+      "sourceRouteId": "route-page-account-devices",
       "targetRouteId": "route-page-root",
       "visibleControlId": "global-home",
       "accessibleLabel": "Home",
@@ -8701,6 +8867,35 @@
       "sourceNeedle": "shell-safe-return"
     },
     {
+      "edgeId": "edge-return-admin-ai-usage",
+      "edgeType": "CONTEXTUAL_EXIT",
+      "sourceRouteId": "route-page-admin-ai-usage",
+      "targetRouteId": "route-page-admin",
+      "visibleControlId": "shell-safe-return",
+      "accessibleLabel": "Safe return",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/admin",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/shell/ProductShell.tsx",
+      "sourceNeedle": "shell-safe-return"
+    },
+    {
       "edgeId": "edge-return-admin-audit",
       "edgeType": "PARENT_RETURN",
       "sourceRouteId": "route-page-admin-audit",
@@ -9049,6 +9244,35 @@
       "sourceNeedle": "global-home"
     },
     {
+      "edgeId": "edge-return-admin-support-cases",
+      "edgeType": "CONTEXTUAL_EXIT",
+      "sourceRouteId": "route-page-admin-support-cases",
+      "targetRouteId": "route-page-admin",
+      "visibleControlId": "shell-safe-return",
+      "accessibleLabel": "Safe return",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/admin",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/shell/ProductShell.tsx",
+      "sourceNeedle": "shell-safe-return"
+    },
+    {
       "edgeId": "edge-return-admin-voyages",
       "edgeType": "PARENT_RETURN",
       "sourceRouteId": "route-page-admin-voyages",
@@ -9168,6 +9392,35 @@
       "edgeId": "edge-return-captain-tales-taleid",
       "edgeType": "PARENT_RETURN",
       "sourceRouteId": "route-page-captain-tales-taleid",
+      "targetRouteId": "route-page-root",
+      "visibleControlId": "global-home",
+      "accessibleLabel": "Home",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/captain/library",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/navigation/registry.ts",
+      "sourceNeedle": "global-home"
+    },
+    {
+      "edgeId": "edge-return-captain-voyages-playthroughid-muster",
+      "edgeType": "PARENT_RETURN",
+      "sourceRouteId": "route-page-captain-voyages-playthroughid-muster",
       "targetRouteId": "route-page-root",
       "visibleControlId": "global-home",
       "accessibleLabel": "Home",
@@ -9919,6 +10172,151 @@
       "sourceNeedle": "shell-safe-return"
     },
     {
+      "edgeId": "edge-return-dev-spatial-pilot",
+      "edgeType": "CONTEXTUAL_EXIT",
+      "sourceRouteId": "route-page-dev-spatial-pilot",
+      "targetRouteId": "route-page-root",
+      "visibleControlId": "shell-safe-return",
+      "accessibleLabel": "Safe return",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/shell/ProductShell.tsx",
+      "sourceNeedle": "shell-safe-return"
+    },
+    {
+      "edgeId": "edge-return-devices-companion",
+      "edgeType": "CONTEXTUAL_EXIT",
+      "sourceRouteId": "route-page-devices-companion",
+      "targetRouteId": "route-page-account-devices",
+      "visibleControlId": "shell-safe-return",
+      "accessibleLabel": "Safe return",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/account/devices",
+      "stableFallback": "/account",
+      "browserJourneyIds": ["HP-P5-JRN-F"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/shell/ProductShell.tsx",
+      "sourceNeedle": "shell-safe-return"
+    },
+    {
+      "edgeId": "edge-return-devices-display",
+      "edgeType": "CONTEXTUAL_EXIT",
+      "sourceRouteId": "route-page-devices-display",
+      "targetRouteId": "route-page-account-devices",
+      "visibleControlId": "shell-safe-return",
+      "accessibleLabel": "Safe return",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/account/devices",
+      "stableFallback": "/account",
+      "browserJourneyIds": ["HP-P5-JRN-F"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/shell/ProductShell.tsx",
+      "sourceNeedle": "shell-safe-return"
+    },
+    {
+      "edgeId": "edge-return-devices-pair",
+      "edgeType": "PARENT_RETURN",
+      "sourceRouteId": "route-page-devices-pair",
+      "targetRouteId": "route-page-root",
+      "visibleControlId": "global-home",
+      "accessibleLabel": "Home",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/account/devices",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/navigation/registry.ts",
+      "sourceNeedle": "global-home"
+    },
+    {
+      "edgeId": "edge-return-devices-reach",
+      "edgeType": "PARENT_RETURN",
+      "sourceRouteId": "route-page-devices-reach",
+      "targetRouteId": "route-page-root",
+      "visibleControlId": "global-home",
+      "accessibleLabel": "Home",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/devices/pair",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/navigation/registry.ts",
+      "sourceNeedle": "global-home"
+    },
+    {
       "edgeId": "edge-return-forgot-password",
       "edgeType": "CONTEXTUAL_EXIT",
       "sourceRouteId": "route-page-forgot-password",
@@ -10035,6 +10433,35 @@
       "sourceNeedle": "global-home"
     },
     {
+      "edgeId": "edge-return-passport-atlas",
+      "edgeType": "PARENT_RETURN",
+      "sourceRouteId": "route-page-passport-atlas",
+      "targetRouteId": "route-page-root",
+      "visibleControlId": "global-home",
+      "accessibleLabel": "Home",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/passport",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/navigation/registry.ts",
+      "sourceNeedle": "global-home"
+    },
+    {
       "edgeId": "edge-return-passport-history",
       "edgeType": "PARENT_RETURN",
       "sourceRouteId": "route-page-passport-history",
@@ -10093,9 +10520,67 @@
       "sourceNeedle": "global-home"
     },
     {
+      "edgeId": "edge-return-passport-history-recordid-book",
+      "edgeType": "PARENT_RETURN",
+      "sourceRouteId": "route-page-passport-history-recordid-book",
+      "targetRouteId": "route-page-root",
+      "visibleControlId": "global-home",
+      "accessibleLabel": "Home",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/passport/history/[recordId]",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/navigation/registry.ts",
+      "sourceNeedle": "global-home"
+    },
+    {
       "edgeId": "edge-return-passport-history-recordid-compare",
       "edgeType": "PARENT_RETURN",
       "sourceRouteId": "route-page-passport-history-recordid-compare",
+      "targetRouteId": "route-page-root",
+      "visibleControlId": "global-home",
+      "accessibleLabel": "Home",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/passport/history/[recordId]",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/navigation/registry.ts",
+      "sourceNeedle": "global-home"
+    },
+    {
+      "edgeId": "edge-return-passport-history-recordid-replay",
+      "edgeType": "PARENT_RETURN",
+      "sourceRouteId": "route-page-passport-history-recordid-replay",
       "targetRouteId": "route-page-root",
       "visibleControlId": "global-home",
       "accessibleLabel": "Home",
@@ -10151,9 +10636,96 @@
       "sourceNeedle": "global-home"
     },
     {
+      "edgeId": "edge-return-passport-people",
+      "edgeType": "PARENT_RETURN",
+      "sourceRouteId": "route-page-passport-people",
+      "targetRouteId": "route-page-root",
+      "visibleControlId": "global-home",
+      "accessibleLabel": "Home",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/passport",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/navigation/registry.ts",
+      "sourceNeedle": "global-home"
+    },
+    {
       "edgeId": "edge-return-passport-saved",
       "edgeType": "PARENT_RETURN",
       "sourceRouteId": "route-page-passport-saved",
+      "targetRouteId": "route-page-root",
+      "visibleControlId": "global-home",
+      "accessibleLabel": "Home",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/passport",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/navigation/registry.ts",
+      "sourceNeedle": "global-home"
+    },
+    {
+      "edgeId": "edge-return-passport-statistics",
+      "edgeType": "PARENT_RETURN",
+      "sourceRouteId": "route-page-passport-statistics",
+      "targetRouteId": "route-page-root",
+      "visibleControlId": "global-home",
+      "accessibleLabel": "Home",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/passport",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/navigation/registry.ts",
+      "sourceNeedle": "global-home"
+    },
+    {
+      "edgeId": "edge-return-passport-timeline",
+      "edgeType": "PARENT_RETURN",
+      "sourceRouteId": "route-page-passport-timeline",
       "targetRouteId": "route-page-root",
       "visibleControlId": "global-home",
       "accessibleLabel": "Home",
@@ -10296,6 +10868,35 @@
       "sourceNeedle": "shell-safe-return"
     },
     {
+      "edgeId": "edge-return-player-landfall-return",
+      "edgeType": "PARENT_RETURN",
+      "sourceRouteId": "route-page-player-landfall-return",
+      "targetRouteId": "route-page-root",
+      "visibleControlId": "global-home",
+      "accessibleLabel": "Home",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/player/library",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/navigation/registry.ts",
+      "sourceNeedle": "global-home"
+    },
+    {
       "edgeId": "edge-return-player-library",
       "edgeType": "PARENT_RETURN",
       "sourceRouteId": "route-page-player-library",
@@ -10317,6 +10918,35 @@
       "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/navigation/registry.ts",
+      "sourceNeedle": "global-home"
+    },
+    {
+      "edgeId": "edge-return-player-offline-landfall",
+      "edgeType": "PARENT_RETURN",
+      "sourceRouteId": "route-page-player-offline-landfall",
+      "targetRouteId": "route-page-root",
+      "visibleControlId": "global-home",
+      "accessibleLabel": "Home",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/player/library",
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
@@ -10557,6 +11187,35 @@
       "sourceNeedle": "global-home"
     },
     {
+      "edgeId": "edge-return-studio-parallax",
+      "edgeType": "CONTEXTUAL_EXIT",
+      "sourceRouteId": "route-page-studio-parallax",
+      "targetRouteId": "route-page-studio-library",
+      "visibleControlId": "shell-safe-return",
+      "accessibleLabel": "Safe return",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/studio/library",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-E"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/shell/ProductShell.tsx",
+      "sourceNeedle": "shell-safe-return"
+    },
+    {
       "edgeId": "edge-return-studio-private-content",
       "edgeType": "PARENT_RETURN",
       "sourceRouteId": "route-page-studio-private-content",
@@ -10723,6 +11382,35 @@
       "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/studio/library",
+      "stableFallback": "/",
+      "browserJourneyIds": ["HP-P5-JRN-A"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/navigation/registry.ts",
+      "sourceNeedle": "global-home"
+    },
+    {
+      "edgeId": "edge-return-studio-tales-taleid-landfall",
+      "edgeType": "PARENT_RETURN",
+      "sourceRouteId": "route-page-studio-tales-taleid-landfall",
+      "targetRouteId": "route-page-root",
+      "visibleControlId": "global-home",
+      "accessibleLabel": "Home",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "ALL",
+      "requiredCapabilities": [],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
+      "safeReturn": "/studio/tales/[taleId]",
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
@@ -11077,6 +11765,35 @@
       "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
       "sourceFile": "src/components/studio/StudioHome.tsx",
       "sourceNeedle": "studio/tales/new"
+    },
+    {
+      "edgeId": "edge-studio-parallax",
+      "edgeType": "MANUAL_CONTEXT_LINK",
+      "sourceRouteId": "route-page-studio-library",
+      "targetRouteId": "route-page-studio-parallax",
+      "visibleControlId": "studio-parallax",
+      "accessibleLabel": "Open Spatial Studio",
+      "presentation": "VISIBLE_CONTEXT_CONTROL",
+      "desktop": true,
+      "mobile": true,
+      "pointer": true,
+      "keyboard": true,
+      "touch": true,
+      "authenticationState": "AUTHENTICATED",
+      "requiredCapabilities": ["CREATOR"],
+      "sourceDataFamily": null,
+      "dynamicParameterSource": null,
+      "queryContract": "NONE_OR_SOURCE_GOVERNED",
+      "fragmentContract": "NONE_OR_SOURCE_GOVERNED",
+      "allowedWhen": "SOURCE_CONTROL_VISIBLE_AND_ROUTE_POLICY_ALLOWS",
+      "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
+      "safeReturn": "/",
+      "stableFallback": "/studio/library",
+      "browserJourneyIds": ["HP-P5-JRN-E"],
+      "evidenceIds": [],
+      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "sourceFile": "src/components/studio/StudioHome.tsx",
+      "sourceNeedle": "/studio/parallax"
     },
     {
       "edgeId": "edge-studio-settings",

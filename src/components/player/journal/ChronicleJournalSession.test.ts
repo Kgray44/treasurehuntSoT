@@ -1219,6 +1219,7 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
   });
 
   it("offers manual full and abbreviated replay and restores the replay trigger", async () => {
+    vi.useFakeTimers();
     vi.stubGlobal(
       "fetch",
       vi.fn(() => Promise.resolve(jsonResponse(sessionState("replay")))),
@@ -1232,7 +1233,11 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     const replayShort = screen.getByRole("button", { name: "Replay short opening" });
     replayShort.focus();
     fireEvent.click(replayShort);
-    await act(flushMicrotasks);
+    expect(view.container.querySelector("main")?.dataset.journalPhase).toBe("BOOK_SETTLING");
+    await act(async () => {
+      vi.advanceTimersToNextFrame();
+      await flushMicrotasks();
+    });
 
     expect(view.container.querySelector("main")?.dataset.journalPhase).toBe("JOURNAL_READY");
     expect(replayShort.isConnected).toBe(true);

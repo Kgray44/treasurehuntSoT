@@ -223,7 +223,7 @@ test("Phase 4 authenticated protected-media workflow is private, accessible, rev
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/studio/private-content");
-  await expect(page.getByRole("heading", { name: "Private content administration" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Private content", level: 1, exact: true })).toBeVisible();
   await page.keyboard.press("Tab");
   await expect(page.locator(":focus")).toBeVisible();
   const axe = await new AxeBuilder({ page }).analyze();

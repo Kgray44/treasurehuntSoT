@@ -1,4 +1,6 @@
 import { randomBytes } from "node:crypto";
+import { mkdtempSync, realpathSync } from "node:fs";
+import { isAbsolute, join, relative, sep } from "node:path";
 
 const profileByTest = new Map([
   ["tests/e2e/admiralty-phase1.spec.ts", "admiralty-phase1"],
@@ -15,6 +17,7 @@ const profileByTest = new Map([
   ["tests/e2e/phase3-lifecycle-extended.spec.ts", "lanternwake-phase3"],
   ["tests/e2e/phase3-lifecycle.spec.ts", "lanternwake-phase3"],
   ["tests/e2e/phase3-performance.spec.ts", "lanternwake-phase3"],
+  ["tests/e2e/sealed-hold-phase4.spec.ts", "sealed-hold-phase4"],
   ["tests/e2e/phase3-player-event-matrix.spec.ts", "lanternwake-phase3"],
   ["tests/e2e/phase3-player-motion.spec.ts", "lanternwake-phase3"],
   ["tests/e2e/phase3-replay-resilience.spec.ts", "lanternwake-phase3"],
@@ -36,6 +39,18 @@ export const browserSuiteProfiles = Object.freeze({
     preparers: Object.freeze([
       Object.freeze({ runtime: "tsx", script: "scripts/migrate-legacy-companion.ts" }),
       Object.freeze({ runtime: "node", script: "scripts/sounding-line/prepare-validation-isolation.mjs" }),
+    ]),
+    fixtureArguments: [],
+  }),
+  "sc07-community": Object.freeze({
+    id: "sc07-community",
+    bootstrap: true,
+    taskOwnedProductionHttp: true,
+    validationIsolation: true,
+    cookieAdapter: "isolated-loopback",
+    preparers: Object.freeze([
+      Object.freeze({ runtime: "node", script: "scripts/sounding-line/prepare-validation-isolation.mjs" }),
+      Object.freeze({ runtime: "tsx", script: "scripts/sounding-line/prepare-sc07-experience.ts" }),
     ]),
     fixtureArguments: [],
   }),
@@ -133,6 +148,15 @@ export const browserSuiteProfiles = Object.freeze({
     fixtureArguments: ["tests/e2e/phase3-readonly-setup.setup.ts"],
     fixtureProject: "phase3-readonly-setup",
   }),
+  "sealed-hold-phase4": Object.freeze({
+    id: "sealed-hold-phase4",
+    bootstrap: true,
+    taskOwnedProductionHttp: true,
+    validationIsolation: true,
+    cookieAdapter: "isolated-loopback",
+    preparers: [Object.freeze({ runtime: "node", script: "scripts/sounding-line/prepare-validation-isolation.mjs" })],
+    fixtureArguments: [],
+  }),
   "admiralty-phase1": Object.freeze({
     id: "admiralty-phase1",
     dedicatedRunner: "scripts/admiralty/run-phase1-journeys.mjs",
@@ -164,7 +188,31 @@ export function resolveBrowserSuiteDispatches(browserTests) {
   return [...groups.values()].map((group) => ({ ...group, browserTests: group.browserTests.sort() }));
 }
 
+export function sealedHoldBrowserFixtureEnvironment(profileId, root, env = process.env) {
+  if (profileId !== "sealed-hold-phase4") return {};
+  const storageParent = env.SOUNDING_LINE_SEALED_HOLD_STORAGE_ROOT ?? env.RUNNER_TEMP ?? "";
+  if (!isAbsolute(storageParent)) throw new Error("Sealed Hold browser proof requires an owned storage directory.");
+  const physicalRoot = realpathSync(root);
+  const physicalParent = realpathSync(storageParent);
+  const fromRepository = relative(physicalRoot, physicalParent);
+  if (
+    !fromRepository ||
+    (!isAbsolute(fromRepository) && fromRepository !== ".." && !fromRepository.startsWith(".." + sep))
+  )
+    throw new Error("Sealed Hold browser storage must be outside the repository.");
+  return {
+    NODE_ENV: "test",
+    PRIVATE_CONTENT_STORAGE_PROVIDER: "local",
+    PRIVATE_CONTENT_PROVIDER_ROOT: mkdtempSync(join(physicalParent, "sealed-hold-browser-")),
+    PRIVATE_CONTENT_KEY_PROVIDER: "local",
+    PRIVATE_CONTENT_LOCAL_MASTER_KEY: randomBytes(32).toString("hex"),
+    PRIVATE_CONTENT_SCANNER_PROVIDER: "synthetic",
+  };
+}
+
 export function isolatedBrowserFixtureCredentials(profileId) {
+  if (profileId === "sc07-community")
+    return { SC07_EXPERIENCE_PASSWORD: `synthetic-${randomBytes(24).toString("base64url")}` };
   return profileId === "generic"
     ? { PHASE2_LEGACY_ACCESS_CODE: `synthetic-${randomBytes(24).toString("base64url")}` }
     : {};

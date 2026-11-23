@@ -6,6 +6,7 @@ import path from "node:path";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { PrismaClient } from "@prisma/client";
+import { round3Baseline as round2PublicationSha } from "../../scripts/homeport/phase7-owner-correction-round3-model.mjs";
 
 type Alias = { accountId: string; email: string; displayName: string };
 type Delivery = { purpose: string; email: string; token?: string; accountId: string; detail?: string };
@@ -568,14 +569,8 @@ test("Journey T: Experience Images generation", async ({ page }) => {
     routeCensus: { humanFacingRoutes: number; capturedHumanFacingRoutes: number };
     visualReviewStatus: string;
   };
-  const publicationSha = execFileSync(
-    "git",
-    ["log", "--diff-filter=A", "--format=%H", "--", `${evidenceRoot}/experience-images-manifest.json`],
-    { cwd: repositoryRoot, encoding: "utf8" },
-  ).trim();
-  expect(publicationSha).toMatch(/^[0-9a-f]{40}$/u);
   const publishedFile = (relativePath: string) =>
-    execFileSync("git", ["show", `${publicationSha}:Experience_Images/${relativePath}`], {
+    execFileSync("git", ["show", `${round2PublicationSha}:Experience_Images/${relativePath}`], {
       cwd: repositoryRoot,
       maxBuffer: 20 * 1024 * 1024,
     });

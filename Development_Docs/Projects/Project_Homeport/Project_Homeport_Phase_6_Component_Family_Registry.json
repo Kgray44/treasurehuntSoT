@@ -15,7 +15,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Platform service", "Admiralty"],
+      "productAreaConsumers": ["Platform service", "Admiralty", "Player"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -158,7 +158,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Platform service", "Admiralty"],
+      "productAreaConsumers": ["Platform service", "Admiralty", "Player"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -301,7 +301,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Platform service", "Admiralty"],
+      "productAreaConsumers": ["Platform service", "Admiralty", "Player"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -444,7 +444,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Platform service", "Admiralty"],
+      "productAreaConsumers": ["Platform service", "Admiralty", "Player"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -587,7 +587,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Platform service", "Admiralty"],
+      "productAreaConsumers": ["Platform service", "Admiralty", "Player"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -814,7 +814,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Platform service", "Admiralty"],
+      "productAreaConsumers": ["Platform service", "Admiralty", "Player"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -957,7 +957,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Platform service"],
+      "productAreaConsumers": ["Platform service", "Player"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -1198,7 +1198,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Platform service", "Admiralty"],
+      "productAreaConsumers": ["Platform service", "Admiralty", "Player"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -1341,7 +1341,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Platform service", "Admiralty"],
+      "productAreaConsumers": ["Platform service", "Admiralty", "Player"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -2021,7 +2021,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Platform service", "Admiralty"],
+      "productAreaConsumers": ["Platform service", "Admiralty", "Player"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -2292,7 +2292,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Platform service", "Admiralty"],
+      "productAreaConsumers": ["Platform service", "Admiralty", "Player"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -2552,7 +2552,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Admiralty", "Platform service"],
+      "productAreaConsumers": ["Admiralty", "Platform service", "Player"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [
@@ -3330,7 +3330,7 @@
       "motionContract": "Motion supports state understanding and never establishes server success.",
       "reducedMotionContract": "Stable semantic end state without decorative travel.",
       "accessibilityContract": "Keyboard, touch, focus, name, description, and live-state behavior are explicit.",
-      "productAreaConsumers": ["Platform service", "Admiralty", "Cross-product state"],
+      "productAreaConsumers": ["Platform service", "Admiralty", "Player", "Cross-product state"],
       "deprecatedDuplicates": [],
       "tests": ["homeport.surface.component-family-consistency"],
       "evidence": [

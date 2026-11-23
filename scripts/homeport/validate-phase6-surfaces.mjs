@@ -137,7 +137,7 @@ export function validatePhase6Surfaces(root = moduleRoot) {
       if (!stateVocabulary.includes(state)) errors.push(`SCREEN_STATE_INVALID:${screen.screenId}:${state}`);
   }
   outcomes.add("SCREEN_CATALOG_SCHEMA_VALID");
-  outcomes.add("SCREEN_SOURCE_PARITY_VALID");
+  if (!errors.some((error) => /SOURCE|ORDINARY_PAGE_OMITTED/u.test(error))) outcomes.add("SCREEN_SOURCE_PARITY_VALID");
 
   for (const screen of registry.screens.filter((item) => ["CRITICAL", "HIGH"].includes(item.criticality))) {
     const records = visualByScreen.get(screen.screenId) ?? [];
@@ -219,7 +219,8 @@ export function validatePhase6Surfaces(root = moduleRoot) {
     for (const [pattern, label] of prohibited)
       if (pattern.test(text)) errors.push(`RAW_IMPLEMENTATION_PATTERN:${label}:${path.relative(root, source)}`);
   }
-  outcomes.add("RAW_IMPLEMENTATION_GATE_CLEAR");
+  if (!errors.some((error) => error.startsWith("RAW_IMPLEMENTATION_PATTERN:")))
+    outcomes.add("RAW_IMPLEMENTATION_GATE_CLEAR");
 
   const ledger = readCsv("Homeport_Nonconformity_Ledger.csv");
   const nc18 = ledger.find((record) => record.id === "HP-NC-018");
@@ -235,13 +236,18 @@ export function validatePhase6Surfaces(root = moduleRoot) {
   outcomes.add("PRODUCT_NONCONFORMITIES_REMAIN");
 
   if (errors.length) return { ok: false, errors: [...new Set(errors)], outcomes: [...outcomes] };
-  outcomes.add("PHASE_6_SURFACES_VISUALLY_COMPLETE");
+  const pendingVisualReview = registry.screens
+    .filter((screen) => screen.finalMaturity === "BLOCKED_WITH_GOVERNED_REASON")
+    .map((screen) => screen.screenId);
+  outcomes.add("PHASE_6_BASELINE_VISUALLY_COMPLETE");
+  if (pendingVisualReview.length) outcomes.add("CURRENT_SCREENS_PENDING_OWNER_VISUAL_REVIEW");
   return {
     ok: true,
     errors: [],
     outcomes: [...outcomes],
     summary: {
       screens: registry.screens.length,
+      pendingVisualReview,
       pages: sources.length,
       critical: registry.screens.filter((screen) => screen.criticality === "CRITICAL").length,
       high: registry.screens.filter((screen) => screen.criticality === "HIGH").length,

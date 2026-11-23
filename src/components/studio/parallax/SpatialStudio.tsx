@@ -879,6 +879,7 @@ export function SpatialStudio({
     [],
   );
   const closeAssistant = () => {
+    setFloatingFeedback("");
     if (assistantCloseTimer.current) clearTimeout(assistantCloseTimer.current);
     setAssistantTaskResetVersion((version) => version + 1);
     setAssistantClosing(true);
@@ -958,7 +959,6 @@ export function SpatialStudio({
       if (!result.ok) throw new Error(response.error ?? "Environment catalog is unavailable.");
       if (request !== catalogRequest.current) return response.catalog;
       setEnvironmentCatalog(projectEnvironmentCatalog(response.catalog));
-      setCatalogRevision((revision) => revision + 1);
       setEnvironmentCatalogError("");
       return response.catalog;
     } catch (cause) {
@@ -966,8 +966,25 @@ export function SpatialStudio({
       setEnvironmentCatalogError(cause instanceof Error ? cause.message : "Environment catalog is unavailable.");
     }
   }, []);
+  // Keep the Environment projection current when its underlying inventory changes.
+  const environmentCatalogKey = useMemo(
+    () =>
+      loaded &&
+      JSON.stringify([
+        loaded.layoutScope,
+        (loaded.environments ?? []).map((record) => [
+          record.id,
+          record.revision,
+          record.updatedAt,
+          record.lastUsedAt,
+          record.usageCount,
+          record.releases.map(({ id, usageCount }) => [id, usageCount]),
+        ]),
+      ]),
+    [loaded],
+  );
   useEffect(() => {
-    if (!loaded) return;
+    if (environmentCatalogKey === null) return;
     let active = true;
     queueMicrotask(() => {
       if (active) void refreshEnvironmentCatalog();
@@ -975,7 +992,7 @@ export function SpatialStudio({
     return () => {
       active = false;
     };
-  }, [loaded, refreshEnvironmentCatalog]);
+  }, [environmentCatalogKey, refreshEnvironmentCatalog]);
   useEffect(() => {
     let cancelled = false;
     queueMicrotask(() => {
@@ -3571,7 +3588,7 @@ export function SpatialStudio({
                 }
                 windowControls={
                   <div className={styles.assistantWindowControls}>
-                    <span className={styles.srOnly} aria-live="polite">
+                    <span className={styles.assistantWindowFeedback} aria-live="polite">
                       {floatingFeedback}
                     </span>
                     <button
@@ -3580,9 +3597,10 @@ export function SpatialStudio({
                       title={layout.assistantDocked ? "Float assistance" : "Dock assistance"}
                       aria-label={layout.assistantDocked ? "Float assistance" : "Dock assistance"}
                       aria-pressed={layout.assistantDocked}
-                      onClick={() =>
-                        setLayout((previous) => ({ ...previous, assistantDocked: !previous.assistantDocked }))
-                      }
+                      onClick={() => {
+                        setFloatingFeedback("");
+                        setLayout((previous) => ({ ...previous, assistantDocked: !previous.assistantDocked }));
+                      }}
                     >
                       <StudioIcon name={layout.assistantDocked ? "copy" : "inspect"} />
                       <span>{layout.assistantDocked ? "Float assistance" : "Dock assistance"}</span>
@@ -3631,6 +3649,7 @@ export function SpatialStudio({
                 canRedo={!!history.future.length && !busy}
                 onClose={closeAssistant}
                 onCanvasView={() => {
+                  setFloatingFeedback("");
                   setAssistantOpen(false);
                   queueMicrotask(() =>
                     document.querySelector<HTMLButtonElement>('[aria-controls="parallax-assistance"]')?.focus(),

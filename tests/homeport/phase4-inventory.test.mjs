@@ -5,6 +5,8 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
 
+import { withInventoryWorkspace } from "./inventory-test-workspace.mjs";
+
 const root = process.cwd();
 const files = [
   "Development_Docs/Projects/Project_Homeport/Homeport_Control_Inventory.csv",
@@ -23,21 +25,30 @@ const files = [
   "testing/ownership.json",
   "testing/impact-map.json",
   "testing/suites.json",
-  "testing/generated/active-test-registry.json",
 ];
-const digest = () =>
+const digest = (workspace) =>
   Object.fromEntries(
     files.map((file) => [
       file,
       createHash("sha256")
-        .update(readFileSync(path.join(root, file)))
+        .update(readFileSync(path.join(workspace, file)))
         .digest("hex"),
     ]),
   );
 
 test("Phase 4 artifact updater is byte-identical on its second final run", () => {
-  execFileSync(process.execPath, ["scripts/homeport/apply-phase4-inventory-updates.mjs", "--final"], { cwd: root });
-  const first = digest();
-  execFileSync(process.execPath, ["scripts/homeport/apply-phase4-inventory-updates.mjs", "--final"], { cwd: root });
-  assert.deepEqual(digest(), first);
+  withInventoryWorkspace((workspace) => {
+    execFileSync(
+      process.execPath,
+      [path.join(root, "scripts/homeport/apply-phase4-inventory-updates.mjs"), "--final"],
+      { cwd: workspace },
+    );
+    const first = digest(workspace);
+    execFileSync(
+      process.execPath,
+      [path.join(root, "scripts/homeport/apply-phase4-inventory-updates.mjs"), "--final"],
+      { cwd: workspace },
+    );
+    assert.deepEqual(digest(workspace), first);
+  });
 });

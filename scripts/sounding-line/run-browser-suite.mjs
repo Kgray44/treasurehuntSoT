@@ -7,7 +7,11 @@ import process from "node:process";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { emitPreparationPhase, preparationProductEnvironment } from "./preparation-phases.mjs";
-import { browserSuiteProfiles, isolatedBrowserFixtureCredentials } from "./browser-suite-profiles.mjs";
+import {
+  browserSuiteProfiles,
+  isolatedBrowserFixtureCredentials,
+  sealedHoldBrowserFixtureEnvironment,
+} from "./browser-suite-profiles.mjs";
 import {
   assertExceptionExecution,
   claimExceptionPhase,
@@ -255,6 +259,7 @@ function profileEnvironment({ profileId, candidateSha: sha, databaseUrl: request
   return {
     ...runtimeEnvironment,
     ...(browserSuiteProfiles[profileId].environment ?? {}),
+    ...sealedHoldBrowserFixtureEnvironment(profileId, root),
     DATABASE_URL: resolvedDatabaseUrl,
     ...(browserSuiteProfiles[profileId].homeportPhase3Runtime
       ? { HOMEPORT_PHASE3_DATABASE_PATH: sqlitePath(resolvedDatabaseUrl) }
@@ -288,8 +293,8 @@ function taskOwnedProductionHttpEnvironment(profileId, sha) {
   }
   if (profileId === "generic") {
     environment.SOUNDING_LINE_INTERNAL_RUNTIME = "1";
-    Object.assign(environment, isolatedBrowserFixtureCredentials(profileId));
   }
+  Object.assign(environment, isolatedBrowserFixtureCredentials(profileId));
   if (suiteProfile.cookieAdapter === "isolated-loopback") {
     environment.SOUNDING_LINE_TASK_OWNED_HTTP = "1";
     environment.FOREVER_VALIDATION_PRODUCTION_IDENTITY = "1";

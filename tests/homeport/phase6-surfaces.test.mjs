@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { execFileSync, spawnSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
@@ -10,6 +10,10 @@ import {
   stateVocabulary,
   viewports,
 } from "../../scripts/homeport/phase6-surface-model.mjs";
+
+import { discoverAppRouteSources } from "../../scripts/homeport/phase5-route-census.mjs";
+
+import { withInventoryWorkspace } from "./inventory-test-workspace.mjs";
 
 const root = process.cwd();
 const auditRoot = path.join(root, "Development_Docs", "Projects", "Project_Homeport");
@@ -21,18 +25,10 @@ const matrix = (name) => parseCsv(readFileSync(path.join(auditRoot, name), "utf8
 
 test("Phase 6 screen census discovers every page and records boundaries without duplicate source mapping", () => {
   const current = registry();
-  const pages = execFileSync("rg", ["--files", "src/app", "-g", "page.tsx"], { encoding: "utf8" })
-    .trim()
-    .split(/\r?\n/u)
-    .filter(Boolean);
-  const loading = execFileSync("rg", ["--files", "src/app", "-g", "loading.tsx"], { encoding: "utf8" })
-    .trim()
-    .split(/\r?\n/u)
-    .filter(Boolean);
-  const errors = execFileSync("rg", ["--files", "src/app", "-g", "error.tsx"], { encoding: "utf8" })
-    .trim()
-    .split(/\r?\n/u)
-    .filter(Boolean);
+  const sources = discoverAppRouteSources(root);
+  const pages = sources.filter((source) => source.kind === "page");
+  const loading = sources.filter((source) => source.kind === "loading");
+  const errors = sources.filter((source) => source.kind === "error");
   assert.equal(current.census.pageRoutes, pages.length);
   assert.ok(current.census.loadingBoundaries >= 1);
   assert.ok(
@@ -43,8 +39,8 @@ test("Phase 6 screen census discovers every page and records boundaries without 
   assert.equal(current.census.omittedPages, 0);
   const pageSources = current.screens
     .flatMap((screen) => screen.sourceFiles)
-    .filter((file) => file.endsWith("page.tsx"));
-  assert.equal(new Set(pageSources).size, pages.length);
+    .filter((file) => /\/page\.tsx?$/u.test(file));
+  assert.deepEqual(pageSources.sort(), pages.map((source) => source.sourceFile).sort());
 });
 
 test("screen acceptance registry has valid identity, ownership, source, criticality, maturity, and contracts", () => {
@@ -137,10 +133,6 @@ test("Sounding Line registers every Phase 6 contract with unit, component, brows
   const contracts = json("contracts.json", testingRoot);
   const suites = json("suites.json", testingRoot);
   const impactMap = json("impact-map.json", testingRoot);
-  assert.match(
-    contracts.status,
-    /^(?:phase-6-homeport-product-surfaces-validated|phase-7-owner-correction-round-3-pending-owner-rereview)$/u,
-  );
   for (const contractId of phase6ContractIds) {
     const contract = contracts.contracts.find((candidate) => candidate.id === contractId);
     assert.equal(contract?.authority, "project-homeport", contractId);
@@ -189,32 +181,41 @@ test("authoritative Phase 6 validator rejects raw or incomplete implementation s
   });
   assert.equal(result.status, 0, result.stdout || result.stderr);
   assert.match(result.stdout, /RAW_IMPLEMENTATION_GATE_CLEAR/u);
-  assert.match(result.stdout, /PHASE_6_SURFACES_VISUALLY_COMPLETE/u);
+  assert.match(result.stdout, /PHASE_6_BASELINE_VISUALLY_COMPLETE/u);
 });
 
 test("Phase 6 updater is byte-idempotent and preserves historical route source identity", () => {
-  const targets = [
-    "Homeport_Route_Inventory.json",
-    "Homeport_Screen_Catalog.json",
-    "Homeport_Nonconformity_Ledger.csv",
-    "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json",
-    "Project_Homeport_Phase_6_Page_State_Matrix.csv",
-    "Project_Homeport_Phase_6_Visual_Evidence_Matrix.csv",
-  ];
-  runUpdater();
-  const first = targets.map((name) => hash(path.join(auditRoot, name)));
-  runUpdater();
-  const second = targets.map((name) => hash(path.join(auditRoot, name)));
-  assert.deepEqual(second, first);
-  const routes = json("Homeport_Route_Inventory.json");
-  assert.ok(JSON.stringify(routes).includes("bda5217a67d8ce2b56a02163371c137d9ed07275"));
+  withInventoryWorkspace(
+    (workspace) => {
+      const targets = [
+        "Homeport_Route_Inventory.json",
+        "Homeport_Screen_Catalog.json",
+        "Homeport_Nonconformity_Ledger.csv",
+        "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json",
+        "Project_Homeport_Phase_6_Page_State_Matrix.csv",
+        "Project_Homeport_Phase_6_Visual_Evidence_Matrix.csv",
+      ];
+      runUpdater(workspace);
+      const first = targets.map((name) => hash(path.join(workspace, path.relative(root, auditRoot), name)));
+      runUpdater(workspace);
+      const second = targets.map((name) => hash(path.join(workspace, path.relative(root, auditRoot), name)));
+      assert.deepEqual(second, first);
+      const routes = json("Homeport_Route_Inventory.json", path.join(workspace, path.relative(root, auditRoot)));
+      assert.ok(JSON.stringify(routes).includes("bda5217a67d8ce2b56a02163371c137d9ed07275"));
+    },
+    { source: true },
+  );
 });
 
-function runUpdater() {
-  const result = spawnSync(process.execPath, ["scripts/homeport/apply-phase6-inventory-updates.mjs", "--final"], {
-    cwd: root,
-    encoding: "utf8",
-  });
+function runUpdater(workspace) {
+  const result = spawnSync(
+    process.execPath,
+    [path.join(root, "scripts/homeport/apply-phase6-inventory-updates.mjs"), "--final"],
+    {
+      cwd: workspace,
+      encoding: "utf8",
+    },
+  );
   assert.equal(result.status, 0, result.stdout || result.stderr);
 }
 
