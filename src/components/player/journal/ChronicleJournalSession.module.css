@@ -15,3 +15,21 @@
 .journalShell[data-motion-mode="full"][data-journal-phase="BOOK_SETTLING"] :global(.front-cover) {
   transition-duration: 1350ms;
 }
+
+/* Blend the fixed grain into the static seascape once, outside the animated book. */
+.journalShell:global(.voyage-shell)::after {
+  content: none;
+}
+.journalShell :global(.ocean-depth) {
+  contain: paint;
+  isolation: isolate;
+  will-change: transform;
+}
+.journalShell :global(.ocean-depth)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: calc(0.16 * var(--texture-opacity));
+  background-image: url("/textures/paper-grain.svg");
+  mix-blend-mode: soft-light;
+}
