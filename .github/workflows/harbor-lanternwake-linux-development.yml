@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Attribute the warm Journal compositor workload on the exact clip trial
+run-name: Isolate the software compositor cost of Journal background and book effects
 
 on:
   push:
@@ -13,7 +13,11 @@ permissions:
 
 jobs:
   canonical-budget:
-    name: Journal warm replay compositor trace on standard Ubuntu
+    name: Journal compositor comparison (${{ matrix.lane }})
+    strategy:
+      fail-fast: false
+      matrix:
+        lane: [control, background, book, combined]
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
@@ -21,6 +25,7 @@ jobs:
       BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
       FOREVER_VALIDATION_SOURCE_SHA: 348def7124c8d5290aab763c183ebc5c6548dbdf
       NEXT_TELEMETRY_DISABLED: "1"
+      JOURNAL_COMPOSITOR_LANE: ${{ matrix.lane }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -66,18 +71,22 @@ jobs:
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
           npx --no-install prettier --check src/components/player/journal/ChronicleJournalSession.tsx
-      - name: Add phase markers and compositor tracing for one warm replay
+      - name: Prepare the scoped paint and compositing comparison
         run: |
-          python3 - <<'TRACE_PATCH'
+          python3 - <<'ISOLATION_PATCH'
           import base64
           from pathlib import Path
           p = Path("tests/e2e/phase3-performance.spec.ts")
           text = p.read_text()
           split = "    const warmRuns:"
-          assert text.count(split) == 1
-          p.write_text(text.split(split, 1)[0] + base64.b64decode("CiAgICBjb25zdCB0cmFjZSA9IGF3YWl0IGJyb3dzZXIubmV3QnJvd3NlckNEUFNlc3Npb24oKTsKICAgIHR5cGUgVGFzayA9IHsgbmFtZTogc3RyaW5nOyB0czogbnVtYmVyOyBkdXI/OiBudW1iZXI7IHBpZDogbnVtYmVyOyB0aWQ6IG51bWJlcjsgcGg6IHN0cmluZyB9OwogICAgY29uc3QgZXZlbnRzOiBUYXNrW10gPSBbXTsKICAgIGNvbnN0IGNvbXBsZXRlID0gbmV3IFByb21pc2U8dm9pZD4oKHJlc29sdmUpID0+IHRyYWNlLm9uY2UoIlRyYWNpbmcudHJhY2luZ0NvbXBsZXRlIiwgKCkgPT4gcmVzb2x2ZSgpKSk7CiAgICB0cmFjZS5vbigiVHJhY2luZy5kYXRhQ29sbGVjdGVkIiwgKHsgdmFsdWUgfSkgPT4gewogICAgICBmb3IgKGNvbnN0IGV2ZW50IG9mIHZhbHVlIGFzIHVua25vd24gYXMgVGFza1tdKSB7CiAgICAgICAgaWYgKGV2ZW50cy5sZW5ndGggPj0gMTUwMDAwKSBicmVhazsKICAgICAgICBpZiAodHlwZW9mIGV2ZW50Lm5hbWUgIT09ICJzdHJpbmciKSBjb250aW51ZTsKICAgICAgICBpZiAoZXZlbnQubmFtZS5zdGFydHNXaXRoKCJKT1VSTkFMX0RJQUdfIikgfHwgKGV2ZW50LnBoID09PSAiWCIgJiYgKGV2ZW50LmR1ciA/PyAwKSA+PSAxMjAwKSkgewogICAgICAgICAgY29uc3QgeyBuYW1lLCB0cywgZHVyLCBwaWQsIHRpZCwgcGggfSA9IGV2ZW50OwogICAgICAgICAgZXZlbnRzLnB1c2goeyBuYW1lLCB0cywgZHVyLCBwaWQsIHRpZCwgcGggfSk7CiAgICAgICAgfQogICAgICB9CiAgICB9KTsKICAgIGF3YWl0IHRyYWNlLnNlbmQoIlRyYWNpbmcuc3RhcnQiLCB7CiAgICAgIHRyYW5zZmVyTW9kZTogIlJlcG9ydEV2ZW50cyIsCiAgICAgIGNhdGVnb3JpZXM6ICItKixkZXZ0b29scy50aW1lbGluZSxibGluay51c2VyX3RpbWluZyx0b3BsZXZlbCxjYyx2aXoiLAogICAgfSk7CiAgICBsZXQgd2FybTogQXdhaXRlZDxSZXR1cm5UeXBlPHR5cGVvZiBtZWFzdXJlZEZ1bGxPcGVuaW5nPj47CiAgICB0cnkgewogICAgICBhd2FpdCBwYWdlLmV2YWx1YXRlKCgpID0+IHsKICAgICAgICBwZXJmb3JtYW5jZS5tYXJrKCJKT1VSTkFMX0RJQUdfU1RBUlQiKTsKICAgICAgICBjb25zdCBzaGVsbCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3I8SFRNTEVsZW1lbnQ+KCIuY2hyb25pY2xlLWpvdXJuYWwtc2hlbGwiKSE7CiAgICAgICAgbGV0IHByZXZpb3VzUGhhc2UgPSBzaGVsbC5kYXRhc2V0LmpvdXJuYWxQaGFzZTsKICAgICAgICBsZXQgbGFzdEZyYW1lQXQgPSAwOwogICAgICAgIGNvbnN0IHNhbXBsZSA9IChhdDogbnVtYmVyKSA9PiB7CiAgICAgICAgICBpZiAocHJldmlvdXNQaGFzZSAhPT0gc2hlbGwuZGF0YXNldC5qb3VybmFsUGhhc2UpIHsKICAgICAgICAgICAgcHJldmlvdXNQaGFzZSA9IHNoZWxsLmRhdGFzZXQuam91cm5hbFBoYXNlOwogICAgICAgICAgICBwZXJmb3JtYW5jZS5tYXJrKCJKT1VSTkFMX0RJQUdfUEhBU0VfIiArIHByZXZpb3VzUGhhc2UpOwogICAgICAgICAgfQogICAgICAgICAgaWYgKGxhc3RGcmFtZUF0ICYmIGF0IC0gbGFzdEZyYW1lQXQgPiAyNSkgewogICAgICAgICAgICBwZXJmb3JtYW5jZS5tYXJrKCJKT1VSTkFMX0RJQUdfU0xPV18iICsgcHJldmlvdXNQaGFzZSArICJfIiArIE1hdGgucm91bmQoYXQgLSBsYXN0RnJhbWVBdCkpOwogICAgICAgICAgfQogICAgICAgICAgbGFzdEZyYW1lQXQgPSBhdDsKICAgICAgICAgIGlmIChwcmV2aW91c1BoYXNlICE9PSAiSk9VUk5BTF9SRUFEWSIgfHwgc2hlbGwuZGF0YXNldC5qb3VybmFsT3BlbmluZ091dGNvbWUgIT09ICJjb21wbGV0ZWQiIHx8CiAgICAgICAgICAgICAgcGVyZm9ybWFuY2UuZ2V0RW50cmllc0J5TmFtZSgiSk9VUk5BTF9ESUFHX1BIQVNFX0JPT0tfU0VUVExJTkciKS5sZW5ndGggPT09IDApIHsKICAgICAgICAgICAgcmVxdWVzdEFuaW1hdGlvbkZyYW1lKHNhbXBsZSk7CiAgICAgICAgICB9CiAgICAgICAgICB9OwogICAgICAgIHBlcmZvcm1hbmNlLmNsZWFyTWFya3MoIkpPVVJOQUxfRElBR19QSEFTRV9CT09LX1NFVFRMSU5HIik7CiAgICAgICAgcmVxdWVzdEFuaW1hdGlvbkZyYW1lKHNhbXBsZSk7CiAgICAgIH0pOwogICAgICB3YXJtID0gYXdhaXQgbWVhc3VyZWRGdWxsT3BlbmluZyhwYWdlLCByZXBsYXkocGFnZSkpOwogICAgfSBmaW5hbGx5IHsKICAgICAgYXdhaXQgdHJhY2Uuc2VuZCgiVHJhY2luZy5lbmQiKTsKICAgICAgYXdhaXQgY29tcGxldGU7CiAgICAgIGF3YWl0IHRyYWNlLmRldGFjaCgpOwogICAgfQogICAgY29uc3Qgc3RhcnQgPSBldmVudHMuZmluZCgoZW50cnkpID0+IGVudHJ5Lm5hbWUgPT09ICJKT1VSTkFMX0RJQUdfU1RBUlQiKTsKICAgIGV4cGVjdChzdGFydCwgIlRyYWNlIG11c3QgY29udGFpbiB0aGUgSm91cm5hbCBkaWFnbm9zdGljIG1hcmtlci4iKS50b0JlVHJ1dGh5KCk7CiAgICBjb25zdCBtYXJrZXJzID0gZXZlbnRzLmZpbHRlcigoZW50cnkpID0+IGVudHJ5Lm5hbWUuc3RhcnRzV2l0aCgiSk9VUk5BTF9ESUFHXyIpKTsKICAgIGNvbnN0IHNsb3cgPSBtYXJrZXJzLmZpbHRlcigoZW50cnkpID0+IGVudHJ5Lm5hbWUuc3RhcnRzV2l0aCgiSk9VUk5BTF9ESUFHX1NMT1dfIikpOwogICAgY29uc3QgZGlhZ25vc3RpYyA9IHsKICAgICAgc291cmNlOiBwcm9jZXNzLmVudi5GT1JFVkVSX1ZBTElEQVRJT05fU09VUkNFX1NIQSwKICAgICAgZnJhbWVQOTU6IHBlcmNlbnRpbGUod2FybS52aXN1YWwuZnJhbWVEdXJhdGlvbnNNcywgMC45NSksCiAgICAgIGZyYW1lczogd2FybS52aXN1YWwuZnJhbWVEdXJhdGlvbnNNcy5sZW5ndGgsCiAgICAgIG9wZW5pbmdNczogd2FybS5kdXJhdGlvbk1zLAogICAgICBldmVudENvdW50OiBldmVudHMubGVuZ3RoLAogICAgICBwaGFzZVRpbWVzOiBtYXJrZXJzLmZpbHRlcigoZW50cnkpID0+IGVudHJ5Lm5hbWUuc3RhcnRzV2l0aCgiSk9VUk5BTF9ESUFHX1BIQVNFXyIpKQogICAgICAgIC5tYXAoKGVudHJ5KSA9PiAoeyBwaGFzZTogZW50cnkubmFtZS5zbGljZSgiSk9VUk5BTF9ESUFHX1BIQVNFXyIubGVuZ3RoKSwgbXM6IChlbnRyeS50cyAtIHN0YXJ0IS50cykgLyAxMDAwIH0pKSwKICAgICAgc2xvd0ZyYW1lczogc2xvdy5tYXAoKGZyYW1lKSA9PiB7CiAgICAgICAgY29uc3Qgd2luZG93TXMgPSBOdW1iZXIoZnJhbWUubmFtZS5zcGxpdCgiXyIpLmF0KC0xKSk7CiAgICAgICAgcmV0dXJuIHsKICAgICAgICAgIHBoYXNlQW5kTXM6IGZyYW1lLm5hbWUuc2xpY2UoIkpPVVJOQUxfRElBR19TTE9XXyIubGVuZ3RoKSwKICAgICAgICAgIG1zOiAoZnJhbWUudHMgLSBzdGFydCEudHMpIC8gMTAwMCwKICAgICAgICAgIHRhc2tzOiBldmVudHMuZmlsdGVyKChldmVudCkgPT4gZXZlbnQucGggPT09ICJYIiAmJiBldmVudC50cyA8PSBmcmFtZS50cyAmJgogICAgICAgICAgICBldmVudC50cyArIChldmVudC5kdXIgPz8gMCkgPiBmcmFtZS50cyAtICh3aW5kb3dNcyAqIDEwMDApKQogICAgICAgICAgICAuc29ydCgobGVmdCwgcmlnaHQpID0+IChyaWdodC5kdXIgPz8gMCkgLSAobGVmdC5kdXIgPz8gMCkpLnNsaWNlKDAsIDEyKQogICAgICAgICAgICAubWFwKChldmVudCkgPT4gKHsgbmFtZTogZXZlbnQubmFtZSwgZHVyYXRpb25NczogKGV2ZW50LmR1ciA/PyAwKSAvIDEwMDAsCiAgICAgICAgICAgICAgcmVuZGVyZXI6IGV2ZW50LnBpZCA9PT0gc3RhcnQhLnBpZCwgbWFpbjogZXZlbnQucGlkID09PSBzdGFydCEucGlkICYmIGV2ZW50LnRpZCA9PT0gc3RhcnQhLnRpZCB9KSksCiAgICAgICAgfTsKICAgICAgfSksCiAgICB9OwogICAgYXdhaXQgZnMud3JpdGVGaWxlKHBhdGguam9pbihhcnRpZmFjdC5hcnRpZmFjdERpcmVjdG9yeSwgImpvdXJuYWwtY29tcG9zaXRvci10cmFjZS5qc29uIiksCiAgICAgIEpTT04uc3RyaW5naWZ5KGRpYWdub3N0aWMsIG51bGwsIDIpICsgIlxuIiwgeyBmbGFnOiAid3giIH0pOwogIH0sCik7Cg==").decode())
-          TRACE_PATCH
-      - name: Trace the warm desktop opening (diagnostic only)
+          insertion = "    await page.setViewportSize({ width: 1_440, height: 900 });"
+          assert text.count(split) == 1 and text.count(insertion) == 1
+          prefix = text.split(split, 1)[0]
+          hook = base64.b64decode("CiAgICBjb25zdCBsYW5lID0gcHJvY2Vzcy5lbnYuSk9VUk5BTF9DT01QT1NJVE9SX0xBTkU7CiAgICBjb25zdCBiYWNrZ3JvdW5kRXhwZXJpbWVudCA9IGAKICAgICAgLmNocm9uaWNsZS1qb3VybmFsLXNoZWxsLnZveWFnZS1zaGVsbDo6YWZ0ZXIgeyBtaXgtYmxlbmQtbW9kZTogbm9ybWFsICFpbXBvcnRhbnQ7IH0KICAgICAgLmNocm9uaWNsZS1qb3VybmFsLXNoZWxsIDppcyguY2hyb25pY2xlLXNlc3Npb24taGVhZGVyLCAuY29tcGFuaW9uLWJhciwgLmNvbXBhbmlvbi1uYXZpZ2F0aW9uKSB7IGJhY2tkcm9wLWZpbHRlcjogbm9uZSAhaW1wb3J0YW50OyB9CiAgICAgIC5jaHJvbmljbGUtam91cm5hbC1zaGVsbCAub2NlYW4tZGVwdGggW2RhdGEtc2NlbmUtcGFydF49ImZvZyJdIHsgZmlsdGVyOiBub25lICFpbXBvcnRhbnQ7IH0KICAgIGA7CiAgICBjb25zdCBib29rRXhwZXJpbWVudCA9IGAKICAgICAgLmNocm9uaWNsZS1qb3VybmFsLXNoZWxsIC5jb3Zlci1mcm9udDo6YWZ0ZXIsIC5jaHJvbmljbGUtam91cm5hbC1zaGVsbCAuZnQtcGFnZTo6YmVmb3JlLAogICAgICAuY2hyb25pY2xlLWpvdXJuYWwtc2hlbGwgLm9wZW5pbmctcGFnZS1ncmFpbiB7IG1peC1ibGVuZC1tb2RlOiBub3JtYWwgIWltcG9ydGFudDsgfQogICAgICAuY2hyb25pY2xlLWpvdXJuYWwtc2hlbGwgOmlzKC5ib29rLXNoYWRvdywgLmJvb2stYmluZGluZywgLm9wZW5pbmctd2F4LXNlYWwsIC53YXgtY3JhY2tzKSB7CiAgICAgICAgZmlsdGVyOiBub25lICFpbXBvcnRhbnQ7CiAgICAgIH0KICAgIGA7CiAgICBleHBlY3QoWyJjb250cm9sIiwgImJhY2tncm91bmQiLCAiYm9vayIsICJjb21iaW5lZCJdKS50b0NvbnRhaW4obGFuZSk7CiAgICBjb25zdCBjc3MgPSAobGFuZSA9PT0gImJhY2tncm91bmQiIHx8IGxhbmUgPT09ICJjb21iaW5lZCIgPyBiYWNrZ3JvdW5kRXhwZXJpbWVudCA6ICIiKSArCiAgICAgIChsYW5lID09PSAiYm9vayIgfHwgbGFuZSA9PT0gImNvbWJpbmVkIiA/IGJvb2tFeHBlcmltZW50IDogIiIpOwogICAgaWYgKGNzcykgYXdhaXQgcGFnZS5hZGRJbml0U2NyaXB0KChzdHlsZSkgPT4gewogICAgICBkb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKCJET01Db250ZW50TG9hZGVkIiwgKCkgPT4gewogICAgICAgIGNvbnN0IHNoZWV0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic3R5bGUiKTsKICAgICAgICBzaGVldC50ZXh0Q29udGVudCA9IHN0eWxlOwogICAgICAgIGRvY3VtZW50LmhlYWQuYXBwZW5kKHNoZWV0KTsKICAgICAgfSwgeyBvbmNlOiB0cnVlIH0pOwogICAgfSwgY3NzKTsK").decode()
+          body = base64.b64decode("CiAgICBjb25zdCBydW5zID0gW2NvbGRdOwogICAgZm9yIChsZXQgaW5kZXggPSAwOyBpbmRleCA8IDI7IGluZGV4ICs9IDEpIHsKICAgICAgcnVucy5wdXNoKGF3YWl0IG1lYXN1cmVkRnVsbE9wZW5pbmcocGFnZSwgcmVwbGF5KHBhZ2UpKSk7CiAgICB9CiAgICBjb25zdCByZXN1bHRzID0gcnVucy5tYXAoKHJ1bikgPT4gKHsKICAgICAgb3BlbmluZ01zOiByb3VuZGVkKHJ1bi5kdXJhdGlvbk1zKSwKICAgICAgZnJhbWVQOTU6IHJvdW5kZWQocGVyY2VudGlsZShydW4udmlzdWFsLmZyYW1lRHVyYXRpb25zTXMsIDAuOTUpKSwKICAgICAgZnJhbWVzOiBydW4udmlzdWFsLmZyYW1lRHVyYXRpb25zTXMubGVuZ3RoLAogICAgICBzbG93RnJhbWVzOiBydW4udmlzdWFsLmZyYW1lRHVyYXRpb25zTXMuZmlsdGVyKChmcmFtZSkgPT4gZnJhbWUgPiAyNSkubGVuZ3RoLAogICAgICBsb25nVGFza01heGltdW06IG1heGltdW0ocnVuLnZpc3VhbC5sb25nVGFza0R1cmF0aW9uc01zKSwKICAgICAgY2xzOiByb3VuZGVkKHJ1bi52aXN1YWwuY2xzKSwKICAgIH0pKTsKICAgIGNvbnN0IGRpYWdub3N0aWMgPSB7IHNvdXJjZTogcHJvY2Vzcy5lbnYuRk9SRVZFUl9WQUxJREFUSU9OX1NPVVJDRV9TSEEsIGxhbmUsIHJlc3VsdHMgfTsKICAgIGF3YWl0IGZzLndyaXRlRmlsZShwYXRoLmpvaW4oYXJ0aWZhY3QuYXJ0aWZhY3REaXJlY3RvcnksICJqb3VybmFsLWNvbXBvc2l0b3ItaXNvbGF0aW9uLmpzb24iKSwKICAgICAgSlNPTi5zdHJpbmdpZnkoZGlhZ25vc3RpYywgbnVsbCwgMikgKyAiXG4iLCB7IGZsYWc6ICJ3eCIgfSk7CiAgfSwKKTsK").decode()
+          p.write_text(prefix.replace(insertion, hook + insertion) + body)
+          ISOLATION_PATCH
+      - name: Measure one cold and two warm desktop openings
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -87,11 +96,11 @@ jobs:
             { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
           );
           EOF
-      - name: Retain sanitized performance metrics
+      - name: Retain sanitized diagnostic results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-compositor-trace-standard-ubuntu
+          name: journal-compositor-isolation-${{ matrix.lane }}
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
