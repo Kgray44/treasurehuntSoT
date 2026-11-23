@@ -338,12 +338,16 @@ test("light and dark Library views remain typed, responsive and keyboard reachab
   });
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", "light");
-  if (await library.isHidden()) await page.getByRole("button", { name: "Open Library", exact: true }).click();
+  const openLibrary = page.getByRole("button", { name: "Open Library", exact: true });
+  // Desktop restores the account's open Library after the Scene loads.
+  await expect(openLibrary).toHaveAttribute("aria-pressed", "true");
   await expect(library).toBeVisible();
   await page.setViewportSize({ width: 1366, height: 900 });
   await page.screenshot({ path: `${evidence}/typed-library-laptop-light.png`, fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
-  if (await library.isHidden()) await page.getByRole("button", { name: "Open Library", exact: true }).click();
+  await expect(openLibrary).toHaveAttribute("aria-pressed", "false");
+  await openLibrary.press("Enter");
+  await expect(library).toBeVisible();
   await page.screenshot({ path: `${evidence}/typed-library-phone-light.png`, fullPage: true });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
 });
