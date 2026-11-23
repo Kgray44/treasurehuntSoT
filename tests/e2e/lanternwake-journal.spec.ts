@@ -16,6 +16,7 @@ type JournalProbe = {
   activeEventSources: number;
   activeRequests: number;
   peakAnimationListeners: number;
+  animationListenerRegistrations: number;
   peakEventSources: number;
   journalDisconnectedAt: number | null;
   lifecycleCleanupMs: number | null;
@@ -102,6 +103,7 @@ async function installJournalProbe(page: Page) {
       activeEventSources: 0,
       activeRequests: 0,
       peakAnimationListeners: 0,
+      animationListenerRegistrations: 0,
       peakEventSources: 0,
       journalDisconnectedAt: null,
       lifecycleCleanupMs: null,
@@ -173,6 +175,7 @@ async function installJournalProbe(page: Page) {
     const changeListenerCount = (kind: TrackedListenerType, delta: number) => {
       if (delta > 0) invalidateLifecycleCleanup();
       if (kind === "animation") {
+        if (delta > 0) probe.animationListenerRegistrations += delta;
         probe.activeAnimationListeners = Math.max(0, probe.activeAnimationListeners + delta);
         probe.peakAnimationListeners = Math.max(probe.peakAnimationListeners, probe.activeAnimationListeners);
       } else {
@@ -706,9 +709,9 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     const documentToken = (await readProbe(page)).documentToken;
 
     for (let cycle = 0; cycle < 3; cycle += 1) {
+      const priorAnimationRegistrations = cycle === 0 ? 0 : (await readProbe(page)).animationListenerRegistrations;
       if (cycle > 0) await returnToJournalFromLibrary(page, documentToken);
       const shell = page.locator(".chronicle-journal-shell");
-      const priorPeakAnimationListeners = (await readProbe(page)).peakAnimationListeners;
       await expectReadyFinalPose(page);
       await expect.poll(async () => shell.getAttribute("data-journal-opening-outcome")).not.toBeNull();
       const openingOutcome = (await shell.getAttribute("data-journal-opening-outcome"))!;
@@ -716,7 +719,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
       await expect.poll(async () => (await readProbe(page)).activeRequests).toBe(0);
       const mounted = await readProbe(page);
       if (openingOutcome === "completed") {
-        expect(mounted.peakAnimationListeners).toBeGreaterThan(priorPeakAnimationListeners);
+        expect(mounted.animationListenerRegistrations).toBeGreaterThan(priorAnimationRegistrations);
       }
       expect(mounted.activeAnimationListeners).toBe(0);
       expect(mounted.activeJournalKeydownListeners).toBe(1);
