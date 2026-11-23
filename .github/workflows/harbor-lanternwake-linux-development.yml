@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Reproduce the Creator review obscured after responsive form reflow
+run-name: Verify stable Creator review focus after the spatial authoring flows
 
 on:
   push:
@@ -12,26 +12,62 @@ permissions:
   contents: read
 
 jobs:
-  creator-focus-red:
+  browser-probe:
+    name: Creator review focus in the reproducing browser sequence
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 22
+    env:
+      CANDIDATE_SHA: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
+      BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
+      FOREVER_VALIDATION_SOURCE_SHA: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
+      NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 34965b97d2824fb8a2e21d84d1012acda5cce837
+          ref: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
+          fetch-depth: 2
           persist-credentials: false
+          sparse-checkout-cone-mode: false
           sparse-checkout: |
-            src
-            tests
-            scripts
-            prisma
-            testing
+            /*
+            !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
+            /scripts/
+            /src/
+            /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Reproduce the focused browser layout failure at the helper boundary
+      - name: Install locked dependencies and Chromium
         run: |
-          test "$(git rev-parse HEAD)" = "34965b97d2824fb8a2e21d84d1012acda5cce837"
-          test "$(git rev-parse HEAD^{tree})" = "4073de6914319de1018f3ab7f0724df213633746"
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install chromium
+      - name: Run spatial authoring and Creator moderation against the provenance repair
+        run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "72512682ee801637454cec9c1d3e3f893234ede7"
           npx --no-install vitest run src/components/community/focus-exchange-heading.test.ts
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          node --input-type=module <<'EOF'
+          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-adaptive.spec.ts","tests/e2e/parallax-studio.spec.ts","tests/e2e/sc07-creator-community.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
+          );
+          EOF
