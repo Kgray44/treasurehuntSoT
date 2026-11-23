@@ -261,6 +261,7 @@ export function PlayerSignIn({
               <motion.form
                 key="invitation"
                 id="invitation-code"
+                className={styles.invitationPanel}
                 initial={{ x: mode === "reduced" ? 0 : stateToken.distancePx }}
                 animate={{ x: 0 }}
                 exit={{ x: mode === "reduced" ? 0 : stateToken.distancePx / 2 }}

@@ -1,4 +1,5 @@
 :global(.auth-mode-panel) .accountPanel p,
+:global(.auth-mode-panel) .invitationPanel p,
 :global(.auth-mode-panel) .accountPanel a:not(:global(.brass-button)) {
   color: var(--parchment-ink);
 }

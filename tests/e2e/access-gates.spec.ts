@@ -72,3 +72,12 @@ test("the Player invitation form stays readable while it slides into view", asyn
     await samples.dispose();
   }
 });
+
+test("Player invitation instructions use readable parchment ink", async ({ page }) => {
+  await page.goto("/player/sign-in#invitation-code");
+  const helper = page.locator("#invitation-code").getByText("Invitation links open the same ceremony automatically.", {
+    exact: false,
+  });
+  await expect(helper).toBeVisible();
+  await expect(helper, "Invitation instructions use parchment ink").toHaveCSS("color", "rgb(43, 42, 34)");
+});
