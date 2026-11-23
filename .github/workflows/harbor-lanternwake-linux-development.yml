@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Reproduce Homeport Journey T through the actual protected browser runner
+run-name: Test Homeport publication hydration and the actual protected Journey T
 
 on:
   push:
@@ -65,12 +65,15 @@ jobs:
           fi
           publication="$(git log -1 --diff-filter=A --format=%H HEAD -- "$evidence/experience-images-manifest.json")"
           test "$publication" = "8e3900a734674cb58800878aaeaf91a0e9f2285e"
-          git ls-tree -r "$publication" -- Experience_Images | awk '$2 == "blob" { print $3 }' |
-            sort -u | GIT_NO_LAZY_FETCH=1 git cat-file --batch-check |
-            awk '$2 == "missing" { print $1 }' > "$RUNNER_TEMP/homeport-publication-blobs"
-          if [[ -s "$RUNNER_TEMP/homeport-publication-blobs" ]]; then
-            git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin < "$RUNNER_TEMP/homeport-publication-blobs"
-          fi
+          staging="$(mktemp -d "$RUNNER_TEMP/homeport-publication.XXXXXX")"
+          GIT_INDEX_FILE="$staging/historical-index" git -c core.sparseCheckout=false read-tree "$publication"
+          mkdir -p "$staging/images"
+          export GIT_INDEX_FILE="$staging/historical-index"
+          git ls-tree -rz --name-only "$publication" -- Experience_Images |
+            git -c core.sparseCheckout=false checkout-index --prefix="$staging/images/" -z --stdin
+          unset GIT_INDEX_FILE
+          test "$(git hash-object "$staging/images/Experience_Images/manifest.json")" = "$(git rev-parse "HEAD:$evidence/experience-images-manifest.json")"
+          echo "Hydrated exact Round 2 publication in an isolated temporary index."
       - name: Install locked dependencies and Chromium
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
