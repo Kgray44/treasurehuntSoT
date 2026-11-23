@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Compare saved Parallax animation sampling on main and the Native candidate
+run-name: Measure Parallax replay in independent fixture databases
 
 on:
   push:
@@ -76,9 +76,19 @@ jobs:
           test.write_text(source)
           harness = Path("scripts/sounding-line-v3/checks.mjs")
           source = harness.read_text()
-          anchor = "      ...browserArgs,\n      ...(profile.browserArguments"
+          anchor = "            await runBrowserProfile(profile, browserArgs, tree, fullBrowser, job.shard);"
           assert source.count(anchor) == 1
-          harness.write_text(source.replace(anchor, '      ...browserArgs,\n      "--repeat-each=3",\n      ...(profile.browserArguments'))
+          probes = """            const probeFailures = [];
+                      for (let attempt = 1; attempt <= 3; attempt++) {
+                        console.log("HARBOR_PARALLAX_ISOLATED_ATTEMPT " + attempt);
+                        try {
+                          await runBrowserProfile(profile, browserArgs, tree, fullBrowser, job.shard);
+                        } catch (error) {
+                          probeFailures.push(error);
+                        }
+                      }
+                      if (probeFailures.length) throw new Error("Focused geometry evidence failed in " + probeFailures.length + " of 3 fresh fixtures");"""
+          harness.write_text(source.replace(anchor, probes))
           PY
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
@@ -153,9 +163,19 @@ jobs:
           test.write_text(source)
           harness = Path("scripts/sounding-line-v3/checks.mjs")
           source = harness.read_text()
-          anchor = "      ...browserArgs,\n      ...(profile.browserArguments"
+          anchor = "            await runBrowserProfile(profile, browserArgs, tree, fullBrowser, job.shard);"
           assert source.count(anchor) == 1
-          harness.write_text(source.replace(anchor, '      ...browserArgs,\n      "--repeat-each=3",\n      ...(profile.browserArguments'))
+          probes = """            const probeFailures = [];
+                      for (let attempt = 1; attempt <= 3; attempt++) {
+                        console.log("HARBOR_PARALLAX_ISOLATED_ATTEMPT " + attempt);
+                        try {
+                          await runBrowserProfile(profile, browserArgs, tree, fullBrowser, job.shard);
+                        } catch (error) {
+                          probeFailures.push(error);
+                        }
+                      }
+                      if (probeFailures.length) throw new Error("Focused geometry evidence failed in " + probeFailures.length + " of 3 fresh fixtures");"""
+          harness.write_text(source.replace(anchor, probes))
           PY
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
