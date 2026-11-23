@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Attribute canonical Journal desktop frame intervals to actual phases
+run-name: Canonical Journal phases without a separate DOM observer
 
 on:
   push:
@@ -79,7 +79,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-canonical-phase-attribution
+          name: journal-minimal-phase-attribution
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
