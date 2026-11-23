@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Compare grain isolation and Journal header blur in the same hosted runner
+run-name: Measure remaining Journal phase frame costs on the exact static header candidate
 
 on:
   push:
@@ -13,18 +13,18 @@ permissions:
 
 jobs:
   canonical-budget:
-    name: Journal recorded compositor comparison on one Ubuntu runner
+    name: Journal recorded phase budgets on standard Ubuntu
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: d2a01fbcb5af901597db54ccab15904abb58dcef
+      CANDIDATE_SHA: 4f4dd771806f578f59e0e68fdc4ec38a10f30e8b
       BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      FOREVER_VALIDATION_SOURCE_SHA: d2a01fbcb5af901597db54ccab15904abb58dcef
+      FOREVER_VALIDATION_SOURCE_SHA: 4f4dd771806f578f59e0e68fdc4ec38a10f30e8b
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: d2a01fbcb5af901597db54ccab15904abb58dcef
+          ref: 4f4dd771806f578f59e0e68fdc4ec38a10f30e8b
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -66,35 +66,10 @@ jobs:
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
           npx --no-install prettier --check src/components/player/journal/ChronicleJournalSession.tsx
-      - name: Prepare three serial lanes on the same hosted runner
+      - name: Add per-phase counts to the existing frame sampling
         run: |
-          python3 - <<'PAIR_PATCH'
-          import base64
-          from pathlib import Path
-          p = Path("tests/e2e/phase3-performance.spec.ts")
-          text = p.read_text()
-          split = "    const warmRuns:"
-          insertion = "    await page.setViewportSize({ width: 1_440, height: 900 });"
-          title = chr(10).join(['phase3Test(', '  "canonical production Journal performance and lifecycle budgets",'])
-          open_line = "    const cold = await measuredFullOpening"
-          assert all(text.count(marker)==1 for marker in [split, insertion, title, open_line])
-          css = base64.b64decode("CiAgICBpZiAobGFuZSA9PT0gImNvbnRyb2wiIHx8IGxhbmUgPT09ICJoZWFkZXIiKSB7CiAgICAgIGF3YWl0IHBhZ2UuYWRkSW5pdFNjcmlwdCgodmFyaWFudCkgPT4gewogICAgICAgIGRvY3VtZW50LmFkZEV2ZW50TGlzdGVuZXIoIkRPTUNvbnRlbnRMb2FkZWQiLCAoKSA9PiB7CiAgICAgICAgICBjb25zdCBzaGVldCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoInN0eWxlIik7CiAgICAgICAgICBzaGVldC50ZXh0Q29udGVudCA9IHZhcmlhbnQgPT09ICJjb250cm9sIgogICAgICAgICAgICA/ICcgLmNocm9uaWNsZS1qb3VybmFsLXNoZWxsLnZveWFnZS1zaGVsbDo6YWZ0ZXIgeyBjb250ZW50OiAiIiAhaW1wb3J0YW50OyB9JyArCiAgICAgICAgICAgICAgJyAuY2hyb25pY2xlLWpvdXJuYWwtc2hlbGwgLm9jZWFuLWRlcHRoIHsgY29udGFpbjogbm9uZSAhaW1wb3J0YW50OyBpc29sYXRpb246IGF1dG8gIWltcG9ydGFudDsgd2lsbC1jaGFuZ2U6IGF1dG8gIWltcG9ydGFudDsgfScgKwogICAgICAgICAgICAgICcgLmNocm9uaWNsZS1qb3VybmFsLXNoZWxsIC5vY2Vhbi1kZXB0aDo6YWZ0ZXIgeyBjb250ZW50OiBub25lICFpbXBvcnRhbnQ7IH0nCiAgICAgICAgICAgIDogJyAuY2hyb25pY2xlLWpvdXJuYWwtc2hlbGwgLmNocm9uaWNsZS1zZXNzaW9uLWhlYWRlciB7IGJhY2tkcm9wLWZpbHRlcjogbm9uZSAhaW1wb3J0YW50OyB9JzsKICAgICAgICAgIGRvY3VtZW50LmhlYWQuYXBwZW5kKHNoZWV0KTsKICAgICAgICB9LCB7IG9uY2U6IHRydWUgfSk7CiAgICAgIH0sIGxhbmUpOwogICAgfQo=").decode()
-          verify = base64.b64decode("CiAgICBjb25zdCBsaXZlSm91cm5hbCA9IHBhZ2UubG9jYXRvcigiLmNocm9uaWNsZS1qb3VybmFsLXNoZWxsW2RhdGEtam91cm5hbC1waGFzZT0nRU5UUllfSURMRSddIik7CiAgICBhd2FpdCBleHBlY3QobGl2ZUpvdXJuYWwuZ2V0QnlSb2xlKCJidXR0b24iLCB7bmFtZTogIk9wZW4gdGhlIGpvdXJuYWwifSkpLnRvQmVWaXNpYmxlKCk7CiAgICBjb25zdCBjb21wdXRlZCA9ICgpID0+IGxpdmVKb3VybmFsLmV2YWx1YXRlKChzaGVsbCkgPT4gewogICAgICBjb25zdCBhbWJpZW50ID0gc2hlbGwucXVlcnlTZWxlY3RvcigiLm9jZWFuLWRlcHRoIikhOwogICAgICBjb25zdCBoZWFkZXIgPSBzaGVsbC5xdWVyeVNlbGVjdG9yKCIuY2hyb25pY2xlLXNlc3Npb24taGVhZGVyIikhOwogICAgICBpZiAoIXNoZWxsLmlzQ29ubmVjdGVkIHx8ICFhbWJpZW50LmlzQ29ubmVjdGVkIHx8ICFoZWFkZXIuaXNDb25uZWN0ZWQpIHJldHVybiBudWxsOwogICAgICByZXR1cm4gewogICAgICAgIHNoZWxsOiBnZXRDb21wdXRlZFN0eWxlKHNoZWxsLCAiOjphZnRlciIpLmNvbnRlbnQsCiAgICAgICAgYW1iaWVudDogZ2V0Q29tcHV0ZWRTdHlsZShhbWJpZW50LCAiOjphZnRlciIpLmNvbnRlbnQsCiAgICAgICAgY29udGFpbjogZ2V0Q29tcHV0ZWRTdHlsZShhbWJpZW50KS5jb250YWluLAogICAgICAgIGhlYWRlcjogZ2V0Q29tcHV0ZWRTdHlsZShoZWFkZXIpLmJhY2tkcm9wRmlsdGVyLAogICAgICB9OwogICAgfSkuY2F0Y2goKCkgPT4gbnVsbCk7CiAgICBhd2FpdCBleHBlY3QucG9sbChjb21wdXRlZCkudG9FcXVhbChsYW5lID09PSAiY29udHJvbCIKICAgICAgPyB7c2hlbGw6ICciIicsIGFtYmllbnQ6ICJub25lIiwgY29udGFpbjogIm5vbmUiLCBoZWFkZXI6ICJibHVyKDE0cHgpIn0KICAgICAgOiB7c2hlbGw6ICJub25lIiwgYW1iaWVudDogJyIiJywgY29udGFpbjogInBhaW50IiwgaGVhZGVyOiBsYW5lID09PSAiaGVhZGVyIiA/ICJub25lIiA6ICJibHVyKDE0cHgpIn0pOwo=").decode()
-          tail = base64.b64decode("CiAgICBjb25zdCBydW5zID0gW2NvbGRdOwogICAgZm9yIChsZXQgaW5kZXggPSAwOyBpbmRleCA8IDI7IGluZGV4ICs9IDEpIHsKICAgICAgcnVucy5wdXNoKGF3YWl0IG1lYXN1cmVkRnVsbE9wZW5pbmcocGFnZSwgcmVwbGF5KHBhZ2UpKSk7CiAgICB9CiAgICBjb25zdCByZXN1bHRzID0gcnVucy5tYXAoKHJ1bikgPT4gKHsKICAgICAgb3BlbmluZ01zOiByb3VuZGVkKHJ1bi5kdXJhdGlvbk1zKSwKICAgICAgZnJhbWVQOTU6IHJvdW5kZWQocGVyY2VudGlsZShydW4udmlzdWFsLmZyYW1lRHVyYXRpb25zTXMsIDAuOTUpKSwKICAgICAgZnJhbWVzOiBydW4udmlzdWFsLmZyYW1lRHVyYXRpb25zTXMubGVuZ3RoLAogICAgICBzbG93RnJhbWVzOiBydW4udmlzdWFsLmZyYW1lRHVyYXRpb25zTXMuZmlsdGVyKChmcmFtZSkgPT4gZnJhbWUgPiAyNSkubGVuZ3RoLAogICAgICBsb25nVGFza01heGltdW06IG1heGltdW0ocnVuLnZpc3VhbC5sb25nVGFza0R1cmF0aW9uc01zKSwKICAgICAgY2xzOiByb3VuZGVkKHJ1bi52aXN1YWwuY2xzKSwKICAgIH0pKTsKICAgIGNvbnN0IGRpYWdub3N0aWMgPSB7IHNvdXJjZTogcHJvY2Vzcy5lbnYuRk9SRVZFUl9WQUxJREFUSU9OX1NPVVJDRV9TSEEsIGxhbmUsIHJlc3VsdHMgfTsKICAgIGF3YWl0IGZzLndyaXRlRmlsZShwYXRoLmpvaW4oYXJ0aWZhY3QuYXJ0aWZhY3REaXJlY3RvcnksICJqb3VybmFsLWNvbXBvc2l0b3ItcGFpci0iICsgbGFuZSArICIuanNvbiIpLAogICAgICBKU09OLnN0cmluZ2lmeShkaWFnbm9zdGljLCBudWxsLCAyKSArICJcbiIsIHsgZmxhZzogInd4IiB9KTsKICB9LAopOwp9Cg==").decode()
-          prefix = text.split(split, 1)[0]
-          registration = chr(10).join([
-              'phase3Test.describe.configure({mode: "serial"});',
-              'for (const lane of ["control", "static", "header"] as const) {',
-              'phase3Test(',
-              '  "Journal compositor comparison: " + lane,',
-          ])
-          prefix = prefix.replace(title, registration)
-          prefix = prefix.replace(insertion, css + insertion)
-          prefix = prefix.replace(open_line, verify + open_line)
-          prefix = prefix.replace('"P3-PERFORMANCE-CHAPTER"', '"P3-PERFORMANCE-CHAPTER-" + lane')
-          p.write_text(prefix + tail)
-          PAIR_PATCH
-      - name: Measure control and exact source with untraced recording
+          python3 -c 'import base64; exec(base64.b64decode("CmZyb20gcGF0aGxpYiBpbXBvcnQgUGF0aApwID0gUGF0aCgidGVzdHMvZTJlL3BoYXNlMy1wZXJmb3JtYW5jZS5zcGVjLnRzIikKdGV4dCA9IHAucmVhZF90ZXh0KCkKZGVmIHJlcGxhY2Uob2xkLCBuZXcsIGNvdW50PTEpOgogICAgZ2xvYmFsIHRleHQKICAgIGFzc2VydCB0ZXh0LmNvdW50KG9sZCkgPT0gY291bnQsIChvbGQsIHRleHQuY291bnQob2xkKSkKICAgIHRleHQgPSB0ZXh0LnJlcGxhY2Uob2xkLCBuZXcpCnJlcGxhY2UoIiAgZnJhbWVEdXJhdGlvbnNNczogcmVhZG9ubHkgbnVtYmVyW107IiwgIiAgZnJhbWVEdXJhdGlvbnNNczogcmVhZG9ubHkgbnVtYmVyW107XG4gIHBoYXNlRnJhbWVzOiBSZWFkb25seTxSZWNvcmQ8c3RyaW5nLCByZWFkb25seSBudW1iZXJbXT4+OyIpCnJlcGxhY2UoImZyYW1lRHVyYXRpb25zTXM6IG51bWJlcltdOyIsICJmcmFtZUR1cmF0aW9uc01zOiBudW1iZXJbXTtcbiAgICAgICAgcGhhc2VGcmFtZXM6IFJlY29yZDxzdHJpbmcsIG51bWJlcltdPjsiLCAyKQpyZXBsYWNlKCIgICAgICBmcmFtZUR1cmF0aW9uc01zOiBbXSwiLCAiICAgICAgZnJhbWVEdXJhdGlvbnNNczogW10sXG4gICAgICBwaGFzZUZyYW1lczogT2JqZWN0LmNyZWF0ZShudWxsKSwiKQpyZXBsYWNlKCIgICAgY29uc3Qgc2FtcGxlRnJhbWUgPSAoYXQ6IG51bWJlcikgPT4geyIsICcnJyAgICBjb25zdCBhY3RpdmVKb3VybmFsID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcjxIVE1MRWxlbWVudD4oIi5jaHJvbmljbGUtam91cm5hbC1zaGVsbFtkYXRhLWpvdXJuYWwtcGhhc2VdIik7CiAgICBjb25zdCBzYW1wbGVGcmFtZSA9IChhdDogbnVtYmVyKSA9PiB7JycnKQpyZXBsYWNlKCIgICAgICBpZiAocHJvYmUubGFzdEZyYW1lQXQgIT09IG51bGwpIHByb2JlLmZyYW1lRHVyYXRpb25zTXMucHVzaChhdCAtIHByb2JlLmxhc3RGcmFtZUF0KTsiLCAnJycgICAgICBpZiAocHJvYmUubGFzdEZyYW1lQXQgIT09IG51bGwpIHsKICAgICAgICBjb25zdCBkdXJhdGlvbiA9IGF0IC0gcHJvYmUubGFzdEZyYW1lQXQ7CiAgICAgICAgcHJvYmUuZnJhbWVEdXJhdGlvbnNNcy5wdXNoKGR1cmF0aW9uKTsKICAgICAgICBjb25zdCBwaGFzZSA9IGFjdGl2ZUpvdXJuYWw/LmlzQ29ubmVjdGVkID8gYWN0aXZlSm91cm5hbC5kYXRhc2V0LmpvdXJuYWxQaGFzZSA/PyAidW5rbm93biIgOiAiZGV0YWNoZWQiOwogICAgICAgIChwcm9iZS5waGFzZUZyYW1lc1twaGFzZV0gPz89IFtdKS5wdXNoKGR1cmF0aW9uKTsKICAgICAgfScnJykKcmVwbGFjZSgiICAgICAgZnJhbWVEdXJhdGlvbnNNczogcHJvYmUuZnJhbWVEdXJhdGlvbnNNcywiLCAiICAgICAgZnJhbWVEdXJhdGlvbnNNczogcHJvYmUuZnJhbWVEdXJhdGlvbnNNcyxcbiAgICAgIHBoYXNlRnJhbWVzOiBwcm9iZS5waGFzZUZyYW1lcywiKQptYXJrZXIgPSAnICAgIGNvbnN0IG1vYmlsZUNvbnRleHQgPSBhd2FpdCBicm93c2VyLm5ld0NvbnRleHQoeyAuLi5kZXZpY2VzWyJQaXhlbCA3Il0sIGJhc2VVUkw6ICJodHRwOi8vMTI3LjAuMC4xOjMyMDAiIH0pOycKYWRkaXRpb24gPSAnJycgICAgY29uc3QgZnJhbWVQaGFzZVJlcG9ydCA9IHsKICAgICAgc291cmNlOiBwcm9jZXNzLmVudi5GT1JFVkVSX1ZBTElEQVRJT05fU09VUkNFX1NIQSwKICAgICAgZGVza3RvcDogZGVza3RvcFJ1bnMubWFwKChydW4pID0+ICh7CiAgICAgICAgcDk1OiByb3VuZGVkKHBlcmNlbnRpbGUocnVuLmZyYW1lRHVyYXRpb25zTXMsIDAuOTUpKSwKICAgICAgICBwaGFzZXM6IE9iamVjdC5mcm9tRW50cmllcyhPYmplY3QuZW50cmllcyhydW4ucGhhc2VGcmFtZXMpLm1hcCgoW25hbWUsIGZyYW1lc10pID0+IFtuYW1lLCB7CiAgICAgICAgICB0b3RhbDogZnJhbWVzLmxlbmd0aCwKICAgICAgICAgIGFib3ZlMjU6IGZyYW1lcy5maWx0ZXIoKGZyYW1lKSA9PiBmcmFtZSA+IDI1KS5sZW5ndGgsCiAgICAgICAgICBwOTU6IHJvdW5kZWQocGVyY2VudGlsZShmcmFtZXMsIDAuOTUpKSwKICAgICAgICB9XSkpLAogICAgICB9KSksCiAgICB9OwogICAgYXdhaXQgZnMud3JpdGVGaWxlKHBhdGguam9pbihhcnRpZmFjdC5hcnRpZmFjdERpcmVjdG9yeSwgInBoYXNlMy1waGFzZS1mcmFtZS1icmVha2Rvd24uanNvbiIpLAogICAgICBKU09OLnN0cmluZ2lmeShmcmFtZVBoYXNlUmVwb3J0LCBudWxsLCAyKSArICJcXG4iLCB7ZmxhZzogInd4In0pOwonJycKcmVwbGFjZShtYXJrZXIsIGFkZGl0aW9uICsgbWFya2VyKQpwLndyaXRlX3RleHQodGV4dCkK"))'
+      - name: Measure all unchanged Journal budgets
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -108,7 +83,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-recorded-static-grain-pair-standard-ubuntu
+          name: journal-static-header-phase-budgets-standard-ubuntu
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
