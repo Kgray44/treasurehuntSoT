@@ -1,0 +1,1070 @@
+{
+  "workflowRole": "candidate",
+  "productSource": "59960485afca8083eda0f0905319ab0dd055c56d",
+  "profile": {
+    "id": "desktop",
+    "width": 1440,
+    "height": 900
+  },
+  "firstVisibleMs": 0,
+  "hideMs": null,
+  "restoredMs": null,
+  "sampleCount": 211,
+  "frames": [
+    {
+      "at": 0,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 60.70000000001164,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 83.79999999998836,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 133.5,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 313.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 368.8999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 459.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 499.29999999998836,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 557.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 602,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 649.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 688.8999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 715.5,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 719.5,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 740.2000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 752.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 769.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 786.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 802.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 819.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 836.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 852.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 869.5,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 886.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 902.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 919.5,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 936.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 952.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 969.5,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 986.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1002.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1019.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1036.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1052.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1069.5,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1086.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1102.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1119.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1136.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1152.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1169.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1186.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1202.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1219.5,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1236.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1252.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1269.5,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1286.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1302.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1319.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1336.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1352.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1369.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1386.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1402.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1419.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1436.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1452.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1469.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1486.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1502.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1519.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1536.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1552.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1569.5,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1586.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1602.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1619.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1636.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1652.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1669.5,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1686,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1702.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1719.5,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1736.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1752.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1769.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1786.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1802.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1819.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1836.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1852.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1869.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1886,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1902.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1919.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1936.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1952.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1969.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 1986.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2002.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2019.3999999999942,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2036.1000000000058,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2052.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2069.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2086.100000000006,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2102.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2119.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2136,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2152.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2169.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2186,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2202.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2219.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2236,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2252.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2269.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2286.100000000006,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2302.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2319.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2336,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2352.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2369.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2386,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2402.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2419.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2436.100000000006,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2452.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2469.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2486,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2502.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2519.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2536,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2552.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2569.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2586,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2602.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2619.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2636,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2652.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2669.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2686,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2702.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2719.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2736,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2752.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2769.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2786,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2802.600000000006,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2819.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2836.100000000006,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2852.7999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2869.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2886,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2902.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2919.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2936,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2952.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2969.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 2986,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3002.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3019.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3036,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3052.600000000006,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3069.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3086,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3102.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3119.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3136,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3152.600000000006,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3169.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3186,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3202.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3219.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3236,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3252.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3269.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3286,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3302.600000000006,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3319.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3336,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3352.600000000006,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3369.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3386,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3402.600000000006,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3419.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3436,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3452.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3469.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3486,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3502.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3519.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3536,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3552.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3569.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3585.899999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3602.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3619.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3635.899999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3652.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3669.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3685.899999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3702.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3719.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3736,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3752.600000000006,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3769.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3786,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3802.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3819.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3836,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3852.600000000006,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3869.399999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3885.899999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3902.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3919.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3935.899999999994,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3952.7000000000116,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3969.2999999999884,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 3986,
+      "heading": true,
+      "action": true
+    },
+    {
+      "at": 4002.7000000000116,
+      "heading": true,
+      "action": true
+    }
+  ]
+}

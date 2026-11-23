@@ -1,0 +1,40 @@
+{
+  "workflowRun": 45106272757,
+  "protectedMain": "fc813a4c03a4916c6b0aab346abbb8b1caa8cf38",
+  "repairCandidate": "c6cf80f10e1253471a63898ecb55154e8b381ba1",
+  "browserDiagnostic": "59960485afca8083eda0f0905319ab0dd055c56d",
+  "artifacts": {
+    "baseline": {
+      "id": 14787199888,
+      "archiveSha256": "8fe90a169edad81d4bf969bc6e2b17389c5018dbe2365a2f5032b5ef6e49de8d",
+      "profiles": {
+        "desktop": {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c6cf80f10e1/reduced-home-browser/baseline-desktop.json",
+          "sha256": "031a4749368ca5a89087d8807064fab77c137a1fc35174a71dd282378afbd7d2",
+          "gitBlobSha": "ebfd0cd218c12bdb72233c62050c11401a2708f3"
+        },
+        "mobile": {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c6cf80f10e1/reduced-home-browser/baseline-mobile.json",
+          "sha256": "55eb22a2f37d589edbd4ba874c65dc06f5221cb6bc2cf13906185df6847a9f3d",
+          "gitBlobSha": "1f045172079dbd38081b4da5135ca2acafdbe630"
+        }
+      }
+    },
+    "candidate": {
+      "id": 14788095512,
+      "archiveSha256": "73bdf5c6fd3410fad73a8883f2c92f9f0bf9c7bdf7b1e72d383c9f386e89606f",
+      "profiles": {
+        "desktop": {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c6cf80f10e1/reduced-home-browser/candidate-desktop.json",
+          "sha256": "e0d050a343866bb2ba3603cb18147fd124cdb1c20d3dd3ed020ec456343c1f7d",
+          "gitBlobSha": "8d9c360192085dba4bfda77c33118303ae694f70"
+        },
+        "mobile": {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c6cf80f10e1/reduced-home-browser/candidate-mobile.json",
+          "sha256": "7c0a441d64e7f31720c77da06c295bd2cf4c57379636d71e1114593b874fdc17",
+          "gitBlobSha": "9ca4224a9000f38dcbece2a9b6bf6015213f8082"
+        }
+      }
+    }
+  }
+}
