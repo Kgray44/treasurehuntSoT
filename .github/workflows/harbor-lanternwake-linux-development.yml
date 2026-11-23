@@ -1,5 +1,5 @@
 name: Route snapshot product-experience planning
-run-name: Plan Product Experience with both review findings addressed
+run-name: Plan Product Experience with the canonical Journal cover style
 on:
   push:
     branches:
@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 803c801b906c52eeef8b1e01d2ca1dffa2ad2610
+          ref: ef6d31b1b80e9ffbdf980ddc2b63f45514965760
           fetch-depth: 4
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -30,7 +30,7 @@ jobs:
       - name: Print the source-bound experience plan
         env:
           BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
-          CANDIDATE_SHA: 803c801b906c52eeef8b1e01d2ca1dffa2ad2610
+          CANDIDATE_SHA: ef6d31b1b80e9ffbdf980ddc2b63f45514965760
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
