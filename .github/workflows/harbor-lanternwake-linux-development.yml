@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Capture the verified Native Scene candidate after the dossier repair
+run-name: Prepare bounded independent review media from the exact capture
 
 on:
   push:
@@ -9,104 +9,99 @@ on:
       - .github/workflows/harbor-lanternwake-linux-development.yml
 
 permissions:
+  actions: read
   contents: read
 
 jobs:
-  benchmark:
-    name: Source-bound Native Scene experience capture
+  review-media:
     runs-on: ubuntu-24.04
-    timeout-minutes: 75
+    timeout-minutes: 16
     env:
-      CANDIDATE_SHA: 44b286e6a1bffe460c77d5a9fb7929718aa9025e
+      CAPTURE_RUN: "45248945890"
+      CAPTURE_ID: "14855539138"
+      CAPTURE_DIGEST: sha256:ba36e57d1eecae6dd2e8a0cecd3a63e8a0138bd91249c9ac9f113c464880fbc5
+      SOURCE_SHA: 44b286e6a1bffe460c77d5a9fb7929718aa9025e
+      SOURCE_DIGEST: 40565309cfb8cba8f0c73bc75830399e3d6a3d0239210bd5b662c5474f547344
+      CONTRACT_DIGEST: 257710d8112fb5026fa02d94333691d97fc4effd15df2a9bd722b56d763ac757
       BASE_SHA: 5be59f18590f2c48a4a7672a14a25dee5bf0e82d
-      FOREVER_VALIDATION_SOURCE_SHA: 44b286e6a1bffe460c77d5a9fb7929718aa9025e
-      NEXT_TELEMETRY_DISABLED: "1"
-      SOUNDING_LINE_PR_NUMBER: "896"
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: 44b286e6a1bffe460c77d5a9fb7929718aa9025e
-          fetch-depth: 64
-          persist-credentials: false
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /*
-            !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
-            /scripts/
-            /src/
-            /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-      - name: Verify the actual protected base and its candidate ancestry
+      - name: Verify and retrieve the immutable capture
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git fetch --no-tags --filter=blob:none --depth=64 origin refs/heads/main:refs/remotes/origin/main
-          test "$(git rev-parse origin/main)" = "$BASE_SHA"
-          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
-      - name: Install locked dependencies and Chromium
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$CAPTURE_ID" |
+            jq -e --arg digest "$CAPTURE_DIGEST" --arg run "$CAPTURE_RUN"               '.digest==$digest and (.workflow_run.id|tostring)==$run and (.expired|not) and .size_in_bytes<3000000000'
+          gh run download "$CAPTURE_RUN" --repo "$GITHUB_REPOSITORY"             --name harbor-native-source-bound-experience --dir "$RUNNER_TEMP/original-experience"
+      - name: Hash-check the actual media and retain source-bound review packets
         run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install chromium
-      - name: Capture real source-bound Product Experience journeys for PR 896
-        run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "43389ce9a34c8d5d1ae1c281e384b8a5d7a8eca1"
           node --input-type=module <<'EOF'
-          import {execFileSync} from "node:child_process";
-          import {writeFile} from "node:fs/promises";
-          import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
-          import {recognizeExceptionExecution} from "./scripts/sounding-line/experience-exception.mjs";
-          const root = process.cwd();
-          if (recognizeExceptionExecution({root, baseSha: process.env.BASE_SHA, candidateSha: process.env.CANDIDATE_SHA}))
-            throw new Error("Current source was classified as a separate exception campaign");
-          const plan = JSON.parse(execFileSync(process.execPath, [
-            "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
-            "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
-          ], {encoding: "utf8"}));
-          const expectedContracts = ["admiralty.ai-economics","admiralty.phase1.registry","admiralty.phase2.account-dossier-support","admiralty.phase2.read-projection-redaction","chronicle.creation","crossdeck.phase2.continuity","crossdeck.refit.companion","crossdeck.refit.published-lens","harborlight.sc07.creator-community.experience","homeport.community.public-projection","homeport.owner-correction.round1.workspaces","homeport.passport.product-surface","homeport.phase7.account.canonical-lifecycle","homeport.shell.crossdeck-access-recovery","homeport.shell.crossdeck-companion","homeport.shell.crossdeck-companion-mobile","homeport.transition.auth-routes","journal-ready-state","parallax.authored-library-and-simulation.experience","parallax.floating-controls.experience","parallax.integration.pilot-owner-boundary","parallax.parametric-room-correction.experience","parallax.protected-photo-room.experience","parallax.rooms-and-surfaces.experience","parallax.sc00b.inspector.experience","parallax.scene-manager.experience","parallax.spatial-community-publishing.experience","reach.phase1.foundation","spatial-pilot.experience"];
-          const actualContracts = plan.contracts.map(item => item.id).sort();
-          if (!plan.applicable || plan.baseSha !== process.env.BASE_SHA || plan.candidateSha !== process.env.CANDIDATE_SHA ||
-              !/^[a-f0-9]{64}$/.test(plan.contractDigest) || expectedContracts.some(id => !actualContracts.includes(id)) ||
-              !/^[a-f0-9]{64}$/.test(plan.sourceDigest))
-            throw new Error("Unexpected experience source or contract selection");
-          console.log("NATIVE_HARBOR_CAPTURE_PLAN " + JSON.stringify({baseSha:plan.baseSha,candidateSha:plan.candidateSha,
-            sourceDigest:plan.sourceDigest,contractDigest:plan.contractDigest,contracts:actualContracts}));
-          plan.outputDirectory = "artifacts/sounding-line/harbor-shared-experience";
-          delete process.env.GH_TOKEN;
-          delete process.env.GITHUB_TOKEN;
-          const receipt = await runTrustedExperienceReplay({
-            root, plan, validateReplay: false,
-            environment: { SOUNDING_LINE_BASE_SHA: plan.baseSha },
-          });
-          if (receipt.status !== "PASS") throw new Error("The actual browser capture did not complete");
-          await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
-            JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
-              sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
-              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "DEVELOPMENT_CAPTURE"}, null, 2) + "\n");
+          import { readFile, writeFile, mkdir, copyFile, readdir, lstat } from "node:fs/promises";
+          import { createHash } from "node:crypto";
+          import { join, dirname } from "node:path";
+          const original = join(process.env.RUNNER_TEMP, "original-experience");
+          const target = join(process.env.RUNNER_TEMP, "review-media");
+          const receipt = JSON.parse(await readFile(join(original, "development-capture-receipt.json"), "utf8"));
+          const capture = JSON.parse(await readFile(join(original, "capture.json"), "utf8"));
+          if (receipt.candidate !== process.env.SOURCE_SHA || receipt.status !== "PASS" ||
+              capture.baseSha !== process.env.BASE_SHA || capture.sourceDigest !== process.env.SOURCE_DIGEST ||
+              capture.contractDigest !== process.env.CONTRACT_DIGEST || JSON.stringify([...receipt.contracts].sort()) !== "[\"admiralty.ai-economics\",\"admiralty.phase1.registry\",\"admiralty.phase2.account-dossier-support\",\"admiralty.phase2.community-operations-providers\",\"admiralty.phase2.read-projection-redaction\",\"admiralty.phase2.registry-activation\",\"chronicle.creation\",\"crossdeck.phase2.continuity\",\"crossdeck.refit.companion\",\"crossdeck.refit.published-lens\",\"harborlight.sc07.creator-community.experience\",\"homeport.community.public-projection\",\"homeport.community.quarantine\",\"homeport.owner-correction.round1.workspaces\",\"homeport.passport.product-surface\",\"homeport.phase7.account.canonical-lifecycle\",\"homeport.shell.crossdeck-access-recovery\",\"homeport.shell.crossdeck-companion\",\"homeport.shell.crossdeck-companion-mobile\",\"homeport.transition.auth-routes\",\"journal-ready-state\",\"parallax.authored-library-and-simulation.experience\",\"parallax.floating-controls.experience\",\"parallax.integration.pilot-owner-boundary\",\"parallax.parametric-room-correction.experience\",\"parallax.protected-photo-room.experience\",\"parallax.rooms-and-surfaces.experience\",\"parallax.sc00b.inspector.experience\",\"parallax.scene-manager.experience\",\"parallax.spatial-community-publishing.experience\",\"reach.phase1.foundation\",\"spatial-pilot.experience\"]")
+            throw new Error("Capture identity does not match the candidate");
+          const prefix = "artifacts/sounding-line/harbor-shared-experience/";
+          const pairedArtifactIds = new Set(capture.pairedEvidence.cases.flatMap(item => item.artifactIds));
+          const pairedTracePaths = new Set(capture.artifacts.filter(artifact => artifact.type === "trace" &&
+            pairedArtifactIds.has(artifact.id)).map(artifact => artifact.path));
+          if (pairedTracePaths.size !== 6) throw new Error("Expected both paired traces for each case");
+          const planned = new Map();
+          for (const artifact of capture.artifacts) {
+            if (!artifact.path.startsWith(prefix)) throw new Error("Unexpected evidence path");
+            if (!["recording", "screenshot"].includes(artifact.type) && !pairedTracePaths.has(artifact.path)) continue;
+            const file = artifact.path.slice(prefix.length);
+            if (!/[.](webm|png|zip)$/u.test(file) || file.split("/").some(part => !part || part === "." || part === "..") ||
+                file.includes("\\")) throw new Error("Media path is invalid");
+            if (planned.has(file) && planned.get(file) !== artifact.sha256) throw new Error("Conflicting media identity");
+            planned.set(file, artifact.sha256);
+          }
+          let total = 0;
+          for (const [file, sha256] of planned) {
+            const source = join(original, file);
+            const stat = await lstat(source);
+            if (!stat.isFile() || stat.size > 16 * 1024 * 1024) throw new Error("Unbounded media item");
+            total += stat.size;
+            if (total > 400 * 1024 * 1024) throw new Error("Review media exceeds its transport bound");
+            if (createHash("sha256").update(await readFile(source)).digest("hex") !== sha256)
+              throw new Error("Evidence hash mismatch: " + file);
+            const destination = join(target, file);
+            await mkdir(dirname(destination), { recursive: true });
+            await copyFile(source, destination);
+          }
+          async function copyJson(directory = "") {
+            for (const entry of await readdir(join(original, directory), { withFileTypes: true })) {
+              const relative = join(directory, entry.name);
+              if (entry.isDirectory()) await copyJson(relative);
+              if (!entry.isFile() || !entry.name.endsWith(".json")) continue;
+              const file = join(original, relative);
+              const stat = await lstat(file);
+              total += stat.size;
+              if (total > 410 * 1024 * 1024 || stat.size > 8 * 1024 * 1024) throw new Error("Unbounded review metadata");
+              const destination = join(target, relative);
+              await mkdir(dirname(destination), { recursive: true });
+              await copyFile(file, destination);
+            }
+          }
+          await copyJson();
+          const output = {
+            captureArtifactId: Number(process.env.CAPTURE_ID), archiveDigest: process.env.CAPTURE_DIGEST,
+            baseSha: capture.baseSha, candidateSha: receipt.candidate, sourceDigest: capture.sourceDigest,
+            contractDigest: capture.contractDigest, contracts: receipt.contracts, journeys: capture.journeys.length,
+            reviewMediaFiles: planned.size, bytes: total,
+          };
+          await writeFile(join(target, "media-transport.json"), JSON.stringify(output, null, 2) + "\n");
+          console.log(JSON.stringify(output));
           EOF
-      - name: Retain source-bound synthetic browser review evidence
-        if: always()
+      - name: Retain screenshots and recordings for independent review
         uses: actions/upload-artifact@v4
         with:
-          name: harbor-native-source-bound-experience
-          path: artifacts/sounding-line/harbor-shared-experience/**
-          if-no-files-found: ignore
-          retention-days: 30
-
+          name: harbor-native-44b286e6-source-bound-review-media
+          path: ${{ runner.temp }}/review-media/**
+          if-no-files-found: error
+          retention-days: 15
