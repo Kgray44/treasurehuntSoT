@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Reproduce the Studio Exchange browser failure on protected main
+run-name: Verify the corrected Studio Exchange browser contract
 
 on:
   push:
@@ -13,18 +13,18 @@ permissions:
 
 jobs:
   browser-probe:
-    name: Studio Exchange exact protected baseline
+    name: Studio Exchange current workflow
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+      CANDIDATE_SHA: 8c0bf6f14980d7bb6a9a3af8c1d7426b6c653a5e
       BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      FOREVER_VALIDATION_SOURCE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+      FOREVER_VALIDATION_SOURCE_SHA: 8c0bf6f14980d7bb6a9a3af8c1d7426b6c653a5e
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 627a4e651641b6765ac789d378672ea6e903c120
+          ref: 8c0bf6f14980d7bb6a9a3af8c1d7426b6c653a5e
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,9 +58,10 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Run current Brightwork Studio Exchange suite against protected main
+      - name: Run current Brightwork Studio Exchange suite against the exact test repair
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "4961c469a987f1c1958ed41bde16707d80e16e9a"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           npx --no-install prettier --check tests/e2e/brightwork-stage8-wave4.spec.ts
           node --input-type=module <<'EOF'
