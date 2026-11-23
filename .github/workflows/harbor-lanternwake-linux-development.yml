@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Verify the type-checked spatial provenance repair in the original browser journeys
+run-name: Plan the exact Journal, spatial provenance and fixture qualification
 
 on:
   push:
@@ -12,61 +12,66 @@ permissions:
   contents: read
 
 jobs:
-  browser-probe:
-    name: Exact spatial provenance browser candidate
+  experience-plan:
     runs-on: ubuntu-24.04
-    timeout-minutes: 22
-    env:
-      CANDIDATE_SHA: 02d94ce604725436f716e2491446e278dabf7641
-      BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: 02d94ce604725436f716e2491446e278dabf7641
-      NEXT_TELEMETRY_DISABLED: "1"
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 02d94ce604725436f716e2491446e278dabf7641
+          ref: 38759afadf18966b8187b6c0ab9ce5a77167f496
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /*
             !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
             /scripts/
-            /src/
             /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
+            /src/
+            **/*.json
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
-        run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium
-      - name: Run spatial authoring and Creator moderation against the provenance repair
+      - name: Print the source-bound experience plan
+        env:
+          BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
+          CANDIDATE_SHA: 38759afadf18966b8187b6c0ab9ce5a77167f496
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "540d71ece01df2e0913431d05e381768f49a8e1c"
+          git fetch --no-tags --depth=1 origin "$BASE_SHA"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-studio.spec.ts","tests/e2e/parallax-adaptive.spec.ts","tests/e2e/spatial-chronicle-pilot.spec.ts","tests/e2e/sc07-creator-community.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
+          test "$(git rev-parse HEAD^{tree})" = "8d6e231097356494c3305ab31fd3aee6e441801d"
+          node --input-type=module > "$RUNNER_TEMP/native-experience-source-objects" <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { sourceSnapshotReadsPath } from "./scripts/sounding-line/product-experience.mjs";
+          const blobs=new Set();
+          for(const revision of [process.env.BASE_SHA,process.env.CANDIDATE_SHA]){
+            const tree=execFileSync("git",["ls-tree","-rz",revision],{encoding:"utf8",maxBuffer:32*1024*1024});
+            for(const entry of tree.split("\0").filter(Boolean)){
+              const [metadata,file]=entry.split("\t");
+              const [,type,oid]=metadata.split(" ");
+              if(type==="blob" && sourceSnapshotReadsPath(file)) blobs.add(oid);
+            }
+          }
+          console.log([...blobs].sort().join("\n"));
           EOF
+          GIT_NO_LAZY_FETCH=1 git cat-file --batch-check < "$RUNNER_TEMP/native-experience-source-objects" |
+            awk '$2=="missing" { print $1 }' > "$RUNNER_TEMP/native-experience-missing-objects"
+          if [[ -s "$RUNNER_TEMP/native-experience-missing-objects" ]]; then
+            git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin < "$RUNNER_TEMP/native-experience-missing-objects"
+          fi
+          node --input-type=module <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { planProductExperience } from "./scripts/sounding-line/product-experience.mjs";
+          const root=process.cwd();
+          const baseSha=process.env.BASE_SHA;
+          const candidateSha=process.env.CANDIDATE_SHA;
+          const changedPaths=execFileSync("git",["diff","--name-only","--no-renames",baseSha,candidateSha],{encoding:"utf8"}).trim().split("\n");
+          const plan=planProductExperience({root,baseSha,candidateSha,changedPaths});
+          console.log("PROTECTED_REPAIRS_EXPERIENCE_SCOPE "+JSON.stringify({
+            baseSha,candidateSha,changedPaths,applicable:plan.applicable,classification:plan.classification,
+            sourceDigest:plan.sourceDigest,contractDigest:plan.contractDigest,
+            contracts:(plan.contracts??[]).map(item=>({id:item.id,profile:item.experience?.executionProfile})),
+          }));
+          EOF
+
