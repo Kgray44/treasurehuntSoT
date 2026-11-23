@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Verify exact spatial attachment provenance and Creator Community regression coverage
+run-name: Plan spatial acceptance and isolate Creator focus on the exact Journal repair
 
 on:
   push:
@@ -13,18 +13,18 @@ permissions:
 
 jobs:
   browser-probe:
-    name: Exact spatial provenance browser candidate
+    name: Creator Community focus on the Journal candidate
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: aa39d341b1299b84f4a9f58f7b043aea70fc79d7
+      CANDIDATE_SHA: eede0c60e77fe22656456ccc3ac18d3490c99b66
       BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: aa39d341b1299b84f4a9f58f7b043aea70fc79d7
+      FOREVER_VALIDATION_SOURCE_SHA: eede0c60e77fe22656456ccc3ac18d3490c99b66
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: aa39d341b1299b84f4a9f58f7b043aea70fc79d7
+          ref: eede0c60e77fe22656456ccc3ac18d3490c99b66
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,15 +58,78 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Run spatial authoring and Creator moderation against the provenance repair
+      - name: Run the full Creator Community browser specification
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "573a61466c77b2b36039e2ccaa3ef1dbb62c2603"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
           await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-studio.spec.ts","tests/e2e/parallax-adaptive.spec.ts","tests/e2e/spatial-chronicle-pilot.spec.ts","tests/e2e/sc07-creator-community.spec.ts"] },
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/sc07-creator-community.spec.ts"] },
             { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
           );
           EOF
+
+  experience-plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: aa39d341b1299b84f4a9f58f7b043aea70fc79d7
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/*/
+            /scripts/
+            /testing/
+            /src/
+            **/*.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Print the source-bound experience plan
+        env:
+          BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
+          CANDIDATE_SHA: aa39d341b1299b84f4a9f58f7b043aea70fc79d7
+        run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          git fetch --no-tags --depth=1 origin "$BASE_SHA"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "573a61466c77b2b36039e2ccaa3ef1dbb62c2603"
+          node --input-type=module > "$RUNNER_TEMP/native-experience-source-objects" <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { sourceSnapshotReadsPath } from "./scripts/sounding-line/product-experience.mjs";
+          const blobs=new Set();
+          for(const revision of [process.env.BASE_SHA,process.env.CANDIDATE_SHA]){
+            const tree=execFileSync("git",["ls-tree","-rz",revision],{encoding:"utf8",maxBuffer:32*1024*1024});
+            for(const entry of tree.split("\0").filter(Boolean)){
+              const [metadata,file]=entry.split("\t");
+              const [,type,oid]=metadata.split(" ");
+              if(type==="blob" && sourceSnapshotReadsPath(file)) blobs.add(oid);
+            }
+          }
+          console.log([...blobs].sort().join("\n"));
+          EOF
+          GIT_NO_LAZY_FETCH=1 git cat-file --batch-check < "$RUNNER_TEMP/native-experience-source-objects" |
+            awk '$2=="missing" { print $1 }' > "$RUNNER_TEMP/native-experience-missing-objects"
+          if [[ -s "$RUNNER_TEMP/native-experience-missing-objects" ]]; then
+            git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin < "$RUNNER_TEMP/native-experience-missing-objects"
+          fi
+          node --input-type=module <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { planProductExperience } from "./scripts/sounding-line/product-experience.mjs";
+          const root=process.cwd();
+          const baseSha=process.env.BASE_SHA;
+          const candidateSha=process.env.CANDIDATE_SHA;
+          const changedPaths=execFileSync("git",["diff","--name-only","--no-renames",baseSha,candidateSha],{encoding:"utf8"}).trim().split("\n");
+          const plan=planProductExperience({root,baseSha,candidateSha,changedPaths});
+          console.log("SPATIAL_ATTACHMENT_EXPERIENCE_SCOPE "+JSON.stringify({
+            baseSha,candidateSha,changedPaths,applicable:plan.applicable,classification:plan.classification,
+            sourceDigest:plan.sourceDigest,contractDigest:plan.contractDigest,
+            contracts:(plan.contracts??[]).map(item=>({id:item.id,profile:item.experience?.executionProfile})),
+          }));
+          EOF
+
