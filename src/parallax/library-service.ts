@@ -7,7 +7,7 @@ import { validateSpatialAuthoring } from "./studio-validation";
 import { requireOwnedStudioTale } from "@/chronicle/studio-authorization";
 import { getStudioTale, saveStudioDraft, DraftConflictError } from "@/chronicle/studio-service";
 import type { JsonObject } from "@/chronicle/types";
-import type { SpatialVersion, SpatialMoment } from "./contracts";
+import { spatialItemKind, type SpatialVersion, type SpatialMoment } from "./contracts";
 import { assertCalibrationClaim } from "./field-service";
 import { recordAICanonicalSave } from "./ai-outcomes";
 import { createReusableSpatialAsset, insertReusableSpatialAsset, type AssetMetadata } from "./reusable-assets";
@@ -18,7 +18,7 @@ import type { SpatialReleaseIndexEntry } from "./library-release-index";
 import { insertSavedComposition } from "./element-authoring";
 import { assertInstalledSpatialReuseRights } from "@/community/spatial-reuse-rights";
 
-export const spatialItemKind = "PARALLAX_STUDIO";
+export { spatialItemKind } from "./contracts";
 export type SpatialLibraryRecord = {
   id: string;
   revision: number;

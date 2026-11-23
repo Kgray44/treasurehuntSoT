@@ -33,11 +33,16 @@ test("ordinary Lanternwake runs both extended lifecycle groups under separate de
     [extended, "--grep", audioSuite],
   ];
   assert.deepEqual(browserProfileBatches("lanternwake-phase3", files, false), [
-    [accessibility, performance],
+    [performance],
+    [accessibility],
     ...extendedBatches,
   ]);
   assert.deepEqual(browserProfileBatches("lanternwake-phase3", [extended], false), extendedBatches);
-  assert.deepEqual(browserProfileBatches("lanternwake-phase3", files, true), [files]);
+  assert.deepEqual(browserProfileBatches("lanternwake-phase3", files, true), [
+    [performance],
+    [accessibility, extended],
+  ]);
+  assert.deepEqual(browserProfileBatches("lanternwake-phase3", [performance], true), [[performance]]);
   assert.deepEqual(browserProfileBatches("generic", files, false), [files]);
 });
 
