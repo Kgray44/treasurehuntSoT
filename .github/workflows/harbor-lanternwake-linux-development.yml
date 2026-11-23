@@ -1,5 +1,5 @@
 name: Player invitation contrast diagnostic
-run-name: Measure invitation contrast through its browser transition
+run-name: Prove the invitation contrast regression and its focused repair
 
 on:
   push:
@@ -58,57 +58,67 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install chromium
-      - name: Measure the live and settled invitation panel
+      - name: Reproduce the contrast transition before changing the source
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          cat > tests/e2e/harbor-invitation-contrast.diag.spec.ts <<'SPEC'
-          import AxeBuilder from "@axe-core/playwright";
-          import { expect, test } from "@playwright/test";
-          
-          test("measure actual invitation contrast during and after the mode handoff", async ({ page }, info) => {
-            const reports = [];
-            for (const reducedMotion of ["no-preference", "reduce"] as const) {
-              await page.emulateMedia({ reducedMotion });
-              await page.goto("/player/sign-in#invitation-code");
-              const invitation = page.locator("#invitation-code");
-              const button = invitation.getByRole("button", { name: "Find my invitation" });
-              await expect(button).toBeVisible();
-              const snapshot = () => button.evaluate((node) => {
-                const style = getComputedStyle(node);
-                const ancestors = [];
-                for (let item: Element | null = node; item; item = item.parentElement) {
-                  const current = getComputedStyle(item);
-                  if (current.opacity !== "1" || item.id === "invitation-code")
-                    ancestors.push({ id:item.id, opacity:current.opacity, transform:current.transform });
-                }
-                return {color:style.color, background:style.backgroundColor, ancestors};
+          cat >> tests/e2e/access-gates.spec.ts <<'SPEC'
+
+          test("the Player invitation form stays readable while it slides into view", async ({ page }) => {
+            await page.emulateMedia({ reducedMotion: "no-preference" });
+            await page.goto("/player/sign-in");
+            const samples = await page.evaluateHandle(() => {
+              const samples: { opacity: number; moving: boolean }[] = [];
+              const observer = new MutationObserver(() => {
+                const form = document.querySelector<HTMLElement>("#invitation-code");
+                if (!form) return;
+                const style = getComputedStyle(form);
+                samples.push({ opacity: Number(style.opacity), moving: style.transform !== "none" });
               });
-              const scan = async () => (await new AxeBuilder({page}).withRules(["color-contrast"]).analyze()).violations
-                .flatMap(rule => rule.nodes.map(node => ({ target:node.target, summary:node.failureSummary })));
-              const arrival = await snapshot();
-              const early = await scan();
-              await expect(invitation).toHaveCSS("opacity","1");
-              const settled = await snapshot();
-              const stable = await scan();
-              const sourceOpacity = Number(arrival.ancestors.find(item=>item.id==="invitation-code")?.opacity);
-              const controlled = [];
-              if (reducedMotion==="no-preference") {
-                for (const opacity of [0.08, 0.18, 0.35, 0.55, 0.75]) {
-                  await invitation.evaluate((item, value)=>item.style.opacity=String(value),opacity);
-                  controlled.push({ opacity, contrast:await scan() });
-                }
-                await invitation.evaluate(item=>item.style.opacity="1");
-              }
-              reports.push({reducedMotion,arrival,early,settled,stable,sourceOpacity,controlled});
-              expect(stable).toEqual([]);
+              observer.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ["style"] });
+              return { samples, stop: () => observer.disconnect() };
+            });
+            try {
+              await page.getByRole("tab", { name: "Invitation code" }).focus();
+              await page.keyboard.press("Enter");
+              const form = page.locator("#invitation-code");
+              await expect(form.getByRole("button", { name: "Find my invitation" })).toBeVisible();
+              await expect(form).toHaveCSS("transform", "none");
+              const frames = await samples.evaluate((record) => record.samples);
+              expect(frames.some((frame) => frame.moving)).toBe(true);
+              expect(frames.filter((frame) => frame.opacity < 1), "Invitation form opacity samples").toEqual([]);
+              expect((await page.request.get("/api/player/library")).status()).toBe(401);
+            } finally {
+              await samples.evaluate((record) => record.stop());
+              await samples.dispose();
             }
-            const body = JSON.stringify(reports);
-            console.log("INVITATION_CONTRAST "+body);
-            await info.attach("invitation-contrast", {body,contentType:"application/json"});
           });
           SPEC
-          node --input-type=module <<'EOF'
+          cat > "$RUNNER_TEMP/harbor-invitation-focus.mjs" <<'EOF'
           import {runJob} from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob({id:"harbor-invitation-contrast",kind:"browser",files:["tests/e2e/harbor-invitation-contrast.diag.spec.ts"]},
+          await runJob({id:"harbor-invitation-focus",kind:"browser",files:["tests/e2e/access-gates.spec.ts"]},
             {base:process.env.BASE_SHA,tree:process.env.CANDIDATE_SHA});
           EOF
+          if node --input-type=module < "$RUNNER_TEMP/harbor-invitation-focus.mjs" 2>&1 | tee "$RUNNER_TEMP/invitation-red.log"; then
+            echo 'Expected a failing opacity assertion in the original invitation panel'
+            exit 1
+          fi
+          grep -F 'Error: Invitation form opacity samples' "$RUNNER_TEMP/invitation-red.log"
+      - name: Keep the invitation panel opaque and verify the complete focused suite
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("src/components/platform/PlayerSignIn.tsx")
+          text = path.read_text()
+          marker = 'id="invitation-code"'
+          before, after = text.split(marker, 1)
+          old = '''\n                initial={{ opacity: 0, x: mode === "reduced" ? 0 : stateToken.distancePx }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: mode === "reduced" ? 0 : stateToken.distancePx / 2 }}'''
+          new = '''\n                initial={{ x: mode === "reduced" ? 0 : stateToken.distancePx }}
+                          animate={{ x: 0 }}
+                          exit={{ x: mode === "reduced" ? 0 : stateToken.distancePx / 2 }}'''
+          assert after.count(old) == 1
+          path.write_text(before + marker + after.replace(old, new, 1))
+          PY
+          git diff --check
+          node --input-type=module < "$RUNNER_TEMP/harbor-invitation-focus.mjs"
