@@ -1,5 +1,5 @@
-name: Lanternwake isolated Linux benchmark
-run-name: Prepare bounded independent review media from the exact capture
+name: Stage source-bound Harbor review evidence
+run-name: Validate and stage the independently reviewed Native Scene evidence
 
 on:
   push:
@@ -10,98 +10,114 @@ on:
 
 permissions:
   actions: read
-  contents: read
+  contents: write
 
 jobs:
-  review-media:
+  publish-proof:
     runs-on: ubuntu-24.04
-    timeout-minutes: 16
+    timeout-minutes: 25
     env:
-      CAPTURE_RUN: "45248945890"
-      CAPTURE_ID: "14855539138"
-      CAPTURE_DIGEST: sha256:ba36e57d1eecae6dd2e8a0cecd3a63e8a0138bd91249c9ac9f113c464880fbc5
-      SOURCE_SHA: 44b286e6a1bffe460c77d5a9fb7929718aa9025e
-      SOURCE_DIGEST: 40565309cfb8cba8f0c73bc75830399e3d6a3d0239210bd5b662c5474f547344
-      CONTRACT_DIGEST: 257710d8112fb5026fa02d94333691d97fc4effd15df2a9bd722b56d763ac757
+      CAPTURED_SHA: 44b286e6a1bffe460c77d5a9fb7929718aa9025e
+      CAPTURED_TREE: 43389ce9a34c8d5d1ae1c281e384b8a5d7a8eca1
       BASE_SHA: 5be59f18590f2c48a4a7672a14a25dee5bf0e82d
+      TRANSPORT_RUN: "45254774762"
+      TRANSPORT_ARTIFACT: "14857313220"
+      TRANSPORT_DIGEST: sha256:05170a0d7c32b851d9785746a202aff763d8ed8d1f8c40178b464a8c42c84eea
+      TRANSPORT_NAME: harbor-native-44b286e6-source-bound-review-media
+      REVIEW_INPUT_DIGEST: ab0eb239cb808d3908dd35b13d5c2cbd2db1c2109860231f00268cdd5f32e8e4
+      PROOF_REF: refs/heads/codex/harbor-896-reviewed-proof-44b286e6a1bf
     steps:
-      - name: Verify and retrieve the immutable capture
+      - uses: actions/checkout@v4
+        with:
+          ref: 44b286e6a1bffe460c77d5a9fb7929718aa9025e
+          fetch-depth: 64
+          persist-credentials: true
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
+            /scripts/
+            /src/
+            /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Verify the captured source and retrieve the reviewed bytes
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$CAPTURE_ID" |
-            jq -e --arg digest "$CAPTURE_DIGEST" --arg run "$CAPTURE_RUN"               '.digest==$digest and (.workflow_run.id|tostring)==$run and (.expired|not) and .size_in_bytes<3000000000'
-          gh run download "$CAPTURE_RUN" --repo "$GITHUB_REPOSITORY"             --name harbor-native-source-bound-experience --dir "$RUNNER_TEMP/original-experience"
-      - name: Hash-check the actual media and retain source-bound review packets
-        run: |
+          test "$(git rev-parse HEAD)" = "$CAPTURED_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "$CAPTURED_TREE"
+          git fetch --no-tags --filter=blob:none --depth=64 origin refs/heads/main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          git merge-base --is-ancestor "$BASE_SHA" "$CAPTURED_SHA"
+          test -z "$(git ls-remote origin "$PROOF_REF")"
+          mkdir -p "$RUNNER_TEMP/harbor-proof/media"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$TRANSPORT_ARTIFACT" |
+            jq -e --arg run "$TRANSPORT_RUN" --arg digest "$TRANSPORT_DIGEST" --arg name "$TRANSPORT_NAME" '
+              .digest == $digest and .name == $name and (.workflow_run.id | tostring) == $run
+              and (.expired | not) and .size_in_bytes <= 440401920
+            '
+          gh run download "$TRANSPORT_RUN" --repo "$GITHUB_REPOSITORY" --name "$TRANSPORT_NAME" --dir "$RUNNER_TEMP/harbor-proof/media"
+          gh api -H 'Accept: application/vnd.github.raw+json' "repos/$GITHUB_REPOSITORY/contents/.github/harbor-proof-input.json?ref=$GITHUB_SHA" > "$RUNNER_TEMP/harbor-proof/input.json"
+          printf '%s  %s\n' "$REVIEW_INPUT_DIGEST" "$RUNNER_TEMP/harbor-proof/input.json" | sha256sum --check
           node --input-type=module <<'EOF'
-          import { readFile, writeFile, mkdir, copyFile, readdir, lstat } from "node:fs/promises";
-          import { createHash } from "node:crypto";
-          import { join, dirname } from "node:path";
-          const original = join(process.env.RUNNER_TEMP, "original-experience");
-          const target = join(process.env.RUNNER_TEMP, "review-media");
-          const receipt = JSON.parse(await readFile(join(original, "development-capture-receipt.json"), "utf8"));
-          const capture = JSON.parse(await readFile(join(original, "capture.json"), "utf8"));
-          if (receipt.candidate !== process.env.SOURCE_SHA || receipt.status !== "PASS" ||
-              capture.baseSha !== process.env.BASE_SHA || capture.sourceDigest !== process.env.SOURCE_DIGEST ||
-              capture.contractDigest !== process.env.CONTRACT_DIGEST || JSON.stringify([...receipt.contracts].sort()) !== "[\"admiralty.ai-economics\",\"admiralty.phase1.registry\",\"admiralty.phase2.account-dossier-support\",\"admiralty.phase2.community-operations-providers\",\"admiralty.phase2.read-projection-redaction\",\"admiralty.phase2.registry-activation\",\"chronicle.creation\",\"crossdeck.phase2.continuity\",\"crossdeck.refit.companion\",\"crossdeck.refit.published-lens\",\"harborlight.sc07.creator-community.experience\",\"homeport.community.public-projection\",\"homeport.community.quarantine\",\"homeport.owner-correction.round1.workspaces\",\"homeport.passport.product-surface\",\"homeport.phase7.account.canonical-lifecycle\",\"homeport.shell.crossdeck-access-recovery\",\"homeport.shell.crossdeck-companion\",\"homeport.shell.crossdeck-companion-mobile\",\"homeport.transition.auth-routes\",\"journal-ready-state\",\"parallax.authored-library-and-simulation.experience\",\"parallax.floating-controls.experience\",\"parallax.integration.pilot-owner-boundary\",\"parallax.parametric-room-correction.experience\",\"parallax.protected-photo-room.experience\",\"parallax.rooms-and-surfaces.experience\",\"parallax.sc00b.inspector.experience\",\"parallax.scene-manager.experience\",\"parallax.spatial-community-publishing.experience\",\"reach.phase1.foundation\",\"spatial-pilot.experience\"]")
-            throw new Error("Capture identity does not match the candidate");
-          const prefix = "artifacts/sounding-line/harbor-shared-experience/";
-          const pairedArtifactIds = new Set(capture.pairedEvidence.cases.flatMap(item => item.artifactIds));
-          const pairedTracePaths = new Set(capture.artifacts.filter(artifact => artifact.type === "trace" &&
-            pairedArtifactIds.has(artifact.id)).map(artifact => artifact.path));
-          if (pairedTracePaths.size !== 6) throw new Error("Expected both paired traces for each case");
-          const planned = new Map();
-          for (const artifact of capture.artifacts) {
-            if (!artifact.path.startsWith(prefix)) throw new Error("Unexpected evidence path");
-            if (!["recording", "screenshot"].includes(artifact.type) && !pairedTracePaths.has(artifact.path)) continue;
-            const file = artifact.path.slice(prefix.length);
-            if (!/[.](webm|png|zip)$/u.test(file) || file.split("/").some(part => !part || part === "." || part === "..") ||
-                file.includes("\\")) throw new Error("Media path is invalid");
-            if (planned.has(file) && planned.get(file) !== artifact.sha256) throw new Error("Conflicting media identity");
-            planned.set(file, artifact.sha256);
+          import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+          import { join } from "node:path";
+          const directory = join(process.env.RUNNER_TEMP, "harbor-proof");
+          const input = JSON.parse(readFileSync(join(directory, "input.json"), "utf8"));
+          if (input.candidateSha !== process.env.CAPTURED_SHA || input.baseSha !== process.env.BASE_SHA ||
+              !Number.isInteger(input.iterations) || input.iterations < 1 || input.iterations > 3)
+            throw new Error("Review input identity is invalid");
+          const identities = {};
+          for (const { folder, reviewerContext, report } of input.reviews) {
+            if (!/^[a-z][a-z0-9-]+$/u.test(folder) || Object.hasOwn(identities, folder) ||
+                !/^codex:\/root\/[a-z0-9_]+$/u.test(reviewerContext) || report.candidateSha !== input.candidateSha)
+              throw new Error("Independent review is not bound to the candidate");
+            identities[folder] = reviewerContext;
+            mkdirSync(join(directory, folder));
+            writeFileSync(join(directory, folder, "review.json"), JSON.stringify(report));
           }
-          let total = 0;
-          for (const [file, sha256] of planned) {
-            const source = join(original, file);
-            const stat = await lstat(source);
-            if (!stat.isFile() || stat.size > 16 * 1024 * 1024) throw new Error("Unbounded media item");
-            total += stat.size;
-            if (total > 400 * 1024 * 1024) throw new Error("Review media exceeds its transport bound");
-            if (createHash("sha256").update(await readFile(source)).digest("hex") !== sha256)
-              throw new Error("Evidence hash mismatch: " + file);
-            const destination = join(target, file);
-            await mkdir(dirname(destination), { recursive: true });
-            await copyFile(source, destination);
-          }
-          async function copyJson(directory = "") {
-            for (const entry of await readdir(join(original, directory), { withFileTypes: true })) {
-              const relative = join(directory, entry.name);
-              if (entry.isDirectory()) await copyJson(relative);
-              if (!entry.isFile() || !entry.name.endsWith(".json")) continue;
-              const file = join(original, relative);
-              const stat = await lstat(file);
-              total += stat.size;
-              if (total > 410 * 1024 * 1024 || stat.size > 8 * 1024 * 1024) throw new Error("Unbounded review metadata");
-              const destination = join(target, relative);
-              await mkdir(dirname(destination), { recursive: true });
-              await copyFile(file, destination);
-            }
-          }
-          await copyJson();
-          const output = {
-            captureArtifactId: Number(process.env.CAPTURE_ID), archiveDigest: process.env.CAPTURE_DIGEST,
-            baseSha: capture.baseSha, candidateSha: receipt.candidate, sourceDigest: capture.sourceDigest,
-            contractDigest: capture.contractDigest, contracts: receipt.contracts, journeys: capture.journeys.length,
-            reviewMediaFiles: planned.size, bytes: total,
-          };
-          await writeFile(join(target, "media-transport.json"), JSON.stringify(output, null, 2) + "\n");
-          console.log(JSON.stringify(output));
+          writeFileSync(join(directory, "reviewers.json"), JSON.stringify(identities));
+          writeFileSync(join(directory, "evidence.mjs"), input.verifier);
+          writeFileSync(join(directory, "iterations"), String(input.iterations));
           EOF
-      - name: Retain screenshots and recordings for independent review
-        uses: actions/upload-artifact@v4
-        with:
-          name: harbor-native-44b286e6-source-bound-review-media
-          path: ${{ runner.temp }}/review-media/**
-          if-no-files-found: error
-          retention-days: 15
+      - name: Install pinned formatting dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Assemble the independently accepted evidence and validate the commit
+        shell: bash
+        run: |
+          directory="$RUNNER_TEMP/harbor-proof"
+          node --check "$directory/evidence.mjs"
+          node "$directory/evidence.mjs" stage "$BASE_SHA" "$CAPTURED_SHA" "$directory" "$directory/reviewers.json" "$(cat "$directory/iterations")"
+          git add --sparse -f -- Development_Docs/Testing/Product_Experience/candidate-review.json "Development_Docs/Testing/Product_Experience/evidence/harbor-896/${CAPTURED_SHA:0:12}"
+          git diff --cached --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Record independent Product Experience review for Native Scene Runtime"
+          SL_JOB=format node scripts/sounding-line-v3/cli.mjs ci-job --base "$BASE_SHA"
+          node "$directory/evidence.mjs" verify-commit "$BASE_SHA" "$CAPTURED_SHA"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          test -z "$(git ls-remote origin "$PROOF_REF")"
+          git push origin "HEAD:$PROOF_REF"
+          test "$(git ls-remote origin "$PROOF_REF" | cut -f1)" = "$(git rev-parse HEAD)"
+          printf 'HARBOR_REVIEW_PROOF_SHA=%s\n' "$(git rev-parse HEAD)"
+
