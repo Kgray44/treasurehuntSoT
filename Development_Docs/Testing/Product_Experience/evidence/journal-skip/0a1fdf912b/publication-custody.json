@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "productSource": "0a1fdf912bc30f3bde4accd5284ff125f7155227",
+  "captureWorkflowRun": 45127412093,
+  "captureArchiveId": 14797165019,
+  "captureArchiveSha256": "29bbb4ea781dcea9a2509d0ccc4bcc2a7bc1a4b32591a5b4b2cbe2081ac15ccf",
+  "sourceDigest": "e8cd334f089255752e02cbcc5420d8b367eae3816c0ad5bfd319674cb9d020bb",
+  "contractDigest": "353a6515594fe39c41300eb093e5e1f78ac6e9293a6d3494a77131cd9f20f41f",
+  "reviewedBlobIds": {
+    "homeport.shell.crossdeck-companion": { "sha": "3b61512b4b7b9bbdcae18367efd082904def9fe1", "iteration": 1 },
+    "crossdeck.refit.published-lens": { "sha": "d8c1e9e29c841b352edea1bb0a86b53bd96c868c", "iteration": 1 },
+    "homeport.shell.crossdeck-companion-mobile": { "sha": "76554e9a3e6cb1406e7a20feeb0ceb7f0e379795", "iteration": 1 },
+    "crossdeck.phase2.continuity": { "sha": "29547af9bc6b1326cf1972454de6c3aed9a1f8a2", "iteration": 1 },
+    "crossdeck.refit.companion": { "sha": "e57d2b25a5b85c773847cb74291750d9b73f24ae", "iteration": 1 }
+  },
+  "formatNormalizedOriginals": [
+    {
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/journal-skip/0a1fdf912b/immutable-json/development-capture-receipt.json.raw",
+      "reviewedUploadSha256": "6d81ed9990600ecfb3208dd431b16f39e8134bb9663da7cc4b311d8cae072c64",
+      "publishedJsonPath": "Development_Docs/Testing/Product_Experience/evidence/journal-skip/0a1fdf912b/development-capture-receipt.json",
+      "publishedJsonSha256": "a9739918898f6ae7586de34ac9ead4380d987e2c93a8a72e7c4e8b42cdaff109"
+    },
+    {
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/journal-skip/0a1fdf912b/immutable-json/generic/paired/playwright-report.json.raw",
+      "reviewedUploadSha256": "0b22b614bfd59d0b03846e260d7af6c10f0e00056d499a7a8063978e2a23c94b",
+      "publishedJsonPath": "Development_Docs/Testing/Product_Experience/evidence/journal-skip/0a1fdf912b/generic/paired/playwright-report.json",
+      "publishedJsonSha256": "7498e78ed22c16738710c6924b5eb6a3c38c9193317a16548a77e1cb0c67e47f"
+    },
+    {
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/journal-skip/0a1fdf912b/immutable-json/generic/paired/refit-no-preference/paired-witness.json.raw",
+      "reviewedUploadSha256": "5de273f1170f5c85543a7bd9bd810c38c1a49db28881a501b070a3ad411f6ad4",
+      "publishedJsonPath": "Development_Docs/Testing/Product_Experience/evidence/journal-skip/0a1fdf912b/generic/paired/refit-no-preference/paired-witness.json",
+      "publishedJsonSha256": "f9bc3224fcd8db0850d37e1aa4cb8917041280f4e38b48fdf6ed587589e9e64d"
+    },
+    {
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/journal-skip/0a1fdf912b/immutable-json/generic/paired/refit-recovery/paired-witness.json.raw",
+      "reviewedUploadSha256": "3261c3269609e2218d03144263466c3fe766066a0c75feb23b87536df2a996ce",
+      "publishedJsonPath": "Development_Docs/Testing/Product_Experience/evidence/journal-skip/0a1fdf912b/generic/paired/refit-recovery/paired-witness.json",
+      "publishedJsonSha256": "f64aa5f2052b8129a6a826e7a50805ac384aeaa4f26cfc3d8bb27f96f4224e05"
+    },
+    {
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/journal-skip/0a1fdf912b/immutable-json/generic/paired/refit-reduce/paired-witness.json.raw",
+      "reviewedUploadSha256": "e6db971ade27aee76d54b1204c376a914314c0b6950b620b9104f2d31b191627",
+      "publishedJsonPath": "Development_Docs/Testing/Product_Experience/evidence/journal-skip/0a1fdf912b/generic/paired/refit-reduce/paired-witness.json",
+      "publishedJsonSha256": "20a23c9900f7b56d26a7891b20149b2fceedcafab360adc8100842f0cec70c86"
+    }
+  ],
+  "ownerAcceptance": "NOT_CLAIMED"
+}
