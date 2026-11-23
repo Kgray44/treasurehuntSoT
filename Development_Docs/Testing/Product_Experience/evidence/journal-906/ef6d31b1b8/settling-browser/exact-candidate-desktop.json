@@ -1,0 +1,33 @@
+{
+  "profile": "desktop",
+  "lane": "exact-candidate",
+  "reason": "completed",
+  "evidence": [
+    {
+      "at": 366.3999999999942,
+      "phase": "ENTRY_IDLE",
+      "outcome": "idle"
+    },
+    {
+      "at": 391.29999999998836,
+      "phase": "BOOK_SETTLING",
+      "outcome": "running"
+    },
+    {
+      "at": 395,
+      "coverDuration": "1.35s",
+      "work": [
+        {
+          "transition": "transform",
+          "endTime": 1350
+        }
+      ]
+    },
+    {
+      "at": 2130.100000000006,
+      "phase": "JOURNAL_READY",
+      "outcome": "completed",
+      "reason": "completed"
+    }
+  ]
+}

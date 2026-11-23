@@ -1,0 +1,57 @@
+{
+  "matchedRun": 45108200428,
+  "exactSourceRun": 45108625885,
+  "protectedMain": "fc813a4c03a4916c6b0aab346abbb8b1caa8cf38",
+  "exactCandidate": "ef6d31b1b80e9ffbdf980ddc2b63f45514965760",
+  "matchedDiagnostic": "9967a123bff45446e7b40fb41101d077205f465a",
+  "artifacts": {
+    "baseline": {
+      "id": 14787614379,
+      "archiveSha256": "a8bb526c0ccba16ba5adb596954d3ad230edb9bdd00313b5c57edef13909981c",
+      "profiles": {
+        "desktop": {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/ef6d31b1b8/settling-browser/baseline-desktop.json",
+          "sha256": "dfde12ed62e5c86a0ee7cc3d8fe1f4be97d2bade96bbae900affcb0560e4d909",
+          "gitBlobSha": "85b246bba3f68a5ccf8689516419e69d024aec57"
+        },
+        "mobile": {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/ef6d31b1b8/settling-browser/baseline-mobile.json",
+          "sha256": "0c17ff8332f80106eb745a915b49ea91acbec6a16a30cadcea41168d8ca84080",
+          "gitBlobSha": "0ce18c95e7aee52e01692b2625f34c3de5c8d007"
+        }
+      }
+    },
+    "candidate": {
+      "id": 14787984659,
+      "archiveSha256": "46eb77ed6e3fb5254e5c4e211066b0ad10435fd3476bfadd7a6ac94089a73fa6",
+      "profiles": {
+        "desktop": {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/ef6d31b1b8/settling-browser/candidate-desktop.json",
+          "sha256": "5ae82d8a5265ff3040bb499e4f0234614cf82e939151bd241c3841a47a66b385",
+          "gitBlobSha": "b1157a9d62df1c7af63431d08558be9f291603ff"
+        },
+        "mobile": {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/ef6d31b1b8/settling-browser/candidate-mobile.json",
+          "sha256": "7cfdbe84bd372839f657ed17431366ad4317aaec96216b75cc7c42513de59c6f",
+          "gitBlobSha": "585ab719e664f44ddc93c064d527fd32594a3336"
+        }
+      }
+    },
+    "exact-candidate": {
+      "id": 14788752371,
+      "archiveSha256": "7e4945720824e5fac67eebfd9df9761bba5cb38488fa691392da351507c01e69",
+      "profiles": {
+        "desktop": {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/ef6d31b1b8/settling-browser/exact-candidate-desktop.json",
+          "sha256": "8e22b00d23cf7792548dcf019e6da44e949749cef4c8eee838cfdbaf162699f6",
+          "gitBlobSha": "91910167fd0b9e45aa43aa66247e988fcba15b45"
+        },
+        "mobile": {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/ef6d31b1b8/settling-browser/exact-candidate-mobile.json",
+          "sha256": "a352ea151e1a4158f1e6ef67019ae77c9699429c278363082d43c12b2d598d75",
+          "gitBlobSha": "3958bd212d7902b1a4243a52849af21d75a63c3a"
+        }
+      }
+    }
+  }
+}

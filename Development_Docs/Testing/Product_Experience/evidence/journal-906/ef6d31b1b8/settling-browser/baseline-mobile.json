@@ -1,0 +1,33 @@
+{
+  "profile": "mobile",
+  "lane": "baseline",
+  "reason": "phase-timeout",
+  "evidence": [
+    {
+      "at": 322.4000000000233,
+      "phase": "ENTRY_IDLE",
+      "outcome": "idle"
+    },
+    {
+      "at": 341.6000000000349,
+      "phase": "BOOK_SETTLING",
+      "outcome": "running"
+    },
+    {
+      "at": 349.30000000004657,
+      "coverDuration": "2.1s",
+      "work": [
+        {
+          "transition": "transform",
+          "endTime": 2100
+        }
+      ]
+    },
+    {
+      "at": 2261.8000000000466,
+      "phase": "JOURNAL_READY",
+      "outcome": "failure",
+      "reason": "phase-timeout"
+    }
+  ]
+}

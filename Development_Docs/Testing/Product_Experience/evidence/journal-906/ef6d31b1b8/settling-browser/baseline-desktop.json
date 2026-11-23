@@ -1,0 +1,33 @@
+{
+  "profile": "desktop",
+  "lane": "baseline",
+  "reason": "phase-timeout",
+  "evidence": [
+    {
+      "at": 370.79999999998836,
+      "phase": "ENTRY_IDLE",
+      "outcome": "idle"
+    },
+    {
+      "at": 392.29999999998836,
+      "phase": "BOOK_SETTLING",
+      "outcome": "running"
+    },
+    {
+      "at": 419.20000000001164,
+      "coverDuration": "2.1s",
+      "work": [
+        {
+          "transition": "transform",
+          "endTime": 2100
+        }
+      ]
+    },
+    {
+      "at": 2334.5,
+      "phase": "JOURNAL_READY",
+      "outcome": "failure",
+      "reason": "phase-timeout"
+    }
+  ]
+}
