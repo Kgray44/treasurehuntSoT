@@ -43,11 +43,6 @@ function routeLayer(pathname: string, generation?: number) {
 
 function routeSnapshotHtml(route: HTMLElement) {
   const snapshot = route.cloneNode(true) as HTMLElement;
-  // PageFlip uses these inert templates to prepare its live pages. The frozen
-  // route copy only needs the already-rendered book.
-  snapshot
-    .querySelectorAll('.chronicle-journal-shell .page-flip-source[data-pageflip-source][aria-hidden="true"][inert]')
-    .forEach((source) => source.remove());
   snapshot.querySelectorAll("[id]").forEach((element) => element.removeAttribute("id"));
   snapshot.querySelectorAll("[aria-controls], [aria-describedby], [aria-labelledby], [for]").forEach((element) => {
     element.removeAttribute("aria-controls");
