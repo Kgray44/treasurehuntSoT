@@ -301,6 +301,30 @@ function stampClone(boundary: MutableCloneBoundary) {
   else delete root.dataset.pageflipUnprovenClone;
 }
 
+// StPageFlip redraws idle pages on every frame. Preserve an intervening
+// inline-property change while skipping an otherwise identical cssText write.
+function coalescePageStyleWrites(root: HTMLElement) {
+  const style = root.style;
+  const descriptor = Object.getOwnPropertyDescriptor(CSSStyleDeclaration.prototype, "cssText");
+  const write = descriptor?.set;
+  if (!write || !descriptor.get) return;
+
+  let previousText: string | undefined;
+  let previousAttribute: string | null = null;
+  Reflect.defineProperty(style, "cssText", {
+    configurable: true,
+    get: descriptor.get,
+    set(this: CSSStyleDeclaration, text: string) {
+      if (previousText !== undefined && text === previousText && root.getAttribute("style") === previousAttribute) {
+        return;
+      }
+      write.call(this, text);
+      previousText = text;
+      previousAttribute = root.getAttribute("style");
+    },
+  });
+}
+
 function installCloneInterceptor(interceptor: CloneInterceptor) {
   cloneInterceptors.add(interceptor);
   if (cloneInterceptors.size === 1) {
@@ -459,6 +483,7 @@ export class PageFlipBoundaryController {
         role: "primary",
         root: clone,
       };
+      coalescePageStyleWrites(clone);
       stampClone(boundary);
       cloneBoundaries.set(clone, boundary);
       return clone;
@@ -645,6 +670,7 @@ export class PageFlipBoundaryController {
       root: clone,
     };
     suppressAccessibility(clone);
+    coalescePageStyleWrites(clone);
     stampClone(boundary);
     cloneBoundaries.set(clone, boundary);
     this.trackCloneBoundary(boundary);
