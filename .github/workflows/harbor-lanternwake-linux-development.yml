@@ -1,69 +1,105 @@
-name: Route snapshot product-experience planning
-run-name: Exact route experience plan with batched source hydration
+name: Lanternwake isolated Linux benchmark
+run-name: Journal PR 906 capture with verified protected-base ancestry
+
 on:
   push:
     branches:
       - codex/lanternwake-focused-development-cf6b1d6bbae4
     paths:
       - .github/workflows/harbor-lanternwake-linux-development.yml
+
 permissions:
   contents: read
+
 jobs:
-  experience-plan:
+  benchmark:
+    name: Source-bound Journal experience capture
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
+    timeout-minutes: 36
+    env:
+      CANDIDATE_SHA: 096eb29385f4400b7dab72488c27b7550baccacc
+      BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
+      FOREVER_VALIDATION_SOURCE_SHA: 096eb29385f4400b7dab72488c27b7550baccacc
+      NEXT_TELEMETRY_DISABLED: "1"
+      SOUNDING_LINE_PR_NUMBER: "906"
     steps:
       - uses: actions/checkout@v4
         with:
           ref: 096eb29385f4400b7dab72488c27b7550baccacc
-          fetch-depth: 2
+          fetch-depth: 16
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /*
             !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
             /scripts/
+            /src/
             /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Print the source-bound experience plan
-        env:
-          BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
-          CANDIDATE_SHA: 096eb29385f4400b7dab72488c27b7550baccacc
+      - name: Verify the actual protected base and its candidate ancestry
+        run: |
+          git fetch --no-tags --filter=blob:none --depth=16 origin refs/heads/main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
+      - name: Install locked dependencies and Chromium
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install --with-deps chromium
+      - name: Capture real source-bound Product Experience journeys for PR 906
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse 'HEAD^')" = "$BASE_SHA"
-          node --input-type=module > "$RUNNER_TEMP/prune-experience-source-objects" <<'EOF'
-          import { execFileSync } from "node:child_process";
-          import { sourceSnapshotReadsPath } from "./scripts/sounding-line/product-experience.mjs";
-          const blobs=new Set();
-          for(const revision of [process.env.BASE_SHA,process.env.CANDIDATE_SHA]){
-            const tree=execFileSync("git",["ls-tree","-rz",revision],{encoding:"utf8",maxBuffer:32*1024*1024});
-            for(const entry of tree.split("\0").filter(Boolean)){
-              const [metadata,file]=entry.split("\t");
-              const [,type,oid]=metadata.split(" ");
-              if(type==="blob" && sourceSnapshotReadsPath(file)) blobs.add(oid);
-            }
-          }
-          console.log([...blobs].sort().join("\n"));
-          EOF
-          GIT_NO_LAZY_FETCH=1 git cat-file --batch-check < "$RUNNER_TEMP/prune-experience-source-objects" |
-            awk '$2=="missing" { print $1 }' > "$RUNNER_TEMP/prune-experience-missing-objects"
-          if [[ -s "$RUNNER_TEMP/prune-experience-missing-objects" ]]; then
-            git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin < "$RUNNER_TEMP/prune-experience-missing-objects"
-          fi
           node --input-type=module <<'EOF'
-          import { execFileSync } from "node:child_process";
-          import { planProductExperience } from "./scripts/sounding-line/product-experience.mjs";
-          const root=process.cwd();
-          const baseSha=process.env.BASE_SHA;
-          const candidateSha=process.env.CANDIDATE_SHA;
-          const changedPaths=execFileSync("git",["diff","--name-only","--no-renames",baseSha,candidateSha],{encoding:"utf8"}).trim().split("\n");
-          const plan=planProductExperience({root,baseSha,candidateSha,changedPaths});
-          console.log("JOURNAL_PRUNE_EXPERIENCE "+JSON.stringify({
-            baseSha,candidateSha,changedPaths,applicable:plan.applicable,classification:plan.classification,
-            sourceDigest:plan.sourceDigest,contractDigest:plan.contractDigest,
-            contracts:(plan.contracts??[]).map(item=>({id:item.id,profile:item.experience?.executionProfile})),
-          }));
+          import {execFileSync} from "node:child_process";
+          import {writeFile} from "node:fs/promises";
+          import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
+          import {recognizeExceptionExecution} from "./scripts/sounding-line/experience-exception.mjs";
+          const root = process.cwd();
+          if (recognizeExceptionExecution({root, baseSha: process.env.BASE_SHA, candidateSha: process.env.CANDIDATE_SHA}))
+            throw new Error("Current source was classified as a separate exception campaign");
+          const plan = JSON.parse(execFileSync(process.execPath, [
+            "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
+            "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
+          ], {encoding: "utf8"}));
+          if (!plan.applicable || plan.sourceDigest !== "66d5c89ee0e3dddc70d4b4925f028015a6bf4a1f270b983c033af8169be3f00d" ||
+              plan.contractDigest !== "b3fa8aac613b29e9e30612873559d6567c7309aa408ad39f93aefbd7ab54f2d1")
+            throw new Error("Exact source-bound Product Experience plan required");
+          plan.outputDirectory = "artifacts/sounding-line/journal-906-experience";
+          delete process.env.GH_TOKEN;
+          delete process.env.GITHUB_TOKEN;
+          const receipt = await runTrustedExperienceReplay({
+            root, plan, validateReplay: false,
+            environment: { SOUNDING_LINE_BASE_SHA: plan.baseSha },
+          });
+          if (receipt.status !== "PASS") throw new Error("The actual browser capture did not complete");
+          await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
+            JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
+              sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
+              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "DEVELOPMENT_CAPTURE"}, null, 2) + "\n");
           EOF
+      - name: Retain source-bound synthetic browser review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: journal-906-source-bound-experience
+          path: artifacts/sounding-line/journal-906-experience/**
+          if-no-files-found: ignore
+          retention-days: 30
