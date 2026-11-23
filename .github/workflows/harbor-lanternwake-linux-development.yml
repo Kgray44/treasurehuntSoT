@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Journal Book Settling paint isolation
+run-name: Journal Book Settling paint isolation with phase witnesses
 
 on:
   push:

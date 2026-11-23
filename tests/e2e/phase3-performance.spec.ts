@@ -641,9 +641,18 @@ phase3Test(
     const order: Mode[] = ["current", "pages", "cover", "chrome", "chrome", "cover", "pages", "current"];
     const rows = [];
     for (const mode of order) {
-      for (const selector of selectors[mode]) {
-        await expect(journal(page).locator(selector).first()).toBeAttached();
-      }
+      await page.evaluate(({ phaseScope, selectors }) => {
+        const root = document.querySelector(".chronicle-journal-shell");
+        if (!root) throw new Error("Missing Journal root");
+        const typedWindow = window as Window & { journalIsolationCounts?: number[] };
+        delete typedWindow.journalIsolationCounts;
+        const listener = new MutationObserver(() => {
+          if (!root.matches(phaseScope)) return;
+          typedWindow.journalIsolationCounts = selectors.map((selector) => root.querySelectorAll(selector).length);
+          listener.disconnect();
+        });
+        listener.observe(root, { attributes: true, attributeFilter: ["data-journal-phase"] });
+      }, { phaseScope, selectors: selectors[mode] });
       const styles = selectors[mode].map((target) => phaseScope + " " + target + " { visibility: hidden !important; }");
       const tag = styles.length ? await page.addStyleTag({ content: styles.join("\n") }) : null;
       try {
@@ -653,8 +662,13 @@ phase3Test(
         expect(settling.length).toBeGreaterThan(20);
         expect(run.durationMs).toBeLessThan(budgets.openingMs);
         await expect(replay(page)).toBeFocused();
+        const elements = await page.evaluate(
+          () => (window as Window & { journalIsolationCounts?: number[] }).journalIsolationCounts,
+        );
+        expect(elements, "Count the selected elements during Book Settling").toBeDefined();
+        if (mode !== "current") expect(elements!.some((count) => count > 0)).toBe(true);
         rows.push({
-          mode, intervalCount: run.visual.frameDurationsMs.length,
+          mode, elements, intervalCount: run.visual.frameDurationsMs.length,
           desktopP95: rounded(percentile(run.visual.frameDurationsMs, 0.95)),
           settlingP95: rounded(percentile(settling, 0.95)),
           settlingSlow: settling.filter((ms) => ms > budgets.desktopFrameP95Ms).length,
