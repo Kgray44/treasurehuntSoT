@@ -597,105 +597,65 @@ async function measuredFullOpening(page: Page, control: Locator) {
 
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
-phase3Test(
-  "compare offscreen Journal clip across complete desktop replay",
-  async ({ page, phase3, browserName }) => {
-    expect(browserName).toBe("chromium");
-    expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
-    expect(process.env.FOREVER_PHASE3_PERFORMANCE_BASE_URL).toBe("http://127.0.0.1:3200");
-    const artifact = performanceArtifactTarget();
-    await fs.mkdir(artifact.artifactDirectory, { recursive: true });
-    await fs.rm(artifact.artifactPath, { force: true });
-    await page.setViewportSize({ width: 1_440, height: 900 });
-    await installRuntimeCounter(page);
-    await setPhase3Motion(page, PHASE3_MOTION_MODES[0]);
-    await phase3.proveIsolation();
-    const fixture = await phase3.createCase("P3-PERFORMANCE-CHAPTER", "CHAPTER_RELEASED");
-    const voyage = await resolveLegacyCampaign(fixture.slug);
-    expect(voyage, "The performance fixture must be bound to a canonical Voyage.").toBeTruthy();
-    const journalPath = `/player/playthroughs/${voyage!.sessionId}/journal`;
-    await enterJournal(page, fixture, journalPath);
 
-    const cold = await measuredFullOpening(page, page.getByRole("button", { name: "Open the journal" }));
-    await expect(journal(page).getByText("Captain channel connected")).toBeVisible();
-    await expect(journal(page)).toHaveAttribute("data-live-event", "idle");
-    const liveStartedAt = performance.now();
-    const live = await phase3.canonicalCaptainAction(fixture, "presentation");
-    expect(live.eventType).toBe("presentationTriggered");
-    await expect(journal(page)).toHaveAttribute("data-live-event", "revealed");
-    await expect(journal(page).locator('[aria-live="assertive"]')).toContainText("A new page was released:");
-    const liveUpdateMs = performance.now() - liveStartedAt;
-    const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
-    expect(fullRuntimeBaseline.eventSources).toBe(1);
-
-
-
-
-
-
-    const scene = journal(page);
-    const scope='.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"]';
-    const selectors=[".chronicle-journal-workspace",".book-camera"];
-    await page.evaluate(()=>window.scrollTo(0,0));
-    const geometry=await scene.evaluate((root,paths)=>paths.map((selector)=>{
-      const target=root.querySelector<HTMLElement>(selector);
-      if(!target) throw new Error("Missing clip target: "+selector);
-      const rect=target.getBoundingClientRect();
-      return {selector, bottom:rect.bottom, height:target.offsetHeight, viewport:innerHeight, y:window.scrollY,
-        remove:Math.max(0,Math.floor((rect.bottom-innerHeight-32)/(rect.height/target.offsetHeight)))};
-    }),selectors);
-    expect(geometry.some(g=>g.remove>=100),"Exercise substantial below-viewport paint").toBeTruthy();
-    const rules=geometry.map(g=>scope+" "+g.selector+" { clip-path: inset(-48px -48px "+g.remove+"px -48px); }");
-    const measured=[];
-    for(const variant of ["current","workspace","camera","both","both","camera","workspace","current"] as const) {
-      const css=variant==="both"?rules.join("\n"):variant==="workspace"?rules[0]:variant==="camera"?rules[1]:null;
-      const clip=css?await page.addStyleTag({content:css}):null;
-      try {
-        await page.evaluate(()=>window.scrollTo(0,0));
-        await waitForStableRuntimeBaseline(page);
-        const run=await measuredFullOpening(page,replay(page));
-        const all=run.visual.frameDurationsMs, settling=run.visual.framesByPhase.BOOK_SETTLING ?? [];
-        expect(settling.length).toBeGreaterThan(20);
-        expect(run.durationMs).toBeLessThan(budgets.openingMs);
-        await expect(replay(page)).toBeFocused();
-        measured.push({ variant, desktopP95:rounded(percentile(all,.95)), total:all.length,
-          slow:all.filter(ms=>ms>budgets.desktopFrameP95Ms).length,
-          settlingP95:rounded(percentile(settling,.95)), settlingSlow:settling.filter(ms=>ms>budgets.desktopFrameP95Ms).length,
-          settlingTotal:settling.length, animationMs:rounded(run.durationMs) });
-      } finally {
-        await clip?.evaluate(el=>{el.parentNode?.removeChild(el);});
-      }
-    }
-
-    const preliminary={purpose:"DEVELOPMENT_ONLY",candidate:process.env.FOREVER_VALIDATION_SOURCE_SHA,
-      geometry, measured, budgetMs:budgets.desktopFrameP95Ms};
-    await writePerformanceArtifact(artifact.artifactPath,preliminary,[fixture.slug,voyage!.sessionId]);
-    console.log("JOURNAL_OFFSCREEN_CLIP " + JSON.stringify(preliminary));
-
-    await replay(page).click();
-    await expect(scene).toHaveAttribute("data-journal-phase","BOOK_SETTLING");
-    await page.evaluate(()=>{
-      const state=window as Window & { clipTrialAnimations?: Animation[] };
-      state.clipTrialAnimations=document.getAnimations().filter(animation=>animation.playState==="running");
-      for(const animation of state.clipTrialAnimations) animation.pause();
-    });
+phase3Test("identify the performance difference between available Chromium compositor paths", async ({ browser, phase3 }) => {
+  const baseURL=process.env.FOREVER_PHASE3_PERFORMANCE_BASE_URL;
+  expect(baseURL).toBe("http://127.0.0.1:3200");
+  expect(process.env.FOREVER_VALIDATION_ISOLATION).toBe("1");
+  await phase3.proveIsolation();
+  const artifact=performanceArtifactTarget();
+  const observations=[];
+  const secrets:string[]=[];
+  for (const profile of ["default","angle-swiftshader","default"] as const) {
+    const args=profile==="angle-swiftshader"?["--enable-gpu","--use-gl=angle","--use-angle=swiftshader"]:[];
+    const browserInstance=await browser.browserType().launch({channel:"chromium",headless:true,args});
     try {
-      await page.screenshot({path:path.join(artifact.artifactDirectory,"offscreen-clip-current.png")});
-      const clip=await page.addStyleTag({content:rules.join("\n")});
-      try {
-        await page.screenshot({path:path.join(artifact.artifactDirectory,"offscreen-clip-both.png")});
-        await expect(scene).toHaveAttribute("data-journal-phase","BOOK_SETTLING");
-      } finally {
-        await clip.evaluate(el=>{el.parentNode?.removeChild(el);});
+      const cdp=await browserInstance.newBrowserCDPSession();
+      const info=await cdp.send("SystemInfo.getInfo");
+      const profileInfo={devices:info.gpu.devices.map(({vendorString,deviceString,driverVendor,driverVersion})=>({
+        vendorString,deviceString,driverVendor,driverVersion})), features:info.gpu.featureStatus,
+        glRenderer:info.gpu.auxAttributes?.glRenderer};
+      await cdp.detach();
+      const context=await browserInstance.newContext({baseURL,viewport:{width:1440,height:900}});
+      const page=await context.newPage();
+      await installRuntimeCounter(page);
+      await setPhase3Motion(page,PHASE3_MOTION_MODES[0]);
+      const fixture=await phase3.createCase("P3-PERFORMANCE-CHAPTER","CHAPTER_RELEASED");
+      secrets.push(fixture.slug);
+      const voyage=await resolveLegacyCampaign(fixture.slug);
+      expect(voyage).toBeTruthy();
+      secrets.push(voyage!.sessionId);
+      const journalPath=`/player/playthroughs/${voyage!.sessionId}/journal`;
+      await enterJournal(page,fixture,journalPath);
+      await measuredFullOpening(page,page.getByRole("button",{name:"Open the journal"}));
+      await expect(journal(page).getByText("Captain channel connected")).toBeVisible();
+      await expect(journal(page)).toHaveAttribute("data-live-event","idle");
+      const live=await phase3.canonicalCaptainAction(fixture,"presentation");
+      expect(live.eventType).toBe("presentationTriggered");
+      await expect(journal(page)).toHaveAttribute("data-live-event","revealed");
+      await expect(journal(page).locator('[aria-live="assertive"]')).toContainText("A new page was released:");
+      const measurements=[];
+      for(let i=0;i<2;i++) {
+        const baseline=await waitForStableRuntimeBaseline(page);
+        expect(baseline.eventSources).toBe(1);
+        const result=await measuredFullOpening(page,replay(page));
+        const frames=result.visual.frameDurationsMs;
+        const settling=result.visual.framesByPhase.BOOK_SETTLING??[];
+        expect(settling.length).toBeGreaterThan(20);
+        expect(result.durationMs).toBeLessThan(budgets.openingMs);
+        await expect(replay(page)).toBeFocused();
+        measurements.push({p95:rounded(percentile(frames,.95)),frames:frames.length,
+          slow:frames.filter(ms=>ms>budgets.desktopFrameP95Ms).length,
+          settlingP95:rounded(percentile(settling,.95)),openingMs:rounded(result.durationMs)});
       }
+      observations.push({profile,profileInfo,measurements});
     } finally {
-      await page.evaluate(()=>{
-        const state=window as Window & { clipTrialAnimations?: Animation[] };
-        for(const animation of state.clipTrialAnimations??[]) animation.play();
-        delete state.clipTrialAnimations;
-      });
+      await browserInstance.close();
     }
-    await assertReadableJournal(page);
-    await expect(replay(page)).toBeFocused();
-  },
-);
+  }
+  const results={purpose:"DEVELOPMENT_ONLY",candidate:process.env.FOREVER_VALIDATION_SOURCE_SHA,
+    desktopBudgetMs:budgets.desktopFrameP95Ms,observations};
+  await fs.mkdir(artifact.artifactDirectory,{recursive:true});
+  await writePerformanceArtifact(artifact.artifactPath,results,secrets);
+  console.log("JOURNAL_COMPOSITOR_CAPABILITY " + JSON.stringify(results));
+});
