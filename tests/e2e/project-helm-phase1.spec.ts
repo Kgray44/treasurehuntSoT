@@ -300,14 +300,31 @@ async function acceptGuestInvitation(browser: Browser, link: string, playthrough
   // canonical browser submission in long-lived isolated servers.
   const destinationWarmup = await page.request.get(`/player/playthroughs/${playthroughId}`);
   expect([200, 302, 303, 307, 308]).toContain(destinationWarmup.status());
-  const response = page.waitForResponse(
-    (candidate) => candidate.url().endsWith("/api/invitations/accept") && candidate.request().method() === "POST",
-  );
-  // Invitation acceptance owns an animated route handoff after its authoritative
-  // mutation. Waiting for the whole client navigation here can hide a completed
-  // membership transaction behind an optional presentation runtime.
-  await accept.click({ noWaitAfter: true });
-  const acceptedResponse = await response;
+  const traffic: Array<{ event: string; value?: number | string | null }> = [];
+  const isAccept = (request: import("@playwright/test").Request) =>
+    new URL(request.url()).pathname === "/api/invitations/accept" && request.method() === "POST";
+  page.on("request", (request) => {
+    if (isAccept(request)) traffic.push({ event: "sent" });
+  });
+  page.on("response", (response) => {
+    if (isAccept(response.request())) traffic.push({ event: "response", value: response.status() });
+  });
+  page.on("requestfailed", (request) => {
+    if (isAccept(request)) traffic.push({ event: "failed", value: request.failure()?.errorText });
+  });
+  const [, acceptedResponse] = await Promise.all([
+    accept.click({ noWaitAfter: true }),
+    page.waitForResponse((response) => isAccept(response.request()), { timeout: 20_000 }),
+  ]).catch(async (cause: unknown) => {
+    const state = await page
+      .locator("main.invitation-page")
+      .getAttribute("data-invitation-state", { timeout: 1000 })
+      .catch(() => null);
+    const pageKind = new URL(page.url()).pathname.startsWith("/player/playthroughs/") ? "voyage" : "invite";
+    console.log("HELM_ACCEPT_FAILURE " + JSON.stringify({ traffic, state, pageKind }));
+    throw cause;
+  });
+  console.log("HELM_ACCEPT_RESPONSE " + JSON.stringify(traffic));
   expect(acceptedResponse.status(), await acceptedResponse.text()).toBe(200);
   await expect(page).toHaveURL(/\/player\/playthroughs\//u, { timeout: 30_000 });
   return { context, page };
