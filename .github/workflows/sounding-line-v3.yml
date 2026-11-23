@@ -170,9 +170,15 @@ jobs:
         if: ${{ matrix.kind == 'browser' || (matrix.kind == 'browser-full' && startsWith(matrix.id, 'browser-generic-')) }}
         timeout-minutes: 6
         run: npx --no-install playwright install chromium
+      - name: Use the Ubuntu archive for browser compatibility dependencies
+        if: ${{ matrix.id == 'browser' && matrix.kind == 'browser-full' }}
+        run: |
+          source=/etc/apt/sources.list.d/ubuntu.sources
+          sudo sed -E -i 's|mirror[+]file:/etc/apt/apt-mirrors[.]txt|https://archive.ubuntu.com/ubuntu/|g; s|http://[^[:space:]]*[.]ec2[.]archive[.]ubuntu[.]com/ubuntu/?|https://archive.ubuntu.com/ubuntu/|g' "$source"
+          grep -E '^URIs:.*https://archive[.]ubuntu[.]com/ubuntu/' "$source"
       - name: Install full browser compatibility coverage
         if: ${{ matrix.kind == 'browser-full' && !startsWith(matrix.id, 'browser-generic-') }}
-        timeout-minutes: 10
+        timeout-minutes: ${{ matrix.id == 'browser' && 18 || 10 }}
         run: npx --no-install playwright install --with-deps chromium webkit
       - name: Run selected verification
         if: ${{ steps.prior.outputs.cache-hit != 'true' }}
