@@ -527,18 +527,19 @@ export async function saveStudioDraft(
       let provenance: NonNullable<StudioDraftInput["reusableUsage"]>["provenance"];
       if (version.item.kind === spatialItemKind || usage.sourceKind === "SPATIAL_MOMENT") {
         const [blockId] = usage.insertedBlockIds;
-        const block = input.chapters.flatMap((chapter) => chapter.blocks).find((passage) => passage.id === blockId);
+        const attachment = input.chapters.flatMap((chapter) => chapter.blocks).find((passage) => passage.id === blockId)
+          ?.presentation?.spatialMoment;
         if (
           version.item.kind !== spatialItemKind ||
           usage.sourceKind !== "SPATIAL_MOMENT" ||
           version.versionNumber < 1 ||
           usage.insertedBlockIds.length !== 1 ||
           usage.insertedChapterIds.length ||
-          !block?.presentation.spatialMoment
+          !attachment
         )
           throw new Error("The spatial source must pin one Passage attachment to an immutable version.");
         const source = validateSpatialMoment(envelope);
-        const attached = validateSpatialMoment(block.presentation.spatialMoment, blockId);
+        const attached = validateSpatialMoment(attachment, blockId);
         if (
           source.definition.id !== usage.itemId ||
           source.definition.ownerPersonId !== userId ||
