@@ -1,5 +1,5 @@
 name: Validate exact source-bound Journal experience publication
-run-name: Validate Journal experience with path-scoped artifact hydration
+run-name: Validate Journal evidence with hash-checked base hydration
 on:
   push:
     branches:
@@ -24,13 +24,19 @@ jobs:
             !/*/
             /scripts/
             /testing/
-            /Development_Docs/Testing/Product_Experience/candidate-review.json
+            /src/
+            /app/
+            /components/
+            /lib/
+            /styles/
+            **/*.json
             /Development_Docs/Testing/Product_Experience/evidence/journal-906/ef6d31b1b8/
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
       - name: Hydrate exact source and published media objects
         env:
+          GH_TOKEN: ${{ github.token }}
           BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
           CANDIDATE_SHA: 09fad8014e2462911364c23d7c7440ef43deebf6
         run: |
@@ -61,12 +67,13 @@ jobs:
           EOF
           GIT_NO_LAZY_FETCH=1 git cat-file --batch-check < "$RUNNER_TEMP/evidence-object-ids" |
             awk '$2=="missing" { print $1 }' > "$RUNNER_TEMP/missing-evidence-object-ids"
-          if [[ -s "$RUNNER_TEMP/missing-evidence-object-ids" ]]; then
-            split -l 100 "$RUNNER_TEMP/missing-evidence-object-ids" "$RUNNER_TEMP/j906-source-"
-            for batch in "$RUNNER_TEMP"/j906-source-*; do
-              git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin < "$batch"
-            done
-          fi
+          count=$(wc -l < "$RUNNER_TEMP/missing-evidence-object-ids")
+          echo "Missing objects after path checkout: $count"
+          test "$count" -le 100
+          while IFS= read -r oid; do
+            actual=$(gh api "repos/Kgray44/treasurehuntSoT/git/blobs/$oid" --jq '.content' | base64 --decode | git hash-object -w --stdin)
+            test "$actual" = "$oid"
+          done < "$RUNNER_TEMP/missing-evidence-object-ids"
       - name: Run the repository source-bound experience verifier
         env:
           BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
