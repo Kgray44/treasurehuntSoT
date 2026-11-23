@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Run the original recorded workload on the exact Journal cue trial
+run-name: Attribute the warm Journal compositor workload on the exact clip trial
 
 on:
   push:
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   canonical-budget:
-    name: Original recorded Journal benchmark on standard Ubuntu
+    name: Journal warm replay compositor trace on standard Ubuntu
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
@@ -66,7 +66,18 @@ jobs:
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
           npx --no-install prettier --check src/components/player/journal/ChronicleJournalSession.tsx
-      - name: Measure all unchanged Journal budgets
+      - name: Add phase markers and compositor tracing for one warm replay
+        run: |
+          python3 - <<'TRACE_PATCH'
+          import base64
+          from pathlib import Path
+          p = Path("tests/e2e/phase3-performance.spec.ts")
+          text = p.read_text()
+          split = "    const warmRuns:"
+          assert text.count(split) == 1
+          p.write_text(text.split(split, 1)[0] + base64.b64decode("CiAgICBjb25zdCB0cmFjZSA9IGF3YWl0IGJyb3dzZXIubmV3QnJvd3NlckNEUFNlc3Npb24oKTsKICAgIHR5cGUgVGFzayA9IHsgbmFtZTogc3RyaW5nOyB0czogbnVtYmVyOyBkdXI/OiBudW1iZXI7IHBpZDogbnVtYmVyOyB0aWQ6IG51bWJlcjsgcGg6IHN0cmluZyB9OwogICAgY29uc3QgZXZlbnRzOiBUYXNrW10gPSBbXTsKICAgIGNvbnN0IGNvbXBsZXRlID0gbmV3IFByb21pc2U8dm9pZD4oKHJlc29sdmUpID0+IHRyYWNlLm9uY2UoIlRyYWNpbmcudHJhY2luZ0NvbXBsZXRlIiwgKCkgPT4gcmVzb2x2ZSgpKSk7CiAgICB0cmFjZS5vbigiVHJhY2luZy5kYXRhQ29sbGVjdGVkIiwgKHsgdmFsdWUgfSkgPT4gewogICAgICBmb3IgKGNvbnN0IGV2ZW50IG9mIHZhbHVlIGFzIFRhc2tbXSkgewogICAgICAgIGlmIChldmVudHMubGVuZ3RoID49IDE1MDAwMCkgYnJlYWs7CiAgICAgICAgaWYgKGV2ZW50Lm5hbWUuc3RhcnRzV2l0aCgiSk9VUk5BTF9ESUFHXyIpIHx8IChldmVudC5waCA9PT0gIlgiICYmIChldmVudC5kdXIgPz8gMCkgPj0gMTIwMCkpIHsKICAgICAgICAgIGNvbnN0IHsgbmFtZSwgdHMsIGR1ciwgcGlkLCB0aWQsIHBoIH0gPSBldmVudDsKICAgICAgICAgIGV2ZW50cy5wdXNoKHsgbmFtZSwgdHMsIGR1ciwgcGlkLCB0aWQsIHBoIH0pOwogICAgICAgIH0KICAgICAgfQogICAgfSk7CiAgICBhd2FpdCB0cmFjZS5zZW5kKCJUcmFjaW5nLnN0YXJ0IiwgewogICAgICB0cmFuc2Zlck1vZGU6ICJSZXBvcnRFdmVudHMiLAogICAgICBjYXRlZ29yaWVzOiAiLSosZGV2dG9vbHMudGltZWxpbmUsYmxpbmsudXNlcl90aW1pbmcsdG9wbGV2ZWwsY2Msdml6IiwKICAgIH0pOwogICAgbGV0IHdhcm06IEF3YWl0ZWQ8UmV0dXJuVHlwZTx0eXBlb2YgbWVhc3VyZWRGdWxsT3BlbmluZz4+OwogICAgdHJ5IHsKICAgICAgYXdhaXQgcGFnZS5ldmFsdWF0ZSgoKSA9PiB7CiAgICAgICAgcGVyZm9ybWFuY2UubWFyaygiSk9VUk5BTF9ESUFHX1NUQVJUIik7CiAgICAgICAgY29uc3Qgc2hlbGwgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yPEhUTUxFbGVtZW50PigiLmNocm9uaWNsZS1qb3VybmFsLXNoZWxsIikhOwogICAgICAgIGxldCBwcmV2aW91c1BoYXNlID0gc2hlbGwuZGF0YXNldC5qb3VybmFsUGhhc2U7CiAgICAgICAgbGV0IGxhc3RGcmFtZUF0ID0gMDsKICAgICAgICBjb25zdCBzYW1wbGUgPSAoYXQ6IG51bWJlcikgPT4gewogICAgICAgICAgaWYgKHByZXZpb3VzUGhhc2UgIT09IHNoZWxsLmRhdGFzZXQuam91cm5hbFBoYXNlKSB7CiAgICAgICAgICAgIHByZXZpb3VzUGhhc2UgPSBzaGVsbC5kYXRhc2V0LmpvdXJuYWxQaGFzZTsKICAgICAgICAgICAgcGVyZm9ybWFuY2UubWFyaygiSk9VUk5BTF9ESUFHX1BIQVNFXyIgKyBwcmV2aW91c1BoYXNlKTsKICAgICAgICAgIH0KICAgICAgICAgIGlmIChsYXN0RnJhbWVBdCAmJiBhdCAtIGxhc3RGcmFtZUF0ID4gMjUpIHsKICAgICAgICAgICAgcGVyZm9ybWFuY2UubWFyaygiSk9VUk5BTF9ESUFHX1NMT1dfIiArIHByZXZpb3VzUGhhc2UgKyAiXyIgKyBNYXRoLnJvdW5kKGF0IC0gbGFzdEZyYW1lQXQpKTsKICAgICAgICAgIH0KICAgICAgICAgIGxhc3RGcmFtZUF0ID0gYXQ7CiAgICAgICAgICBpZiAocHJldmlvdXNQaGFzZSAhPT0gIkpPVVJOQUxfUkVBRFkiIHx8IHNoZWxsLmRhdGFzZXQuam91cm5hbE9wZW5pbmdPdXRjb21lICE9PSAiY29tcGxldGVkIiB8fAogICAgICAgICAgICAgIHBlcmZvcm1hbmNlLmdldEVudHJpZXNCeU5hbWUoIkpPVVJOQUxfRElBR19QSEFTRV9CT09LX1NFVFRMSU5HIikubGVuZ3RoID09PSAwKSB7CiAgICAgICAgICAgIHJlcXVlc3RBbmltYXRpb25GcmFtZShzYW1wbGUpOwogICAgICAgICAgfQogICAgICAgICAgfTsKICAgICAgICBwZXJmb3JtYW5jZS5jbGVhck1hcmtzKCJKT1VSTkFMX0RJQUdfUEhBU0VfQk9PS19TRVRUTElORyIpOwogICAgICAgIHJlcXVlc3RBbmltYXRpb25GcmFtZShzYW1wbGUpOwogICAgICB9KTsKICAgICAgd2FybSA9IGF3YWl0IG1lYXN1cmVkRnVsbE9wZW5pbmcocGFnZSwgcmVwbGF5KHBhZ2UpKTsKICAgIH0gZmluYWxseSB7CiAgICAgIGF3YWl0IHRyYWNlLnNlbmQoIlRyYWNpbmcuZW5kIik7CiAgICAgIGF3YWl0IGNvbXBsZXRlOwogICAgICBhd2FpdCB0cmFjZS5kZXRhY2goKTsKICAgIH0KICAgIGNvbnN0IHN0YXJ0ID0gZXZlbnRzLmZpbmQoKGVudHJ5KSA9PiBlbnRyeS5uYW1lID09PSAiSk9VUk5BTF9ESUFHX1NUQVJUIik7CiAgICBleHBlY3Qoc3RhcnQsICJUcmFjZSBtdXN0IGNvbnRhaW4gdGhlIEpvdXJuYWwgZGlhZ25vc3RpYyBtYXJrZXIuIikudG9CZVRydXRoeSgpOwogICAgY29uc3QgbWFya2VycyA9IGV2ZW50cy5maWx0ZXIoKGVudHJ5KSA9PiBlbnRyeS5uYW1lLnN0YXJ0c1dpdGgoIkpPVVJOQUxfRElBR18iKSk7CiAgICBjb25zdCBzbG93ID0gbWFya2Vycy5maWx0ZXIoKGVudHJ5KSA9PiBlbnRyeS5uYW1lLnN0YXJ0c1dpdGgoIkpPVVJOQUxfRElBR19TTE9XXyIpKTsKICAgIGNvbnN0IGRpYWdub3N0aWMgPSB7CiAgICAgIHNvdXJjZTogcHJvY2Vzcy5lbnYuRk9SRVZFUl9WQUxJREFUSU9OX1NPVVJDRV9TSEEsCiAgICAgIGZyYW1lUDk1OiBwZXJjZW50aWxlKHdhcm0udmlzdWFsLmZyYW1lRHVyYXRpb25zTXMsIDAuOTUpLAogICAgICBmcmFtZXM6IHdhcm0udmlzdWFsLmZyYW1lRHVyYXRpb25zTXMubGVuZ3RoLAogICAgICBvcGVuaW5nTXM6IHdhcm0uZHVyYXRpb25NcywKICAgICAgZXZlbnRDb3VudDogZXZlbnRzLmxlbmd0aCwKICAgICAgcGhhc2VUaW1lczogbWFya2Vycy5maWx0ZXIoKGVudHJ5KSA9PiBlbnRyeS5uYW1lLnN0YXJ0c1dpdGgoIkpPVVJOQUxfRElBR19QSEFTRV8iKSkKICAgICAgICAubWFwKChlbnRyeSkgPT4gKHsgcGhhc2U6IGVudHJ5Lm5hbWUuc2xpY2UoIkpPVVJOQUxfRElBR19QSEFTRV8iLmxlbmd0aCksIG1zOiAoZW50cnkudHMgLSBzdGFydCEudHMpIC8gMTAwMCB9KSksCiAgICAgIHNsb3dGcmFtZXM6IHNsb3cubWFwKChmcmFtZSkgPT4gewogICAgICAgIGNvbnN0IHdpbmRvd01zID0gTnVtYmVyKGZyYW1lLm5hbWUuc3BsaXQoIl8iKS5hdCgtMSkpOwogICAgICAgIHJldHVybiB7CiAgICAgICAgICBwaGFzZUFuZE1zOiBmcmFtZS5uYW1lLnNsaWNlKCJKT1VSTkFMX0RJQUdfU0xPV18iLmxlbmd0aCksCiAgICAgICAgICBtczogKGZyYW1lLnRzIC0gc3RhcnQhLnRzKSAvIDEwMDAsCiAgICAgICAgICB0YXNrczogZXZlbnRzLmZpbHRlcigoZXZlbnQpID0+IGV2ZW50LnBoID09PSAiWCIgJiYgZXZlbnQudHMgPD0gZnJhbWUudHMgJiYKICAgICAgICAgICAgZXZlbnQudHMgKyAoZXZlbnQuZHVyID8/IDApID4gZnJhbWUudHMgLSAod2luZG93TXMgKiAxMDAwKSkKICAgICAgICAgICAgLnNvcnQoKGxlZnQsIHJpZ2h0KSA9PiAocmlnaHQuZHVyID8/IDApIC0gKGxlZnQuZHVyID8/IDApKS5zbGljZSgwLCAxMikKICAgICAgICAgICAgLm1hcCgoZXZlbnQpID0+ICh7IG5hbWU6IGV2ZW50Lm5hbWUsIGR1cmF0aW9uTXM6IChldmVudC5kdXIgPz8gMCkgLyAxMDAwLAogICAgICAgICAgICAgIHJlbmRlcmVyOiBldmVudC5waWQgPT09IHN0YXJ0IS5waWQsIG1haW46IGV2ZW50LnBpZCA9PT0gc3RhcnQhLnBpZCAmJiBldmVudC50aWQgPT09IHN0YXJ0IS50aWQgfSkpLAogICAgICAgIH07CiAgICAgIH0pLAogICAgfTsKICAgIGF3YWl0IGZzLndyaXRlRmlsZShwYXRoLmpvaW4oYXJ0aWZhY3QuYXJ0aWZhY3REaXJlY3RvcnksICJqb3VybmFsLWNvbXBvc2l0b3ItdHJhY2UuanNvbiIpLAogICAgICBKU09OLnN0cmluZ2lmeShkaWFnbm9zdGljLCBudWxsLCAyKSArICJcbiIsIHsgZmxhZzogInd4IiB9KTsKICB9LAopOwo=").decode())
+          TRACE_PATCH
+      - name: Trace the warm desktop opening (diagnostic only)
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -80,7 +91,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-page-turn-cue-standard-ubuntu
+          name: journal-compositor-trace-standard-ubuntu
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
