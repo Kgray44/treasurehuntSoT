@@ -34,9 +34,6 @@ type LayoutShiftSample = Readonly<{ atMs: number; score: number; phase: string |
 type VisualProbeResult = Readonly<{
   elapsedMs: number;
   frameDurationsMs: readonly number[];
-  frameEnds: readonly number[];
-  framesByPhase?: Record<string, number[]>;
-  remainingAnimations: readonly { property: string; target: string }[];
   longTaskDurationsMs: readonly number[];
   cls: number;
   layoutShifts: readonly LayoutShiftSample[];
@@ -212,7 +209,6 @@ async function startVisualProbe(page: Page) {
     type Probe = {
       startedAt: number;
       lastFrameAt: number | null;
-      frameEnds: number[];
       frameDurationsMs: number[];
       longTaskDurationsMs: number[];
       cls: number;
@@ -234,17 +230,13 @@ async function startVisualProbe(page: Page) {
       startedAt: window.performance.now(),
       lastFrameAt: null,
       frameDurationsMs: [],
-      frameEnds: [],
       longTaskDurationsMs: [],
       cls: 0,
       layoutShifts: [],
       frame: 0,
     } as unknown as Probe;
     const sampleFrame = (at: number) => {
-      if (probe.lastFrameAt !== null) {
-        probe.frameDurationsMs.push(at - probe.lastFrameAt);
-        probe.frameEnds.push(at);
-      }
+      if (probe.lastFrameAt !== null) probe.frameDurationsMs.push(at - probe.lastFrameAt);
       probe.lastFrameAt = at;
       probe.frame = requestAnimationFrame(sampleFrame);
     };
@@ -288,7 +280,6 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
       __phase3VisualProbe?: {
         startedAt: number;
         frameDurationsMs: number[];
-        frameEnds: number[];
         longTaskDurationsMs: number[];
         cls: number;
         layoutShifts: VisualProbeResult["layoutShifts"];
@@ -310,16 +301,6 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
     return {
       elapsedMs: window.performance.now() - probe.startedAt,
       frameDurationsMs: probe.frameDurationsMs,
-      frameEnds: probe.frameEnds,
-      remainingAnimations: document.getAnimations().filter(animation => animation.playState === "running" || animation.pending)
-        .map(animation => {
-          const effect = animation.effect;
-          const target = effect instanceof KeyframeEffect ? effect.target : null;
-          return {
-            property: animation instanceof CSSTransition ? animation.transitionProperty : animation.constructor.name,
-            target: target ? [...target.classList].slice(0, 3).join(".") : "",
-          };
-        }),
       longTaskDurationsMs: probe.longTaskDurationsMs,
       cls: probe.cls,
       layoutShifts: probe.layoutShifts,
@@ -359,7 +340,6 @@ type OpeningMeasurement = {
   durationMs: number;
   responseMs: number;
   phases: string[];
-  phaseTimes: Array<{ phase: string; at: number }>;
   reason: string;
   bookStatus: string | null;
 };
@@ -371,9 +351,6 @@ async function measureOpening(control: Locator): Promise<OpeningMeasurement> {
     const probeWindow = window as unknown as Window & { __phase3OpeningMeasurement?: Promise<OpeningMeasurement> };
     const phases = new Set<string>();
     const initialPhase = shell.dataset.journalPhase;
-    const phaseTimes: Array<{ phase: string; at: number }> = [
-      { phase: initialPhase ?? "outside", at: window.performance.now() },
-    ];
     probeWindow.__phase3OpeningMeasurement = new Promise((resolve, reject) => {
       let startedAt: number | null = null;
       let responseMs: number | null = null;
@@ -391,7 +368,6 @@ async function measureOpening(control: Locator): Promise<OpeningMeasurement> {
             durationMs: window.performance.now() - startedAt,
             responseMs,
             phases: [...phases],
-            phaseTimes,
             reason: shell.dataset.journalReadyReason ?? "",
             bookStatus: shell.querySelector(".main-journal-book")?.getAttribute("data-pageflip-status") ?? null,
           });
@@ -400,7 +376,6 @@ async function measureOpening(control: Locator): Promise<OpeningMeasurement> {
       const observer = new MutationObserver((mutations) => {
         if (startedAt === null) return;
         const phase = shell.dataset.journalPhase;
-        if (phase && phaseTimes.at(-1)?.phase !== phase) phaseTimes.push({ phase, at: window.performance.now() });
         for (const record of mutations) {
           if (record.attributeName === "data-journal-phase" && record.oldValue) phases.add(record.oldValue);
         }
@@ -606,15 +581,7 @@ async function measuredFullOpening(page: Page, control: Locator) {
   expect(opening.phases).toContain("BOOK_SETTLING");
   expect(opening.reason, "The full opening must complete with its real animated handoff.").toBe("completed");
   await assertReadableJournal(page);
-  const framesByPhase: Record<string, number[]> = {};
-  let phaseIndex = 0;
-  for (const [index, interval] of visual.frameDurationsMs.entries()) {
-    const begin = visual.frameEnds[index]! - interval;
-    while (phaseIndex + 1 < opening.phaseTimes.length && opening.phaseTimes[phaseIndex + 1]!.at <= begin) phaseIndex++;
-    const phase = opening.phaseTimes[phaseIndex]?.phase ?? "outside";
-    (framesByPhase[phase] ??= []).push(interval);
-  }
-  return { ...opening, visual: { ...visual, framesByPhase } };
+  return { ...opening, visual };
 }
 
 phase3Test(
@@ -778,16 +745,6 @@ phase3Test(
     const budgetNames = budgetChecks.map((check) => check.name);
     expect(new Set(budgetNames).size, "Performance budget evidence names must be unique.").toBe(budgetNames.length);
     budgetNames.forEach((name) => expect(name).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u));
-    const desktopPhaseTiming = desktopRuns.map(run => ({
-      remainingAnimations: run.remainingAnimations,
-      phases: Object.fromEntries(Object.entries(run.framesByPhase).map(([phase, intervals]) => [phase, {
-        count: intervals.length, p95: rounded(percentile(intervals, .95)),
-        slow: intervals.filter(ms => ms > budgets.desktopFrameP95Ms).length,
-      }])),
-    }));
-    console.log("JOURNAL_MINIMAL_PHASE_TIMING " + JSON.stringify({
-      desktop: desktopPhaseTiming, metadata: { viewport: page.viewportSize(), samples: desktopFrames.length },
-    }));
     const failedBudgets = budgetChecks.filter((check) => !check.passed).map((check) => check.name);
 
     const nonceHash = boundedEnvironmentValue(["FOREVER_VALIDATION_NONCE_HASH"], /^[a-f0-9]{64}$/u, "missing");
