@@ -1,106 +1,94 @@
-name: Lanternwake isolated Linux benchmark
-run-name: Recorded Journal comparison using a raster copy of the existing paper grain
-
+name: Validate exact source-bound Journal experience publication
+run-name: Verify Journal evidence against the two corrected browser probes
 on:
   push:
     branches:
       - codex/lanternwake-focused-development-cf6b1d6bbae4
     paths:
       - .github/workflows/harbor-lanternwake-linux-development.yml
-
 permissions:
   contents: read
-
 jobs:
-  benchmark:
-    name: Recorded Journal grain (${{ matrix.texture }})
+  validate-evidence:
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        texture: [control, bitmap]
-    timeout-minutes: 22
-    env:
-      JOURNAL_COMPARE_BROWSER: shell
-      JOURNAL_COMPARE_CAPTURE: record
-      CANDIDATE_SHA: ${{ github.sha }}
-      BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
-      FOREVER_VALIDATION_SOURCE_SHA: ${{ github.sha }}
-      NEXT_TELEMETRY_DISABLED: "1"
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.sha }}
-          fetch-depth: 2
+          ref: 2a9175723cc9dc3b8c6f5ed537de6621979118bf
+          fetch-depth: 12
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /*
             !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
             /scripts/
-            /src/
             /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
+            /src/
+            /app/
+            /components/
+            /lib/
+            /styles/
+            **/*.json
+            /Development_Docs/Testing/Product_Experience/evidence/journal-906/c117c076d4/
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
+      - name: Hydrate exact source and published media objects
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
+          CANDIDATE_SHA: 2a9175723cc9dc3b8c6f5ed537de6621979118bf
         run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium
-      - name: Render the current grain tile as a transparent bitmap
-        if: matrix.texture == 'bitmap'
-        run: |
-          node --input-type=module <<'EOF'
-          import { readFile, writeFile } from "node:fs/promises";
-          import { chromium } from "playwright";
-          const original = await readFile("public/textures/paper-grain.svg");
-          const browser = await chromium.launch();
-          try {
-            const page = await browser.newPage({ viewport: { width: 180, height: 180 }, deviceScaleFactor: 1 });
-            await page.setContent('<style>body{margin:0}</style><img alt="" src="data:image/svg+xml;base64,' + original.toString("base64") + '">');
-            await page.locator("img").evaluate(image => image.decode());
-            await page.screenshot({ path: "public/textures/paper-grain-benchmark.png", omitBackground: true });
-          } finally {
-            await browser.close();
-          }
-          for (const file of ["src/styles/player.css", "src/styles/chronicle.css", "src/components/player/journal/ChronicleJournalSession.module.css"]) {
-            const source = await readFile(file, "utf8");
-            if (!source.includes("/textures/paper-grain.svg")) throw new Error("Missing grain binding: " + file);
-            await writeFile(file, source.replaceAll("/textures/paper-grain.svg", "/textures/paper-grain-benchmark.png"));
-          }
-          EOF
-      - name: Run unchanged recorded canonical workload and performance budgets
-        run: |
+          git fetch --no-tags --depth=12 --filter=blob:none origin refs/heads/main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
+          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
+          node --input-type=module > "$RUNNER_TEMP/evidence-object-ids" <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { sourceSnapshotReadsPath } from "./scripts/sounding-line/product-experience.mjs";
+          const git=(args)=>execFileSync("git",args,{encoding:"utf8",maxBuffer:64*1024*1024});
+          const recordPath="Development_Docs/Testing/Product_Experience/candidate-review.json";
+          const receipt=JSON.parse(git(["show",process.env.CANDIDATE_SHA+":"+recordPath]));
+          const pair=receipt.pairedEvidence;
+          const evidenceFiles=new Set([recordPath,...receipt.artifacts.map(a=>a.path),pair.report.path,pair.profile.path,pair.runtime.path,...pair.cases.map(c=>c.witness.path)]);
+          const ids=new Set();
+          for (const revision of [process.env.BASE_SHA,process.env.CANDIDATE_SHA]) {
+            for (const entry of git(["ls-tree","-rz",revision]).split("\0").filter(Boolean)) {
+              const i=entry.indexOf("\t");
+              const [,type,oid]=entry.slice(0,i).split(" ");
+              const file=entry.slice(i+1);
+              if(type==="blob" && (sourceSnapshotReadsPath(file) || (revision===process.env.CANDIDATE_SHA && evidenceFiles.has(file)))) {
+                ids.add(oid);
+              }
+            }
+          }
+          console.log([...ids].sort().join("\n"));
           EOF
-      - name: Retain sanitized performance metrics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: journal-raster-grain-${{ matrix.texture }}
-          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
-          if-no-files-found: ignore
-          retention-days: 30
+          GIT_NO_LAZY_FETCH=1 git cat-file --batch-check < "$RUNNER_TEMP/evidence-object-ids" |
+            awk '$2=="missing" { print $1 }' > "$RUNNER_TEMP/missing-evidence-object-ids"
+          count=$(wc -l < "$RUNNER_TEMP/missing-evidence-object-ids")
+          echo "Missing objects after path checkout: $count"
+          test "$count" -le 100
+          while IFS= read -r oid; do
+            actual=$(gh api "repos/Kgray44/treasurehuntSoT/git/blobs/$oid" --jq '.content' | base64 --decode | git hash-object -w --stdin)
+            test "$actual" = "$oid"
+          done < "$RUNNER_TEMP/missing-evidence-object-ids"
+      - name: Run the repository source-bound experience verifier
+        env:
+          BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
+          CANDIDATE_SHA: 2a9175723cc9dc3b8c6f5ed537de6621979118bf
+        run: |
+          node --input-type=module <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { planProductExperience, verifyProductExperience } from "./scripts/sounding-line/product-experience.mjs";
+          const root=process.cwd();
+          const baseSha=process.env.BASE_SHA;
+          const candidateSha=process.env.CANDIDATE_SHA;
+          const changedPaths=execFileSync("git",["diff","--name-only","--no-renames",baseSha,candidateSha],{encoding:"utf8",maxBuffer:8*1024*1024}).trim().split("\n");
+          const plan=planProductExperience({root,baseSha,candidateSha,changedPaths});
+          if(!plan.applicable || plan.sourceDigest!=="67fc86144dd2274d1eeb2582d357d2309917d9d8f4a5fcbcdcb14b8c76017d57" || plan.contractDigest!=="4578d749590b9033c43bf566138577f9d32cb249722f3050f98608db287253de") throw new Error("Expected verified source and contract boundaries");
+          const receipt=verifyProductExperience(root,candidateSha,plan);
+          console.log("JOURNAL_906_EXPERIENCE_VERIFICATION "+JSON.stringify({baseSha,candidateSha,receipt}));
+          if(receipt.status!=="PASS") throw new Error("Product Experience evidence did not pass");
+          EOF
