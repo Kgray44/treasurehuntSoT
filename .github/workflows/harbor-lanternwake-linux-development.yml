@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Isolate Journal cold-opening behavior on each compositor
+run-name: Journal ambient and book render-pass interaction
 
 on:
   push:
@@ -58,7 +58,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Record the exact renderer and cold-opening outcome before replay
+      - name: Measure ambient and book paint independently and together
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -72,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-cold-renderer
+          name: journal-render-pass-interaction
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30

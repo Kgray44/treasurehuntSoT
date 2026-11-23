@@ -597,69 +597,68 @@ async function measuredFullOpening(page: Page, control: Locator) {
 
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
+phase3Test(
+  "measure the combined effect of the ambient and book render passes",
+  async ({ page, phase3, browserName }) => {
+    expect(browserName).toBe("chromium");
+    expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
+    expect(process.env.FOREVER_PHASE3_PERFORMANCE_BASE_URL).toBe("http://127.0.0.1:3200");
+    const artifact = performanceArtifactTarget();
+    await fs.mkdir(artifact.artifactDirectory, { recursive: true });
+    await fs.rm(artifact.artifactPath, { force: true });
+    await page.setViewportSize({ width: 1_440, height: 900 });
+    await installRuntimeCounter(page);
+    await setPhase3Motion(page, PHASE3_MOTION_MODES[0]);
+    await phase3.proveIsolation();
+    const fixture = await phase3.createCase("P3-PERFORMANCE-CHAPTER", "CHAPTER_RELEASED");
+    const voyage = await resolveLegacyCampaign(fixture.slug);
+    expect(voyage, "The performance fixture must be bound to a canonical Voyage.").toBeTruthy();
+    const journalPath = `/player/playthroughs/${voyage!.sessionId}/journal`;
+    await enterJournal(page, fixture, journalPath);
 
-phase3Test("record cold-opening outcomes with the available Chromium compositor paths", async ({ browser, phase3 }) => {
-  const baseURL=process.env.FOREVER_PHASE3_PERFORMANCE_BASE_URL;
-  expect(baseURL).toBe("http://127.0.0.1:3200");
-  expect(process.env.FOREVER_VALIDATION_ISOLATION).toBe("1");
-  await phase3.proveIsolation();
-  const artifact=performanceArtifactTarget();
-  const observations=[];
-  const secrets:string[]=[];
-  for (const profile of ["default","angle-swiftshader"] as const) {
-    const args=profile==="angle-swiftshader"?["--enable-gpu","--use-gl=angle","--use-angle=swiftshader"]:[];
-    const browserInstance=await browser.browserType().launch({channel:"chromium",headless:true,args});
-    try {
-      const cdp=await browserInstance.newBrowserCDPSession();
-      const info=await cdp.send("SystemInfo.getInfo");
-      const profileInfo={devices:info.gpu.devices.map(({vendorString,deviceString,driverVendor,driverVersion})=>({
-        vendorString,deviceString,driverVendor,driverVersion})), features:info.gpu.featureStatus,
-        glRenderer:info.gpu.auxAttributes?.glRenderer};
-      await cdp.detach();
-      const context=await browserInstance.newContext({baseURL,viewport:{width:1440,height:900}});
-      const page=await context.newPage();
-      await installRuntimeCounter(page);
-      await setPhase3Motion(page,PHASE3_MOTION_MODES[0]);
-      const fixture=await phase3.createCase("P3-PERFORMANCE-CHAPTER","CHAPTER_RELEASED");
-      secrets.push(fixture.slug);
-      const voyage=await resolveLegacyCampaign(fixture.slug);
-      expect(voyage).toBeTruthy();
-      secrets.push(voyage!.sessionId);
-      const journalPath=`/player/playthroughs/${voyage!.sessionId}/journal`;
-      await enterJournal(page,fixture,journalPath);
+    const cold = await measuredFullOpening(page, page.getByRole("button", { name: "Open the journal" }));
+    await expect(journal(page).getByText("Captain channel connected")).toBeVisible();
+    await expect(journal(page)).toHaveAttribute("data-live-event", "idle");
+    const liveStartedAt = performance.now();
+    const live = await phase3.canonicalCaptainAction(fixture, "presentation");
+    expect(live.eventType).toBe("presentationTriggered");
+    await expect(journal(page)).toHaveAttribute("data-live-event", "revealed");
+    await expect(journal(page).locator('[aria-live="assertive"]')).toContainText("A new page was released:");
+    const liveUpdateMs = performance.now() - liveStartedAt;
+    const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
+    expect(fullRuntimeBaseline.eventSources).toBe(1);
 
-      await page.evaluate(()=>{
-        const root=document.querySelector<HTMLElement>(".chronicle-journal-shell");
-        if(!root)throw new Error("No cold Journal scene");
-        const recorded=window as Window & { openingDriverTrace?: Array<{ phase:string; atMs:number }> };
-        const start=performance.now();
-        const phases:Array<{phase:string;atMs:number}>=[];
-        recorded.openingDriverTrace=phases;
-        const observe=()=>{
-          const phase=root.dataset.journalPhase;
-          if(phase && phases.at(-1)?.phase!==phase) phases.push({phase,atMs:performance.now()-start});
-        };
-        observe();
-        new MutationObserver(observe).observe(root,{attributes:true,attributeFilter:["data-journal-phase"]});
-      });
-      await startVisualProbe(page);
-      const opening=await measureOpening(page.getByRole("button",{name:"Open the journal"}));
-      const visual=await stopVisualProbe(page);
-      const phaseTimeline=await page.evaluate(
-        ()=>(window as Window & { openingDriverTrace?: Array<{phase:string;atMs:number}> }).openingDriverTrace);
-      const frames={ p95:rounded(percentile(visual.frameDurationsMs,.95)), count:visual.frameDurationsMs.length };
-      const observation={profile,profileInfo,opening,phaseTimeline,frames};
-      console.log("JOURNAL_COLD_RENDERER " + JSON.stringify(observation));
-      observations.push(observation);
-      await assertReadableJournal(page);
-    } finally {
-      await browserInstance.close();
+
+
+    const s='.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"]';
+    const ambient=[s+"::after { mix-blend-mode: normal; }",
+      s+" .ocean-depth [data-scene-part^=fog] { filter: none; }",
+      s+" .chronicle-session-header { backdrop-filter: none; }",
+      s+" .opening-page-grain, "+s+" .cover-front::after { mix-blend-mode: normal; }",
+      s+" .book-shadow, "+s+" .book-binding, "+s+" .opening-wax-seal { filter:none; }"];
+    const ornaments=[s+" :is(.rear-book-cover,.page-stack,.book-shadow,.book-binding) { visibility:hidden !important; }",
+      s+" .closed-book > * { visibility:hidden !important; }"];
+    const options={current:[],ambient,ornaments,both:[...ambient,...ornaments]};
+    const rows=[];
+    for(const mode of ["current","ambient","ornaments","both","both","ornaments","ambient","current"] as const) {
+      const style=options[mode].length?await page.addStyleTag({content:options[mode].join("\n")}):null;
+      try {
+        await waitForStableRuntimeBaseline(page);
+        const run=await measuredFullOpening(page,replay(page));
+        const all=run.visual.frameDurationsMs;
+        const settling=run.visual.framesByPhase.BOOK_SETTLING??[];
+        expect(settling.length).toBeGreaterThan(20);
+        expect(run.durationMs).toBeLessThan(budgets.openingMs);
+        await expect(replay(page)).toBeFocused();
+        rows.push({mode,desktopP95:rounded(percentile(all,.95)),settlingP95:rounded(percentile(settling,.95)),
+          desktopSlow:all.filter(ms=>ms>budgets.desktopFrameP95Ms).length,desktopCount:all.length,
+          settlingSlow:settling.filter(ms=>ms>budgets.desktopFrameP95Ms).length,settlingCount:settling.length,
+          durationMs:rounded(run.durationMs)});
+      } finally {await style?.evaluate(el=>{el.parentNode?.removeChild(el);});}
     }
-  }
-  const results={purpose:"DEVELOPMENT_ONLY",candidate:process.env.FOREVER_VALIDATION_SOURCE_SHA,
-    desktopBudgetMs:budgets.desktopFrameP95Ms,observations};
-  await fs.mkdir(artifact.artifactDirectory,{recursive:true});
-  await writePerformanceArtifact(artifact.artifactPath,results,secrets);
-  console.log("JOURNAL_COMPOSITOR_CAPABILITY " + JSON.stringify(results));
-  expect(observations.map(row=>row.opening.reason)).toEqual(["completed","completed"]);
-});
+    const report={purpose:"DEVELOPMENT_ONLY",candidate:process.env.FOREVER_VALIDATION_SOURCE_SHA,
+      budgetMs:budgets.desktopFrameP95Ms,rows};
+    await writePerformanceArtifact(artifact.artifactPath,report,[fixture.slug,voyage!.sessionId]);
+    console.log("JOURNAL_RENDER_PASS_INTERACTION " + JSON.stringify(report));
+  },
+);
