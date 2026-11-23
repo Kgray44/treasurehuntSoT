@@ -1,0 +1,46 @@
+{
+  "pr": 905,
+  "reviewedAtUtc": "2026-11-22T23:59:27.129533Z",
+  "reviewer": "Independent Codex reviewer, separate from implementation. Decoded the two recordings and inspected six original stills before opening the metrics or implementation.",
+  "disposition": "Accepted for the explicit PR #905 full replay, Skip and reduced-motion handoffs on both recorded viewports. No merge-blocking regression was demonstrated in those gestures. Retain the observed cold-entry fallback and mobile readability findings.",
+  "ownerAcceptance": false,
+  "method": "Sampled both VP8 recordings across the full durations using FFmpeg at 2 fps, then used accurately sought sampled frames including adjacent 25 fps frames around key handoffs. Inspected all six native PNG stills.",
+  "desktop": {
+    "recording": "desktop-journal-handoffs.webm",
+    "viewport": "1440x900 recording",
+    "replay": "Last sampled old spread at 10.88s, closed cover without the old spread at 10.92s. Separate end-to-end full replay begins at approximately 13.52s: closed cover, latch, opening cover, sealed leaf, broken wax and opening pages. Spread is legible during the final dissolve at 21.40s and fully shown with normal chrome by about 22.60s. Skip and Motion controls remained readable during the ceremony. The cover extends below the captured fold.",
+    "skip": "Closed ceremony still visible at 11.68s, ready spread and explicit opening-skipped status at 11.72s. Continue Voyage and journal tabs are visible. No visible post-Skip keyboard focus destination was established.",
+    "reduced": "Around 23.00s, Motion: reduced and highlighted Replay full opening appear with a single-page alternative, and by 23.40s the ready status explains the readable fallback. No ceremony overlay, cover animation, or wax break was visible in the sampled reduced replay.",
+    "stills": ["desktop-closed-reveal.png", "desktop-skip-ready.png", "desktop-reduced-ready.png"]
+  },
+  "mobile": {
+    "recording": "mobile-journal-handoffs.webm",
+    "viewport": "412x914 recording",
+    "replay": "Old passage visible at 6.60s. At 6.64s, the ceremony first shows the closed cover without old content. The complete replay shows latch release, cover opening, sealed leaf, broken wax, and the current page emerging during the dissolve at 14.00-14.60s. Usual page chrome returns by 15.28s. The closed cover extends below the captured fold.",
+    "skip": "Closed ceremony still visible at 4.40s. At 4.44s the ready message, passage, tabs and Continue Voyage appear. No visible post-Skip keyboard focus destination was established.",
+    "reduced": "Motion: reduced and highlighted Replay full opening visible starting about 15.40s, with the readable-fallback ready message at 15.80s. It remains in the same one-page journal without the full ceremony in sampled frames.",
+    "stills": ["mobile-closed-reveal.png", "mobile-skip-ready.png", "mobile-reduced-ready.png"]
+  },
+  "findings": [
+    "Mobile initial opening enters a visible failure fallback at 2.60-3.20s of mobile-journal-handoffs.webm: “The animated opening could not finish. The journal and page turning are ready.” The later explicitly invoked full replay completes. A single recording cannot establish frequency or cause.",
+    "The rounded mobile ceremony container clips the start of the Voyage label and long voyage title in mobile-closed-reveal.png and at approximately 6.64-13.80s in mobile-journal-handoffs.webm. Skip and Motion labels remain readable.",
+    "At the recorded ready scroll position, sticky tabs and Current Objective cover part of the passage in mobile-skip-ready.png and mobile-reduced-ready.png. Current Objective likewise covers lower passage text in desktop ready stills. The action controls and ready messages are legible, but the complete reading path needs scrolling evidence."
+  ],
+  "limitations": [
+    "Captured viewport review only. No physical phone, assistive technology, keyboard traversal, pressed-to-ready latency measurement or full passage scrolling was independently exercised.",
+    "Adjacent video frames demonstrate the visible handoff without old spread overlap at the closed reveal; visual samples do not establish DOM lifecycle ordering. Highlighted replay does not independently prove DOM focus. No owner acceptance."
+  ],
+  "verifiedAtUtc": "2026-11-23T00:01:15.1042380Z",
+  "provenance": {
+    "metrics": "phase3-performance-metrics.json",
+    "prHead": "e7a17fab39173fbd4a18ba53332e2033bf3f69eb",
+    "testedHarnessCheckout": "71b837a16e85f2363d259a886b0248ba6ad92a33",
+    "identicalProductSourceTree": "cd270be22d267c24b2265bd3d3edaec3262c1523",
+    "workflowHead": "88a65e5bf2ec1de3ff611e3f983fc6fdb9e3128e",
+    "workflowUrl": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/45085397310",
+    "artifactId": 14779147523,
+    "artifactDigest": "sha256:23a98c8010cf5cc5e732940f7a2a682b137ca1b41c4f54e8b2239e904a11aeea",
+    "verification": "GitHub job log confirms the harness checkout and artifact upload. Git diff shows the checked-out harness differs from current PR head only in tests/e2e/phase3-performance.spec.ts. The receipt identifies PR head and records completed, completed-fallback and returnedFocus:true on both viewports. The passed harness explicitly asserts focus returns to Replay full opening after both Skip and reduced replay, plus old spread hidden and closed cover visible at reveal.",
+    "coldEntryAssessment": "Current protected base already contains the visible failure-recovery message. This review did not run a matching cold-entry control against base, so observed fallback frequency and regression attribution remain undetermined."
+  }
+}

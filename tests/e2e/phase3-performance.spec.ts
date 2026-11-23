@@ -34,6 +34,7 @@ type LayoutShiftSample = Readonly<{ atMs: number; score: number; phase: string |
 type VisualProbeResult = Readonly<{
   elapsedMs: number;
   frameDurationsMs: readonly number[];
+  framesByPhase: Record<string, number[]>;
   longTaskDurationsMs: readonly number[];
   cls: number;
   layoutShifts: readonly LayoutShiftSample[];
@@ -210,6 +211,7 @@ async function startVisualProbe(page: Page) {
       startedAt: number;
       lastFrameAt: number | null;
       frameDurationsMs: number[];
+      framesByPhase: Record<string, number[]>;
       longTaskDurationsMs: number[];
       cls: number;
       layoutShifts: LayoutShiftSample[];
@@ -230,13 +232,20 @@ async function startVisualProbe(page: Page) {
       startedAt: window.performance.now(),
       lastFrameAt: null,
       frameDurationsMs: [],
+      framesByPhase: {},
       longTaskDurationsMs: [],
       cls: 0,
       layoutShifts: [],
       frame: 0,
     } as unknown as Probe;
+    const scene = document.querySelector<HTMLElement>(".chronicle-journal-shell");
     const sampleFrame = (at: number) => {
-      if (probe.lastFrameAt !== null) probe.frameDurationsMs.push(at - probe.lastFrameAt);
+      if (probe.lastFrameAt !== null) {
+        const elapsed = at - probe.lastFrameAt;
+        const phase = scene?.dataset.journalPhase ?? "UNMOUNTED";
+        probe.frameDurationsMs.push(elapsed);
+        (probe.framesByPhase[phase] ??= []).push(elapsed);
+      }
       probe.lastFrameAt = at;
       probe.frame = requestAnimationFrame(sampleFrame);
     };
@@ -280,6 +289,7 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
       __phase3VisualProbe?: {
         startedAt: number;
         frameDurationsMs: number[];
+      framesByPhase: Record<string, number[]>;
         longTaskDurationsMs: number[];
         cls: number;
         layoutShifts: VisualProbeResult["layoutShifts"];
@@ -301,6 +311,7 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
     return {
       elapsedMs: window.performance.now() - probe.startedAt,
       frameDurationsMs: probe.frameDurationsMs,
+      framesByPhase: probe.framesByPhase,
       longTaskDurationsMs: probe.longTaskDurationsMs,
       cls: probe.cls,
       layoutShifts: probe.layoutShifts,
@@ -586,66 +597,95 @@ async function measuredFullOpening(page: Page, control: Locator) {
 
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
-phase3Test("records the Journal Skip and replay handoffs across desktop and phone", async ({ browser, phase3 }) => {
-  await phase3.proveIsolation();
-  const artifact = performanceArtifactTarget();
-  await fs.mkdir(artifact.artifactDirectory, { recursive: true });
-  const fixture = await phase3.createCase("P3-JOURNAL-HANDOFF-CAPTURE", "CHAPTER_RELEASED");
-  const voyage = await resolveLegacyCampaign(fixture.slug);
-  expect(voyage).toBeTruthy();
-  const route = "/player/playthroughs/" + voyage!.sessionId + "/journal";
-  const views = [];
-  for (const device of ["desktop", "mobile"] as const) {
-    const mobile = device === "mobile";
-    const context = await browser.newContext({
-      ...(mobile ? devices["Pixel 7"] : { viewport: { width: 1440, height: 900 } }),
-      baseURL: "http://127.0.0.1:3200",
-      recordVideo: { dir: artifact.artifactDirectory, size: mobile ? { width: 412, height: 915 } : { width: 1440, height: 900 } },
-    });
-    const page = await context.newPage();
-    const video = page.video();
-    if (!video) throw new Error("The actual Journal recording is required.");
-    try {
-      await installRuntimeCounter(page);
-      await setPhase3Motion(page, PHASE3_MOTION_MODES[0]);
-      await enterJournal(page, fixture, route);
-      const open = page.getByRole("button", { name: "Open the journal" });
-      await expect(open.or(replay(page)).first()).toBeVisible();
-      if (await open.isVisible()) {
-        expect((await measureOpening(open)).reason).toBe("completed");
-      }
-      await assertReadableJournal(page);
-      const baseline = await waitForStableRuntimeBaseline(page);
-      await replay(page).click();
-      await expect(journal(page)).toHaveAttribute("data-journal-phase", "CLOSED_BOOK_REVEAL");
-      const book = journal(page).locator(".open-page-stage");
-      await expect(book).toBeHidden();
-      await expect(journal(page).locator(".closed-book")).toBeVisible();
-      await page.screenshot({ path: path.join(artifact.artifactDirectory, device + "-closed-reveal.png") });
-      await measureSkip(page.getByRole("button", { name: "Skip ceremony" }), baseline);
-      await assertReadableJournal(page);
-      await expect(replay(page)).toBeFocused();
-      await page.screenshot({ path: path.join(artifact.artifactDirectory, device + "-skip-ready.png") });
-      const completed = await measureOpening(replay(page));
-      expect(completed.reason).toBe("completed");
-      expect(completed.phases).toContain("BOOK_SETTLING");
-      await assertReadableJournal(page);
-      await page.emulateMedia({ reducedMotion: "reduce" });
-      await expect(journal(page)).toHaveAttribute("data-motion-level", "reduced");
-      await assertReadableJournal(page, true);
-      const reduced = await measureOpening(replay(page));
-      expect(reduced.reason).toBe("completed-fallback");
-      expect(reduced.bookStatus).toBe("reduced");
-      await assertReadableJournal(page, true);
-      await expect(replay(page)).toBeFocused();
-      await page.screenshot({ path: path.join(artifact.artifactDirectory, device + "-reduced-ready.png") });
-      views.push({ device, completed: completed.reason, reduced: reduced.reason, returnedFocus: true });
-    } finally {
-      await context.close();
+phase3Test(
+  "compare the moving Journal shadow and binding filter cost",
+  async ({ page, phase3, browser, browserName }) => {
+    expect(browserName).toBe("chromium");
+    expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
+    expect(process.env.FOREVER_PHASE3_PERFORMANCE_BASE_URL).toBe("http://127.0.0.1:3200");
+    const artifact = performanceArtifactTarget();
+    await fs.mkdir(artifact.artifactDirectory, { recursive: true });
+    await fs.rm(artifact.artifactPath, { force: true });
+    await page.setViewportSize({ width: 1_440, height: 900 });
+    await installRuntimeCounter(page);
+    await setPhase3Motion(page, PHASE3_MOTION_MODES[0]);
+    await phase3.proveIsolation();
+    const fixture = await phase3.createCase("P3-PERFORMANCE-CHAPTER", "CHAPTER_RELEASED");
+    const voyage = await resolveLegacyCampaign(fixture.slug);
+    expect(voyage, "The performance fixture must be bound to a canonical Voyage.").toBeTruthy();
+    const journalPath = `/player/playthroughs/${voyage!.sessionId}/journal`;
+    await enterJournal(page, fixture, journalPath);
+
+    const cold = await measuredFullOpening(page, page.getByRole("button", { name: "Open the journal" }));
+    await expect(journal(page).getByText("Captain channel connected")).toBeVisible();
+    await expect(journal(page)).toHaveAttribute("data-live-event", "idle");
+    const liveStartedAt = performance.now();
+    const live = await phase3.canonicalCaptainAction(fixture, "presentation");
+    expect(live.eventType).toBe("presentationTriggered");
+    await expect(journal(page)).toHaveAttribute("data-live-event", "revealed");
+    await expect(journal(page).locator('[aria-live="assertive"]')).toContainText("A new page was released:");
+    const liveUpdateMs = performance.now() - liveStartedAt;
+    const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
+    expect(fullRuntimeBaseline.eventSources).toBe(1);
+
+    const scope = '.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"]';
+    const css = [
+      scope + ' .book-shadow { filter: none; }',
+      scope + ' .book-binding { filter: none; mask-image: none; }',
+    ].join("\n");
+    const values: Record<"original" | "flattened", VisualProbeResult[]> = { original: [], flattened: [] };
+    for (const mode of ["original", "flattened", "flattened", "original"] as const) {
+      const treatment = mode === "flattened" ? await page.addStyleTag({ content: css }) : null;
+      const opening = await measuredFullOpening(page, replay(page));
+      expect(opening.durationMs).toBeLessThan(budgets.openingMs);
+      values[mode].push(opening.visual);
+      await treatment?.evaluate((node) => { node.parentNode?.removeChild(node); });
     }
-    await fs.rename(await video.path(), path.join(artifact.artifactDirectory, device + "-journal-handoffs.webm"));
-  }
-  await writePerformanceArtifact(artifact.artifactPath, {
-    purpose: "DIRECT_EXPERIENCE_OBSERVATION", candidate: "e7a17fab39173fbd4a18ba53332e2033bf3f69eb", views,
-  }, [fixture.slug, voyage!.sessionId]);
-});
+
+    const views: Record<string, unknown> = {};
+    for (const mode of ["original", "flattened"] as const) {
+      const treatment = mode === "flattened" ? await page.addStyleTag({ content: css }) : null;
+      await replay(page).click();
+      await expect(journal(page)).toHaveAttribute("data-journal-phase", "BOOK_SETTLING");
+      function pose() {
+        return journal(page).evaluate((root) => {
+          const read = (selector: string) => {
+            const item = root.querySelector(selector);
+            if (!item) throw new Error("Missing physical book layer " + selector);
+            const style = getComputedStyle(item);
+            return { opacity: Number(style.opacity), visibility: style.visibility, transform: style.transform };
+          };
+          return { closed: read(".closed-book"), opened: read(".open-page-stage") };
+        });
+      }
+      const start = await pose();
+      await waitAnimationFrames(page, 14);
+      const handoff = await pose();
+      expect(start.closed.opacity).toBeGreaterThan(0);
+      expect(handoff.opened.opacity).toBeGreaterThan(0);
+      expect(handoff.opened.visibility).toBe("visible");
+      views[mode] = { start, handoff };
+      await page.screenshot({ path: path.join(artifact.artifactDirectory, mode + "-handoff.png") });
+      await assertReadableJournal(page);
+      await expect(replay(page)).toBeFocused();
+      await treatment?.evaluate((node) => { node.parentNode?.removeChild(node); });
+    }
+    const byMode = Object.fromEntries((["original", "flattened"] as const).map((mode) => {
+      const runs = values[mode];
+      const frames = runs.flatMap((sample) => [...sample.frameDurationsMs]);
+      const phases = Object.fromEntries(["CLOSED_BOOK_REVEAL", "COVER_OPENING", "BOOK_SETTLING"].map((phase) => {
+        const intervals = runs.flatMap((sample) => sample.framesByPhase[phase] ?? []);
+        return [phase, { samples: intervals.length,
+          p95: rounded(percentile(intervals, 0.95)),
+          slow: intervals.filter((ms) => ms > budgets.desktopFrameP95Ms).length }];
+      }));
+      return [mode, { samples: frames.length, p95: rounded(percentile(frames, 0.95)),
+        slow: frames.filter((ms) => ms > budgets.desktopFrameP95Ms).length, phases }];
+    }));
+    const report = { purpose: "DEVELOPMENT_ONLY", candidate: process.env.FOREVER_VALIDATION_SOURCE_SHA,
+      views, budgetMs: budgets.desktopFrameP95Ms, byMode };
+    await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
+    console.log(JSON.stringify(report));
+    expect(byMode.flattened.p95).toBeLessThanOrEqual(budgets.desktopFrameP95Ms);
+  },
+);

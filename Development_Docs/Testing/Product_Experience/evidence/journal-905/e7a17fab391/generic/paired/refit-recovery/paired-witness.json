@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "status": "PASS",
+  "caseId": "crossdeck-pair-adverse",
+  "binding": {
+    "baseSha": "9e612bd42dee2561d75dfac9263ac3307d5dee24",
+    "candidateSha": "e7a17fab39173fbd4a18ba53332e2033bf3f69eb",
+    "candidateTree": "3403f902b59a13b262f54f4bd363773b42f1e163",
+    "sourceDigest": "e497fe79c9c76420939c500697a853c3bdb7d1dddd0786d2ddb7de18f6ce7fe4",
+    "contractDigest": "353a6515594fe39c41300eb093e5e1f78ac6e9293a6d3494a77131cd9f20f41f",
+    "recordDigest": null,
+    "databaseSha256": "8cea790972f837008d983a1e0902081bc69e9d9a3aace5c0ee03f8adafe22931"
+  },
+  "contexts": {
+    "DESKTOP": {
+      "voyageId": "cmwshm5ms001k41nrfnc04i54",
+      "editionId": "cmwshm5mp001i41nr3fzeml65",
+      "surfaceId": "cfee7753-5d10-4a6b-92dc-e7ca71cd0bf1",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "reducedMotion": false
+    },
+    "MOBILE": {
+      "voyageId": "cmwshm5ms001k41nrfnc04i54",
+      "editionId": "cmwshm5mp001i41nr3fzeml65",
+      "surfaceId": "1d0f17b4-7111-45a1-9c0d-c28574fe8153",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "reducedMotion": false
+    }
+  },
+  "fixture": {
+    "voyageId": "cmwshm5ms001k41nrfnc04i54",
+    "editionId": "cmwshm5mp001i41nr3fzeml65",
+    "databaseSha256": "8cea790972f837008d983a1e0902081bc69e9d9a3aace5c0ee03f8adafe22931"
+  },
+  "outcomes": {
+    "PAIRING_EXPIRED_REFUSED": true,
+    "JOIN_AUTHORIZED": true,
+    "PRIVATE_SEND_CONFIRMED_CANCELLED_DECLINED": true,
+    "DELIVERY_ACKNOWLEDGED": true,
+    "CREW_PRIVATE_SEPARATION": true,
+    "REVOKED_PRIVATE_VIEW_CLEARED": true
+  },
+  "cleanup": {
+    "tracesStopped": true,
+    "contextsClosed": true,
+    "videosFlushed": true,
+    "fixtureRemoved": true
+  },
+  "media": {
+    "DESKTOP": {
+      "screenshots": [
+        "01-pairing-before-cancel.png",
+        "02-phone-connected.png",
+        "06-declined-transfer.png",
+        "08-send-authorized-crew-chart.png",
+        "08-crew-transfer-pending.png",
+        "09-crew-delivery-acknowledged.png"
+      ],
+      "screenshotViewports": {
+        "01-pairing-before-cancel.png": {
+          "width": 1440,
+          "height": 1000
+        },
+        "02-phone-connected.png": {
+          "width": 1440,
+          "height": 1000
+        },
+        "06-declined-transfer.png": {
+          "width": 1440,
+          "height": 1000
+        },
+        "08-send-authorized-crew-chart.png": {
+          "width": 1440,
+          "height": 1000
+        },
+        "08-crew-transfer-pending.png": {
+          "width": 1440,
+          "height": 1000
+        },
+        "09-crew-delivery-acknowledged.png": {
+          "width": 1440,
+          "height": 1000
+        }
+      },
+      "recording": "page@08ba2cdd7e8463db6e69bc918e9919c4.webm",
+      "trace": "desktop-trace.zip"
+    },
+    "MOBILE": {
+      "screenshots": [
+        "02-expired-code-refused.png",
+        "02-paired-phone.png",
+        "03-unavailable-purposes.png",
+        "04-private-note-confirmation.png",
+        "05-canceled-transfer.png",
+        "07-shared-empty-state.png",
+        "08-crew-receive-pending.png",
+        "09-restricted-crew-chart-received.png",
+        "10-authorized-personal-return.png",
+        "11-current-surface-revoked.png"
+      ],
+      "screenshotViewports": {
+        "02-expired-code-refused.png": {
+          "width": 390,
+          "height": 844
+        },
+        "02-paired-phone.png": {
+          "width": 390,
+          "height": 844
+        },
+        "03-unavailable-purposes.png": {
+          "width": 390,
+          "height": 844
+        },
+        "04-private-note-confirmation.png": {
+          "width": 390,
+          "height": 844
+        },
+        "05-canceled-transfer.png": {
+          "width": 390,
+          "height": 844
+        },
+        "07-shared-empty-state.png": {
+          "width": 390,
+          "height": 844
+        },
+        "08-crew-receive-pending.png": {
+          "width": 390,
+          "height": 844
+        },
+        "09-restricted-crew-chart-received.png": {
+          "width": 390,
+          "height": 844
+        },
+        "10-authorized-personal-return.png": {
+          "width": 390,
+          "height": 844
+        },
+        "11-current-surface-revoked.png": {
+          "width": 390,
+          "height": 844
+        }
+      },
+      "recording": "page@4e6dd566bb9fa964c3adfeca44aa1bd9.webm",
+      "trace": "phone-trace.zip"
+    }
+  }
+}
