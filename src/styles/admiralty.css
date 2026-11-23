@@ -1042,6 +1042,18 @@
   .chartroom-heading h1 {
     font-size: clamp(2.25rem, 14vw, 3.75rem);
   }
+  .chartroom-identity--account {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .chartroom-identity--account .chartroom-copy code {
+    max-width: none;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+  .chartroom-identity--account .chartroom-copy button {
+    flex-shrink: 0;
+  }
   .chartroom-metrics,
   .chartroom-cards,
   .chartroom-cards--providers,

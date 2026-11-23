@@ -42,11 +42,11 @@
     "shipwright"
   ],
   "totals": {
-    "routeFiles": 455,
+    "routeFiles": 456,
     "pages": 128,
-    "services": 327,
+    "services": 328,
     "sourceDiscoveredPages": 128,
-    "sourceDiscoveredServices": 327,
+    "sourceDiscoveredServices": 328,
     "orphanedOrdinaryRoutes": 0
   },
   "routes": [
@@ -8928,6 +8928,40 @@
         "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
         "sourceParityOnly": true,
         "humanReachabilityExcluded": true
+      }
+    },
+    {
+      "routeId": "route-route-api-player-playthroughs-playthroughid-parallax-assets-assetid",
+      "routePattern": "/api/player/playthroughs/[playthroughId]/parallax/assets/[assetId]",
+      "implementationSource": "src/app/api/player/playthroughs/[playthroughId]/parallax/assets/[assetId]/route.ts",
+      "kind": "route",
+      "classification": "API_OR_SERVICE",
+      "ownerProject": "one-voyage",
+      "productArea": "Player",
+      "shellMode": "N/A",
+      "logicalParent": null,
+      "currentVisibleEntries": [],
+      "currentDesktopPath": [],
+      "currentMobilePath": [],
+      "authenticationRequirement": "ROUTE_HANDLER_POLICY",
+      "capabilityRequirements": [],
+      "returnOrBackRoute": null,
+      "emptyStateAction": "N/A_SERVICE_ROUTE",
+      "dynamicSourceRouteOrContentSource": null,
+      "compatibilityAliases": [],
+      "redirects": [],
+      "currentSupportedStates": ["SERVICE_RESPONSE"],
+      "currentJourneys": [],
+      "currentVisualEvidenceIds": [],
+      "currentMaturity": "INTERNAL_ONLY",
+      "directUrlRequired": true,
+      "orphanedOrdinaryRoute": false,
+      "targetDisposition": "PHASE_5_SOURCE_PARITY",
+      "status": "PHASE_5_SOURCE_RECONCILED",
+      "notes": "Serves original catalog assets for the released, version-pinned Parallax passage after checking the Player identity and current Voyage membership.",
+      "currentSourceReconciliation": {
+        "sourceSha": "0f6cdaaaf2c84389b59d254e2901e4d8d0e09e75",
+        "state": "SOURCE_RECONCILED"
       }
     },
     {
@@ -30479,10 +30513,10 @@
     "sourceSha": "7050cd38047f47af9d43b5aa487d1b8a2f487b51",
     "state": "SOURCE_RECONCILED",
     "census": {
-      "sourceCount": 467,
-      "counts": { "page": 128, "route": 327, "layout": 7, "not-found": 0, "loading": 3, "error": 2 },
+      "sourceCount": 468,
+      "counts": { "page": 128, "route": 328, "layout": 7, "not-found": 0, "loading": 3, "error": 2 },
       "humanRouteCount": 128,
-      "serviceRouteCount": 327
+      "serviceRouteCount": 328
     }
   }
 }

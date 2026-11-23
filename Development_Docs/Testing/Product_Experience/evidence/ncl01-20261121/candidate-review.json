@@ -1,0 +1,781 @@
+{
+  "version": 1,
+  "contractId": "crossdeck.refit.published-lens",
+  "baseSha": "383c45ee2e4934f6aae2e697f2e93bc7f9cea1b3",
+  "candidateSha": "693f2ebb5e01d848faa3b454105d9a3d55f8fab6",
+  "sourceDigest": "aa7200e64826ec7662ecdcc5325571bec7b15e5549a95e44a561fc1d7fa3d670",
+  "contractDigest": "fef594007aab8fadf667cf9e26e447ba617f5ac7138e49ce243dc92a267092fb",
+  "packetDigest": "4792637f10c0404d4dd4bb619f55cd591bd9b5ca5a0c33c85efea574734ad10a",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "builderContext": "01a20053-e8e0-7421-820b-e22e7ea80b79",
+  "reviewerContext": "/root/published_lens_review",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "status": "ACCEPTED",
+  "artifacts": [
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "sha256": "a773776183ff225cae3735e498836c3eefe408400b19d0f99a2e43c85b5ddf08",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "JOURNAL_READY",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3.png",
+      "sha256": "f23c4fde8d829446479cdce5c0b083c571e8284ec939231433c9092ffdb22143",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "LENS_READY",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6.png",
+      "sha256": "d1428b60a624d55fff087b54b9b19184e7e66a346376232c55ca406404dc6049",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "INSPECTED",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-RETURNED-8.png",
+      "sha256": "1f13a34e20bfad8b928dd35f64694bf059366d3ee9ce26cbc625cebc916bb507",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "sha256": "3f520907eb69ebe5a36dc33410a02d63fe17f4e3b66f9b3f9b08d57068d90227",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/page@23212ee205eda4ffac05b92b05437c38.webm",
+      "sha256": "698755e8afe8bae4aaca99d661104e20413fb7af08ab8f5ddde8e1c6f08d53cb",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "sha256": "a3c4b1159e2d10daca36bf5229f31fde33c6dedf1f2689611e8da449fcc075d1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "JOURNAL_READY",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-LENS_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-LENS_READY-3.png",
+      "sha256": "14b1add214eb0eefea59f00fd7b4059a23b12327cb1f35452833f92ded04b64a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "LENS_READY",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-INSPECTED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-INSPECTED-6.png",
+      "sha256": "0d3582ef715e0111ef38ad9d915d6aa6ca8da8f4ef60a3aafef617e1922978b3",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "INSPECTED",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-RETURNED-8.png",
+      "sha256": "e03bec86b8b4da078eb6e1d42b6d4ee88a896bc15e64c2f3371f5b33e3b0269f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "sha256": "09732ebb3b6c7244e9e0738397391d2ba500da2914b40a2a83dfef1848474e3b",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/page@d9aa2f239208930f1120c03603c54de9.webm",
+      "sha256": "352600d8bf60698239c05c6b93fbe3c484f07a6b6d53082d2eaad4e70cf93f35",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "sha256": "4ab258a92592e695711b27895ece1fcd472485c2ffca491597a62299a7f2d32f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "JOURNAL_READY",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3.png",
+      "sha256": "e2188b6cda6fb737e469117a2fc5e8f92dbda27d8f6d72bcc6d4b929020d41dd",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "LENS_READY",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6.png",
+      "sha256": "6aec8eb21b0702ac690b7883deebe9ff11cef62e0427036550e2853c235f5726",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "INSPECTED",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8.png",
+      "sha256": "f391cc2396dfe5c7b41e078261b494a74901654aaa8e3b06e0180d5cb0f98070",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "sha256": "f7e59c31ffae40fbda6fb66e89e151b32e3191523e29e967f70f6029fff84d89",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/page@e11126c1c6c20d4a50ffd11635d63691.webm",
+      "sha256": "362f3f3de6b478bdc6606054c097521b059e8c028fadec4b456c3822b5052f60",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "sha256": "3b249a18a8f80c0c9a07fe96cabc01ba18e84ade985b99d8695d68ecf7443968",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "JOURNAL_READY",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3.png",
+      "sha256": "7c3006a1254fd45c79135951bc0d4cf4dafcff343b84a38094a02261c49af33b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "LENS_READY",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-INSPECTED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-INSPECTED-6.png",
+      "sha256": "68b78863d049e70fb759419636d427de1f5e1b9436476b743c7c520011b58b8a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "INSPECTED",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-RETURNED-8.png",
+      "sha256": "b12a072640c1556cf1711a110be7e4c4d59e6ee745b3ae1ad3acc1b7fff592bc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "sha256": "6d6d0138734652dd5ec78cd33aa35e76e25187a3a508f29f2d752bb548b6712b",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/ncl01-20261121/page@5374704b7a4d09d1c25504169e2b5123.webm",
+      "sha256": "5fcbef423a2dcfba94489f067bab72f7c269ca4d18d385e743d94929419bf39e",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.refit.published-lens",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "journeyVerification": [
+    {
+      "id": "published-clue-inspect-return",
+      "contractId": "crossdeck.refit.published-lens",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "outcome": "The published spatial attachment reaches canonical Guided Lens, offers actual Inspect interaction and returns to the same authorized edition",
+      "observations": [
+        {
+          "step": 3,
+          "meaning": "The canonical published spatial attachment presents its actual released clue without substituting a role label or service result.",
+          "role": "dialog",
+          "name": "A message between worlds",
+          "text": "The next bearing is written in the stars. Look for the northern light."
+        },
+        {
+          "step": 6,
+          "meaning": "Inspection changes the visible canonical entity state and records a meaningful Lens interaction independently from Voyage progression.",
+          "role": "article",
+          "name": "A parchment note bearing the Captain’s next clue.",
+          "text": "You are inspecting The Captain’s note."
+        }
+      ],
+      "visibleActions": 3,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [
+        {
+          "id": "same-voyage",
+          "before": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d",
+          "atOutcomes": [
+            "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d",
+            "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
+          ],
+          "after": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
+        },
+        {
+          "id": "same-edition",
+          "before": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08",
+          "atOutcomes": [
+            "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08",
+            "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
+          ],
+          "after": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
+        }
+      ],
+      "feedbackMs": 205.41240000003017,
+      "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": false,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "JOURNAL_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "LENS_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "INSPECTED",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "published-clue-inspect-return",
+      "contractId": "crossdeck.refit.published-lens",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "outcome": "The published spatial attachment reaches canonical Guided Lens, offers actual Inspect interaction and returns to the same authorized edition",
+      "observations": [
+        {
+          "step": 3,
+          "meaning": "The canonical published spatial attachment presents its actual released clue without substituting a role label or service result.",
+          "role": "dialog",
+          "name": "A message between worlds",
+          "text": "The next bearing is written in the stars. Look for the northern light."
+        },
+        {
+          "step": 6,
+          "meaning": "Inspection changes the visible canonical entity state and records a meaningful Lens interaction independently from Voyage progression.",
+          "role": "article",
+          "name": "A parchment note bearing the Captain’s next clue.",
+          "text": "You are inspecting The Captain’s note."
+        }
+      ],
+      "visibleActions": 3,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [
+        {
+          "id": "same-voyage",
+          "before": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d",
+          "atOutcomes": [
+            "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d",
+            "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
+          ],
+          "after": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
+        },
+        {
+          "id": "same-edition",
+          "before": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08",
+          "atOutcomes": [
+            "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08",
+            "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
+          ],
+          "after": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
+        }
+      ],
+      "feedbackMs": 326.26620000001276,
+      "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "JOURNAL_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "LENS_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "INSPECTED",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "published-clue-inspect-return",
+      "contractId": "crossdeck.refit.published-lens",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "outcome": "The published spatial attachment reaches canonical Guided Lens, offers actual Inspect interaction and returns to the same authorized edition",
+      "observations": [
+        {
+          "step": 3,
+          "meaning": "The canonical published spatial attachment presents its actual released clue without substituting a role label or service result.",
+          "role": "dialog",
+          "name": "A message between worlds",
+          "text": "The next bearing is written in the stars. Look for the northern light."
+        },
+        {
+          "step": 6,
+          "meaning": "Inspection changes the visible canonical entity state and records a meaningful Lens interaction independently from Voyage progression.",
+          "role": "article",
+          "name": "A parchment note bearing the Captain’s next clue.",
+          "text": "You are inspecting The Captain’s note."
+        }
+      ],
+      "visibleActions": 3,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [
+        {
+          "id": "same-voyage",
+          "before": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d",
+          "atOutcomes": [
+            "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d",
+            "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
+          ],
+          "after": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
+        },
+        {
+          "id": "same-edition",
+          "before": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08",
+          "atOutcomes": [
+            "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08",
+            "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
+          ],
+          "after": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
+        }
+      ],
+      "feedbackMs": 194.67319999996107,
+      "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": false,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "JOURNAL_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "LENS_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "INSPECTED",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "published-clue-inspect-return",
+      "contractId": "crossdeck.refit.published-lens",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "outcome": "The published spatial attachment reaches canonical Guided Lens, offers actual Inspect interaction and returns to the same authorized edition",
+      "observations": [
+        {
+          "step": 3,
+          "meaning": "The canonical published spatial attachment presents its actual released clue without substituting a role label or service result.",
+          "role": "dialog",
+          "name": "A message between worlds",
+          "text": "The next bearing is written in the stars. Look for the northern light."
+        },
+        {
+          "step": 6,
+          "meaning": "Inspection changes the visible canonical entity state and records a meaningful Lens interaction independently from Voyage progression.",
+          "role": "article",
+          "name": "A parchment note bearing the Captain’s next clue.",
+          "text": "You are inspecting The Captain’s note."
+        }
+      ],
+      "visibleActions": 3,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [
+        {
+          "id": "same-voyage",
+          "before": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d",
+          "atOutcomes": [
+            "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d",
+            "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
+          ],
+          "after": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
+        },
+        {
+          "id": "same-edition",
+          "before": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08",
+          "atOutcomes": [
+            "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08",
+            "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
+          ],
+          "after": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
+        }
+      ],
+      "feedbackMs": 183.78370000002906,
+      "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "JOURNAL_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "LENS_READY",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "INSPECTED",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    }
+  ],
+  "reviewObservations": {
+    "composition": {
+      "observation": "The dark overlay keeps the Journal recognizable while putting the released parchment in one bounded panel. Desktop centers the panel and mobile keeps a visible inset and a top-right close target, matching the Homeport desktop and mobile references' bounded content treatment.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+      ]
+    },
+    "hierarchy": {
+      "observation": "The scene title and repeated Voyage name establish context, then the warm Captain’s note card carries the primary clue. The AR availability explanation precedes the note and adds some scanning, but the clue remains visually dominant.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3"
+      ]
+    },
+    "typography": {
+      "observation": "Serif scene and note headings separate story content from the sans-serif actions and explanatory text. The full clue remains readable on desktop and wraps naturally across two mobile lines.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+      ]
+    },
+    "spacing": {
+      "observation": "The desktop note leaves room between body copy, actions and state detail. Mobile wraps Place in Guided View to a second row and the new inspection detail to three lines. The secondary camera-free footer sentence drops below the visible mobile fold after inspection; the clue, description, confirmation and close remain visible.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-INSPECTED-6"
+      ]
+    },
+    "controls": {
+      "observation": "The desktop launcher says Open Chronicle Lens and the narrow Journal uses Lens. The actual note offers Inspect next to Choose and Place in Guided View, the close X stays separate in the dialog header, and Start browser AR appears disabled with its reason adjacent.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+      ]
+    },
+    "contrast": {
+      "observation": "Parchment clue text is dark against the pale card, active action labels are light against deep teal, and gold outlines distinguish focused close/launcher and the inspected state. The explanatory line remains legible beside the deliberately muted disabled AR control. This is a visual check.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-RETURNED-8"
+      ]
+    },
+    "consistency": {
+      "observation": "The deep teal surfaces, cream type, brass accents and bounded controls use the same visual vocabulary as the accepted Homeport desktop and mobile references. All four views retain the same clue wording, note actions, Voyage name and contextual close.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3"
+      ]
+    },
+    "states": {
+      "observation": "The Journal starts on Follow the lanterns. Lens opens to the released note, Inspect adds the note description and interaction confirmation, and closing restores the open Journal on Follow the lanterns. This sequence is visible in both desktop and mobile recordings.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-recording",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-recording",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-recording",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-recording"
+      ]
+    },
+    "responsive": {
+      "observation": "The 1440×900 desktop dialog keeps the actions in one row. At 390×844 the title and X share the header, Place in Guided View wraps beneath the two shorter controls, and the entire clue and inspection detail remain within the panel without horizontal cropping.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-INSPECTED-6"
+      ]
+    },
+    "keyboard": {
+      "observation": "The four traces show Tab traversal and Enter activation for Open Chronicle Lens, Inspect and Close Chronicle Lens. Within the dialog, Tab reaches the note controls, and the required action sequence can complete through the keyboard on both viewport sizes.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "focus": {
+      "observation": "The opening screenshots show a visible gold ring on Close, and all returned screenshots show focus restored to the launcher. Mobile trace frames catch Inspect outlined near its Enter event. The Inspect outline is subtler against parchment than the dialog close ring.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-RETURNED-8",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8"
+      ]
+    },
+    "feedback": {
+      "observation": "Mobile trace frames show an opening message and brief pending controls. Inspect then applies a highlighted note outline and an explicit note description, with the footer confirming Interaction recorded. The four capture-reported feedback values were about 205 ms, 326 ms, 195 ms and 184 ms for desktop normal, desktop reduced, mobile normal and mobile reduced, within the 5 s contract budget.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "motion": {
+      "observation": "The normal and reduced recordings preserve the same clue, controls and outcome. Reduced motion returns to the readable Journal page-turn fallback, while the captured full-motion Journal reports that its opening did not finish and that reading and page turning are ready. The Lens remains usable in all four recordings.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-recording",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-recording",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-recording",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-recording"
+      ]
+    },
+    "continuity": {
+      "observation": "The same named Voyage appears behind and inside Lens, and close restores Follow the lanterns and its active objective. The browser evidence verifies the same Journal route and identical same-voyage and same-edition witness hashes at both Lens outcomes and after close in all four contexts.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-RETURNED-8",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-RETURNED-8",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "complexity": {
+      "observation": "The player can read and inspect the clue in three direct actions: open Lens, Inspect and close. The other note actions stay optional. There is extra Journal chrome and a long initial forward-Tab sequence in the capture, but the required actions remain identifiable and the exit is directly on the dialog.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "The signed-in Player sees the released clue text about the northern light and can inspect The Captain’s note. Inspection adds an entity-specific parchment description and a confirmation, while Continue Voyage remains a separate Journal action and Follow the lanterns remains active on return.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-RETURNED-8"
+      ]
+    },
+    "fallbacks": {
+      "observation": "Start browser AR is unavailable with an explicit server world-tracking explanation. The same released clue and Inspect are available immediately in camera-free Guided View. The dialog can close directly in all four captured configurations.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-RETURNED-8"
+      ]
+    }
+  },
+  "findings": [],
+  "limits": [
+    "Local independent browser experience review using the persisted synthetic Player fixture. Reviewed all sixteen state screenshots, four sampled WebM recordings, all four keyboard traces and both accepted Homeport visual references. All 24 listed artifact SHA-256 hashes matched.",
+    "Browser emulation and the captured unavailable-AR condition establish camera-free Guided View behavior at the two captured viewport sizes. Physical devices, camera permission handling on a supported browser, native spatial rendering and picking, and real-phone performance require their own evidence.",
+    "Creator Studio authoring/publication, two-context pairing, other note actions, progression mutation, session revocation, broader accessibility and owner acceptance lie outside this review."
+  ]
+}

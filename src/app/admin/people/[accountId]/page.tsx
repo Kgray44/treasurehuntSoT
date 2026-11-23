@@ -38,7 +38,7 @@ export default async function AccountDossierPage({ params }: { params: Promise<{
       title={account.profile?.displayName ?? "Profile not available"}
       description="A human-readable, auditable account projection from Wayfarer. Private prose and credential material are not returned."
     >
-      <div className="chartroom-identity">
+      <div className="chartroom-identity chartroom-identity--account">
         <div>
           <StatusBadge state={account.status} />
           <h2>{account.profile?.handle ? `@${account.profile.handle}` : "Handle not available"}</h2>

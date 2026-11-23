@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "status": "PASS",
+  "caseId": "crossdeck-pair-reduced",
+  "binding": {
+    "baseSha": "5be59f18590f2c48a4a7672a14a25dee5bf0e82d",
+    "candidateSha": "44b286e6a1bffe460c77d5a9fb7929718aa9025e",
+    "candidateTree": "43389ce9a34c8d5d1ae1c281e384b8a5d7a8eca1",
+    "sourceDigest": "40565309cfb8cba8f0c73bc75830399e3d6a3d0239210bd5b662c5474f547344",
+    "contractDigest": "257710d8112fb5026fa02d94333691d97fc4effd15df2a9bd722b56d763ac757",
+    "recordDigest": null,
+    "databaseSha256": "ce41fbfbc5e7436a20d5c0602600b64ac79d23aae6c1129f4ff601d880e4aa3d"
+  },
+  "contexts": {
+    "DESKTOP": {
+      "voyageId": "cmwtoswdw000xoye20vfncsoi",
+      "editionId": "cmwtoswdu000voye2s11yziaz",
+      "surfaceId": "1ba477d9-81d0-4232-b32b-85d5c9dfdb02",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "reducedMotion": true
+    },
+    "MOBILE": {
+      "voyageId": "cmwtoswdw000xoye20vfncsoi",
+      "editionId": "cmwtoswdu000voye2s11yziaz",
+      "surfaceId": "b4801a89-b2a0-4d39-bfaa-1711e6308604",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "reducedMotion": true
+    }
+  },
+  "fixture": {
+    "voyageId": "cmwtoswdw000xoye20vfncsoi",
+    "editionId": "cmwtoswdu000voye2s11yziaz",
+    "databaseSha256": "ce41fbfbc5e7436a20d5c0602600b64ac79d23aae6c1129f4ff601d880e4aa3d"
+  },
+  "outcomes": {
+    "JOIN_AUTHORIZED": true,
+    "DELIVERY_ACKNOWLEDGED": true,
+    "CONTINUATION_ACTIVATED": true,
+    "RECOVERY": true
+  },
+  "cleanup": {
+    "tracesStopped": true,
+    "contextsClosed": true,
+    "videosFlushed": true,
+    "fixtureRemoved": true
+  },
+  "media": {
+    "DESKTOP": {
+      "screenshots": [
+        "01-chronicle.png",
+        "02-connect-in-chronicle.png",
+        "04-phone-connected.png",
+        "09-transfer-pending.png",
+        "10-delivery-acknowledged.png",
+        "12a-recovery-options-open.png",
+        "12b-recovery-in-progress.png",
+        "13-recovered-chart.png",
+        "14-medium-chronicle.png"
+      ],
+      "screenshotViewports": {
+        "01-chronicle.png": {
+          "width": 1440,
+          "height": 1000
+        },
+        "02-connect-in-chronicle.png": {
+          "width": 1440,
+          "height": 1000
+        },
+        "04-phone-connected.png": {
+          "width": 1440,
+          "height": 1000
+        },
+        "09-transfer-pending.png": {
+          "width": 1440,
+          "height": 1000
+        },
+        "10-delivery-acknowledged.png": {
+          "width": 1440,
+          "height": 1000
+        },
+        "12a-recovery-options-open.png": {
+          "width": 1440,
+          "height": 1000
+        },
+        "12b-recovery-in-progress.png": {
+          "width": 1440,
+          "height": 1000
+        },
+        "13-recovered-chart.png": {
+          "width": 1440,
+          "height": 1000
+        },
+        "14-medium-chronicle.png": {
+          "width": 820,
+          "height": 1180
+        }
+      },
+      "recording": "page@8ef507b7f39f4add8e3982be85274278.webm",
+      "trace": "desktop-trace.zip"
+    },
+    "MOBILE": {
+      "screenshots": [
+        "03-phone-sign-in.png",
+        "04-journal-companion.png",
+        "05-real-chronicle-lens.png",
+        "06-dedicated-chart.png",
+        "07-artifact.png",
+        "08-letter.png",
+        "09-receive-offer.png",
+        "10-chart-received.png",
+        "11-offline.png",
+        "12-reconnected.png",
+        "15-phone-landscape.png",
+        "16-return-to-chronicle.png",
+        "16-voyage-continued.png",
+        "17-access-ended.png"
+      ],
+      "screenshotViewports": {
+        "03-phone-sign-in.png": {
+          "width": 390,
+          "height": 844
+        },
+        "04-journal-companion.png": {
+          "width": 390,
+          "height": 844
+        },
+        "05-real-chronicle-lens.png": {
+          "width": 390,
+          "height": 844
+        },
+        "06-dedicated-chart.png": {
+          "width": 390,
+          "height": 844
+        },
+        "07-artifact.png": {
+          "width": 390,
+          "height": 844
+        },
+        "08-letter.png": {
+          "width": 390,
+          "height": 844
+        },
+        "09-receive-offer.png": {
+          "width": 390,
+          "height": 844
+        },
+        "10-chart-received.png": {
+          "width": 390,
+          "height": 844
+        },
+        "11-offline.png": {
+          "width": 390,
+          "height": 844
+        },
+        "12-reconnected.png": {
+          "width": 390,
+          "height": 844
+        },
+        "15-phone-landscape.png": {
+          "width": 844,
+          "height": 390
+        },
+        "16-return-to-chronicle.png": {
+          "width": 390,
+          "height": 844
+        },
+        "16-voyage-continued.png": {
+          "width": 390,
+          "height": 844
+        },
+        "17-access-ended.png": {
+          "width": 390,
+          "height": 844
+        }
+      },
+      "recording": "page@c781844e9f8da01390a1fa1dec700568.webm",
+      "trace": "phone-trace.zip"
+    }
+  }
+}

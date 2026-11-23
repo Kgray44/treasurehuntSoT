@@ -1252,7 +1252,11 @@
           "src/components/player/journal",
           "src/app/player/playthroughs/[playthroughId]/journal",
           "src/app/play/[taleSlug]/session/[sessionId]",
-          "src/app/player/offline-landfall"
+          "src/app/player/offline-landfall",
+          "src/parallax/scene-delivery.ts",
+          "src/landfall/device-lab/parallax-native-client.tsx",
+          "native/android/app/src/main/java/com/voyagewright/landfall",
+          "native/ios/LandfallCompanion"
         ],
         "projectionPaths": [
           "src/app/api/crossdeck",
@@ -1283,7 +1287,11 @@
           }
         ],
         "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
-        "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
+        "browserTests": [
+          "tests/e2e/crossdeck-experience-refit.spec.ts",
+          "tests/e2e/crossdeck-refit-recovery.spec.ts",
+          "tests/e2e/parallax-native-authority.spec.ts"
+        ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "continuity": {
@@ -1311,7 +1319,7 @@
         "limitations": [
           "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
           "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
-          "This focused consumer contract delivers an already published synthetic Creator-authored clue. Creator Studio authoring and publication retain their existing qualification scope; no new authoring or native camera acceptance is claimed.",
+          "This focused consumer contract delivers an already published synthetic Creator-authored clue. Creator Studio authoring and publication retain their existing qualification scope. Android and iOS rendering and picking require separate Device Lab evidence. Camera-free browser and simulator evidence covers software behavior only.",
           "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
           "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context.",
           "The same synthetic canonical account owns its primary email, one verified secondary email and existing-style Player username. Six-contract captures retain all twenty desktop/mobile and normal/reduced contexts while respecting the unchanged six-per-login sign-in guard; no account/session injection or auth bypass is used."
@@ -1321,7 +1329,7 @@
         "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
         "states": ["JOURNAL_READY", "LENS_READY", "INSPECTED", "RETURNED"],
         "navigation": "Open the active Journal, open its released Chronicle Lens, inspect the actual clue, then close Lens and return to the same Journal.",
-        "designTarget": "Preserve the published clue and readable Guided hierarchy, with truthful camera availability, keyboard inspection and an immediate contextual close/return.",
+        "designTarget": "Preserve the published clue and readable Guided hierarchy, with truthful camera availability, keyboard inspection and an immediate contextual close/return. On native, the same Lens camera control opens the released model. Keep Inspect and return in context, with Guided Lens available when native placement or the released asset is unavailable.",
         "roleSetup": {
           "PLAYER": {
             "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal",
