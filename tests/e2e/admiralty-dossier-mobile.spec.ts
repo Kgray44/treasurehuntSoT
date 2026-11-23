@@ -12,7 +12,11 @@ test.beforeEach(() => {
 test.afterAll(() => db.$disconnect());
 
 for (const width of [320, 390]) {
-  test(`the account dossier exposes its complete ID and keyboard Copy at ${width}px`, async ({ page, context, baseURL }) => {
+  test(`the account dossier exposes its complete ID and keyboard Copy at ${width}px`, async ({
+    page,
+    context,
+    baseURL,
+  }) => {
     const operator = await closureAccount("Synthetic dossier administrator");
     await db.accountRoleAssignment.create({
       data: { accountId: operator.id, role: "ADMINISTRATOR", scopeType: "GLOBAL" },
