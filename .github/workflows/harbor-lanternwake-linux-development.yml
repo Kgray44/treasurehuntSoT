@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Verify the corrected Studio Exchange browser contract
+run-name: Diagnose the Homeport Round 2 publication selection under the V3 checkout
 
 on:
   push:
@@ -12,62 +12,49 @@ permissions:
   contents: read
 
 jobs:
-  browser-probe:
-    name: Studio Exchange current workflow
+  homeport-publication:
     runs-on: ubuntu-24.04
-    timeout-minutes: 22
-    env:
-      CANDIDATE_SHA: 8c0bf6f14980d7bb6a9a3af8c1d7426b6c653a5e
-      BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      FOREVER_VALIDATION_SOURCE_SHA: 8c0bf6f14980d7bb6a9a3af8c1d7426b6c653a5e
-      NEXT_TELEMETRY_DISABLED: "1"
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ref: refs/heads/main
+            sha: 627a4e651641b6765ac789d378672ea6e903c120
+          - ref: refs/pull/901/merge
+            sha: 5f4e676df32d72c96b28e8d9f1a64abd4c2b858f
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 8c0bf6f14980d7bb6a9a3af8c1d7426b6c653a5e
+          ref: ${{ matrix.ref }}
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /*
             !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
             /scripts/
-            /src/
             /testing/
             /tests/
             /Development_Docs/**/*.json
             /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
+      - name: Inspect exact publication history in the GitHub runner
+        env:
+          EXACT_REF: ${{ matrix.ref }}
+          EXACT_SHA: ${{ matrix.sha }}
         run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium
-      - name: Run current Brightwork Studio Exchange suite against the exact test repair
-        run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "4961c469a987f1c1958ed41bde16707d80e16e9a"
-          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          npx --no-install prettier --check tests/e2e/brightwork-stage8-wave4.spec.ts
-          node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/brightwork-stage8-wave4.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
-          EOF
+          set -eu
+          test "$(git rev-parse HEAD)" = "$EXACT_SHA"
+          file=Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/experience-images-manifest.json
+          expected=8e3900a734674cb58800878aaeaf91a0e9f2285e
+          echo "shallow before: $(git rev-parse --is-shallow-repository)"
+          git fetch --no-tags --filter=blob:none --unshallow origin "$EXACT_REF"
+          echo "shallow after: $(git rev-parse --is-shallow-repository)"
+          git merge-base --is-ancestor "$expected" HEAD
+          actual="$(git log --diff-filter=A --format=%H -- "$file")"
+          printf 'selected publication: %s\n' "$actual"
+          printf 'expected publication: %s\n' "$expected"
+          printf 'current tracked manifest blob: %s\n' "$(git rev-parse "HEAD:$file")"
+          printf 'selected image manifest blob: %s\n' "$(git rev-parse "$actual:Experience_Images/manifest.json")"
+          printf 'historical image manifest blob: %s\n' "$(git rev-parse "$expected:Experience_Images/manifest.json")"
+          test "$actual" = "$expected"
