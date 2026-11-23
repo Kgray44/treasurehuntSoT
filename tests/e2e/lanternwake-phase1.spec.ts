@@ -218,13 +218,20 @@ test.describe.serial("Project Lanternwake Phase 1 presentation truth", () => {
         };
         const state = window as TargetTestWindow;
         const removeRequiredTarget = () => {
-          const target = document.querySelector<HTMLElement>("[data-scene-part='ink-story']");
+          const target = document.querySelector<HTMLElement>(
+            ".chronicle-journal-shell [data-opening-actor='book-camera']",
+          );
           if (!target) return;
-          target.remove();
+          target.removeAttribute("data-opening-actor");
           state.__lanternwakeTargetRemovals = (state.__lanternwakeTargetRemovals ?? 0) + 1;
         };
         const observer = new MutationObserver(removeRequiredTarget);
-        observer.observe(document.documentElement, { childList: true, subtree: true });
+        observer.observe(document, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: ["data-opening-actor"],
+        });
         state.__lanternwakeMissingTargetObserver = observer;
         state.__lanternwakeTargetRemovals = 0;
         removeRequiredTarget();
@@ -253,13 +260,18 @@ test.describe.serial("Project Lanternwake Phase 1 presentation truth", () => {
         }),
       ).toBe(1);
       // The canonical player reconciles authoritative event history on reload.
-      // The probe removes the actual Journal opening target, rather than a
-      // retired PlayerExperience ceremony target, so this exercises the
-      // current readable opening fallback.
+      // Remove the required Book Settling actor marker while preserving the
+      // page content that the readable fallback must present.
       await player.reload();
       await openJournal(player, { skipOpening: false });
       const journal = player.locator(".chronicle-journal-shell");
+      const removals = await player.evaluate(
+        () => (window as Window & { __lanternwakeTargetRemovals?: number }).__lanternwakeTargetRemovals ?? 0,
+      );
+      expect(removals).toBeGreaterThan(0);
+      await expect(journal.locator(".book-camera")).toBeVisible();
       await expect(journal).toHaveAttribute("data-journal-opening-outcome", "failure");
+      await expect(journal).toHaveAttribute("data-journal-ready-reason", "runtime-failure");
       await expect(player.getByText("The animated opening could not finish.")).toBeVisible();
       expect(await db.viewedCeremony.count({ where: { eventId } })).toBe(0);
 
