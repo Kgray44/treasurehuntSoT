@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Verify mobile dossier repair and recapture the exact Native Scene candidate
+run-name: Measure the live mobile account dossier geometry
 
 on:
   push:
@@ -17,14 +17,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 38
     env:
-      CANDIDATE_SHA: c057c7451ba716d5b5789fee932625f6cf6c7a7a
+      CANDIDATE_SHA: a3a9857ca3cf5f75ddcae639129389a812a2e4f4
       BASE_SHA: 5be59f18590f2c48a4a7672a14a25dee5bf0e82d
-      FOREVER_VALIDATION_SOURCE_SHA: c057c7451ba716d5b5789fee932625f6cf6c7a7a
+      FOREVER_VALIDATION_SOURCE_SHA: a3a9857ca3cf5f75ddcae639129389a812a2e4f4
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: c057c7451ba716d5b5789fee932625f6cf6c7a7a
+          ref: a3a9857ca3cf5f75ddcae639129389a812a2e4f4
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,12 +58,10 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install chromium
-      - name: Check tracked source formatting
-        run: SL_JOB=format node scripts/sounding-line-v3/cli.mjs ci-job --base "$BASE_SHA"
       - name: Verify visible account ID and keyboard clipboard readback in Chromium
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "22b4fce14c34b6c86451ca65ad5066d09df9b92c"
+          test "$(git rev-parse HEAD^{tree})" = "88f198ff10f017f161d9b0e060452efc2c712a31"
           test "$(git rev-parse HEAD:native)" = "6795af566a32e2196088551de5b5c89840cc589f"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           node --input-type=module <<'EOF'
@@ -73,103 +71,11 @@ jobs:
             { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
           );
           EOF
-
-  benchmark:
-    needs: mobile-dossier
-    name: Source-bound Native Scene experience capture
-    runs-on: ubuntu-24.04
-    timeout-minutes: 75
-    env:
-      CANDIDATE_SHA: c057c7451ba716d5b5789fee932625f6cf6c7a7a
-      BASE_SHA: 5be59f18590f2c48a4a7672a14a25dee5bf0e82d
-      FOREVER_VALIDATION_SOURCE_SHA: c057c7451ba716d5b5789fee932625f6cf6c7a7a
-      NEXT_TELEMETRY_DISABLED: "1"
-      SOUNDING_LINE_PR_NUMBER: "896"
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: c057c7451ba716d5b5789fee932625f6cf6c7a7a
-          fetch-depth: 64
-          persist-credentials: false
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /*
-            !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
-            /scripts/
-            /src/
-            /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-      - name: Verify the actual protected base and its candidate ancestry
-        run: |
-          git fetch --no-tags --filter=blob:none --depth=64 origin refs/heads/main:refs/remotes/origin/main
-          test "$(git rev-parse origin/main)" = "$BASE_SHA"
-          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
-      - name: Install locked dependencies and Chromium
-        run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install chromium
-      - name: Capture real source-bound Product Experience journeys for PR 896
-        run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "22b4fce14c34b6c86451ca65ad5066d09df9b92c"
-          node --input-type=module <<'EOF'
-          import {execFileSync} from "node:child_process";
-          import {writeFile} from "node:fs/promises";
-          import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
-          import {recognizeExceptionExecution} from "./scripts/sounding-line/experience-exception.mjs";
-          const root = process.cwd();
-          if (recognizeExceptionExecution({root, baseSha: process.env.BASE_SHA, candidateSha: process.env.CANDIDATE_SHA}))
-            throw new Error("Current source was classified as a separate exception campaign");
-          const plan = JSON.parse(execFileSync(process.execPath, [
-            "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
-            "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
-          ], {encoding: "utf8"}));
-          const expectedContracts = ["admiralty.ai-economics","admiralty.phase1.registry","admiralty.phase2.account-dossier-support","admiralty.phase2.read-projection-redaction","chronicle.creation","crossdeck.phase2.continuity","crossdeck.refit.companion","crossdeck.refit.published-lens","harborlight.sc07.creator-community.experience","homeport.community.public-projection","homeport.owner-correction.round1.workspaces","homeport.passport.product-surface","homeport.phase7.account.canonical-lifecycle","homeport.shell.crossdeck-access-recovery","homeport.shell.crossdeck-companion","homeport.shell.crossdeck-companion-mobile","homeport.transition.auth-routes","journal-ready-state","parallax.authored-library-and-simulation.experience","parallax.floating-controls.experience","parallax.integration.pilot-owner-boundary","parallax.parametric-room-correction.experience","parallax.protected-photo-room.experience","parallax.rooms-and-surfaces.experience","parallax.sc00b.inspector.experience","parallax.scene-manager.experience","parallax.spatial-community-publishing.experience","reach.phase1.foundation","spatial-pilot.experience"];
-          const actualContracts = plan.contracts.map(item => item.id).sort();
-          if (!plan.applicable || plan.baseSha !== process.env.BASE_SHA || plan.candidateSha !== process.env.CANDIDATE_SHA ||
-              !/^[a-f0-9]{64}$/.test(plan.contractDigest) || expectedContracts.some(id => !actualContracts.includes(id)) ||
-              !/^[a-f0-9]{64}$/.test(plan.sourceDigest))
-            throw new Error("Unexpected experience source or contract selection");
-          console.log("NATIVE_HARBOR_CAPTURE_PLAN " + JSON.stringify({baseSha:plan.baseSha,candidateSha:plan.candidateSha,
-            sourceDigest:plan.sourceDigest,contractDigest:plan.contractDigest,contracts:actualContracts}));
-          plan.outputDirectory = "artifacts/sounding-line/harbor-shared-experience";
-          delete process.env.GH_TOKEN;
-          delete process.env.GITHUB_TOKEN;
-          const receipt = await runTrustedExperienceReplay({
-            root, plan, validateReplay: false,
-            environment: { SOUNDING_LINE_BASE_SHA: plan.baseSha },
-          });
-          if (receipt.status !== "PASS") throw new Error("The actual browser capture did not complete");
-          await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
-            JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
-              sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
-              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "DEVELOPMENT_CAPTURE"}, null, 2) + "\n");
-          EOF
-      - name: Retain source-bound synthetic browser review evidence
-        if: always()
+      - name: Retain bounded failure screenshots
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: harbor-native-source-bound-experience
-          path: artifacts/sounding-line/harbor-shared-experience/**
+          name: native-mobile-dossier-layout-diagnostic
+          path: test-results/**/test-failed-1.png
           if-no-files-found: ignore
-          retention-days: 30
-
+          retention-days: 7
