@@ -545,9 +545,16 @@ html[data-voyage-theme="light"] .ocean-depth {
   opacity: 0;
   transition: opacity 820ms ease 180ms;
 }
-.page-stack {
+.page-stacks {
   position: absolute;
   z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 720ms ease 240ms;
+}
+.page-stack {
+  position: absolute;
   top: 2.8%;
   bottom: 5rem;
   width: 47.4%;
@@ -558,8 +565,6 @@ html[data-voyage-theme="light"] .ocean-depth {
   box-shadow:
     0 18px 32px rgba(0, 0, 0, 0.36),
     inset 0 -18px 22px rgba(89, 56, 27, 0.24);
-  opacity: 0;
-  transition: opacity 720ms ease 240ms;
 }
 .page-stack-left {
   left: 3.8%;
@@ -1081,8 +1086,8 @@ html[data-voyage-theme="light"] .ocean-depth {
 .voyage-shell[data-journal-phase="JOURNAL_READY"] .book-shadow,
 .voyage-shell[data-journal-phase="BOOK_SETTLING"] .rear-book-cover,
 .voyage-shell[data-journal-phase="JOURNAL_READY"] .rear-book-cover,
-.voyage-shell[data-journal-phase="BOOK_SETTLING"] .page-stack,
-.voyage-shell[data-journal-phase="JOURNAL_READY"] .page-stack,
+.voyage-shell[data-journal-phase="BOOK_SETTLING"] .page-stacks,
+.voyage-shell[data-journal-phase="JOURNAL_READY"] .page-stacks,
 .voyage-shell[data-journal-phase="BOOK_SETTLING"] .book-binding,
 .voyage-shell[data-journal-phase="JOURNAL_READY"] .book-binding {
   opacity: 1;

@@ -12,7 +12,6 @@ import type { CrossdeckConnection } from "@/components/crossdeck/useCrossdeckSes
 import { VoyageContext, type VoyageContextData } from "@/components/crossdeck/VoyageContext";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
-import { AudioCuePlayer } from "@/animation/core/audio-cues";
 import type { JournalPhaseOutcome, MotionMode } from "@/animation/core/animation-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import {
@@ -174,6 +173,24 @@ function usableFocusTarget(element: HTMLElement | null): element is HTMLElement 
   );
 }
 
+function waitForReadableReducedFrame(phase: JournalOpeningPhase, signal: AbortSignal): Promise<JournalPhaseOutcome> {
+  if (signal.aborted) return Promise.resolve({ status: "aborted", phase });
+  const startedAt = performance.now();
+  return new Promise((resolve) => {
+    const finish = (status: "completed" | "aborted") => {
+      cancelAnimationFrame(frame);
+      clearTimeout(deadline);
+      signal.removeEventListener("abort", abort);
+      if (status === "aborted") resolve({ status, phase });
+      else resolve({ status, phase, finiteAnimationCount: 0, durationMs: Math.round(performance.now() - startedAt) });
+    };
+    const abort = () => finish("aborted");
+    const frame = requestAnimationFrame(() => finish("completed"));
+    const deadline = setTimeout(() => finish("completed"), 100);
+    signal.addEventListener("abort", abort, { once: true });
+  });
+}
+
 export async function runJournalOpeningPhases({
   root,
   phases,
@@ -284,7 +301,7 @@ function ChronicleJournalSessionIdentity({
   const initializedPage = useRef(false);
   const processedSequence = useRef(0);
   const followingCurrent = useRef(true);
-  const audio = useRef(new AudioCuePlayer());
+  const pageTurnCue = useRef<HTMLAudioElement | null>(null);
   const readingRef = useRef<PlayerJournalReadingState>(emptyJournalReadingState);
   const stateRef = useRef<SessionState | null>(null);
   const [state, setState] = useState<SessionState | null>(null);
@@ -317,10 +334,13 @@ function ChronicleJournalSessionIdentity({
   const archiveMode = Boolean(state && (state.journal.mode === "historical" || state.session.status === "COMPLETED"));
 
   useEffect(() => {
-    const audioEngine = audio.current;
-    audioEngine.setMuted(localStorage.getItem("forever-muted") === "true");
+    if (localStorage.getItem("forever-muted") === "true") return;
+    const cue = new Audio("/sounds/journal-page-turn.wav");
+    cue.preload = "auto";
+    pageTurnCue.current = cue;
     return () => {
-      void audioEngine.close();
+      pageTurnCue.current = null;
+      cue.pause();
     };
   }, []);
 
@@ -595,7 +615,10 @@ function ChronicleJournalSessionIdentity({
     async (policy: JournalOpeningPolicy, focusOrigin?: HTMLElement | null) => {
       const rootElement = root.current;
       if (openingBusy.current || !rootElement) return;
-      audio.current.unlock();
+      const hasReadableReducedBook =
+        policy.composition === "reduced" &&
+        rootElement.dataset.journalPhase === "JOURNAL_READY" &&
+        rootElement.dataset.pageFlipReadiness === "reduced";
       openingBusy.current = true;
       activeOpeningPolicy.current = policy;
       openingFocusOrigin.current =
@@ -614,6 +637,9 @@ function ChronicleJournalSessionIdentity({
         phases: policy.phases,
         mode,
         signal: controller.signal,
+        waitForPhase: hasReadableReducedBook
+          ? (_root, phase, _mode, signal) => waitForReadableReducedFrame(phase, signal)
+          : waitForJournalPhase,
         // JOURNAL_READY is committed only after the public PageFlip readiness handoff below.
         onPhase: (phase) => flushSync(() => setOpeningPhase(phase === "JOURNAL_READY" ? "BOOK_SETTLING" : phase)),
       });
@@ -663,16 +689,20 @@ function ChronicleJournalSessionIdentity({
         const readinessFallback = ["fallback", "reduced"].includes(readiness.readinessStatus);
         const settledOutcome =
           result.status === "completed-fallback" || readinessFallback ? "completed-fallback" : result.status;
-        settleJournalReady(
-          policy,
-          settledOutcome,
-          settledOutcome,
-          readinessFallback
-            ? "Page turning is using its readable fallback. The Voyage Journal is ready."
-            : result.status === "completed-fallback"
-              ? "Motion was reduced. The Voyage Journal is open in its readable final state."
-              : "",
-        );
+        const publishReady = () =>
+          settleJournalReady(
+            policy,
+            settledOutcome,
+            settledOutcome,
+            readinessFallback
+              ? "Page turning is using its readable fallback. The Voyage Journal is ready."
+              : result.status === "completed-fallback"
+                ? "Motion was reduced. The Voyage Journal is open in its readable final state."
+                : "",
+          );
+        // Publish within the first available frame when the static book is already readable.
+        if (hasReadableReducedBook && readiness.readinessStatus === "reduced") flushSync(publishReady);
+        else publishReady();
         return;
       }
 
@@ -1077,6 +1107,7 @@ function ChronicleJournalSessionIdentity({
 
   const journalReady = isJournalInteractive(openingPhase);
   const openingActive = !journalReady;
+  const resetOpeningPresentation = openingPhase === "ENTRY_ACTIVATED" || readyReceipt?.reason === "skipped";
   const openingFeedback =
     openingNotice && (journalReady || openingOutcome === "aborted") ? (
       <p
@@ -1159,7 +1190,7 @@ function ChronicleJournalSessionIdentity({
           ref={root}
           data-experience-voyage={state.session.id}
           data-experience-version={state.session.versionId}
-          className={`voyage-shell chronicle-journal-shell mode-${state.journal.mode}`}
+          className={`voyage-shell chronicle-journal-shell ${styles.journalShell} mode-${state.journal.mode}${resetOpeningPresentation ? " journal-resetting" : ""}`}
           data-journal-phase={openingPhase}
           data-journal-opening-outcome={openingOutcome}
           data-journal-ready-reason={readyReceipt?.reason}
@@ -1381,14 +1412,11 @@ function ChronicleJournalSessionIdentity({
                 saveReading({ pageId: pages[page]?.id ?? null });
               }}
               onPageTurn={() => {
-                audio.current.unlock();
-                audio.current.playValidated({
-                  name: "page-turn",
-                  motionPolicy,
-                  motionOnly: true,
-                  presentationValidated: true,
-                  semanticLabel: "page-turn-complete",
-                  allowedSemanticLabels: ["page-turn-complete"],
+                const cue = pageTurnCue.current;
+                if (!cue || !motionPolicy.allowMotionCues) return;
+                cue.currentTime = 0;
+                void cue.play().catch(() => {
+                  // Audio remains optional when the browser blocks playback.
                 });
               }}
               onTurnLifecycle={(event: PageTurnLifecycleEvent) => {

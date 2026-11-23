@@ -583,6 +583,7 @@ export async function runExperienceJourney({
   const unobscuredActions = [];
   for (const { index, step, applicable } of contextual.steps) {
     if (!applicable) continue;
+    if (step.feedbackBoundary && step.action !== "assert") fail("FEEDBACK_BOUNDARY_INVALID");
     if (step.action === "reload") {
       const savedURL = savedRoomReloadURL(page, reloadOrigin);
       await page.reload({ waitUntil: "domcontentloaded", timeout: 30000 });
@@ -750,6 +751,12 @@ export async function runExperienceJourney({
           if (!observedDeparture || step.kind === "outcome" || !changed) fail("RETURN_WITHOUT_DEPARTURE");
           returnPathVerified = true;
         }
+        if (step.feedbackBoundary) {
+          if (actionStarted === null) fail("FEEDBACK_BOUNDARY_INVALID");
+          // The visible outcome is verified. Measure feedback before reading continuity evidence.
+          maximumFeedbackMs = Math.max(maximumFeedbackMs, performance.now() - actionStarted);
+          actionStarted = null;
+        }
         if (step.kind === "outcome") outcomeContinuity.push(await readContinuity("outcome"));
         if (step.kind === "outcome")
           observations.push({
@@ -760,11 +767,6 @@ export async function runExperienceJourney({
             text: step.text ?? null,
           });
       }
-    }
-    if (step.feedbackBoundary) {
-      if (actionStarted === null || step.action !== "assert") fail("FEEDBACK_BOUNDARY_INVALID");
-      maximumFeedbackMs = Math.max(maximumFeedbackMs, performance.now() - actionStarted);
-      actionStarted = null;
     }
     if (step.state) {
       if (accessibilityCheck) stateAccessibility.push({ state: step.state, ...(await accessibilityCheck()) });

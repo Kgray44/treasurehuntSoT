@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "productSource": "c117c076d4214741866349bb4210f7c85ba9e8f7",
+  "captureWorkflowRun": 45118587253,
+  "captureArchiveId": 14792104573,
+  "captureArchiveSha256": "995c87a4176d4b243ea6ef05df0b02efba80d6095e645db4e3273d74dd927375",
+  "sourceDigest": "67fc86144dd2274d1eeb2582d357d2309917d9d8f4a5fcbcdcb14b8c76017d57",
+  "contractDigest": "4578d749590b9033c43bf566138577f9d32cb249722f3050f98608db287253de",
+  "reviewedBlobIds": {
+    "homeport.shell.crossdeck-companion": { "iteration": 3, "sha": "15f8aa0d3df555a76c7d0adfac9898e2209d718a" },
+    "chronicle.creation": { "iteration": 2, "sha": "fdc153b65757ba4d54ce05e45e4645cf3f51b4bc" },
+    "crossdeck.refit.published-lens": { "iteration": 2, "sha": "5e4282da8f1dbc196071365f133acafb77cc861f" },
+    "homeport.shell.crossdeck-companion-mobile": { "iteration": 3, "sha": "0c15761eaa3c58cc63a7e648c736961ea541c702" },
+    "crossdeck.phase2.continuity": { "iteration": 2, "sha": "8c6be719e114d55f32ffe017d8c0e6ed2ac24591" },
+    "crossdeck.refit.companion": { "iteration": 2, "sha": "8c0f193887ba807da97e9b577e2d36cf4ed9984c" },
+    "homeport.transition.reduced-motion": { "iteration": 3, "sha": "57d6243ac582e89fbcad630c645bc4636509ba2d" },
+    "homeport.motion.authority": { "iteration": 2, "sha": "925a48a75e43c83047e5066876992ce0324882f9" },
+    "homeport.owner-correction.round1.workspaces": {
+      "iteration": 2,
+      "sha": "48df92b0465783d03e76cee229f1d953426740bd"
+    },
+    "homeport.community.public-projection": { "iteration": 2, "sha": "caa38681b6a962bcea826657146eaaf2d94a40a4" }
+  },
+  "formatNormalizedOriginals": [
+    {
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c117c076d4/immutable-json/development-capture-receipt.json.raw",
+      "reviewedUploadSha256": "9630d84bcae78d237ae3b6693648049a50b38c5267d9887d4c06ca25b07beae2",
+      "publishedJsonPath": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c117c076d4/development-capture-receipt.json",
+      "publishedJsonSha256": "73440da2b1b7b9571991510b666afc1c55c02172c5ac652d042ab24c609503f1"
+    },
+    {
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c117c076d4/immutable-json/generic/paired/playwright-report.json.raw",
+      "reviewedUploadSha256": "dba1a64872b91d58daa85f6af82a17a74681752b3f9833ed4b902425ecf35c4a",
+      "publishedJsonPath": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c117c076d4/generic/paired/playwright-report.json",
+      "publishedJsonSha256": "cd33a8169a9c3c55c64f20bcd67d5683120828c7b4e99eba25f952a58acb1b37"
+    },
+    {
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c117c076d4/immutable-json/generic/paired/refit-no-preference/paired-witness.json.raw",
+      "reviewedUploadSha256": "3131a06bfbad6f93084fc6e9403f35b0717276e6ba6c098f20787e65b659a58c",
+      "publishedJsonPath": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c117c076d4/generic/paired/refit-no-preference/paired-witness.json",
+      "publishedJsonSha256": "ea09280bcf4f6e04ff3f747cf798a6981f552860c2a41a6a8bf0f54e98e03389"
+    },
+    {
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c117c076d4/immutable-json/generic/paired/refit-recovery/paired-witness.json.raw",
+      "reviewedUploadSha256": "93a0b9b7ae1ed27f5bc1f88de19fbb08fc0036a3e19b3ee7dc7fe6a1cfe31338",
+      "publishedJsonPath": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c117c076d4/generic/paired/refit-recovery/paired-witness.json",
+      "publishedJsonSha256": "919c3311b2687985f326fd19c4fe5939b5327e75d2e91beb371d35da0cad22ae"
+    },
+    {
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c117c076d4/immutable-json/generic/paired/refit-reduce/paired-witness.json.raw",
+      "reviewedUploadSha256": "7c5b5cc4d66ab594f6707f921bf405adca686b5e7eb603b1a730dd4718fc9646",
+      "publishedJsonPath": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c117c076d4/generic/paired/refit-reduce/paired-witness.json",
+      "publishedJsonSha256": "4791e853650ab31e47730ec245186858ed7bac9f6f91c55b0eead91ac20ef372"
+    }
+  ],
+  "ownerAcceptance": "NOT_CLAIMED"
+}

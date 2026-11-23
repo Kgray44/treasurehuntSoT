@@ -1,0 +1,21 @@
+{
+  "candidate": "c117c076d4214741866349bb4210f7c85ba9e8f7",
+  "base": "fc813a4c03a4916c6b0aab346abbb8b1caa8cf38",
+  "status": "PASS",
+  "sourceDigest": "67fc86144dd2274d1eeb2582d357d2309917d9d8f4a5fcbcdcb14b8c76017d57",
+  "contractDigest": "4578d749590b9033c43bf566138577f9d32cb249722f3050f98608db287253de",
+  "profiles": ["generic"],
+  "contracts": [
+    "chronicle.creation",
+    "crossdeck.refit.published-lens",
+    "homeport.community.public-projection",
+    "homeport.motion.authority",
+    "homeport.owner-correction.round1.workspaces",
+    "homeport.transition.reduced-motion",
+    "crossdeck.phase2.continuity",
+    "homeport.shell.crossdeck-companion",
+    "homeport.shell.crossdeck-companion-mobile",
+    "crossdeck.refit.companion"
+  ],
+  "workflowRole": "DEVELOPMENT_CAPTURE"
+}
