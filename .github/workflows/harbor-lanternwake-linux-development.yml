@@ -1,5 +1,5 @@
 name: Player invitation contrast diagnostic
-run-name: Isolate the approved Creator listing navigation failure
+run-name: Compare reporter Git diff collection on identical Journal workloads
 
 on:
   push:
@@ -13,18 +13,18 @@ permissions:
 
 jobs:
   contrast:
-    name: Trace the installed Chapter template release handoff
+    name: Compare Journal timing with and without reporter diff metadata
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: d2d80e1a0c0951d3d8edc4b20501f0a697a05130
+      CANDIDATE_SHA: 30b60617981b748b5eb176128756942dc8c9e862
       BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: d2d80e1a0c0951d3d8edc4b20501f0a697a05130
+      FOREVER_VALIDATION_SOURCE_SHA: 30b60617981b748b5eb176128756942dc8c9e862
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: d2d80e1a0c0951d3d8edc4b20501f0a697a05130
+          ref: 30b60617981b748b5eb176128756942dc8c9e862
           fetch-depth: 16
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,55 +58,52 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install chromium
-      - name: Trace the approved Chapter template navigation
+      - name: Run both reporter modes on the same runner and exact product
         shell: bash
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          python - <<'PY'
+          git fetch --no-tags --filter=blob:none --depth=64 origin refs/heads/main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
+          test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "2e10c383fa2accb79fbad09f92d61631b23e2d78"
+          jq -n --arg base "$BASE_SHA" --arg head "$CANDIDATE_SHA" '
+            {pull_request: {number: 901, base: {sha: $base, ref:"main"}, head:{sha:$head}}}
+          ' > "$RUNNER_TEMP/harbor-git-metadata-event.json"
+          lscpu | sed -n '1,20p'
+          mkdir -p "$RUNNER_TEMP/harbor-timing"
+          export GITHUB_EVENT_NAME=pull_request
+          export GITHUB_EVENT_PATH="$RUNNER_TEMP/harbor-git-metadata-event.json"
+          for lane in default without-reporter-diff; do
+            if [[ "$lane" == without-reporter-diff ]]; then
+              python - <<'PY'
           from pathlib import Path
-          p=Path("tests/e2e/sc07-creator-community.spec.ts")
-          source=p.read_text()
-          old='''  await installerPage.goto("/community/templates");
-            await installerPage.locator(listingLink).first().press("Enter");
-            const install = installerPage.getByRole("button", { name: "Install to my reusable Library" });
-            await expect(installerPage.getByText(/release 2\\.0\\.0 by Synthetic owner Creator/)).toBeVisible();'''
-          new='''  const interaction: Array<{ event: string; pathname: string; status?: number; rsc?: boolean }> = [];
-            installerPage.on("framenavigated", (frame) => {
-              if (frame === installerPage.mainFrame()) interaction.push({ event: "navigation", pathname: new URL(frame.url()).pathname });
-            });
-            installerPage.on("response", (response) => {
-              const url = new URL(response.url());
-              if (url.pathname === `/community/${slug}` || url.pathname === "/community/templates") {
-                interaction.push({ event: "response", status: response.status(), pathname: url.pathname, rsc: url.searchParams.has("_rsc") });
-              }
-            });
-            await installerPage.goto("/community/templates");
-            const candidateLink = installerPage.locator(listingLink).first();
-            await candidateLink.evaluate((anchor) => {
-              const events: string[] = [];
-              window.addEventListener("keydown", (event) => { if (event.key === "Enter") events.push("keydown:" + (event.target === anchor)); }, true);
-              window.addEventListener("click", (event) => { if (event.target === anchor) events.push("click"); }, true);
-              Object.assign(window, { __harborListingEvents: events });
-            });
-            const before = await candidateLink.evaluate(anchor=>({ visible: Boolean(anchor.getClientRects().length), inert: Boolean(anchor.closest("[inert]")), hiddenAncestor: Boolean(anchor.closest("[aria-hidden=true]")), text: anchor.textContent, href: anchor.getAttribute("href") }));
-            await candidateLink.press("Enter");
-            const install = installerPage.getByRole("button", { name: "Install to my reusable Library" });
-            try {
-              await expect(installerPage.getByText(/release 2\\.0\\.0 by Synthetic owner Creator/)).toBeVisible();
-            } finally {
-              const after = await installerPage.evaluate(() => ({
-                pathname: location.pathname,
-                heading: document.querySelector("main h1")?.textContent,
-                focused: document.activeElement?.tagName,
-                events: Reflect.get(window, "__harborListingEvents") || [],
-              })).catch(()=>null);
-              console.log("HARBOR_RELEASE_NAVIGATION " + JSON.stringify({ before, after, interaction }));
-            }'''
-          assert source.count(old)==1
-          p.write_text(source.replace(old,new,1))
+          config=Path("playwright.config.ts")
+          text=config.read_text()
+          anchor="export default defineConfig({\n"
+          assert text.count(anchor)==1
+          config.write_text(text.replace(anchor,anchor+"  captureGitInfo: { commit: true, diff: false },\n"))
           PY
-          node --input-type=module <<'EOF'
+            fi
+            echo "HARBOR_TIMING_LANE=$lane"
+            if node --input-type=module <<'EOF'
           import {runJob} from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob({id:"harbor-creator-listing-navigation",kind:"browser",files:["tests/e2e/sc07-creator-community.spec.ts"]},
+          await runJob({id:"harbor-journal-git-metadata",kind:"browser",files:["tests/e2e/phase3-performance.spec.ts"]},
             {base:process.env.BASE_SHA,tree:process.env.CANDIDATE_SHA});
           EOF
+            then
+              echo "$lane PASS"
+            else
+              echo "$lane FAILED"
+            fi
+            output="$(find artifacts/sounding-line -name phase3-performance-metrics.json -type f -printf '%T@ %p\n' | sort -rn | head -1 | cut -d' ' -f2-)"
+            test -s "$output"
+            cp "$output" "$RUNNER_TEMP/harbor-timing/$lane.json"
+            jq '{provenance:.provenance.testedSourceSha, failedBudgets, metrics: {desktopFrameP95Ms:.metrics.desktopFrameP95Ms,ordinaryCumulativeLongTaskMs:.metrics.ordinaryCumulativeLongTaskMs}}' "$output"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: harbor-journal-reporter-diff-comparison
+          path: ${{ runner.temp }}/harbor-timing/*.json
+          if-no-files-found: error
+          retention-days: 15
