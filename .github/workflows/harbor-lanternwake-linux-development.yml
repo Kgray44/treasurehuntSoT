@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Measure the cost of browser recording on one standard Journal runner
+run-name: Measure all original Journal budgets after removing continuous route snapshots
 
 on:
   push:
@@ -13,18 +13,18 @@ permissions:
 
 jobs:
   canonical-budget:
-    name: Journal recorder overhead comparison on standard Ubuntu
+    name: Original recorded workload on the exact Journal snapshot repair
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 95f056cb9662e14534f0831d603fed5f26659f2a
+      CANDIDATE_SHA: f744dde280103e279b91733392c18e1233cdd456
       BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      FOREVER_VALIDATION_SOURCE_SHA: 95f056cb9662e14534f0831d603fed5f26659f2a
+      FOREVER_VALIDATION_SOURCE_SHA: f744dde280103e279b91733392c18e1233cdd456
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 95f056cb9662e14534f0831d603fed5f26659f2a
+          ref: f744dde280103e279b91733392c18e1233cdd456
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -66,10 +66,7 @@ jobs:
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
           npx --no-install prettier --check src/components/player/journal/ChronicleJournalSession.tsx
-      - name: Set up isolated recorder comparisons with the same real click workload
-        run: |
-          python3 -c 'import base64; exec(base64.b64decode("CmZyb20gcGF0aGxpYiBpbXBvcnQgUGF0aApwPVBhdGgoInRlc3RzL2UyZS9waGFzZTMtcGVyZm9ybWFuY2Uuc3BlYy50cyIpCnRleHQ9cC5yZWFkX3RleHQoKQpzcGxpdD0iICAgIGNvbnN0IHdhcm1SdW5zOiIKYXNzZXJ0IHRleHQuY291bnQoc3BsaXQpPT0xCmJhc2U9dGV4dC5zcGxpdChzcGxpdCwxKVswXQpob29rPScgIGFzeW5jICh7IHBhZ2UsIHBoYXNlMywgYnJvd3NlciwgYnJvd3Nlck5hbWUgfSkgPT4geycKYXNzZXJ0IGJhc2UuY291bnQoaG9vayk9PTEKYmFzZT1iYXNlLnJlcGxhY2UoaG9vaywnJycgIGFzeW5jICh7IHBhZ2UsIHBoYXNlMywgYnJvd3NlciwgYnJvd3Nlck5hbWUgfSwgdGVzdEluZm8pID0+IHsKICAgIGNvbnN0IGxhbmVzID0gewogICAgICBjaHJvbWl1bToge2lkOiAicmVjb3JkZWQiLCB2aWRlbzogInJldGFpbi1vbi1mYWlsdXJlIiwgdHJhY2U6ICJyZXRhaW4tb24tZmFpbHVyZSJ9LAogICAgICAiZGlhZ25vc3RpYy1uby12aWRlbyI6IHtpZDogIm5vLXZpZGVvIiwgdmlkZW86ICJvZmYiLCB0cmFjZTogInJldGFpbi1vbi1mYWlsdXJlIn0sCiAgICAgICJkaWFnbm9zdGljLW5vLXRyYWNlIjoge2lkOiAibm8tdHJhY2UiLCB2aWRlbzogInJldGFpbi1vbi1mYWlsdXJlIiwgdHJhY2U6ICJvZmYifSwKICAgICAgImRpYWdub3N0aWMtbm8tcmVjb3JkZXIiOiB7aWQ6ICJuby1yZWNvcmRlciIsIHZpZGVvOiAib2ZmIiwgdHJhY2U6ICJvZmYifSwKICAgIH0gYXMgY29uc3Q7CiAgICBleHBlY3QoT2JqZWN0Lmhhc093bihsYW5lcywgdGVzdEluZm8ucHJvamVjdC5uYW1lKSkudG9CZSh0cnVlKTsKICAgIGNvbnN0IGxhbmUgPSBsYW5lc1t0ZXN0SW5mby5wcm9qZWN0Lm5hbWUgYXMga2V5b2YgdHlwZW9mIGxhbmVzXTsnJycpCmJhc2U9YmFzZS5yZXBsYWNlKCciUDMtUEVSRk9STUFOQ0UtQ0hBUFRFUiInLCAnIlAzLVBFUkZPUk1BTkNFLUNIQVBURVItIiArIGxhbmUuaWQnKQptYXJrZXI9JyAgICBjb25zdCBjb2xkID0gYXdhaXQgbWVhc3VyZWRGdWxsT3BlbmluZycKYXNzZXJ0IGJhc2UuY291bnQobWFya2VyKT09MQpiYXNlPWJhc2UucmVwbGFjZShtYXJrZXIsJycnICAgIGNvbnN0IGhhc1ZpZGVvID0gcGFnZS52aWRlbygpICE9PSBudWxsOwogICAgZXhwZWN0KGhhc1ZpZGVvKS50b0JlKGxhbmUudmlkZW8gIT09ICJvZmYiKTsKICAgIGV4cGVjdCh0ZXN0SW5mby5wcm9qZWN0LnVzZS50cmFjZSkudG9CZShsYW5lLnRyYWNlKTsKICAgIGV4cGVjdCh0ZXN0SW5mby5wcm9qZWN0LnVzZS52aWRlbykudG9CZShsYW5lLnZpZGVvKTsKJycnK21hcmtlcikKdGFpbD0nJycgICAgY29uc3QgcnVucyA9IFtjb2xkXTsKICAgIGZvciAobGV0IGluZGV4ID0gMDsgaW5kZXggPCAyOyBpbmRleCArPSAxKSBydW5zLnB1c2goYXdhaXQgbWVhc3VyZWRGdWxsT3BlbmluZyhwYWdlLCByZXBsYXkocGFnZSkpKTsKICAgIGNvbnN0IHJlcG9ydCA9IHsKICAgICAgc291cmNlOiBwcm9jZXNzLmVudi5GT1JFVkVSX1ZBTElEQVRJT05fU09VUkNFX1NIQSwgbGFuZSwgaGFzVmlkZW8sCiAgICAgIHJlc3VsdHM6IHJ1bnMubWFwKChydW4pID0+ICh7CiAgICAgICAgZHVyYXRpb25Nczogcm91bmRlZChydW4uZHVyYXRpb25NcyksIHA5NTogcm91bmRlZChwZXJjZW50aWxlKHJ1bi52aXN1YWwuZnJhbWVEdXJhdGlvbnNNcywgMC45NSkpLAogICAgICAgIGZyYW1lczogcnVuLnZpc3VhbC5mcmFtZUR1cmF0aW9uc01zLmxlbmd0aCwKICAgICAgICBzbG93RnJhbWVzOiBydW4udmlzdWFsLmZyYW1lRHVyYXRpb25zTXMuZmlsdGVyKChmcmFtZSkgPT4gZnJhbWUgPiAyNSkubGVuZ3RoLAogICAgICAgIGxvbmdUYXNrczogcnVuLnZpc3VhbC5sb25nVGFza0R1cmF0aW9uc01zLCBjbHM6IHJvdW5kZWQocnVuLnZpc3VhbC5jbHMpLAogICAgICB9KSksCiAgICB9OwogICAgYXdhaXQgZnMud3JpdGVGaWxlKHBhdGguam9pbihhcnRpZmFjdC5hcnRpZmFjdERpcmVjdG9yeSwgImpvdXJuYWwtcmVjb3JkZXItIiArIGxhbmUuaWQgKyAiLmpzb24iKSwKICAgICAgSlNPTi5zdHJpbmdpZnkocmVwb3J0LCBudWxsLCAyKSArICJcXG4iLCB7ZmxhZzogInd4In0pOwogIH0sCik7CicnJwpwLndyaXRlX3RleHQoYmFzZSt0YWlsKQpjb25maWc9UGF0aCgicGxheXdyaWdodC5jb25maWcudHMiKQp0ZXh0PWNvbmZpZy5yZWFkX3RleHQoKQptYXJrZXI9JyAgICB7IG5hbWU6ICJhZG1pcmFsdHktcGhhc2UxIiwgdGVzdE1hdGNoOiBhZG1pcmFsdHlQaGFzZTEsIHVzZTogeyAuLi5kZXZpY2VzWyJEZXNrdG9wIENocm9tZSJdIH0gfSwnCmFzc2VydCB0ZXh0LmNvdW50KG1hcmtlcik9PTEKZXh0cmE9JycnICAgIHsKICAgICAgbmFtZTogImRpYWdub3N0aWMtbm8tdmlkZW8iLAogICAgICB0ZXN0TWF0Y2g6IC9waGFzZTMtcGVyZm9ybWFuY2VcXC5zcGVjXFwudHMkL3UsCiAgICAgIHVzZTogeyAuLi5kZXZpY2VzWyJEZXNrdG9wIENocm9tZSJdLCB2aWRlbzogIm9mZiIgfSwKICAgIH0sCiAgICB7CiAgICAgIG5hbWU6ICJkaWFnbm9zdGljLW5vLXRyYWNlIiwKICAgICAgdGVzdE1hdGNoOiAvcGhhc2UzLXBlcmZvcm1hbmNlXFwuc3BlY1xcLnRzJC91LAogICAgICB1c2U6IHsgLi4uZGV2aWNlc1siRGVza3RvcCBDaHJvbWUiXSwgdHJhY2U6ICJvZmYiIH0sCiAgICB9LAogICAgewogICAgICBuYW1lOiAiZGlhZ25vc3RpYy1uby1yZWNvcmRlciIsCiAgICAgIHRlc3RNYXRjaDogL3BoYXNlMy1wZXJmb3JtYW5jZVxcLnNwZWNcXC50cyQvdSwKICAgICAgdXNlOiB7IC4uLmRldmljZXNbIkRlc2t0b3AgQ2hyb21lIl0sIHZpZGVvOiAib2ZmIiwgdHJhY2U6ICJvZmYiIH0sCiAgICB9LAonJycKY29uZmlnLndyaXRlX3RleHQodGV4dC5yZXBsYWNlKG1hcmtlcixleHRyYSttYXJrZXIpKQpwcm9maWxlcz1QYXRoKCJzY3JpcHRzL3NvdW5kaW5nLWxpbmUvYnJvd3Nlci1zdWl0ZS1wcm9maWxlcy5tanMiKQp0ZXh0PXByb2ZpbGVzLnJlYWRfdGV4dCgpCm1hcmtlcj0nICAgIGlkOiAibGFudGVybndha2UtcGhhc2UzIiwnCmFzc2VydCB0ZXh0LmNvdW50KG1hcmtlcik9PTEKdGV4dD10ZXh0LnJlcGxhY2UobWFya2VyLG1hcmtlcisnJycgCiAgICBicm93c2VyQXJndW1lbnRzOiBPYmplY3QuZnJlZXplKFsiLS1wcm9qZWN0IiwgImRpYWdub3N0aWMtbm8tdmlkZW8iLCAiLS1wcm9qZWN0IiwgImRpYWdub3N0aWMtbm8tdHJhY2UiLCAiLS1wcm9qZWN0IiwgImRpYWdub3N0aWMtbm8tcmVjb3JkZXIiXSksJycnKQpwcm9maWxlcy53cml0ZV90ZXh0KHRleHQpCg=="))'
-      - name: Compare browser recorder costs
+      - name: Measure all unchanged Journal budgets
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -83,7 +80,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-recorder-overhead-serial-ubuntu
+          name: journal-live-route-snapshot-standard-ubuntu
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
