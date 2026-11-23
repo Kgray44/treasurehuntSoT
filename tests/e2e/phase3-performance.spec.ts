@@ -598,7 +598,7 @@ async function measuredFullOpening(page: Page, control: Locator) {
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
 phase3Test(
-  "trace the desktop Journal replay through the software compositor",
+  "isolate the painted surfaces during desktop Journal Book Settling",
   async ({ page, phase3, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
@@ -629,104 +629,44 @@ phase3Test(
     expect(fullRuntimeBaseline.eventSources).toBe(1);
 
 
-    const before = await measuredFullOpening(page, replay(page));
-    const cdp = await page.context().newCDPSession(page);
-    await page.evaluate(() => {
-      const scene = document.querySelector(".chronicle-journal-shell");
-      if (!scene) throw new Error("Missing Journal phase root");
-      let previous = "";
-      const observe = () => {
-        const current = scene.getAttribute("data-journal-phase") ?? "unknown";
-        if (previous !== current) performance.mark("harbor-journal:" + current);
-        previous = current;
-      };
-      observe();
-      new MutationObserver(observe).observe(scene, { attributes: true, attributeFilter: ["data-journal-phase"] });
-    });
-    const tracedResult = new Promise<{ stream?: string }>((resolve) => cdp.once("Tracing.tracingComplete", resolve));
-    await cdp.send("Tracing.start", {
-      transferMode: "ReturnAsStream",
-      traceConfig: {
-        recordMode: "recordUntilFull",
-        includedCategories: ["blink.user_timing", "devtools.timeline", "cc", "viz", "toplevel"],
-      },
-    });
-    let traced: Awaited<ReturnType<typeof measuredFullOpening>>;
-    try {
-      traced = await measuredFullOpening(page, replay(page));
-    } finally {
-      await cdp.send("Tracing.end");
-    }
-    const completion = await tracedResult;
-    if (!completion.stream) throw new Error("Chromium trace stream is missing");
-    const fragments: Buffer[] = [];
-    let bytes = 0;
-    try {
-      for (;;) {
-        const chunk = await cdp.send("IO.read", { handle: completion.stream, size: 262144 });
-        const part = Buffer.from(chunk.data, chunk.base64Encoded ? "base64" : "utf8");
-        bytes += part.length;
-        if (bytes > 64 * 1024 * 1024) throw new Error("Compositor trace exceeds its 64 MiB receipt limit");
-        fragments.push(part);
-        if (chunk.eof) break;
-      }
-    } finally {
-      await cdp.send("IO.close", { handle: completion.stream });
-      await cdp.detach();
-    }
-    const after = await measuredFullOpening(page, replay(page));
-
-    type TraceEvent = { name: string; ph: string; ts: number; dur?: number; pid: number; tid: number;
-      args?: { name?: string }; cat?: string; };
-    const events: TraceEvent[] = JSON.parse(Buffer.concat(fragments).toString("utf8")).traceEvents;
-    const label = (name: string) => events.find((event) => event.name === "harbor-journal:" + name);
-    const timings = events.filter((event) => event.name.startsWith("harbor-journal:"))
-      .map(({ name, ts, pid, tid }) => ({ name, ts, pid, tid }));
-    const threadNames = new Map(events.filter((event) => event.name === "thread_name")
-      .map((event) => [event.pid + ":" + event.tid, event.args?.name]));
-    const processNames = new Map(events.filter((event) => event.name === "process_name")
-      .map((event) => [event.pid, event.args?.name]));
-    const phaseWork = (first: string, last: string) => {
-      const start = label(first);
-      const end = label(last);
-      if (!start || !end || end.ts <= start.ts) throw new Error("Trace phase markers missing: " + first);
-      const groups = new Map<string, { name: string; category?: string; process?: string; thread?: string;
-        hits: number; accumulatedMs: number; longestMs: number }>();
-      const longSpans: Array<{ name: string; category?: string; process?: string; thread?: string;
-        atMs: number; ms: number }> = [];
-      for (const event of events) {
-        if (!event.dur || event.ph !== "X" || event.ts >= end.ts || event.ts + event.dur <= start.ts) continue;
-        const ms = (Math.min(event.ts + event.dur, end.ts) - Math.max(event.ts, start.ts)) / 1000;
-        const key = [event.pid, event.tid, event.cat, event.name].join("|");
-        const process = processNames.get(event.pid);
-        const thread = threadNames.get(event.pid + ":" + event.tid);
-        const group = groups.get(key) ?? { name: event.name, category: event.cat, process, thread,
-          hits: 0, accumulatedMs: 0, longestMs: 0 };
-        group.hits++;
-        group.accumulatedMs += ms;
-        group.longestMs = Math.max(group.longestMs, ms);
-        groups.set(key, group);
-        if (ms >= 8) longSpans.push({ name: event.name, category: event.cat, process, thread,
-          atMs: rounded((Math.max(start.ts, event.ts) - start.ts) / 1000), ms: rounded(ms) });
-      }
-      return { durationMs: rounded((end.ts - start.ts) / 1000),
-        families: [...groups.values()].sort((a,b) => b.accumulatedMs-a.accumulatedMs).slice(0,35)
-          .map(group => ({...group, accumulatedMs:rounded(group.accumulatedMs), longestMs:rounded(group.longestMs)})),
-        longSpans: longSpans.sort((a,b) => b.ms-a.ms).slice(0,28) };
+    const phaseScope = '.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"]';
+    const selectors = {
+      current: [],
+      pages: [".open-page-stage .page-flip-book"],
+      cover: [".closed-book > *", ".rear-book-cover", ".page-stack", ".book-shadow", ".book-binding"],
+      chrome: [".persistent-interface > *", ".persistent-objective > *", ".journal-workspace .section-masthead > *",
+        ".chapter-tabs > *", ".journal-opening-status > *"],
     };
-    const phases = {
-      closedReveal: phaseWork("CLOSED_BOOK_REVEAL", "LATCH_RELEASING"),
-      coverOpening: phaseWork("COVER_OPENING", "SEALED_PAGE_REVEAL"),
-      bookSettling: phaseWork("BOOK_SETTLING", "JOURNAL_READY"),
-    };
-    const rows = [before,traced,after].map((run,index) => ({ traced:index===1,
-      desktopP95: rounded(percentile(run.visual.frameDurationsMs, 0.95)),
-      settlingP95: rounded(percentile(run.visual.framesByPhase.BOOK_SETTLING ?? [], 0.95)),
-    }));
-    const report = { purpose: "DEVELOPMENT_ONLY", candidate: process.env.FOREVER_VALIDATION_SOURCE_SHA,
-      bytes, events: events.length, frames:rows, markers:timings, phases };
+    type Mode = keyof typeof selectors;
+    const order: Mode[] = ["current", "pages", "cover", "chrome", "chrome", "cover", "pages", "current"];
+    const rows = [];
+    for (const mode of order) {
+      for (const selector of selectors[mode]) {
+        await expect(journal(page).locator(selector).first()).toBeAttached();
+      }
+      const styles = selectors[mode].map((target) => phaseScope + " " + target + " { visibility: hidden !important; }");
+      const tag = styles.length ? await page.addStyleTag({ content: styles.join("\n") }) : null;
+      try {
+        await waitForStableRuntimeBaseline(page);
+        const run = await measuredFullOpening(page, replay(page));
+        const settling = run.visual.framesByPhase.BOOK_SETTLING ?? [];
+        expect(settling.length).toBeGreaterThan(20);
+        expect(run.durationMs).toBeLessThan(budgets.openingMs);
+        await expect(replay(page)).toBeFocused();
+        rows.push({
+          mode, intervalCount: run.visual.frameDurationsMs.length,
+          desktopP95: rounded(percentile(run.visual.frameDurationsMs, 0.95)),
+          settlingP95: rounded(percentile(settling, 0.95)),
+          settlingSlow: settling.filter((ms) => ms > budgets.desktopFrameP95Ms).length,
+          settlingCount: settling.length,
+          openingMs: rounded(run.durationMs),
+        });
+      } finally {
+        await tag?.evaluate((node) => { node.parentNode?.removeChild(node); });
+      }
+    }
+    const report = { purpose: "DEVELOPMENT_ONLY", candidate: process.env.FOREVER_VALIDATION_SOURCE_SHA, rows };
     await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
-    console.log("JOURNAL_COMPOSITOR_TRACE " + JSON.stringify(report));
-    await expect(replay(page)).toBeFocused();
+    console.log("JOURNAL_SURFACE_ISOLATION " + JSON.stringify(report));
   },
 );

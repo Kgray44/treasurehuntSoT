@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Chromium timing trace for desktop Journal Book Settling
+run-name: Journal Book Settling paint isolation
 
 on:
   push:
@@ -58,7 +58,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Trace real desktop Journal replay and compare instrumentation overhead
+      - name: Isolate painted Journal surfaces while keeping the actual handoff
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -72,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-book-settling-trace
+          name: journal-book-surface-isolation
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
