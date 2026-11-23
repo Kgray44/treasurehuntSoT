@@ -1,4 +1,3 @@
-
 import { expect, test } from "@playwright/test";
 import { writeFile, mkdir } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -32,6 +31,7 @@ for(const profile of [{id:"desktop",width:1440,height:900},{id:"mobile",width:39
         const scoped=window as Window & { reducedHomeSamples?: Promise<Row[]> };
         scoped.reducedHomeSamples=new Promise(resolve=>{
           const start=performance.now();
+          let homeStarted:number|undefined;
           const samples:Row[]=[];
           const visible=(node:Element|undefined)=>{
             if(!node)return false;
@@ -48,13 +48,14 @@ for(const profile of [{id:"desktop",width:1440,height:900},{id:"mobile",width:39
           const tick=()=>{
             const now=performance.now()-start;
             if(location.pathname==="/"){
+              homeStarted??=now;
               const heading=[...document.querySelectorAll("h1,[role=heading]")].find(
                 e=>e.textContent?.includes("Choose your role in Voyagewright"));
               const action=[...document.querySelectorAll("a,button")].find(
                 e=>e.textContent?.trim()==="Explore Chronicles");
-              samples.push({at:now,heading:visible(heading),action:visible(action)});
+              samples.push({at:now-homeStarted,heading:visible(heading),action:visible(action)});
             }
-            if(now<2200)requestAnimationFrame(tick);
+            if(homeStarted===undefined?now<20000:now-homeStarted<4000)requestAnimationFrame(tick);
             else resolve(samples);
           };
           requestAnimationFrame(tick);
@@ -68,16 +69,18 @@ for(const profile of [{id:"desktop",width:1440,height:900},{id:"mobile",width:39
       if(!frames?.length)throw new Error("No actual Home compositor samples");
       await expect(page.getByRole("heading",{name:"Choose your role in Voyagewright"})).toBeVisible();
       const first=frames.findIndex(frame=>frame.heading&&frame.action);
-      if(first<0)throw new Error("Home never reached visible heading and primary link");
+
       const gap=frames.findIndex((frame,index)=>index>first&&(!frame.heading||!frame.action));
       const backInView=gap<0?-1:frames.findIndex((frame,index)=>index>gap&&frame.heading&&frame.action);
       const directory="artifacts/sounding-line/journal-906-reduced-home";
       await mkdir(directory,{recursive:true});
-      const receipt={workflowRole:"BASELINE_DIAGNOSTIC",productSource:"fc813a4c03a4916c6b0aab346abbb8b1caa8cf38",profile,
-        firstVisibleMs:frames[first]!.at,hideMs:gap<0?null:frames[gap]!.at,
+      const receipt={workflowRole:process.env.HOME_PRODUCT_ROLE,productSource:process.env.HOME_PRODUCT_SOURCE,profile,
+        firstVisibleMs:first<0?null:frames[first]!.at,hideMs:gap<0?null:frames[gap]!.at,
         restoredMs:backInView<0?null:frames[backInView]!.at,sampleCount:frames.length,frames};
       await writeFile(directory+"/"+profile.id+".json",JSON.stringify(receipt,null,2)+"\n");
-      console.log("JOURNAL_REDUCED_HOME_BASELINE " + JSON.stringify({...receipt,frames:undefined}));
+      console.log("JOURNAL_REDUCED_HOME_CONTINUITY " + JSON.stringify({...receipt,frames:undefined}));
+      await expect(page.getByRole("button",{name:"Motion: reduced. Change motion setting",exact:true})).toBeVisible();
+      expect(first,"Home reached a visible heading and primary link").toBeGreaterThanOrEqual(0);
       expect(gap,"The primary Home action and heading should stay visible after their first paint").toBe(-1);
     });
 }
