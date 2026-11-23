@@ -1070,6 +1070,10 @@ html[data-voyage-theme="light"] .ocean-depth {
 .voyage-shell[data-journal-phase="JOURNAL_READY"] .closed-book {
   display: none;
 }
+/* A returning Journal settles the book without a separate cover-opening phase. */
+.voyage-shell[data-motion-mode="full"][data-journal-phase="BOOK_SETTLING"] .front-cover {
+  transition-duration: 1350ms;
+}
 .voyage-shell[data-journal-phase="BOOK_SETTLING"] .open-page-stage,
 .voyage-shell[data-journal-phase="JOURNAL_READY"] .open-page-stage {
   visibility: visible;

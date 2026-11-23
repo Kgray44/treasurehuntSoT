@@ -1,86 +1,72 @@
 import { expect, test } from "@playwright/test";
-import { writeFile, mkdir } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
-import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
-import { authenticateClosure, closureAccount } from "./fixtures/landfall-closure";
-import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
+import { createCrossdeckRefitFixture, removeCrossdeckRefitFixture } from "./fixtures/crossdeck-refit";
+import { authenticateClosure } from "./fixtures/landfall-closure";
+import { PHASE3_MOTION_MODES, setPhase3Motion } from "./fixtures/lanternwake-phase3";
 
-test.beforeEach(() => {
-  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("OWNED_PROFILE_REQUIRED");
-  ensureGenericSoundingLineIsolation();
-});
 test.afterAll(() => db.$disconnect());
-
-for(const profile of [{id:"desktop",width:1440,height:900},{id:"mobile",width:390,height:844}]) {
-  test("Home keeps the heading and primary action visible after a reduced-motion account return · "+profile.id,
-    async ({page,context,baseURL})=>{
-      const owner=await closureAccount("Synthetic reduced Home transition reviewer");
-      await activateWorkspaceCapability(owner.id,"CREATOR");
-      await authenticateClosure(context,owner,baseURL!);
-      await page.setViewportSize({width:profile.width,height:profile.height});
-      await page.emulateMedia({reducedMotion:"reduce"});
-      await page.goto("/account/personal-information");
-      await expect(page.getByRole("heading",{name:"Personal Information",exact:true})).toBeVisible();
-      await page.getByRole("textbox",{name:"Display name",exact:true}).fill("Unsaved motion compatibility draft");
-      await expect(page.getByText("Unsaved changes",{exact:true})).toBeVisible();
-      const back=page.getByRole("link",{name:"Return to Home",exact:true});
-      await back.focus();
-      await expect(back).toBeFocused();
-      await page.evaluate(()=>{
-        type Row={at:number;heading:boolean;action:boolean};
-        const scoped=window as Window & { reducedHomeSamples?: Promise<Row[]> };
-        scoped.reducedHomeSamples=new Promise(resolve=>{
-          const start=performance.now();
-          let homeStarted:number|undefined;
-          const samples:Row[]=[];
-          const visible=(node:Element|undefined)=>{
-            if(!node)return false;
-            const rect=node.getBoundingClientRect();
-            if(!rect.width||!rect.height)return false;
-            let opacity=1;
-            for(let element:Element|null=node;element;element=element.parentElement){
-              const css=getComputedStyle(element);
-              if(css.display==="none"||css.visibility!=="visible")return false;
-              opacity*=Number(css.opacity);
-            }
-            return opacity>=.35;
-          };
-          const tick=()=>{
-            const now=performance.now()-start;
-            if(location.pathname==="/"){
-              homeStarted??=now;
-              const landing=document.querySelector('main.harbor-landing:not([inert]) .gateway-content');
-              const heading=landing?.querySelector("h1")??undefined;
-              const action=landing?.querySelector('.gateway-primary-actions a[href="/tales"]')??undefined;
-              samples.push({at:now-homeStarted,heading:visible(heading),action:visible(action)});
-            }
-            if(homeStarted===undefined?now<20000:now-homeStarted<4000)requestAnimationFrame(tick);
-            else resolve(samples);
-          };
-          requestAnimationFrame(tick);
+for (const [profile, width, height] of [["desktop", 1440, 900], ["mobile", 390, 844]] as const) {
+  test("returning Journal finishes normal-motion settling · " + profile, async ({ page, context, baseURL }) => {
+    test.setTimeout(75_000);
+    const fixture = await createCrossdeckRefitFixture();
+    try {
+      await page.setViewportSize({ width, height });
+      await setPhase3Motion(page, PHASE3_MOTION_MODES[0]);
+      await authenticateClosure(context, fixture.account, baseURL!);
+      await page.goto("/player/playthroughs/" + fixture.voyage.id + "/journal");
+      const journal = page.locator(".chronicle-journal-shell[data-journal-phase]");
+      await expect(journal).toHaveAttribute("data-motion-mode", "full");
+      await page.getByRole("button", { name: "Open the journal" }).click();
+      await page.getByRole("button", { name: "Skip ceremony" }).click();
+      await expect(journal).toHaveAttribute("data-journal-ready-reason", "skipped");
+      await page.addInitScript(() => {
+        const output: Array<Record<string, unknown>> = [];
+        const scoped = window as Window & { settlingEvidence?: typeof output };
+        scoped.settlingEvidence = output;
+        let previous = "";
+        const observer = new MutationObserver(() => {
+          const shell = document.querySelector<HTMLElement>(".chronicle-journal-shell[data-journal-phase]");
+          if (!shell) return;
+          const phase = shell.dataset.journalPhase;
+          const outcome = shell.dataset.journalOpeningOutcome;
+          const reason = shell.dataset.journalReadyReason;
+          const state = [phase, outcome, reason].join("|");
+          if (state === previous) return;
+          previous = state;
+          output.push({ at: performance.now(), phase, outcome, reason });
+          if (phase === "BOOK_SETTLING") {
+            requestAnimationFrame(() => {
+              const cover = shell.querySelector<HTMLElement>(".front-cover");
+              const work = cover?.getAnimations().map((animation) => ({
+                transition: (animation as CSSTransition).transitionProperty,
+                endTime: animation.effect?.getComputedTiming().endTime,
+              }));
+              output.push({ at: performance.now(), coverDuration: cover && getComputedStyle(cover).transitionDuration, work });
+            });
+          }
         });
+        observer.observe(document, { subtree: true, childList: true, attributes: true, attributeFilter: [
+          "data-journal-phase", "data-journal-opening-outcome", "data-journal-ready-reason",
+        ] });
       });
-      await back.press("Enter");
-      await expect(page).toHaveURL(new URL("/",baseURL!).href);
-      const frames=await page.evaluate(()=>(window as Window & {reducedHomeSamples?: Promise<Array<{
-        at:number;heading:boolean;action:boolean;
-      }>>}).reducedHomeSamples);
-      if(!frames?.length)throw new Error("No actual Home compositor samples");
-      await expect(page.getByRole("heading",{name:"Choose your role in Voyagewright"})).toBeVisible();
-      const first=frames.findIndex(frame=>frame.heading&&frame.action);
-
-      const gap=first<0?-1:frames.findIndex((frame,index)=>index>first&&(!frame.heading||!frame.action));
-      const backInView=gap<0?-1:frames.findIndex((frame,index)=>index>gap&&frame.heading&&frame.action);
-      const directory="artifacts/sounding-line/journal-906-reduced-home";
-      await mkdir(directory,{recursive:true});
-      const receipt={workflowRole:process.env.HOME_PRODUCT_ROLE,productSource:process.env.HOME_PRODUCT_SOURCE,profile,
-        firstVisibleMs:first<0?null:frames[first]!.at,hideMs:gap<0?null:frames[gap]!.at,
-        restoredMs:backInView<0?null:frames[backInView]!.at,sampleCount:frames.length,frames};
-      await writeFile(directory+"/"+profile.id+".json",JSON.stringify(receipt,null,2)+"\n");
-      console.log("JOURNAL_REDUCED_HOME_CONTINUITY " + JSON.stringify({...receipt,frames:undefined}));
-      await expect(page.getByRole("button",{name:"Motion: reduced. Change motion setting",exact:true})).toBeVisible();
-      await expect(page.locator("main.harbor-landing .gateway-primary-actions").getByRole("link",{name:"Explore Chronicles",exact:true})).toBeVisible();
-      expect(first,"Home reached a visible heading and primary link").toBeGreaterThanOrEqual(0);
-      expect(gap,"The primary Home action and heading should stay visible after their first paint").toBe(-1);
-    });
+      await page.reload();
+      await expect(journal).toHaveAttribute("data-motion-mode", "full");
+      await expect(journal).toHaveAttribute("data-journal-phase", "JOURNAL_READY", { timeout: 20_000 });
+      await expect(page.getByRole("navigation", { name: "Journal tools" })).toBeVisible();
+      const evidence = await page.evaluate(() => (window as Window & { settlingEvidence?: unknown[] }).settlingEvidence);
+      const reason = await journal.getAttribute("data-journal-ready-reason");
+      const record = { profile, lane: process.env.HOME_PRODUCT_ROLE, reason, evidence };
+      console.log("JOURNAL_SETTLING_PROOF " + JSON.stringify(record));
+      const directory = "artifacts/sounding-line/journal-906-settling-proof";
+      await mkdir(directory, { recursive: true });
+      await writeFile(directory + "/" + profile + ".json", JSON.stringify(record, null, 2) + "\n");
+      expect(evidence).toContainEqual(expect.objectContaining({ phase: "BOOK_SETTLING", outcome: "running" }));
+      expect(reason).toBe("completed");
+      await expect(page.getByText(/animated opening could not finish/i)).toHaveCount(0);
+    } finally {
+      await page.close();
+      await removeCrossdeckRefitFixture(fixture);
+    }
+  });
 }

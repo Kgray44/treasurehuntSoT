@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Matched browser proof scoped to the Home gateway controls
+run-name: Matched returning Journal settling duration and user outcome
 
 on:
   push:
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   benchmark:
-    name: Reduced-motion Home (${{ matrix.product }})
+    name: Warm Journal settling (${{ matrix.product }})
     strategy:
       fail-fast: false
       matrix:
@@ -70,14 +70,13 @@ jobs:
           source_sha="$CANDIDATE_SHA"
           if [ "$PRODUCT" = baseline ]; then
             git fetch --no-tags --depth=1 origin "$BASE_SHA"
-            git show "$BASE_SHA:src/animation/scenes/arrival.scene.ts" > src/animation/scenes/arrival.scene.ts
+            git show "$BASE_SHA:src/styles/player.css" > src/styles/player.css
             source_sha="$BASE_SHA"
           else
-            npx --no-install vitest run src/animation/scenes/scene-builders.test.ts src/components/landing/HarborLanding.test.tsx
-            npx --no-install prettier --check src/animation/scenes/arrival.scene.ts
+            npx --no-install prettier --check src/styles/player.css
           fi
           echo "HOME_PRODUCT_SOURCE=$source_sha" >> "$GITHUB_ENV"
-      - name: Check continuous heading and action visibility on the actual account-to-Home return
+      - name: Reopen a saved Journal and verify normal settling reaches completion
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -91,7 +90,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-906-reduced-home-${{ matrix.product }}
-          path: artifacts/sounding-line/journal-906-reduced-home/**
+          name: journal-906-settling-proof-${{ matrix.product }}
+          path: artifacts/sounding-line/journal-906-settling-proof/**
           if-no-files-found: ignore
           retention-days: 30
