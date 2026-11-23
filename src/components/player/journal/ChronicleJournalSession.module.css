@@ -8,3 +8,36 @@
   :global(:is(.book-shadow, .rear-book-cover, .page-stack, .book-binding)) {
   transition: none;
 }
+
+@media (min-width: 961px) {
+  /* The full two-page handoff paints the outgoing cover before it reveals the
+     book's stationary backing. Finish both parts before publishing readiness. */
+  .journalShell[data-motion-level="full"]:not([data-journal-phase="JOURNAL_READY"])
+    :global(:is(.book-shadow, .rear-book-cover, .page-stack, .book-binding)) {
+    visibility: hidden;
+  }
+
+  .journalShell[data-motion-level="full"][data-journal-phase="BOOK_SETTLING"]
+    :global(:is(.book-shadow, .rear-book-cover, .page-stack, .book-binding)) {
+    visibility: visible;
+    transition:
+      opacity 175ms ease 1170ms,
+      visibility 0s linear 1170ms;
+  }
+
+  /* These static effects do not need to sample the moving book. */
+  .journalShell[data-motion-level="full"][data-journal-phase="BOOK_SETTLING"]::after,
+  .journalShell[data-motion-level="full"][data-journal-phase="BOOK_SETTLING"] :global(.opening-page-grain),
+  .journalShell[data-motion-level="full"][data-journal-phase="BOOK_SETTLING"] :global(.cover-front)::after {
+    mix-blend-mode: normal;
+  }
+
+  .journalShell[data-motion-level="full"][data-journal-phase="BOOK_SETTLING"] :global(.chronicle-session-header) {
+    backdrop-filter: none;
+  }
+
+  .journalShell[data-motion-level="full"][data-journal-phase="BOOK_SETTLING"]
+    :global(:is(.ocean-depth [data-scene-part^="fog"], .book-shadow, .book-binding, .opening-wax-seal)) {
+    filter: none;
+  }
+}

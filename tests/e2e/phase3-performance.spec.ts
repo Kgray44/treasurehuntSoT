@@ -34,7 +34,6 @@ type LayoutShiftSample = Readonly<{ atMs: number; score: number; phase: string |
 type VisualProbeResult = Readonly<{
   elapsedMs: number;
   frameDurationsMs: readonly number[];
-  framesByPhase: Record<string, number[]>;
   longTaskDurationsMs: readonly number[];
   cls: number;
   layoutShifts: readonly LayoutShiftSample[];
@@ -211,7 +210,6 @@ async function startVisualProbe(page: Page) {
       startedAt: number;
       lastFrameAt: number | null;
       frameDurationsMs: number[];
-      framesByPhase: Record<string, number[]>;
       longTaskDurationsMs: number[];
       cls: number;
       layoutShifts: LayoutShiftSample[];
@@ -232,20 +230,13 @@ async function startVisualProbe(page: Page) {
       startedAt: window.performance.now(),
       lastFrameAt: null,
       frameDurationsMs: [],
-      framesByPhase: {},
       longTaskDurationsMs: [],
       cls: 0,
       layoutShifts: [],
       frame: 0,
     } as unknown as Probe;
-    const scene = document.querySelector<HTMLElement>(".chronicle-journal-shell");
     const sampleFrame = (at: number) => {
-      if (probe.lastFrameAt !== null) {
-        const elapsed = at - probe.lastFrameAt;
-        const phase = scene?.dataset.journalPhase ?? "UNMOUNTED";
-        probe.frameDurationsMs.push(elapsed);
-        (probe.framesByPhase[phase] ??= []).push(elapsed);
-      }
+      if (probe.lastFrameAt !== null) probe.frameDurationsMs.push(at - probe.lastFrameAt);
       probe.lastFrameAt = at;
       probe.frame = requestAnimationFrame(sampleFrame);
     };
@@ -289,7 +280,6 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
       __phase3VisualProbe?: {
         startedAt: number;
         frameDurationsMs: number[];
-      framesByPhase: Record<string, number[]>;
         longTaskDurationsMs: number[];
         cls: number;
         layoutShifts: VisualProbeResult["layoutShifts"];
@@ -311,7 +301,6 @@ async function stopVisualProbe(page: Page): Promise<VisualProbeResult> {
     return {
       elapsedMs: window.performance.now() - probe.startedAt,
       frameDurationsMs: probe.frameDurationsMs,
-      framesByPhase: probe.framesByPhase,
       longTaskDurationsMs: probe.longTaskDurationsMs,
       cls: probe.cls,
       layoutShifts: probe.layoutShifts,
@@ -595,11 +584,9 @@ async function measuredFullOpening(page: Page, control: Locator) {
   return { ...opening, visual };
 }
 
-phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
-
 phase3Test(
-  "retain a visible outgoing cover while isolating ambient and book effects",
-  async ({ page, phase3, browserName }) => {
+  "canonical production Journal performance and lifecycle budgets",
+  async ({ page, phase3, browser, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
     expect(process.env.FOREVER_PHASE3_PERFORMANCE_BASE_URL).toBe("http://127.0.0.1:3200");
@@ -628,111 +615,235 @@ phase3Test(
     const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
     expect(fullRuntimeBaseline.eventSources).toBe(1);
 
-
-
-
-
-    const scene = journal(page);
-    const phase = '.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"]';
-    const cover = scene.locator(".closed-book");
-    const shootOnlyCover = [
-      "html, body { background: transparent !important; }",
-      "body * { visibility: hidden !important; }",
-      ".chronicle-journal-shell .closed-book, .chronicle-journal-shell .closed-book * { visibility: visible !important; }",
-    ].join("\n");
-    await replay(page).click();
-    await expect(scene).toHaveAttribute("data-journal-phase", "SEAL_BREAKING");
-    const shot = await page.addStyleTag({content:shootOnlyCover});
-    let coverData: { uri:string; left:number; top:number; width:number; height:number; clip:{x:number;y:number;width:number;height:number} };
+    const warmRuns: Awaited<ReturnType<typeof measuredFullOpening>>[] = [];
+    const desktopRuns = [cold.visual];
+    for (let index = 0; index < 3; index += 1) {
+      const run = await measuredFullOpening(page, replay(page));
+      warmRuns.push(run);
+      desktopRuns.push(run.visual);
+    }
+    const mobileContext = await browser.newContext({ ...devices["Pixel 7"], baseURL: "http://127.0.0.1:3200" });
+    const mobileRuns: VisualProbeResult[] = [];
     try {
-      const bounds = await cover.evaluate((book) => {
-        const root = book.getBoundingClientRect();
-        const all = [root,...Array.from(book.querySelectorAll(".closed-page-block, .opening-sealed-page, .front-cover"))
-          .map(element=>element.getBoundingClientRect())];
-        const sx = root.width / (book as HTMLElement).offsetWidth;
-        const sy = root.height / (book as HTMLElement).offsetHeight;
-        const pad = 24;
-        const left = Math.max(0, Math.floor(Math.min(...all.map(r=>r.left))) - pad);
-        const top = Math.max(0, Math.floor(Math.min(...all.map(r=>r.top))) - pad);
-        const right = Math.min(innerWidth, Math.ceil(Math.max(...all.map(r=>r.right))) + pad);
-        const bottom = Math.min(innerHeight, Math.ceil(Math.max(...all.map(r=>r.bottom))) + pad);
-        return { left:(left-root.left)/sx,top:(top-root.top)/sy,width:(right-left)/sx,height:(bottom-top)/sy,
-          clip:{ x:left+window.scrollX,y:top+window.scrollY,width:right-left,height:bottom-top } };
-      });
-      expect(bounds.clip.width).toBeGreaterThan(200);
-      expect(bounds.clip.height).toBeGreaterThan(200);
-      const buffer = await page.screenshot({ clip: bounds.clip, omitBackground: true, animations:"allow" });
-      expect(buffer.byteLength).toBeGreaterThan(8000);
-      expect(buffer.byteLength).toBeLessThan(4*1024*1024);
-      coverData = { ...bounds, uri:"data:image/png;base64,"+buffer.toString("base64") };
-      await fs.writeFile(path.join(artifact.artifactDirectory,"captured-outgoing-book.png"),buffer);
+      const mobile = await mobileContext.newPage();
+      await installRuntimeCounter(mobile);
+      await setPhase3Motion(mobile, PHASE3_MOTION_MODES[0]);
+      await enterJournal(mobile, fixture, journalPath);
+      await assertReadableJournal(mobile);
+      for (let index = 0; index < 3; index += 1) {
+        const run = await measuredFullOpening(mobile, replay(mobile));
+        warmRuns.push(run);
+        mobileRuns.push(run.visual);
+      }
     } finally {
-      await shot.evaluate(node=>{node.parentNode?.removeChild(node);});
+      await mobileContext.close();
     }
-    await assertReadableJournal(page);
-    await expect(replay(page)).toBeFocused();
-    const cache = await cover.evaluate(async (book,data) => {
-      const image=document.createElement("img");
-      image.src=data.uri;
-      image.alt="";
-      image.dataset.outgoingCompositorSurface="true";
-      image.style.cssText="position:absolute;pointer-events:none;max-width:none;max-height:none;display:none;";
-      image.style.left=data.left+"px";
-      image.style.top=data.top+"px";
-      image.style.width=data.width+"px";
-      image.style.height=data.height+"px";
-      book.appendChild(image);
-      await image.decode();
-      return {width:image.naturalWidth,height:image.naturalHeight};
-    },coverData);
-    expect(cache.width).toBe(coverData.clip.width);
-    expect(cache.height).toBe(coverData.clip.height);
-    const css = [
-      phase+" .closed-book > :not([data-outgoing-compositor-surface]) { visibility:hidden !important; }",
-      phase+" .closed-book > [data-outgoing-compositor-surface] { display:block !important; }",
-    ].join("\n");
 
-    const ambient=[
-      phase+"::after { mix-blend-mode: normal; }",
-      phase+" .ocean-depth [data-scene-part^=fog] { filter: none; }",
-      phase+" .chronicle-session-header { backdrop-filter: none; }",
-      phase+" .opening-page-grain, "+phase+" .cover-front::after { mix-blend-mode: normal; }",
-      phase+" .book-shadow, "+phase+" .book-binding, "+phase+" .opening-wax-seal { filter:none; }",
-    ].join("\n");
-    const quietFurniture=phase+" :is(.rear-book-cover,.page-stack,.book-shadow,.book-binding) { visibility:hidden !important; }";
-    const variants={current:"",ambient,liveCover:[ambient,quietFurniture].join("\n"),
-      cachedCover:[ambient,css].join("\n"),cachedCoverQuiet:[ambient,css,quietFurniture].join("\n")};
-    const rows=[];
-    for(const mode of ["current","ambient","liveCover","cachedCover","cachedCoverQuiet","cachedCoverQuiet","cachedCover","liveCover","current"] as const){
-      const override=variants[mode]?await page.addStyleTag({content:variants[mode]}):null;
-      try{
-        await waitForStableRuntimeBaseline(page);
-        const run=await measuredFullOpening(page,replay(page));
-        const all=run.visual.frameDurationsMs, settling=run.visual.framesByPhase.BOOK_SETTLING??[];
-        expect(settling.length).toBeGreaterThan(20);
-        expect(run.durationMs).toBeLessThan(budgets.openingMs);
-        await expect(replay(page)).toBeFocused();
-        rows.push({mode,desktopP95:rounded(percentile(all,.95)),settlingP95:rounded(percentile(settling,.95)),
-          desktopSlow:all.filter(ms=>ms>budgets.desktopFrameP95Ms).length,desktopCount:all.length,
-          settlingSlow:settling.filter(ms=>ms>budgets.desktopFrameP95Ms).length,settlingCount:settling.length});
-      }finally{await override?.evaluate(node=>{node.parentNode?.removeChild(node);});}
+    await startVisualProbe(page);
+    await replay(page).click();
+    await expect(journal(page)).toHaveAttribute("data-journal-opening-outcome", "running");
+    const skip = await measureSkip(page.getByRole("button", { name: "Skip ceremony" }), fullRuntimeBaseline);
+    const skipVisual = await stopVisualProbe(page);
+    await assertReadableJournal(page);
+    expect(await waitForStableRuntimeBaseline(page)).toEqual(fullRuntimeBaseline);
+
+    // Reduced mode takes the same preparation/handoff path without the full
+    // ceremony. Measure button activation through the readable PageFlip handoff,
+    // which includes the phase transition and frame wait rather than timing a DOM query.
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await expect(journal(page)).toHaveAttribute("data-motion-level", "reduced");
+    await assertReadableJournal(page, true);
+    const reducedRuntimeBaseline = await waitForStableRuntimeBaseline(page);
+    const preflightWarmupCount = 8;
+    const preflightSampleCount = 40;
+    const preflightSamplesMs: number[] = [];
+    for (let index = 0; index < preflightWarmupCount + preflightSampleCount; index += 1) {
+      const handoff = await measureOpening(replay(page));
+      expect(handoff.phases).toContain("BOOK_SETTLING");
+      // The canonical application intentionally reports the readable reduced
+      // book as completed-fallback. An unplanned runtime fallback is distinct.
+      expect(handoff.reason).toBe("completed-fallback");
+      expect(handoff.bookStatus).toBe("reduced");
+      if (index >= preflightWarmupCount) preflightSamplesMs.push(handoff.durationMs);
     }
-    const report={purpose:"DEVELOPMENT_ONLY",candidate:process.env.FOREVER_VALIDATION_SOURCE_SHA,cache,
-      budgetMs:budgets.desktopFrameP95Ms,rows};
-    await writePerformanceArtifact(artifact.artifactPath,report,[fixture.slug,voyage!.sessionId]);
-    console.log("JOURNAL_VISIBLE_COVER_COMBINATION " + JSON.stringify(report));
-    for(const mode of ["current","cachedCover","cachedCoverQuiet"] as const) {
-      const style=variants[mode]?await page.addStyleTag({content:variants[mode]}):null;
-      try{
-        await replay(page).click();
-        await expect(scene).toHaveAttribute("data-journal-phase","BOOK_SETTLING");
-        if(mode!=="current") {
-          await expect(cover.locator("[data-outgoing-compositor-surface]")).toHaveCSS("display","block");
-        }
-        await page.screenshot({path:path.join(artifact.artifactDirectory,mode+"-book-settling.png")});
-        await assertReadableJournal(page);
-        await expect(replay(page)).toBeFocused();
-      } finally {await style?.evaluate(node=>{node.parentNode?.removeChild(node);});}
+    expect(preflightSamplesMs).toHaveLength(preflightSampleCount);
+    await assertReadableJournal(page, true);
+    expect(await waitForStableRuntimeBaseline(page)).toEqual(reducedRuntimeBaseline);
+
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await expect(journal(page)).toHaveAttribute("data-motion-level", "full");
+    await assertReadableJournal(page);
+    const nextPage = page.getByRole("button", { name: "Next journal page" });
+    await expect(nextPage).toBeEnabled();
+    const turn = await measurePageTurn(nextPage);
+    expect(turn.events.map(({ phase }) => phase)).toEqual(["start", "commit", "settle"]);
+    expect(turn.events.at(-1)?.fallbackStatus).toBe("runtime");
+    expect(turn.events.at(-1)?.toPage).toBeGreaterThan(turn.events[0]!.fromPage);
+    await assertReadableJournal(page);
+
+    await startVisualProbe(page);
+    const navigationResponseMs = await measureNavigation(
+      journal(page).getByRole("link", { name: /Chronicle Library/ }),
+    );
+    await expect(page).toHaveURL(/\/player\/library$/);
+    await expect(page.getByRole("heading", { name: "My Chronicle Library" })).toBeVisible();
+    await waitAnimationFrames(page, 30);
+    const ordinaryVisual = await stopVisualProbe(page);
+
+    const openingVisuals = [...desktopRuns, ...mobileRuns, skipVisual];
+    const desktopFrames = desktopRuns.flatMap((run) => [...run.frameDurationsMs]);
+    const mobileFrames = mobileRuns.flatMap((run) => [...run.frameDurationsMs]);
+    const openingLongTasks = openingVisuals.flatMap((run) => [...run.longTaskDurationsMs]);
+    const openingCumulativeLongTasks = openingVisuals.map((run) => total(run.longTaskDurationsMs));
+    const openingCls = openingVisuals.map((run) => run.cls);
+    const replayResponseMs = warmRuns[0]!.responseMs;
+    const metrics = {
+      coldOpeningMs: rounded(cold.durationMs),
+      liveUpdateMs: rounded(liveUpdateMs),
+      warmOpeningMs: warmRuns.map((run) => rounded(run.durationMs)),
+      preflightP95Ms: rounded(percentile(preflightSamplesMs, 0.95)),
+      controlResponseMs: [replayResponseMs, skip.responseMs, turn.responseMs, navigationResponseMs].map(rounded),
+      cleanupMs: rounded(skip.cleanupMs),
+      desktopFrameP95Ms: rounded(percentile(desktopFrames, 0.95)),
+      mobileFrameP95Ms: rounded(percentile(mobileFrames, 0.95)),
+      openingMaximumLongTaskMs: rounded(maximum(openingLongTasks)),
+      openingCumulativeLongTaskMs: rounded(maximum(openingCumulativeLongTasks)),
+      ordinaryMaximumLongTaskMs: rounded(maximum(ordinaryVisual.longTaskDurationsMs)),
+      ordinaryCumulativeLongTaskMs: rounded(total(ordinaryVisual.longTaskDurationsMs)),
+      openingMaximumCls: rounded(maximum(openingCls)),
+      ordinaryCls: rounded(ordinaryVisual.cls),
+    };
+    expect(warmRuns).toHaveLength(6);
+    const budgetChecks = [
+      { name: "journal-cold-opening-duration", passed: cold.durationMs < budgets.openingMs },
+      { name: "live-journal-update", passed: liveUpdateMs < budgets.openingMs },
+      ...warmRuns.map((run, index) => ({
+        name: `journal-warm-opening-${String(index + 1).padStart(2, "0")}-duration`,
+        passed: run.durationMs < budgets.openingMs,
+      })),
+      { name: "readable-preflight-p95", passed: metrics.preflightP95Ms < budgets.preflightP95Ms },
+      { name: "control-replay-response", passed: replayResponseMs < budgets.controlResponseMs },
+      { name: "control-skip-response", passed: skip.responseMs < budgets.controlResponseMs },
+      { name: "control-pageflip-response", passed: turn.responseMs < budgets.controlResponseMs },
+      { name: "control-navigation-response", passed: navigationResponseMs < budgets.controlResponseMs },
+      { name: "skip-cleanup", passed: skip.cleanupMs < budgets.cleanupMs },
+      { name: "desktop-frame-p95", passed: metrics.desktopFrameP95Ms <= budgets.desktopFrameP95Ms },
+      { name: "mobile-frame-p95", passed: metrics.mobileFrameP95Ms <= budgets.mobileFrameP95Ms },
+      { name: "opening-maximum-long-task", passed: metrics.openingMaximumLongTaskMs <= budgets.maximumLongTaskMs },
+      { name: "ordinary-maximum-long-task", passed: metrics.ordinaryMaximumLongTaskMs <= budgets.maximumLongTaskMs },
+      {
+        name: "opening-cumulative-long-task",
+        passed: metrics.openingCumulativeLongTaskMs <= budgets.chapterLongTaskCumulativeMs,
+      },
+      {
+        name: "ordinary-cumulative-long-task",
+        passed: metrics.ordinaryCumulativeLongTaskMs <= budgets.ordinaryLongTaskCumulativeMs,
+      },
+      { name: "opening-maximum-cls", passed: metrics.openingMaximumCls <= budgets.cls },
+      { name: "ordinary-cls", passed: metrics.ordinaryCls <= budgets.cls },
+    ] as const;
+    const budgetNames = budgetChecks.map((check) => check.name);
+    expect(new Set(budgetNames).size, "Performance budget evidence names must be unique.").toBe(budgetNames.length);
+    budgetNames.forEach((name) => expect(name).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u));
+    const failedBudgets = budgetChecks.filter((check) => !check.passed).map((check) => check.name);
+
+    const nonceHash = boundedEnvironmentValue(["FOREVER_VALIDATION_NONCE_HASH"], /^[a-f0-9]{64}$/u, "missing");
+    expect(nonceHash, "Performance evidence requires the validated nonce hash proof reference.").toMatch(
+      /^[a-f0-9]{64}$/u,
+    );
+    const runId = boundedEnvironmentValue(
+      ["FOREVER_VALIDATION_RUN_ID", "VALIDATION_RUN_ID", "GITHUB_RUN_ID", "BUILD_BUILDID"],
+      /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/u,
+      "phase3-performance-local",
+    );
+    const testedSourceSha = boundedEnvironmentValue(
+      ["FOREVER_VALIDATION_SOURCE_SHA", "VALIDATION_SOURCE_SHA", "GITHUB_SHA"],
+      /^[a-fA-F0-9]{40,64}$/u,
+      "uncommitted",
+    ).toLowerCase();
+    const integratedSha = boundedEnvironmentValue(
+      ["FOREVER_VALIDATION_INTEGRATED_SHA", "VALIDATION_INTEGRATED_SHA"],
+      /^[a-fA-F0-9]{40,64}$/u,
+      "uncommitted",
+    ).toLowerCase();
+    const commonReport = Object.freeze({
+      version: 3,
+      completedAtUtc: new Date().toISOString(),
+      runId,
+      provenance: Object.freeze({
+        testedSourceSha,
+        integratedSha,
+        config: "tests/config/playwright/playwright.phase3-performance.config.ts",
+        browser: Object.freeze({
+          engine: "chromium",
+          project: "chromium-production",
+          desktopProfile: "Desktop Chrome",
+          mobileProfile: "Pixel 7",
+        }),
+        server: Object.freeze({ kind: "owned-next-start", origin: "http://127.0.0.1:3200", port: 3200 }),
+        isolationProof: Object.freeze({
+          endpoint: "/api/dev/validation/database-identity",
+          nonceHash,
+          markerExpectation: "exactly-one",
+        }),
+      }),
+      samples: Object.freeze({
+        coldOpenings: 1,
+        liveUpdates: 1,
+        warmOpenings: warmRuns.length,
+        preflightWarmups: preflightWarmupCount,
+        preflightMeasured: preflightSamplesMs.length,
+        desktopFrames: desktopFrames.length,
+        mobileFrames: mobileFrames.length,
+      }),
+      budgets,
+      metrics,
+      measurements: {
+        desktop: desktopRuns.map((run) => ({
+          frameP95Ms: rounded(percentile(run.frameDurationsMs, 0.95)),
+          layoutShifts: run.layoutShifts,
+        })),
+        mobile: mobileRuns.map((run) => ({
+          frameP95Ms: rounded(percentile(run.frameDurationsMs, 0.95)),
+          layoutShifts: run.layoutShifts,
+        })),
+        skip: { layoutShifts: skipVisual.layoutShifts, cleanup: skip.observations },
+      },
+      runtimeBaseline: Object.freeze({
+        full: fullRuntimeBaseline,
+        reduced: reducedRuntimeBaseline,
+        fullReturnedToBaseline: true,
+        reducedReturnedToBaseline: true,
+      }),
+    });
+
+    if (failedBudgets.length > 0) {
+      await writePerformanceArtifact(
+        artifact.artifactPath,
+        Object.freeze({
+          ...commonReport,
+          status: "failed",
+          failureBudgetCount: failedBudgets.length,
+          failedBudgets: Object.freeze(failedBudgets),
+        }),
+        [fixture.slug, voyage!.sessionId],
+      );
+      expect(failedBudgets, "Production performance budgets failed; see the sanitized failure artifact.").toEqual([]);
+      return;
     }
+
+    for (const check of budgetChecks) {
+      expect(check.passed, `${check.name} must pass before success evidence is written.`).toBe(true);
+    }
+    await writePerformanceArtifact(
+      artifact.artifactPath,
+      Object.freeze({
+        ...commonReport,
+        status: "passed",
+        failureBudgetCount: 0,
+        failedBudgets: Object.freeze([]),
+      }),
+      [fixture.slug, voyage!.sessionId],
+    );
   },
 );
