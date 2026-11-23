@@ -39,3 +39,45 @@ test("published Chronicle catalog is public while Studio remains protected", asy
   await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
   expect((await page.request.get("/api/studio/tales")).status()).toBe(401);
 });
+
+test("the Player invitation form stays readable while it slides into view", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/player/sign-in");
+  const samples = await page.evaluateHandle(() => {
+    const samples: { opacity: number; moving: boolean }[] = [];
+    const observer = new MutationObserver(() => {
+      const form = document.querySelector<HTMLElement>("#invitation-code");
+      if (!form) return;
+      const style = getComputedStyle(form);
+      samples.push({ opacity: Number(style.opacity), moving: style.transform !== "none" });
+    });
+    observer.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ["style"] });
+    return { samples, stop: () => observer.disconnect() };
+  });
+  try {
+    await page.getByRole("tab", { name: "Invitation code" }).focus();
+    await page.keyboard.press("Enter");
+    const form = page.locator("#invitation-code");
+    await expect(form.getByRole("button", { name: "Find my invitation" })).toBeVisible();
+    await expect(form).toHaveCSS("transform", "none");
+    const frames = await samples.evaluate((record) => record.samples);
+    expect(frames.some((frame) => frame.moving)).toBe(true);
+    expect(
+      frames.filter((frame) => frame.opacity < 1),
+      "Invitation form opacity samples",
+    ).toEqual([]);
+    expect((await page.request.get("/api/player/library")).status()).toBe(401);
+  } finally {
+    await samples.evaluate((record) => record.stop());
+    await samples.dispose();
+  }
+});
+
+test("Player invitation instructions use readable parchment ink", async ({ page }) => {
+  await page.goto("/player/sign-in#invitation-code");
+  const helper = page.locator("#invitation-code").getByText("Invitation links open the same ceremony automatically.", {
+    exact: false,
+  });
+  await expect(helper).toBeVisible();
+  await expect(helper, "Invitation instructions use parchment ink").toHaveCSS("color", "rgb(43, 42, 34)");
+});

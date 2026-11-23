@@ -1,0 +1,33 @@
+{
+  "captureArtifactId": 14836984644,
+  "captureArchiveSha256": "b287092438f36332a011d990716f649d1fcab6e1fa90065d553a3f5f8f5c9b29",
+  "originalGitCommit": "a3aabc93e6c305978f9a30b87e5fdb1d2e0ffaa0",
+  "verification": "Each formatted file parsed to the same JSON as its producer original. The original bytes remain in the immutable capture archive and parent commit.",
+  "receipts": [
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/harbor-901/d2d80e1a0c09/development-capture-receipt.json",
+      "originalSha256": "15f1a37670d6b36ab013aad39114cdc1fb87013b9a9299bbc27802368dfab042",
+      "formattedSha256": "c3a95cc604a2a2abec0bdbc57c12943b45ee562b370d0955df1402e71933b327"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/harbor-901/d2d80e1a0c09/generic/paired/playwright-report.json",
+      "originalSha256": "a7b6bc3b7f27aab3095f5c8085fe6302f1469d2729701db13018868793c18dea",
+      "formattedSha256": "6464be80689635bd2b2e4c5d98532fcc1cbb2d6c125649557503e03f578562a0"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/harbor-901/d2d80e1a0c09/generic/paired/refit-no-preference/paired-witness.json",
+      "originalSha256": "0235645ae5a1707d2a7b1df8583f77ab48e2cd16e2b5a28b1f1d201fc6903f6f",
+      "formattedSha256": "2df45f5a0538f83809eb587b1319448ed08d6fb1b43ab37fdb1742a7716b5cfe"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/harbor-901/d2d80e1a0c09/generic/paired/refit-reduce/paired-witness.json",
+      "originalSha256": "8297404ef572d063c3c2244b84cb2cfe758b5cd0b671f791d66ebd4adf308dc7",
+      "formattedSha256": "f333a7f924988abfa751500abe8d2334e49424036a08742d6b08b7cf3411fe67"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/harbor-901/d2d80e1a0c09/generic/paired/refit-recovery/paired-witness.json",
+      "originalSha256": "fc57d436efdbb47224966c68cd4f0745ac1b6c3ac1f72e63ef96bae7640442c8",
+      "formattedSha256": "2e8b847c91b80e486d3ef13ca842c33fe8878f686621b467edd839ea86f9f928"
+    }
+  ]
+}

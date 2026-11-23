@@ -285,6 +285,8 @@ export const versionContentSchema = z
 export const versionSchema: z.ZodType<SpatialVersion> = versionContentSchema.safeExtend({
   checksum: z.string().regex(/^[a-f0-9]{64}$/),
 });
+export const spatialItemKind = "PARALLAX_STUDIO";
+
 export const spatialMomentSchema: z.ZodType<SpatialMoment> = z
   .strictObject({
     schemaVersion: z.literal(1),

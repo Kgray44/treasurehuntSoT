@@ -440,6 +440,41 @@ describe("PageFlip source and clone boundary", () => {
     ).toBe(false);
   });
 
+  it("ignores identical renderer style writes while preserving external changes on both clone roles", () => {
+    const { controller, runtimeRoot } = fixture();
+    const pages = controller.preparePages(["first", "second"], "revision-1");
+    runtimeRoot.append(...pages);
+    controller.bindPrimaryPages(0, "portrait");
+    const primary = pages[0]!;
+    const temporary = primary.cloneNode(true) as HTMLElement;
+
+    for (const page of [primary, temporary]) {
+      const observer = new MutationObserver(() => {});
+      observer.observe(page, { attributes: true, attributeFilter: ["style"] });
+      try {
+        const style = "position: absolute; color: red;";
+        page.style.cssText = style;
+        expect(page.style.color).toBe("red");
+        expect(observer.takeRecords().length).toBeGreaterThan(0);
+
+        page.style.cssText = style;
+        expect(observer.takeRecords()).toHaveLength(0);
+
+        page.style.color = "blue";
+        observer.takeRecords();
+        page.style.cssText = style;
+        expect(page.style.color).toBe("red");
+        expect(observer.takeRecords().length).toBeGreaterThan(0);
+
+        page.style.cssText = "position: relative; color: green;";
+        expect(page.style.position).toBe("relative");
+        expect(page.style.color).toBe("green");
+      } finally {
+        observer.disconnect();
+      }
+    }
+  });
+
   it("revokes a generation on orientation changes and rejects stale retained identities", () => {
     const { controller, runtimeRoot } = fixture();
     const pages = controller.preparePages(["first", "second"], "revision-1");

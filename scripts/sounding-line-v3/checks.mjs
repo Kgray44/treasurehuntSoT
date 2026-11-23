@@ -143,18 +143,26 @@ function checkDocs({ base, tree, entries, read }) {
 
 export function browserProfileBatches(profile, files, fullBrowser) {
   const extended = "tests/e2e/phase3-lifecycle-extended.spec.ts";
-  if (fullBrowser || profile !== "lanternwake-phase3" || !files.includes(extended)) return [files];
+  if (profile !== "lanternwake-phase3") return [files];
+  const benchmark = "tests/e2e/phase3-performance.spec.ts";
+  const remaining = files.filter((file) => file !== benchmark);
+  // Measure the benchmark in a fresh browser and server before functional journeys.
+  const timing = files.includes(benchmark) ? [[benchmark]] : [];
+  if (fullBrowser || !remaining.includes(extended)) {
+    return [...timing, remaining].filter((batch) => batch.length);
+  }
   const audioSuite = "Project Lanternwake Phase 3 audio lifecycle";
   // Complementary filters retain every extended case within separate runner deadlines.
   return [
-    files.filter((file) => file !== extended),
+    ...timing,
+    remaining.filter((file) => file !== extended),
     [extended, "--grep-invert", audioSuite],
     [extended, "--grep", audioSuite],
   ].filter((batch) => batch.length);
 }
 
 async function runBrowserProfile(profileId, browserArgs, tree, fullBrowser, shard) {
-  const { browserSuiteProfiles, isolatedBrowserFixtureCredentials } = await import(
+  const { browserSuiteProfiles, isolatedBrowserFixtureCredentials, sealedHoldBrowserFixtureEnvironment } = await import(
     "../sounding-line/browser-suite-profiles.mjs"
   );
   const profile = browserSuiteProfiles[profileId];
@@ -167,6 +175,7 @@ async function runBrowserProfile(profileId, browserArgs, tree, fullBrowser, shar
   const db = resolve(profileRoot, "validation-isolated-19700101-000000000-" + identity + ".db");
   const env = {
     ...profile.environment,
+    ...sealedHoldBrowserFixtureEnvironment(profileId, process.cwd()),
     DATABASE_URL: "file:" + db.replaceAll("\\", "/"),
     SOUNDING_LINE_SUITE_PROFILE: profileId,
     SOUNDING_LINE_TASK_OWNED_HTTP: "1",
@@ -382,14 +391,14 @@ export async function runJob(job, context) {
       }
       const profileFailures = [];
       for (const { profile, specs } of profiles) {
-        try {
-          for (const browserArgs of browserProfileBatches(profile, specs, fullBrowser)) {
+        for (const browserArgs of browserProfileBatches(profile, specs, fullBrowser)) {
+          try {
             await runBrowserProfile(profile, browserArgs, tree, fullBrowser, job.shard);
+          } catch (error) {
+            if (!fullBrowser) throw error;
+            if (!profileFailures.includes(profile)) profileFailures.push(profile);
+            console.error("Browser profile %s failed: %s", profile, error.message);
           }
-        } catch (error) {
-          if (!fullBrowser) throw error;
-          profileFailures.push(profile);
-          console.error("Browser profile %s failed: %s", profile, error.message);
         }
       }
       if (profileFailures.length) throw new Error("Failed browser profiles: " + profileFailures.join(", "));

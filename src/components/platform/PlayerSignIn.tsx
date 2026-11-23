@@ -261,9 +261,10 @@ export function PlayerSignIn({
               <motion.form
                 key="invitation"
                 id="invitation-code"
-                initial={{ opacity: 0, x: mode === "reduced" ? 0 : stateToken.distancePx }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: mode === "reduced" ? 0 : stateToken.distancePx / 2 }}
+                className={styles.invitationPanel}
+                initial={{ x: mode === "reduced" ? 0 : stateToken.distancePx }}
+                animate={{ x: 0 }}
+                exit={{ x: mode === "reduced" ? 0 : stateToken.distancePx / 2 }}
                 transition={{ duration: stateToken.durationSeconds, ease: platformMotionEasing("state") }}
                 onSubmit={findInvitation}
                 aria-busy={busy}
