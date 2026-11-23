@@ -1,0 +1,208 @@
+{
+  "contractId": "homeport.shell.crossdeck-companion-mobile",
+  "packetDigest": "05cb37e11bc9c35e32874843ac54c545fa0fdacb85056714e402f0e9381e3eee",
+  "builderContext": "codex:/root",
+  "reviewerContext": "codex:/root/pr906_review_mobile",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "status": "ACCEPTED",
+  "iterations": 1,
+  "dimensions": {
+    "composition": {
+      "observation": "The companion stacks a contextual exit, a Voyage purpose card and a distinct parchment reading panel in one column. The ordinary Library switches to a single column of search, filters and active cards. The Journal return keeps the parchment separate from the persistent chapter tools and objective button.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "hierarchy": {
+      "observation": "Exit to My Voyages is a compact dedicated navigation row above the companion content. My Chronicle Library and Active Voyages establish where the Player has landed. The voyage card’s amber Continue Adventure and the returned Journal’s amber Continue Voyage give each step a clear next action.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "typography": {
+      "observation": "The Library heading wraps at a word boundary across two lines. The companion and returned Journal use the larger serif Follow the lanterns title and smaller readable passage copy, while compact status and input labels use sans serif. The returned Journal’s compact chrome is denser than its parchment.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "spacing": {
+      "observation": "The companion purpose card, released passage selector and reading-size controls have visible separation. Library filters use distinct stacked rows and the active card begins below them, so the Player scrolls to its action. The returned Journal leaves the fixed chapter tools and Continue Voyage strip in separate rows.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "controls": {
+      "observation": "The companion exit, Library Continue Adventure and Journal Continue Voyage each have distinct text. After the Library card action, the trace resolves Replay full opening and Journal tools. The final button passes a viewport hit test and trial click in both modes.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "contrast": {
+      "observation": "Light labels on dark teal identify the exit and navigation, brown passage text stands out against parchment, and the dark continuation labels stand out on amber. White visible focus indicators remain discernible over the Library background and controls. The state audits report no serious axe violations.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "consistency": {
+      "observation": "Voyagewright dark shell and the CS identity badge carry across companion, Library and returned Journal. Parchment and serif treatment visually relate the companion excerpt to the restored passage. Normal and reduced screenshots retain recognizable purpose and action names.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "states": {
+      "observation": "The companion shows a released Journal passage and Same Voyage · in sync. The Library shows Server confirmed and one active record. The return shows Follow the lanterns, Journal tools and the active Continue Voyage strip. Normal records an opening warning; reduced records a readable fallback and transient reconnecting before the passage is present.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "responsive": {
+      "observation": "On the MOBILE viewport, the Library title wraps and the Gallery/List controls and filter rows remain in one column. The Library card is reached by vertical scrolling. Both Journal action strips fit within the viewport; capture reports no document overflow in any of the three states in either mode.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "keyboard": {
+      "observation": "Both trace sequences use Tab to reach the contextual exit and the Library’s Continue Adventure link, then Enter activates each. The final Continue Voyage has viewport hit testing and a successful trial click. Its state-changing activation is a separate local proof outside the archived journey.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "focus": {
+      "observation": "The traces show outlines on the brand or Return controls while tabbing, the Library heading on route entry, and Library controls during the subsequent Tab sequence. Focus checks for the two navigation activations pass in both modes, and each action reaches the expected destination.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "feedback": {
+      "observation": "The protected capture measures keyboard exit activation to the current Adventure's visible Library outcome at 122 ms normal and 103 ms reduced against 5,000 ms. The subsequent Continue Adventure action restores the passage and controls with readable state feedback in both modes.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "motion": {
+      "observation": "Normal re-entry briefly presents the returning opening with a Skip ceremony option, then exposes the readable Journal with an opening fallback message. Reduced re-entry settles to the readable fallback earlier and retains the same passage and controls. Both traces reach the action-ready returned state.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-recording",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-recording"
+      ]
+    },
+    "continuity": {
+      "observation": "The companion, active card and Journal all show Synthetic Crossdeck refit Voyage. The companion and Journal show Follow the lanterns. The trace and capture independently bind the Journal URL ending in cd11/journal and equal authorized-person witnesses before exit, at the Library outcome and after return.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "complexity": {
+      "observation": "The navigation task takes two purposeful decisions: exit the companion and continue the current adventure. The Library puts search and sorting before the active card, requiring a short vertical scroll, and the return offers chapter tools plus a separate primary objective action.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "The authorized synthetic Player receives a released passage and the signed-in Library’s active adventure. The Library link restores that same Player’s Voyage Journal with the opening replay control, Journal tools and an unobscured Continue Voyage action in both modes.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "fallbacks": {
+      "observation": "Reduced motion exposes a readable Journal where the route is recovering, then shows the same passage and safe exit. The normal opening warning likewise leaves text and page turning available. The capture is a single authorized Journal purpose journey; permission-dependent Guided Lens behavior was outside these recordings.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-COMPANION_READY-0"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "PR906-COMPANION-MOBILE-OPENING-FALLBACK-NOTICE",
+      "classification": "MINOR_POLISH",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "observation": "Normal mobile return displays an opening failure notice even though the readable passage, page navigation and Continue Voyage are available. The notice introduces a moment of uncertainty about the return. The same-Voyage destination, readability and usable next action are preserved in this companion journey.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-recording"
+      ],
+      "disposition": "OPEN"
+    }
+  ]
+}
