@@ -8,3 +8,55 @@
   :global(:is(.book-shadow, .rear-book-cover, .page-stack, .book-binding)) {
   transition: none;
 }
+
+@media (min-width: 961px) {
+  /* Keep the fixed atmosphere and grain in the same static paint group.
+     The moving cover and page surfaces can then compose above that group. */
+  .journalShell[data-motion-level="full"]::after {
+    content: none;
+  }
+
+  .journalShell[data-motion-level="full"] :global(.ocean-depth) {
+    isolation: isolate;
+  }
+
+  .journalShell[data-motion-level="full"] :global(.ocean-depth)::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+    pointer-events: none;
+    background-image: url("/textures/paper-grain.svg");
+    opacity: calc(0.16 * var(--texture-opacity));
+    mix-blend-mode: soft-light;
+  }
+
+  /* Paint the stationary backing with the ready spread. During the handoff,
+     the actual cover and readable page motions still run. Skip must not leave
+     any queued decoration transitions behind. */
+  .journalShell[data-motion-level="full"][data-journal-phase="BOOK_SETTLING"]
+    :global(:is(.book-shadow, .rear-book-cover, .page-stack, .book-binding)) {
+    visibility: hidden;
+    transition: none;
+  }
+
+  .journalShell[data-motion-level="full"][data-journal-phase="JOURNAL_READY"]
+    :global(:is(.book-shadow, .rear-book-cover, .page-stack, .book-binding)) {
+    transition: none;
+  }
+
+  /* These static effects do not need to sample the moving book. */
+  .journalShell[data-motion-level="full"][data-journal-phase="BOOK_SETTLING"] :global(.ocean-depth)::after,
+  .journalShell[data-motion-level="full"][data-journal-phase="BOOK_SETTLING"] :global(.opening-page-grain),
+  .journalShell[data-motion-level="full"][data-journal-phase="BOOK_SETTLING"] :global(.cover-front)::after {
+    mix-blend-mode: normal;
+  }
+
+  .journalShell[data-motion-level="full"][data-journal-phase="BOOK_SETTLING"] :global(.chronicle-session-header) {
+    backdrop-filter: none;
+  }
+
+  .journalShell[data-motion-level="full"][data-journal-phase="BOOK_SETTLING"]
+    :global(:is(.ocean-depth [data-scene-part^="fog"], .book-shadow, .book-binding, .opening-wax-seal)) {
+    filter: none;
+  }
+}

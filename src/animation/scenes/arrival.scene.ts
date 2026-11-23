@@ -46,16 +46,14 @@ export const firstArrivalScene: SceneDefinitionV2 = {
       "tide-arrives+=0.35",
     );
     mark(timeline, context, "title-written", ">-0.08");
-    if (context.mode !== "reduced") {
-      fromToTargets(
-        timeline,
-        context,
-        "title",
-        { clipPath: "inset(0 100% 0 0)", opacity: 0.4 },
-        { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: seconds(context, 1.15) },
-        "title-written",
-      );
-    }
+    fromToTargets(
+      timeline,
+      context,
+      "title",
+      { clipPath: "inset(0 100% 0 0)", opacity: 0.4 },
+      { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: seconds(context, 1.15) },
+      "title-written",
+    );
     mark(timeline, context, "voyage-materializes", ">-0.14");
     fromToTargets(
       timeline,
@@ -65,27 +63,23 @@ export const firstArrivalScene: SceneDefinitionV2 = {
       { opacity: 1, scale: 1, rotate: 0, duration: seconds(context, 0.95) },
       "voyage-materializes",
     );
-    if (context.mode !== "reduced") {
-      fromToTargets(
-        timeline,
-        context,
-        "arrival-copy",
-        { opacity: 0, y: distance(context, 16) },
-        { opacity: 1, y: 0, duration: seconds(context, 0.7), stagger: seconds(context, 0.12) },
-        "voyage-materializes+=0.24",
-      );
-    }
+    fromToTargets(
+      timeline,
+      context,
+      "arrival-copy",
+      { opacity: 0, y: distance(context, 16) },
+      { opacity: 1, y: 0, duration: seconds(context, 0.7), stagger: seconds(context, 0.12) },
+      "voyage-materializes+=0.24",
+    );
     mark(timeline, context, "physical-open", ">-0.08");
-    if (context.mode !== "reduced") {
-      fromToTargets(
-        timeline,
-        context,
-        "arrival-action",
-        { opacity: 0, y: distance(context, 24) },
-        { opacity: 1, y: 0, duration: seconds(context, 0.62) },
-        "physical-open",
-      );
-    }
+    fromToTargets(
+      timeline,
+      context,
+      "arrival-action",
+      { opacity: 0, y: distance(context, 24) },
+      { opacity: 1, y: 0, duration: seconds(context, 0.62) },
+      "physical-open",
+    );
     fromToTargets(
       timeline,
       context,
@@ -110,8 +104,7 @@ export const sessionReentryScene: SceneDefinitionV2 = {
   buildOpening(context) {
     const timeline = sceneTimeline(context);
     mark(timeline, context, "fog-reentry", 0);
-    const targets = context.mode === "reduced" ? ["fog-front"] : ["fog-front", "title", "arrival-action"];
-    for (const key of targets)
+    for (const key of ["fog-front", "title", "arrival-action"])
       fromToTargets(
         timeline,
         context,
