@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Verify the exact Library restoration and phone keyboard proof
+run-name: Trace the focused Helm invitation acceptance and heartbeat case
 
 on:
   push:
@@ -13,18 +13,18 @@ permissions:
 
 jobs:
   browser-probe:
-    name: Parallax Library lifecycle after desktop reload
+    name: Helm real invitation request diagnostics
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: f8873659a79379c17c86346bf2232428efe690fa
+      CANDIDATE_SHA: a26fb257b39536790d247aaf4a518f9122845f0f
       BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: f8873659a79379c17c86346bf2232428efe690fa
+      FOREVER_VALIDATION_SOURCE_SHA: a26fb257b39536790d247aaf4a518f9122845f0f
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: f8873659a79379c17c86346bf2232428efe690fa
+          ref: a26fb257b39536790d247aaf4a518f9122845f0f
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,15 +58,15 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install chromium
-      - name: Run the authored Library lifecycle browser suite
+      - name: Run the Helm suite and record real invitation request outcomes
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "5b80a4eada0c94f8075ecd01fa2bb44c41558521"
+          test "$(git rev-parse HEAD^{tree})" = "fb39fb6c4c71b611d1e482e1dd69cc281e9f574a"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
           await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-library-lifecycle.spec.ts"] },
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/project-helm-phase1.spec.ts"] },
             { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
           );
           EOF
