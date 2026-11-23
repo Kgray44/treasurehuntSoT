@@ -1,5 +1,5 @@
-name: Lanternwake isolated Linux benchmark
-run-name: Compare protected main and the exact candidate with the same Journal workload
+name: Homeport keyboard destination diagnostic
+run-name: Compare mobile Personal Information keyboard navigation on protected main and the candidate
 
 on:
   push:
@@ -12,8 +12,8 @@ permissions:
   contents: read
 
 jobs:
-  exact-source-comparison:
-    name: Same-runner protected-main control
+  account-orientation-control:
+    name: Keyboard entry into mobile Personal Information
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
@@ -58,36 +58,69 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install chromium
-      - name: Compare protected main and candidate under the canonical workload
+      - name: Measure mobile keyboard entry and direct entry on both exact revisions
         run: |
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          prior="$BASE_SHA"
-          git fetch --depth=1 --no-tags origin "$prior"
-          test "$(git rev-parse HEAD:package-lock.json)" = "$(git rev-parse "$prior:package-lock.json")"
-          nproc
-          if [[ -r /sys/fs/cgroup/cpu.max ]]; then cat /sys/fs/cgroup/cpu.max; fi
-          uname -sr
-          lscpu | sed -n '1,20p'
-          for metric in /sys/fs/cgroup/cpu/cpu.cfs_quota_us /sys/fs/cgroup/cpu/cpu.cfs_period_us; do
-            if [[ -r "$metric" ]]; then printf '%s: ' "$metric"; cat "$metric"; fi
-          done
+          git fetch --depth=1 --no-tags origin "$BASE_SHA"
+          mkdir -p "$RUNNER_TEMP/harbor-account-orientation"
+          cat > "$RUNNER_TEMP/harbor-account-orientation/control.spec.ts" <<'SPEC'
+          import { expect, test } from "@playwright/test";
+          import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
+          import { db } from "../../src/lib/db";
+          import { authenticateClosure, closureAccount } from "./fixtures/landfall-closure";
+          import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
+          
+          test.use({ viewport: { width: 390, height: 844 }, reducedMotion: "reduce" });
+          test.afterAll(() => db.$disconnect());
+          
+          test("sample the account heading after real keyboard navigation", async ({ page, context, baseURL }) => {
+            ensureGenericSoundingLineIsolation();
+            const name = "Synthetic Parallax Creator";
+            const owner = await closureAccount(name);
+            await activateWorkspaceCapability(owner.id, "CREATOR");
+            await authenticateClosure(context, owner, baseURL!);
+            await page.goto("/account");
+            await expect(page.getByRole("heading", { name, exact: true })).toBeVisible();
+            const link = page.getByRole("link", { name: "Profile Personal Information", exact: true });
+            for (let attempt = 0; attempt < 128 && !(await link.evaluate((element) => element === document.activeElement)); attempt++) {
+              await page.keyboard.press("Tab");
+            }
+            await expect(link).toBeFocused();
+            const entry = await page.evaluate(() => ({ scrollY, height: innerHeight }));
+            await page.keyboard.press("Enter");
+            await expect(page).toHaveURL(/\/account\/personal-information$/);
+            await expect(page.getByRole("main")).toContainText("Review account-held identity information and change only what accepted services support.");
+            const heading = page.getByRole("heading", { name: "Personal Information", exact: true });
+            const measure = () => heading.evaluate((element) => ({
+              scrollY, height: innerHeight, headingTop: Math.round(element.getBoundingClientRect().top),
+              headingBottom: Math.round(element.getBoundingClientRect().bottom),
+              activeElement: document.activeElement?.tagName,
+            }));
+            const arrival = [];
+            for (let index = 0; index < 3; index++) {
+              await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+              arrival.push(await measure());
+            }
+            await page.keyboard.press("Home");
+            await expect(heading).toBeInViewport();
+            const recovered = await measure();
+            await page.goto("/account/personal-information");
+            await expect(heading).toBeInViewport();
+            const direct = await measure();
+            console.log("ACCOUNT_ORIENTATION", JSON.stringify({ source: process.env.FOREVER_VALIDATION_SOURCE_SHA, entry, arrival, recovered, direct }));
+          });
+          SPEC
           result=0
-          for source in "$CANDIDATE_SHA" "$prior"; do
+          for source in "$BASE_SHA" "$CANDIDATE_SHA"; do
             git checkout --detach "$source"
-            if [[ "$source" == "$BASE_SHA" ]]; then
-              # Transplant the measured workload only. The product build is protected main.
-              git show "$CANDIDATE_SHA:tests/e2e/phase3-performance.spec.ts" > tests/e2e/phase3-performance.spec.ts
-            fi
-            git diff --name-only
-            git diff --exit-code -- src public prisma
             test "$(git rev-parse HEAD)" = "$source"
-            test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "2e10c383fa2accb79fbad09f92d61631b23e2d78"
-            test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
-            printf 'Timing application %s with the canonical benchmark\n' "$source"
+            test "$(git rev-parse HEAD:package-lock.json)" = "7e94051457947e82cf639d3162a7713d692bbce2"
+            git diff --exit-code -- src public prisma
+            cp "$RUNNER_TEMP/harbor-account-orientation/control.spec.ts" tests/e2e/harbor-account-orientation.diag.spec.ts
             if FOREVER_VALIDATION_SOURCE_SHA="$source" TIMING_SOURCE="$source" node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
           await runJob(
-            { id: "lanternwake-current-compare", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
+            { id: "harbor-account-orientation", kind: "browser", files: ["tests/e2e/harbor-account-orientation.diag.spec.ts"] },
             { base: process.env.BASE_SHA, tree: process.env.TIMING_SOURCE },
           );
           EOF
@@ -99,11 +132,3 @@ jobs:
             fi
           done
           exit "$result"
-      - name: Retain both receipts for comparison
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: protected-main-journal-timing-comparison
-          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
-          if-no-files-found: warn
-          retention-days: 30
