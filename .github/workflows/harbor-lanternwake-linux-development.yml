@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Measure both recording setups with every Journal budget on one runner
+run-name: Measure every Journal runtime budget on the combined Native staging tree
 
 on:
   push:
@@ -13,18 +13,18 @@ permissions:
 
 jobs:
   canonical-budget:
-    name: Exact PageFlip repair, full workload with both recording setups
+    name: Exact combined Native tree, all Journal runtime budgets
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: e53ea853004a8b3abcf625eee32fcb015f24cdc7
+      CANDIDATE_SHA: 0828e599053261626d0d9690892321e61b5dace3
       BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      FOREVER_VALIDATION_SOURCE_SHA: e53ea853004a8b3abcf625eee32fcb015f24cdc7
+      FOREVER_VALIDATION_SOURCE_SHA: 0828e599053261626d0d9690892321e61b5dace3
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: e53ea853004a8b3abcf625eee32fcb015f24cdc7
+          ref: 0828e599053261626d0d9690892321e61b5dace3
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -66,9 +66,9 @@ jobs:
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
           npx --no-install prettier --check src/components/player/journal/ChronicleJournalSession.tsx
-      - name: Set up the two recording modes with all original workload and budget assertions
+      - name: Use the exact proposed timing spec and verify both recorder fixtures
         run: |
-          python3 -c 'import base64; exec(base64.b64decode("CmZyb20gcGF0aGxpYiBpbXBvcnQgUGF0aApwPVBhdGgoInRlc3RzL2UyZS9waGFzZTMtcGVyZm9ybWFuY2Uuc3BlYy50cyIpCnM9cC5yZWFkX3RleHQoKQpkZWYgcmVwbGFjZShvbGQsbmV3KToKIGdsb2JhbCBzCiBhc3NlcnQgcy5jb3VudChvbGQpPT0xLChzLmNvdW50KG9sZCksb2xkKQogcz1zLnJlcGxhY2Uob2xkLG5ldykKcmVwbGFjZSgnICBhc3luYyAoeyBwYWdlLCBwaGFzZTMsIGJyb3dzZXIsIGJyb3dzZXJOYW1lIH0pID0+IHsnLCcnJyAgYXN5bmMgKHsgcGFnZSwgcGhhc2UzLCBicm93c2VyLCBicm93c2VyTmFtZSwgdmlkZW8sIHRyYWNlIH0sIHRlc3RJbmZvKSA9PiB7CiAgICBjb25zdCB0aW1pbmdPbmx5ID0gdGVzdEluZm8ucHJvamVjdC5uYW1lID09PSAiZGlhZ25vc3RpYy10aW1pbmctb25seSI7CiAgICBleHBlY3QodmlkZW8pLnRvQmUodGltaW5nT25seSA/ICJvZmYiIDogInJldGFpbi1vbi1mYWlsdXJlIik7CiAgICBleHBlY3QodHJhY2UpLnRvQmUodGltaW5nT25seSA/ICJvZmYiIDogInJldGFpbi1vbi1mYWlsdXJlIik7CiAgICBleHBlY3QoT2JqZWN0LmlzKHBhZ2UudmlkZW8oKSwgbnVsbCkpLnRvQmUodGltaW5nT25seSk7CiAgICBjb25zdCBtb2RlID0gdGltaW5nT25seSA/ICJ0aW1pbmctb25seSIgOiAicmVjb3JkZWQiOycnJykKcmVwbGFjZSgnICAgIGNvbnN0IGFydGlmYWN0ID0gcGVyZm9ybWFuY2VBcnRpZmFjdFRhcmdldCgpOycsJycnICAgIGNvbnN0IHRhcmdldCA9IHBlcmZvcm1hbmNlQXJ0aWZhY3RUYXJnZXQoKTsKICAgIGNvbnN0IGFydGlmYWN0ID0gey4uLnRhcmdldCwgYXJ0aWZhY3RQYXRoOiBwYXRoLmpvaW4odGFyZ2V0LmFydGlmYWN0RGlyZWN0b3J5LCAicGhhc2UzLXBlcmZvcm1hbmNlLSIgKyBtb2RlICsgIi1tZXRyaWNzLmpzb24iKX07JycnKQpyZXBsYWNlKCciUDMtUEVSRk9STUFOQ0UtQ0hBUFRFUiInLCAnIlAzLVBFUkZPUk1BTkNFLUNIQVBURVItIiArIG1vZGUnKQpwLndyaXRlX3RleHQocykKY29uZmlnPVBhdGgoInBsYXl3cmlnaHQuY29uZmlnLnRzIikKcz1jb25maWcucmVhZF90ZXh0KCkKbWFya2VyPScgICAgeyBuYW1lOiAiYWRtaXJhbHR5LXBoYXNlMSIsIHRlc3RNYXRjaDogYWRtaXJhbHR5UGhhc2UxLCB1c2U6IHsgLi4uZGV2aWNlc1siRGVza3RvcCBDaHJvbWUiXSB9IH0sJwphc3NlcnQgcy5jb3VudChtYXJrZXIpPT0xCmVudHJ5PScnJyAgICB7CiAgICAgIG5hbWU6ICJkaWFnbm9zdGljLXRpbWluZy1vbmx5IiwKICAgICAgdGVzdE1hdGNoOiAvcGhhc2UzLXBlcmZvcm1hbmNlXFwuc3BlY1xcLnRzJC91LAogICAgICB1c2U6IHsuLi5kZXZpY2VzWyJEZXNrdG9wIENocm9tZSJdLCB0cmFjZTogIm9mZiIsIHZpZGVvOiAib2ZmIn0sCiAgICB9LAonJycKY29uZmlnLndyaXRlX3RleHQocy5yZXBsYWNlKG1hcmtlcixlbnRyeSttYXJrZXIpKQpwcm9maWxlcz1QYXRoKCJzY3JpcHRzL3NvdW5kaW5nLWxpbmUvYnJvd3Nlci1zdWl0ZS1wcm9maWxlcy5tanMiKQpzPXByb2ZpbGVzLnJlYWRfdGV4dCgpCm1hcmtlcj0nICAgIGlkOiAibGFudGVybndha2UtcGhhc2UzIiwnCmFzc2VydCBzLmNvdW50KG1hcmtlcik9PTEKcHJvZmlsZXMud3JpdGVfdGV4dChzLnJlcGxhY2UobWFya2VyLG1hcmtlcisnXFxuICAgIGJyb3dzZXJBcmd1bWVudHM6IE9iamVjdC5mcmVlemUoWyItLXByb2plY3QiLCAiZGlhZ25vc3RpYy10aW1pbmctb25seSJdKSwnKSkK"))'
+          python3 -c 'import base64; exec(base64.b64decode("ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCmltcG9ydCBoYXNobGliCnA9UGF0aCgidGVzdHMvZTJlL3BoYXNlMy1wZXJmb3JtYW5jZS5zcGVjLnRzIikKcz1wLnJlYWRfdGV4dCgpCnM9cy5yZXBsYWNlKCdjb25zdCBidWRnZXRzID0gT2JqZWN0LmZyZWV6ZSh7JywnLy8gS2VlcCByZWNvcmRlciB3b3JrIG91dHNpZGUgdGhpcyB0aW1pbmcgc3BlYy4gVGhlIGZ1bmN0aW9uYWwgSm91cm5hbCBzdWl0ZXMgcmV0YWluIGZhaWx1cmUgcmVjb3JkaW5ncy5cbnBoYXNlM1Rlc3QudXNlKHsgdHJhY2U6ICJvZmYiLCB2aWRlbzogIm9mZiIgfSk7XG5cbmNvbnN0IGJ1ZGdldHMgPSBPYmplY3QuZnJlZXplKHsnKQpzPXMucmVwbGFjZSgnYXN5bmMgKHsgcGFnZSwgcGhhc2UzLCBicm93c2VyLCBicm93c2VyTmFtZSB9KSA9PiB7XG4gICAgZXhwZWN0KGJyb3dzZXJOYW1lKS50b0JlKCJjaHJvbWl1bSIpOycsJ2FzeW5jICh7IHBhZ2UsIHBoYXNlMywgYnJvd3NlciwgYnJvd3Nlck5hbWUsIHRyYWNlLCB2aWRlbyB9KSA9PiB7XG4gICAgZXhwZWN0KGJyb3dzZXJOYW1lKS50b0JlKCJjaHJvbWl1bSIpO1xuICAgIGV4cGVjdCh0cmFjZSkudG9CZSgib2ZmIik7XG4gICAgZXhwZWN0KHZpZGVvKS50b0JlKCJvZmYiKTtcbiAgICBleHBlY3QocGFnZS52aWRlbygpKS50b0JlTnVsbCgpOycpCmI9cy5lbmNvZGUoKQphc3NlcnQgaGFzaGxpYi5zaGExKGYiYmxvYiB7bGVuKGIpfVwwIi5lbmNvZGUoKStiKS5oZXhkaWdlc3QoKT09IjJlMTBjMzgzZmEyYWNjYjc5ZmJhZDA5ZjkyZDYxNjMxYjIzZTJkNzgiCnAud3JpdGVfYnl0ZXMoYikK"))'
       - name: Measure all unchanged Journal budgets
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
@@ -83,7 +83,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-full-pageflip-recording-pair-ubuntu
+          name: journal-runtime-only-native-with-repairs
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
