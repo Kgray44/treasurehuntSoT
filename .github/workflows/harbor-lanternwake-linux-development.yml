@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Capture current-main Journal journeys and verify Homeport publication custody
+run-name: Reproduce spatial authoring and Creator focus failures on protected main
 
 on:
   push:
@@ -12,106 +12,8 @@ permissions:
   contents: read
 
 jobs:
-  benchmark:
-    name: Source-bound Journal experience capture
-    runs-on: ubuntu-24.04
-    timeout-minutes: 36
-    env:
-      CANDIDATE_SHA: eede0c60e77fe22656456ccc3ac18d3490c99b66
-      BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: eede0c60e77fe22656456ccc3ac18d3490c99b66
-      NEXT_TELEMETRY_DISABLED: "1"
-      SOUNDING_LINE_PR_NUMBER: "901"
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: eede0c60e77fe22656456ccc3ac18d3490c99b66
-          fetch-depth: 16
-          persist-credentials: false
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /*
-            !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
-            /scripts/
-            /src/
-            /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-      - name: Verify the actual protected base and its candidate ancestry
-        run: |
-          git fetch --no-tags --filter=blob:none --depth=16 origin refs/heads/main:refs/remotes/origin/main
-          test "$(git rev-parse origin/main)" = "$BASE_SHA"
-          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
-      - name: Install locked dependencies and Chromium
-        run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium
-      - name: Capture real source-bound Product Experience journeys for PR 901
-        run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "9f01965cebb3a090e30178831f7a70a6eb1fc982"
-          node --input-type=module <<'EOF'
-          import {execFileSync} from "node:child_process";
-          import {writeFile} from "node:fs/promises";
-          import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
-          import {recognizeExceptionExecution} from "./scripts/sounding-line/experience-exception.mjs";
-          const root = process.cwd();
-          if (recognizeExceptionExecution({root, baseSha: process.env.BASE_SHA, candidateSha: process.env.CANDIDATE_SHA}))
-            throw new Error("Current source was classified as a separate exception campaign");
-          const plan = JSON.parse(execFileSync(process.execPath, [
-            "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
-            "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
-          ], {encoding: "utf8"}));
-          const expectedContracts = ["crossdeck.phase2.continuity","crossdeck.refit.companion","crossdeck.refit.published-lens","homeport.motion.authority","homeport.owner-correction.round1.workspaces","homeport.shell.crossdeck-companion","homeport.shell.crossdeck-companion-mobile","homeport.transition.reduced-motion","journal-ready-state"];
-          const actualContracts = plan.contracts.map(item => item.id).sort();
-          if (!plan.applicable || plan.baseSha !== process.env.BASE_SHA || plan.candidateSha !== process.env.CANDIDATE_SHA ||
-              !/^[a-f0-9]{64}$/.test(plan.contractDigest) || JSON.stringify(actualContracts) !== JSON.stringify(expectedContracts) ||
-              !/^[a-f0-9]{64}$/.test(plan.sourceDigest))
-            throw new Error("Unexpected experience source or contract selection");
-          console.log("JOURNAL_RENDERER_CAPTURE_PLAN " + JSON.stringify({baseSha:plan.baseSha,candidateSha:plan.candidateSha,
-            sourceDigest:plan.sourceDigest,contractDigest:plan.contractDigest,contracts:actualContracts}));
-          plan.outputDirectory = "artifacts/sounding-line/journal-901-experience";
-          delete process.env.GH_TOKEN;
-          delete process.env.GITHUB_TOKEN;
-          const receipt = await runTrustedExperienceReplay({
-            root, plan, validateReplay: false,
-            environment: { SOUNDING_LINE_BASE_SHA: plan.baseSha },
-          });
-          if (receipt.status !== "PASS") throw new Error("The actual browser capture did not complete");
-          await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
-            JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
-              sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
-              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "DEVELOPMENT_CAPTURE"}, null, 2) + "\n");
-          EOF
-      - name: Retain source-bound synthetic browser review evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: journal-901-source-bound-experience
-          path: artifacts/sounding-line/journal-901-experience/**
-          if-no-files-found: ignore
-          retention-days: 30
-
   browser-probe:
-    name: Homeport Round 2 Journey T protected baseline
+    name: Exact protected-main spatial and Creator browser baseline
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
@@ -119,7 +21,6 @@ jobs:
       BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
       FOREVER_VALIDATION_SOURCE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
       NEXT_TELEMETRY_DISABLED: "1"
-      HOMEPORT_PHASE7_CORRECTION_JOURNEYS: "T"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -150,41 +51,21 @@ jobs:
             /Development_Docs/**/*.txt
             /Development_Docs/**/*.sql
             /Development_Docs/**/*.csv
-            /Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/experience-images-index.html
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Hydrate the Homeport publication as V3 does
-        timeout-minutes: 8
-        run: |
-          evidence=Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2
-          if [[ "$(git rev-parse --is-shallow-repository)" == true ]]; then
-            git fetch --no-tags --filter=blob:none --unshallow origin refs/heads/main
-          fi
-          publication="$(git log -1 --diff-filter=A --format=%H HEAD -- "$evidence/experience-images-manifest.json")"
-          test "$publication" = "8e3900a734674cb58800878aaeaf91a0e9f2285e"
-          staging="$(mktemp -d "$RUNNER_TEMP/homeport-publication.XXXXXX")"
-          GIT_INDEX_FILE="$staging/historical-index" git -c core.sparseCheckout=false read-tree "$publication"
-          mkdir -p "$staging/images"
-          export GIT_INDEX_FILE="$staging/historical-index"
-          git ls-tree -rz --name-only "$publication" -- Experience_Images |
-            git -c core.sparseCheckout=false checkout-index --prefix="$staging/images/" -z --stdin
-          unset GIT_INDEX_FILE
-          test "$(git hash-object "$staging/images/Experience_Images/manifest.json")" = "$(git rev-parse "HEAD:$evidence/experience-images-manifest.json")"
-          echo "Hydrated exact Round 2 publication in an isolated temporary index."
       - name: Install locked dependencies and Chromium
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Run exact protected Homeport Journey T and verify its publication
+      - name: Run spatial authoring and Creator moderation against current main
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          npx --no-install prettier --check tests/e2e/homeport-phase7-owner-correction-round2.spec.ts
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
           await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/homeport-phase7-owner-correction-round2.spec.ts"] },
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-studio.spec.ts","tests/e2e/parallax-adaptive.spec.ts","tests/e2e/spatial-chronicle-pilot.spec.ts","tests/e2e/sc07-creator-community.spec.ts"] },
             { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
           );
           EOF
