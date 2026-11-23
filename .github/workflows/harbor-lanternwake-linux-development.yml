@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Prepare bounded independent review media from the exact capture
+run-name: Exercise mobile account ID and keyboard Copy
 
 on:
   push:
@@ -9,99 +9,66 @@ on:
       - .github/workflows/harbor-lanternwake-linux-development.yml
 
 permissions:
-  actions: read
   contents: read
 
 jobs:
-  review-media:
+  mobile-dossier:
+    name: Mobile account dossier ID and keyboard Copy
     runs-on: ubuntu-24.04
-    timeout-minutes: 16
+    timeout-minutes: 38
     env:
-      CAPTURE_RUN: "45236770134"
-      CAPTURE_ID: "14852002558"
-      CAPTURE_DIGEST: sha256:976b23deb25f4cdadb6d015746a139844397e9973fdf8466cc749d11830a810c
-      SOURCE_SHA: 6bb9a57d488f4d2bfd84942cb9e92e19a4317ba6
-      SOURCE_DIGEST: aa9cdf4049cf91dc2a0cdf079d9d41b77d53933e3e5a18ef08055ac117b5f678
-      CONTRACT_DIGEST: d9d42578e400a93c22e4ae5a9380c985b9d489da50aff578f8e14142221a837d
+      CANDIDATE_SHA: e415a429a2da99453790adbdf126bb9cdaf07f8d
       BASE_SHA: 5be59f18590f2c48a4a7672a14a25dee5bf0e82d
+      FOREVER_VALIDATION_SOURCE_SHA: e415a429a2da99453790adbdf126bb9cdaf07f8d
+      NEXT_TELEMETRY_DISABLED: "1"
     steps:
-      - name: Verify and retrieve the immutable capture
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$CAPTURE_ID" |
-            jq -e --arg digest "$CAPTURE_DIGEST" --arg run "$CAPTURE_RUN"               '.digest==$digest and (.workflow_run.id|tostring)==$run and (.expired|not) and .size_in_bytes<3000000000'
-          gh run download "$CAPTURE_RUN" --repo "$GITHUB_REPOSITORY"             --name harbor-native-source-bound-experience --dir "$RUNNER_TEMP/original-experience"
-      - name: Hash-check the actual media and retain source-bound review packets
-        run: |
-          node --input-type=module <<'EOF'
-          import { readFile, writeFile, mkdir, copyFile, readdir, lstat } from "node:fs/promises";
-          import { createHash } from "node:crypto";
-          import { join, dirname } from "node:path";
-          const original = join(process.env.RUNNER_TEMP, "original-experience");
-          const target = join(process.env.RUNNER_TEMP, "review-media");
-          const receipt = JSON.parse(await readFile(join(original, "development-capture-receipt.json"), "utf8"));
-          const capture = JSON.parse(await readFile(join(original, "capture.json"), "utf8"));
-          if (receipt.candidate !== process.env.SOURCE_SHA || receipt.status !== "PASS" ||
-              capture.baseSha !== process.env.BASE_SHA || capture.sourceDigest !== process.env.SOURCE_DIGEST ||
-              capture.contractDigest !== process.env.CONTRACT_DIGEST || JSON.stringify([...receipt.contracts].sort()) !== "[\"admiralty.ai-economics\",\"admiralty.phase1.registry\",\"admiralty.phase2.account-dossier-support\",\"admiralty.phase2.read-projection-redaction\",\"chronicle.creation\",\"crossdeck.phase2.continuity\",\"crossdeck.refit.companion\",\"crossdeck.refit.published-lens\",\"harborlight.sc07.creator-community.experience\",\"homeport.community.public-projection\",\"homeport.owner-correction.round1.workspaces\",\"homeport.passport.product-surface\",\"homeport.phase7.account.canonical-lifecycle\",\"homeport.shell.crossdeck-access-recovery\",\"homeport.shell.crossdeck-companion\",\"homeport.shell.crossdeck-companion-mobile\",\"homeport.transition.auth-routes\",\"journal-ready-state\",\"parallax.authored-library-and-simulation.experience\",\"parallax.floating-controls.experience\",\"parallax.integration.pilot-owner-boundary\",\"parallax.parametric-room-correction.experience\",\"parallax.protected-photo-room.experience\",\"parallax.rooms-and-surfaces.experience\",\"parallax.sc00b.inspector.experience\",\"parallax.scene-manager.experience\",\"parallax.spatial-community-publishing.experience\",\"reach.phase1.foundation\",\"spatial-pilot.experience\"]")
-            throw new Error("Capture identity does not match the candidate");
-          const prefix = "artifacts/sounding-line/harbor-shared-experience/";
-          const pairedArtifactIds = new Set(capture.pairedEvidence.cases.flatMap(item => item.artifactIds));
-          const pairedTracePaths = new Set(capture.artifacts.filter(artifact => artifact.type === "trace" &&
-            pairedArtifactIds.has(artifact.id)).map(artifact => artifact.path));
-          if (pairedTracePaths.size !== 6) throw new Error("Expected both paired traces for each case");
-          const planned = new Map();
-          for (const artifact of capture.artifacts) {
-            if (!artifact.path.startsWith(prefix)) throw new Error("Unexpected evidence path");
-            if (!["recording", "screenshot"].includes(artifact.type) && !pairedTracePaths.has(artifact.path)) continue;
-            const file = artifact.path.slice(prefix.length);
-            if (!/[.](webm|png|zip)$/u.test(file) || file.split("/").some(part => !part || part === "." || part === "..") ||
-                file.includes("\\")) throw new Error("Media path is invalid");
-            if (planned.has(file) && planned.get(file) !== artifact.sha256) throw new Error("Conflicting media identity");
-            planned.set(file, artifact.sha256);
-          }
-          let total = 0;
-          for (const [file, sha256] of planned) {
-            const source = join(original, file);
-            const stat = await lstat(source);
-            if (!stat.isFile() || stat.size > 16 * 1024 * 1024) throw new Error("Unbounded media item");
-            total += stat.size;
-            if (total > 400 * 1024 * 1024) throw new Error("Review media exceeds its transport bound");
-            if (createHash("sha256").update(await readFile(source)).digest("hex") !== sha256)
-              throw new Error("Evidence hash mismatch: " + file);
-            const destination = join(target, file);
-            await mkdir(dirname(destination), { recursive: true });
-            await copyFile(source, destination);
-          }
-          async function copyJson(directory = "") {
-            for (const entry of await readdir(join(original, directory), { withFileTypes: true })) {
-              const relative = join(directory, entry.name);
-              if (entry.isDirectory()) await copyJson(relative);
-              if (!entry.isFile() || !entry.name.endsWith(".json")) continue;
-              const file = join(original, relative);
-              const stat = await lstat(file);
-              total += stat.size;
-              if (total > 410 * 1024 * 1024 || stat.size > 8 * 1024 * 1024) throw new Error("Unbounded review metadata");
-              const destination = join(target, relative);
-              await mkdir(dirname(destination), { recursive: true });
-              await copyFile(file, destination);
-            }
-          }
-          await copyJson();
-          const output = {
-            captureArtifactId: Number(process.env.CAPTURE_ID), archiveDigest: process.env.CAPTURE_DIGEST,
-            baseSha: capture.baseSha, candidateSha: receipt.candidate, sourceDigest: capture.sourceDigest,
-            contractDigest: capture.contractDigest, contracts: receipt.contracts, journeys: capture.journeys.length,
-            reviewMediaFiles: planned.size, bytes: total,
-          };
-          await writeFile(join(target, "media-transport.json"), JSON.stringify(output, null, 2) + "\n");
-          console.log(JSON.stringify(output));
-          EOF
-      - name: Retain screenshots and recordings for independent review
-        uses: actions/upload-artifact@v4
+      - uses: actions/checkout@v4
         with:
-          name: harbor-native-6bb9-source-bound-review-media
-          path: ${{ runner.temp }}/review-media/**
-          if-no-files-found: error
-          retention-days: 15
+          ref: e415a429a2da99453790adbdf126bb9cdaf07f8d
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
+            /scripts/
+            /src/
+            /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Install locked dependencies and Chromium
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install chromium
+      - name: Verify visible account ID and keyboard clipboard readback in Chromium
+        run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "d89e996eddd1a5b31d712f1f748ce6f2e9bf2711"
+          test "$(git rev-parse HEAD:native)" = "6795af566a32e2196088551de5b5c89840cc589f"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          node --input-type=module <<'EOF'
+          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/admiralty-dossier-mobile.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
+          );
+          EOF
+
