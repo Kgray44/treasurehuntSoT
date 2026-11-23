@@ -5,9 +5,9 @@
 }
 
 .journalShell[data-journal-phase="ENTRY_ACTIVATED"]
-  :global(:is(.book-shadow, .rear-book-cover, .page-stack, .book-binding)),
+  :global(:is(.book-shadow, .rear-book-cover, .page-stacks, .book-binding)),
 .journalShell[data-journal-ready-reason="skipped"]
-  :global(:is(.book-shadow, .rear-book-cover, .page-stack, .book-binding)) {
+  :global(:is(.book-shadow, .rear-book-cover, .page-stacks, .book-binding)) {
   transition: none;
 }
 
