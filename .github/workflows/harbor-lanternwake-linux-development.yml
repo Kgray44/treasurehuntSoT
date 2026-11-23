@@ -1,97 +1,69 @@
-name: Lanternwake isolated Linux benchmark
-run-name: Matched protected-main and corrected reduced-motion Home returns
-
+name: Route snapshot product-experience planning
+run-name: Plan Product Experience for Journal pruning and reduced-motion Home continuity
 on:
   push:
     branches:
       - codex/lanternwake-focused-development-cf6b1d6bbae4
     paths:
       - .github/workflows/harbor-lanternwake-linux-development.yml
-
 permissions:
   contents: read
-
 jobs:
-  benchmark:
-    name: Reduced-motion Home (${{ matrix.product }})
-    strategy:
-      fail-fast: false
-      matrix:
-        product: [baseline, candidate]
+  experience-plan:
     runs-on: ubuntu-24.04
-    timeout-minutes: 22
-    env:
-      CANDIDATE_SHA: ${{ github.sha }}
-      BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
-      FOREVER_VALIDATION_SOURCE_SHA: ${{ github.sha }}
-      NEXT_TELEMETRY_DISABLED: "1"
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.sha }}
-          fetch-depth: 2
+          ref: c6cf80f10e1253471a63898ecb55154e8b381ba1
+          fetch-depth: 3
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /*
             !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
             /scripts/
-            /src/
             /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
-        run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium
-      - name: Select exact application source
+      - name: Print the source-bound experience plan
         env:
-          PRODUCT: ${{ matrix.product }}
-        run: |
-          echo "HOME_PRODUCT_ROLE=$PRODUCT" >> "$GITHUB_ENV"
-          source_sha="$CANDIDATE_SHA"
-          if [ "$PRODUCT" = baseline ]; then
-            git fetch --no-tags --depth=1 origin "$BASE_SHA"
-            git show "$BASE_SHA:src/animation/scenes/arrival.scene.ts" > src/animation/scenes/arrival.scene.ts
-            source_sha="$BASE_SHA"
-          else
-            npx --no-install vitest run src/animation/scenes/scene-builders.test.ts src/components/landing/HarborLanding.test.tsx
-            npx --no-install prettier --check src/animation/scenes/arrival.scene.ts
-          fi
-          echo "HOME_PRODUCT_SOURCE=$source_sha" >> "$GITHUB_ENV"
-      - name: Check continuous heading and action visibility on the actual account-to-Home return
+          BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
+          CANDIDATE_SHA: c6cf80f10e1253471a63898ecb55154e8b381ba1
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-shared-consumers.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
+          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
+          node --input-type=module > "$RUNNER_TEMP/prune-experience-source-objects" <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { sourceSnapshotReadsPath } from "./scripts/sounding-line/product-experience.mjs";
+          const blobs=new Set();
+          for(const revision of [process.env.BASE_SHA,process.env.CANDIDATE_SHA]){
+            const tree=execFileSync("git",["ls-tree","-rz",revision],{encoding:"utf8",maxBuffer:32*1024*1024});
+            for(const entry of tree.split("\0").filter(Boolean)){
+              const [metadata,file]=entry.split("\t");
+              const [,type,oid]=metadata.split(" ");
+              if(type==="blob" && sourceSnapshotReadsPath(file)) blobs.add(oid);
+            }
+          }
+          console.log([...blobs].sort().join("\n"));
           EOF
-      - name: Retain sanitized performance metrics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: journal-906-reduced-home-${{ matrix.product }}
-          path: artifacts/sounding-line/journal-906-reduced-home/**
-          if-no-files-found: ignore
-          retention-days: 30
+          GIT_NO_LAZY_FETCH=1 git cat-file --batch-check < "$RUNNER_TEMP/prune-experience-source-objects" |
+            awk '$2=="missing" { print $1 }' > "$RUNNER_TEMP/prune-experience-missing-objects"
+          if [[ -s "$RUNNER_TEMP/prune-experience-missing-objects" ]]; then
+            git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin < "$RUNNER_TEMP/prune-experience-missing-objects"
+          fi
+          node --input-type=module <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { planProductExperience } from "./scripts/sounding-line/product-experience.mjs";
+          const root=process.cwd();
+          const baseSha=process.env.BASE_SHA;
+          const candidateSha=process.env.CANDIDATE_SHA;
+          const changedPaths=execFileSync("git",["diff","--name-only","--no-renames",baseSha,candidateSha],{encoding:"utf8"}).trim().split("\n");
+          const plan=planProductExperience({root,baseSha,candidateSha,changedPaths});
+          console.log("JOURNAL_PRUNE_EXPERIENCE "+JSON.stringify({
+            baseSha,candidateSha,changedPaths,applicable:plan.applicable,classification:plan.classification,
+            sourceDigest:plan.sourceDigest,contractDigest:plan.contractDigest,
+            contracts:(plan.contracts??[]).map(item=>({id:item.id,profile:item.experience?.executionProfile})),
+          }));
+          EOF
