@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Run current and Native recorded workloads with explicit full Chromium on hosted Metal
+run-name: Measure main and Native with full recording on Metal and the existing Darwin diagnostic guardian
 
 on:
   push:
@@ -98,6 +98,25 @@ jobs:
             await browser.close();
           }
           EOF
+      - name: Select the existing Darwin diagnostic guardian for this isolated macOS job
+        run: |
+          git fetch --no-tags --depth=1 origin f3edff6df19885a14acf5f97990ed355be5777a2
+          git show f3edff6df19885a14acf5f97990ed355be5777a2:scripts/sounding-line/owned-process-darwin-diagnostic.py > scripts/sounding-line/owned-process-darwin-diagnostic.py
+          node --input-type=module <<'EOF'
+          import fs from "node:fs";
+          if (process.platform !== "darwin" || process.env.GITHUB_ACTIONS !== "true") throw Error("Ephemeral macOS is required");
+          const file = "scripts/sounding-line/owned-process.mjs";
+          let source = fs.readFileSync(file,"utf8");
+          const replacements = [
+            ['new URL("./owned-process-linux.py", import.meta.url)', 'new URL(process.platform === "darwin" ? "./owned-process-darwin-diagnostic.py" : "./owned-process-linux.py", import.meta.url)'],
+            ['record.windows ? "WINDOWS_JOB_OBJECT" : "LINUX_SUBREAPER_AND_PIDFD"', 'record.windows ? "WINDOWS_JOB_OBJECT" : process.platform === "darwin" ? "DARWIN_DIAGNOSTIC_PROCESS_GROUP" : "LINUX_SUBREAPER_AND_PIDFD"'],
+          ];
+          for (const [before, after] of replacements) {
+            if (source.split(before).length !== 2) throw Error("Unexpected launcher anchor");
+            source = source.replace(before, after);
+          }
+          fs.writeFileSync(file,source);
+          EOF
       - name: Measure every original budget with normal recording
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
@@ -119,5 +138,6 @@ jobs:
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
           if-no-files-found: ignore
           retention-days: 30
+
 
 
