@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Compare current main and Native with the unchanged Journal benchmark on hosted Metal
+run-name: Run current and Native recorded workloads with explicit full Chromium on hosted Metal
 
 on:
   push:
@@ -76,7 +76,13 @@ jobs:
           test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "ce468f106d9bf65548db3ad638af36c7a9cd5196"
           node --input-type=module <<'EOF'
           import { chromium } from "playwright";
-          const browser = await chromium.launch();
+          import fs from "node:fs";
+          const configPath="tests/config/playwright/playwright.phase3-performance.config.ts";
+          const config=fs.readFileSync(configPath,"utf8");
+          const origin='use: { browserName: "chromium" }';
+          if (config.split(origin).length!==2) throw Error("The exact browser-channel anchor is required.");
+          fs.writeFileSync(configPath,config.replace(origin,'use: { browserName: "chromium", channel: "chromium" }'));
+          const browser = await chromium.launch({channel:"chromium"});
           try {
             const session = await browser.newBrowserCDPSession();
             const {gpu}=await session.send("SystemInfo.getInfo");
@@ -113,4 +119,5 @@ jobs:
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
           if-no-files-found: ignore
           retention-days: 30
+
 
