@@ -615,6 +615,36 @@ phase3Test(
     const fullRuntimeBaseline = await waitForStableRuntimeBaseline(page);
     expect(fullRuntimeBaseline.eventSources).toBe(1);
 
+    if (process.env.JOURNAL_PREFLIGHT_ATTRIBUTION === "1") {
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await expect(journal(page)).toHaveAttribute("data-motion-level", "reduced");
+      await assertReadableJournal(page, true);
+      const reducedBaseline = await waitForStableRuntimeBaseline(page);
+      const batches = [];
+      for (let run = 0; run < 2; run += 1) {
+        const samples = [];
+        for (let index = 0; index < 48; index += 1) {
+          const handoff = await measureOpening(replay(page));
+          expect(handoff.phases).toContain("BOOK_SETTLING");
+          expect(handoff.reason).toBe("completed-fallback");
+          expect(handoff.bookStatus).toBe("reduced");
+          if (index >= 8) samples.push({ durationMs: handoff.durationMs, responseMs: handoff.responseMs });
+        }
+        expect(await waitForStableRuntimeBaseline(page)).toEqual(reducedBaseline);
+        batches.push({
+          count: samples.length,
+          activationP95: rounded(percentile(samples.map(sample => sample.responseMs), 0.95)),
+          settlingP95: rounded(percentile(samples.map(sample => sample.durationMs - sample.responseMs), 0.95)),
+          readableP95: rounded(percentile(samples.map(sample => sample.durationMs), 0.95)),
+          samples,
+        });
+      }
+      const evidence = {source: process.env.FOREVER_VALIDATION_SOURCE_SHA, budgetMs: budgets.preflightP95Ms, batches};
+      await fs.writeFile(artifact.artifactPath, JSON.stringify(evidence, null, 2) + "\n");
+      console.log("JOURNAL_PREFLIGHT_SPLIT " + JSON.stringify({...evidence, batches: batches.map(({samples,...summary}) => summary)}));
+      return;
+    }
+
     const warmRuns: Awaited<ReturnType<typeof measuredFullOpening>>[] = [];
     const desktopRuns = [cold.visual];
     for (let index = 0; index < 3; index += 1) {
