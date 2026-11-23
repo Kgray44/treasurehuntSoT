@@ -598,7 +598,7 @@ async function measuredFullOpening(page: Page, control: Locator) {
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
 phase3Test(
-  "measure nested animation and clip cost in the Chronicle Journal",
+  "compare the actual outgoing cover with its cached compositor surface",
   async ({ page, phase3, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
@@ -631,39 +631,105 @@ phase3Test(
 
 
 
-    const scope = '.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"]';
-    const outgoing = [
-      scope + ' .opening-sealed-page { transition: none; opacity: 1; transform: translateZ(7px) scale(1); }',
-      scope + ' .opening-wax-seal { transition: none; opacity: 1; transform: none; }',
-    ];
-    const stacks = [
-      scope + ' .page-stack { clip-path: none; }',
-      scope + ' .rear-book-cover { box-shadow: inset 0 0 0 2px rgba(187,139,71,.38); }',
-    ];
-    const variants = { current: [], outgoing, stacks, combined: [...outgoing, ...stacks] };
-    const measurements = [];
-    for (const key of ["current","outgoing","stacks","combined","combined","stacks","outgoing","current"] as const) {
-      const style = variants[key].length ? await page.addStyleTag({ content: variants[key].join("\n") }) : null;
+
+    const scene = journal(page);
+    const phase = '.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"]';
+    const cover = scene.locator(".closed-book");
+    const shootOnlyCover = [
+      "html, body { background: transparent !important; }",
+      "body * { visibility: hidden !important; }",
+      ".chronicle-journal-shell .closed-book, .chronicle-journal-shell .closed-book * { visibility: visible !important; }",
+    ].join("\n");
+    await replay(page).click();
+    await expect(scene).toHaveAttribute("data-journal-phase", "SEAL_BREAKING");
+    const shot = await page.addStyleTag({content:shootOnlyCover});
+    let coverData: { uri:string; left:number; top:number; width:number; height:number; clip:{x:number;y:number;width:number;height:number} };
+    try {
+      const bounds = await cover.evaluate((book) => {
+        const root = book.getBoundingClientRect();
+        const all = [root,...Array.from(book.querySelectorAll(".closed-page-block, .opening-sealed-page, .front-cover"))
+          .map(element=>element.getBoundingClientRect())];
+        const sx = root.width / (book as HTMLElement).offsetWidth;
+        const sy = root.height / (book as HTMLElement).offsetHeight;
+        const pad = 24;
+        const left = Math.max(0, Math.floor(Math.min(...all.map(r=>r.left))) - pad);
+        const top = Math.max(0, Math.floor(Math.min(...all.map(r=>r.top))) - pad);
+        const right = Math.min(innerWidth, Math.ceil(Math.max(...all.map(r=>r.right))) + pad);
+        const bottom = Math.min(innerHeight, Math.ceil(Math.max(...all.map(r=>r.bottom))) + pad);
+        return { left:(left-root.left)/sx,top:(top-root.top)/sy,width:(right-left)/sx,height:(bottom-top)/sy,
+          clip:{ x:left+window.scrollX,y:top+window.scrollY,width:right-left,height:bottom-top } };
+      });
+      expect(bounds.clip.width).toBeGreaterThan(200);
+      expect(bounds.clip.height).toBeGreaterThan(200);
+      const buffer = await page.screenshot({ clip: bounds.clip, omitBackground: true, animations:"allow" });
+      expect(buffer.byteLength).toBeGreaterThan(8000);
+      expect(buffer.byteLength).toBeLessThan(4*1024*1024);
+      coverData = { ...bounds, uri:"data:image/png;base64,"+buffer.toString("base64") };
+      await fs.writeFile(path.join(artifact.artifactDirectory,"captured-outgoing-book.png"),buffer);
+    } finally {
+      await shot.evaluate(node=>{node.parentNode?.removeChild(node);});
+    }
+    await assertReadableJournal(page);
+    await expect(replay(page)).toBeFocused();
+    const cache = await cover.evaluate(async (book,data) => {
+      const image=document.createElement("img");
+      image.src=data.uri;
+      image.alt="";
+      image.dataset.outgoingCompositorSurface="true";
+      image.style.cssText="position:absolute;pointer-events:none;max-width:none;max-height:none;display:none;";
+      image.style.left=data.left+"px";
+      image.style.top=data.top+"px";
+      image.style.width=data.width+"px";
+      image.style.height=data.height+"px";
+      book.appendChild(image);
+      await image.decode();
+      return {width:image.naturalWidth,height:image.naturalHeight};
+    },coverData);
+    expect(cache.width).toBe(coverData.clip.width);
+    expect(cache.height).toBe(coverData.clip.height);
+    const css = [
+      phase+" .closed-book > :not([data-outgoing-compositor-surface]) { visibility:hidden !important; }",
+      phase+" .closed-book > [data-outgoing-compositor-surface] { display:block !important; }",
+    ].join("\n");
+    const measured=[];
+    for (const cached of [false,true,true,false]) {
+      const override=cached?await page.addStyleTag({content:css}):null;
       try {
         await waitForStableRuntimeBaseline(page);
-        const run = await measuredFullOpening(page, replay(page));
-        const frames = run.visual.frameDurationsMs;
-        const settling = run.visual.framesByPhase.BOOK_SETTLING ?? [];
+        const run=await measuredFullOpening(page,replay(page));
+        const frames=run.visual.frameDurationsMs;
+        const settling=run.visual.framesByPhase.BOOK_SETTLING ?? [];
         expect(settling.length).toBeGreaterThan(20);
         expect(run.durationMs).toBeLessThan(budgets.openingMs);
         await expect(replay(page)).toBeFocused();
-        measurements.push({ key, desktopP95: rounded(percentile(frames,.95)),
-          desktopCount: frames.length, desktopSlow: frames.filter(ms=>ms>budgets.desktopFrameP95Ms).length,
-          settlingP95:rounded(percentile(settling,.95)), settlingCount:settling.length,
-          settlingSlow: settling.filter(ms=>ms>budgets.desktopFrameP95Ms).length,
-          openingMs: rounded(run.durationMs) });
+        measured.push({cached, desktopP95:rounded(percentile(frames,.95)),count:frames.length,
+          desktopSlow:frames.filter(ms=>ms>budgets.desktopFrameP95Ms).length,
+          settlingP95:rounded(percentile(settling,.95)),settlingCount:settling.length,
+          settlingSlow:settling.filter(ms=>ms>budgets.desktopFrameP95Ms).length,animationMs:rounded(run.durationMs)});
       } finally {
-        await style?.evaluate(node=>{node.parentNode?.removeChild(node);});
+        await override?.evaluate(node=>{node.parentNode?.removeChild(node);});
       }
     }
-    const report = { purpose: "DEVELOPMENT_ONLY", candidate: process.env.FOREVER_VALIDATION_SOURCE_SHA,
-      frameBudgetMs:budgets.desktopFrameP95Ms, measurements };
-    await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
-    console.log("JOURNAL_PAINT_COMPOSITION " + JSON.stringify(report));
+    const view=await page.addStyleTag({content:css});
+    try {
+      await replay(page).click();
+      await expect(scene).toHaveAttribute("data-journal-phase","BOOK_SETTLING");
+      const rendered=await cover.evaluate(book=>{
+        const img=book.querySelector("[data-outgoing-compositor-surface]");
+        if(!img||!book.firstElementChild) throw new Error("Missing cover witnesses");
+        return {surface:getComputedStyle(img).display, live:getComputedStyle(book.firstElementChild).visibility,
+          carrier:getComputedStyle(book).opacity};
+      });
+      expect(rendered).toMatchObject({surface:"block",live:"hidden"});
+      await page.screenshot({path:path.join(artifact.artifactDirectory,"book-settle-with-surface.png")});
+      await assertReadableJournal(page);
+      await expect(replay(page)).toBeFocused();
+      const report={purpose:"DEVELOPMENT_ONLY",candidate:process.env.FOREVER_VALIDATION_SOURCE_SHA,
+        cache, rendered, measured, desktopBudgetMs:budgets.desktopFrameP95Ms};
+      await writePerformanceArtifact(artifact.artifactPath,report,[fixture.slug,voyage!.sessionId]);
+      console.log("JOURNAL_CACHED_COVER " + JSON.stringify(report));
+    } finally {
+      await view.evaluate(node=>{node.parentNode?.removeChild(node);});
+    }
   },
 );
