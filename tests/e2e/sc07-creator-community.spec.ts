@@ -225,12 +225,67 @@ test("only the owner with Creator access submits the exact saved item for modera
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: test.info().outputPath("creator-package-review.png"), fullPage: true });
   await page.setViewportSize({ width: 1440, height: 900 });
+  const focusTimeline = await reviewHeading.evaluateHandle((heading) => {
+    const samples: Record<string, string | number | boolean | null>[] = [];
+    const root = heading.ownerDocument.scrollingElement!;
+    const header = document.querySelector<HTMLElement>(".product-shell-header")!;
+    const button = [...document.querySelectorAll<HTMLButtonElement>("button")].find(
+      (candidate) => candidate.textContent?.trim() === "Review exact package",
+    )!;
+    const sample = (event: string) => {
+      const box = heading.getBoundingClientRect();
+      const headerBox = header.getBoundingClientRect();
+      const buttonBox = button.getBoundingClientRect();
+      samples.push({
+        event,
+        at: Math.round(performance.now()),
+        top: box.top,
+        headingHeight: box.height,
+        buttonTop: buttonBox.top,
+        buttonHeight: buttonBox.height,
+        headerBottom: headerBox.bottom,
+        scrollY: window.scrollY,
+        scrollMargin: getComputedStyle(heading).scrollMarginBlockStart,
+        scrollPadding: getComputedStyle(root).scrollPaddingBlockStart,
+        documentHeight: root.scrollHeight,
+        viewportHeight: root.clientHeight,
+        focused: document.activeElement === heading,
+        fonts: document.fonts.status,
+      });
+    };
+    const scroll = heading.scrollIntoView.bind(heading);
+    heading.scrollIntoView = (options) => {
+      sample("before-scrollIntoView");
+      scroll(options);
+      sample("after-scrollIntoView");
+    };
+    heading.addEventListener(
+      "focus",
+      () => {
+        sample("focus");
+        let frame = 0;
+        const observe = () => {
+          sample("frame-" + ++frame);
+          if (frame < 40) requestAnimationFrame(observe);
+        };
+        requestAnimationFrame(observe);
+      },
+      { once: true },
+    );
+    sample("desktop-resize");
+    return samples;
+  });
   const desktopPreflight = page.waitForResponse(
     (response) => new URL(response.url()).pathname === "/api/community/creator-reuse/preflight",
   );
   await page.getByRole("button", { name: "Review exact package" }).press("Enter");
   expect((await desktopPreflight).ok()).toBe(true);
-  await expectFocusedHeadingBelowMasthead(reviewHeading);
+  try {
+    await expectFocusedHeadingBelowMasthead(reviewHeading);
+  } finally {
+    console.log("CREATOR_FOCUS_TIMELINE " + JSON.stringify(await focusTimeline.jsonValue()));
+    await focusTimeline.dispose();
+  }
   await expect(packageReview.locator("details")).toHaveAttribute("open", "");
 
   const publishRequest = {
