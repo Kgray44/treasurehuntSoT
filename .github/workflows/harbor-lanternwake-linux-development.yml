@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Compare the current and prior Journal builds on one V3 timing runner
+run-name: Measure the cost of redundant PageFlip class writes on one runner
 
 on:
   push:
@@ -13,18 +13,18 @@ permissions:
 
 jobs:
   canonical-budget:
-    name: Same-runner exact source comparison
+    name: Same-runtime PageFlip class write diagnostic
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
+      CANDIDATE_SHA: 501c5e171deabdf76f84586c950a0623c1ae77c4
       BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
+      FOREVER_VALIDATION_SOURCE_SHA: 501c5e171deabdf76f84586c950a0623c1ae77c4
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
+          ref: 501c5e171deabdf76f84586c950a0623c1ae77c4
           fetch-depth: 16
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -57,43 +57,39 @@ jobs:
       - name: Install locked dependencies and Chromium
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium webkit
-      - name: Compare unchanged timing workloads on the same runner
+          npx --no-install playwright install chromium
+      - name: Measure unchanged timing budgets with and without redundant class writes
         run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "147f9767d537f1fc332e492a7299654d98fd336a"
+          test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "de58c0bc1a9ef6aa5e0ed79b82628f22d8d38fb2"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          prior=67ba7699f548aadbffbf7a10d947264ef3b98884
-          git fetch --depth=1 --no-tags origin "$prior"
-          test "$(git rev-parse HEAD:package-lock.json)" = "$(git rev-parse "$prior:package-lock.json")"
           nproc
           cat /sys/fs/cgroup/cpu.max
-          uname -sr
-          result=0
-          for source in "$CANDIDATE_SHA" "$prior"; do
-            git checkout --detach "$source"
-            test "$(git rev-parse HEAD)" = "$source"
-            test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "2e10c383fa2accb79fbad09f92d61631b23e2d78"
-            test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
-            printf 'Timing application %s with the canonical benchmark\n' "$source"
-            if FOREVER_VALIDATION_SOURCE_SHA="$source" TIMING_SOURCE="$source" node --input-type=module <<'EOF'
+          mkdir -p "$RUNNER_TEMP/pageflip-class-comparison"
+          for lane in original coalesced; do
+            echo "PageFlip class diagnostic: $lane"
+            if HARBOR_PAGEFLIP_CLASS_PROBE="$lane" node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
           await runJob(
-            { id: "lanternwake-current-compare", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.TIMING_SOURCE },
+            { id: "pageflip-class-diagnostic", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
           );
           EOF
             then
-              printf '%s PASS\n' "$source"
+              echo "$lane passed all timing budgets"
             else
-              printf '%s FAILED\n' "$source"
-              result=1
+              echo "$lane did not pass all timing budgets"
             fi
+            metric="$(find artifacts/sounding-line -name phase3-performance-metrics.json -printf '%T@ %p\n' | sort -nr | head -n 1 | cut -d' ' -f2-)"
+            test -n "$metric"
+            cp "$metric" "$RUNNER_TEMP/pageflip-class-comparison/$lane.json"
           done
-          exit "$result"
-      - name: Retain both receipts for comparison
+      - name: Retain separate original and coalesced timing receipts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: same-runner-journal-timing-comparison
-          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
+          name: pageflip-class-write-comparison
+          path: ${{ runner.temp }}/pageflip-class-comparison/*.json
           if-no-files-found: warn
           retention-days: 30
