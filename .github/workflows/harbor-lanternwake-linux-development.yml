@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Full canonical benchmark for the staged Journal handoff
+run-name: Canonical Journal benchmark with a clean stationary backing handoff
 
 on:
   push:

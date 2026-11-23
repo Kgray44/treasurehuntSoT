@@ -10,19 +10,18 @@
 }
 
 @media (min-width: 961px) {
-  /* The full two-page handoff paints the outgoing cover before it reveals the
-     book's stationary backing. Finish both parts before publishing readiness. */
-  .journalShell[data-motion-level="full"]:not([data-journal-phase="JOURNAL_READY"])
-    :global(:is(.book-shadow, .rear-book-cover, .page-stack, .book-binding)) {
-    visibility: hidden;
-  }
-
+  /* Paint the stationary backing with the ready spread. During the handoff,
+     the actual cover and readable page motions still run. Skip must not leave
+     any queued decoration transitions behind. */
   .journalShell[data-motion-level="full"][data-journal-phase="BOOK_SETTLING"]
     :global(:is(.book-shadow, .rear-book-cover, .page-stack, .book-binding)) {
-    visibility: visible;
-    transition:
-      opacity 175ms ease 1170ms,
-      visibility 0s linear 1170ms;
+    visibility: hidden;
+    transition: none;
+  }
+
+  .journalShell[data-motion-level="full"][data-journal-phase="JOURNAL_READY"]
+    :global(:is(.book-shadow, .rear-book-cover, .page-stack, .book-binding)) {
+    transition: none;
   }
 
   /* These static effects do not need to sample the moving book. */
