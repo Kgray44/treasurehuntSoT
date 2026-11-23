@@ -1,5 +1,5 @@
-name: Native Scene Runtime experience planning
-run-name: Resolve Native Scene Runtime experience scope after the Journal Skip merge
+name: Native Sounding Line V3 plan
+run-name: Resolve exact ordinary V3 test selection for the reconciled Native candidate
 on:
   push:
     branches:
@@ -9,66 +9,45 @@ on:
 permissions:
   contents: read
 jobs:
-  experience-plan:
+  plan:
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
+    timeout-minutes: 5
+    env:
+      CANDIDATE_SHA: e68eb73782ba4e13ac3fca30972c6f72f02d7314
+      BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+      EXPECTED_TREE: 491043e4d1c5b3d17f4957a9ae3ab43d44dfe068
     steps:
       - uses: actions/checkout@v4
         with:
           ref: e68eb73782ba4e13ac3fca30972c6f72f02d7314
           fetch-depth: 2
           persist-credentials: false
-          sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /*
-            !/*/
-            /scripts/
-            /testing/
-            /src/
-            **/*.json
+            scripts/sounding-line-v3
+            testing
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Print the source-bound experience plan
-        env:
-          BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-          CANDIDATE_SHA: e68eb73782ba4e13ac3fca30972c6f72f02d7314
+      - name: Verify the exact staged tree and resolve V3 coverage without running the gate
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "$EXPECTED_TREE"
           test "$(git rev-parse 'HEAD^2')" = "$BASE_SHA"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "491043e4d1c5b3d17f4957a9ae3ab43d44dfe068"
-          node --input-type=module > "$RUNNER_TEMP/native-experience-source-objects" <<'EOF'
-          import { execFileSync } from "node:child_process";
-          import { sourceSnapshotReadsPath } from "./scripts/sounding-line/product-experience.mjs";
-          const blobs=new Set();
-          for(const revision of [process.env.BASE_SHA,process.env.CANDIDATE_SHA]){
-            const tree=execFileSync("git",["ls-tree","-rz",revision],{encoding:"utf8",maxBuffer:32*1024*1024});
-            for(const entry of tree.split("\0").filter(Boolean)){
-              const [metadata,file]=entry.split("\t");
-              const [,type,oid]=metadata.split(" ");
-              if(type==="blob" && sourceSnapshotReadsPath(file)) blobs.add(oid);
-            }
-          }
-          console.log([...blobs].sort().join("\n"));
-          EOF
-          GIT_NO_LAZY_FETCH=1 git cat-file --batch-check < "$RUNNER_TEMP/native-experience-source-objects" |
-            awk '$2=="missing" { print $1 }' > "$RUNNER_TEMP/native-experience-missing-objects"
-          if [[ -s "$RUNNER_TEMP/native-experience-missing-objects" ]]; then
-            git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin < "$RUNNER_TEMP/native-experience-missing-objects"
-          fi
+          node scripts/sounding-line-v3/cli.mjs plan --base "$BASE_SHA" --head "$CANDIDATE_SHA" --json > "$RUNNER_TEMP/v3-native-plan.json"
           node --input-type=module <<'EOF'
+          import fs from "node:fs";
           import { execFileSync } from "node:child_process";
-          import { planProductExperience } from "./scripts/sounding-line/product-experience.mjs";
-          const root=process.cwd();
-          const baseSha=process.env.BASE_SHA;
-          const candidateSha=process.env.CANDIDATE_SHA;
-          const changedPaths=execFileSync("git",["diff","--name-only","--no-renames",baseSha,candidateSha],{encoding:"utf8"}).trim().split("\n");
-          const plan=planProductExperience({root,baseSha,candidateSha,changedPaths});
-          console.log("NATIVE_EXPERIENCE_SCOPE "+JSON.stringify({
-            baseSha,candidateSha,changedPaths,applicable:plan.applicable,classification:plan.classification,
-            sourceDigest:plan.sourceDigest,contractDigest:plan.contractDigest,
-            contracts:(plan.contracts??[]).map(item=>({id:item.id,profile:item.experience?.executionProfile})),
+          const p=JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP+"/v3-native-plan.json","utf8"));
+          const git=(...args)=>execFileSync("git",args,{encoding:"utf8"}).trim();
+          const performance="tests/e2e/phase3-performance.spec.ts";
+          const config="tests/config/playwright/playwright.phase3-performance.config.ts";
+          console.log("NATIVE_V3_EXACT_PLAN "+JSON.stringify({
+            category:p.category,
+            base:p.base,
+            candidate:p.tree,
+            performanceSource:git("rev-parse","HEAD:"+performance),
+            performanceConfig:git("rev-parse","HEAD:"+config),
+            jobs:p.jobs.map(({id,kind,files})=>({id,kind,files:files.length,performance:files.includes(performance)})),
           }));
           EOF
-
