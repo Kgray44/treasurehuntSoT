@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Isolate recorder overhead on the exact staged Native tree and hosted Metal
+run-name: Verify in-test Metal and isolate recorder overhead on exact protected and Native trees
 
 on:
   push:
@@ -13,20 +13,28 @@ permissions:
 
 jobs:
   benchmark:
-    name: Native workload with reduced test recording on hosted Metal (${{ matrix.lane }})
+    name: Journal benchmark with in-test renderer verification (${{ matrix.lane }})
     runs-on: macos-15
     strategy:
       fail-fast: false
       matrix:
         include:
-          - lane: native
+          - lane: main-normal
+            source: 627a4e651641b6765ac789d378672ea6e903c120
+            recording: normal
+          - lane: native-normal
             source: e68eb73782ba4e13ac3fca30972c6f72f02d7314
+            recording: normal
+          - lane: native-reduced
+            source: e68eb73782ba4e13ac3fca30972c6f72f02d7314
+            recording: reduced
     timeout-minutes: 22
     env:
       CANDIDATE_SHA: ${{ matrix.source }}
       BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
       FOREVER_VALIDATION_SOURCE_SHA: ${{ matrix.source }}
       NEXT_TELEMETRY_DISABLED: "1"
+      JOURNAL_DIAGNOSTIC_RECORDING: ${{ matrix.recording }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -64,7 +72,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install chromium
-      - name: Confirm Metal and preserve the full canonical benchmark
+      - name: Apply the selected recorder settings to the root Playwright config
         run: |
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
@@ -72,38 +80,35 @@ jobs:
           git fetch --no-tags --depth=1 origin 186e0d868f5cb1aaf542e7885486f7e5ce144f16
           git show 186e0d868f5cb1aaf542e7885486f7e5ce144f16:tests/e2e/phase3-performance.spec.ts > tests/e2e/phase3-performance.spec.ts
           test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "ce468f106d9bf65548db3ad638af36c7a9cd5196"
+          test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
           node --input-type=module <<'EOF'
-          import { chromium } from "playwright";
           import fs from "node:fs";
-          const configPath="tests/config/playwright/playwright.phase3-performance.config.ts";
-          const config=fs.readFileSync(configPath,"utf8");
-          const origin='use: { browserName: "chromium" }';
-          if (config.split(origin).length!==2) throw Error("The exact browser-channel anchor is required.");
-          const originalTrace='trace: "retain-on-failure",';
-          const originalVideo='video: "retain-on-failure",';
-          for (const anchor of [originalTrace,originalVideo]) {
-            if (config.split(anchor).length !== 2) throw Error("Unexpected recording settings");
-          }
-          fs.writeFileSync(configPath,config
-            .replace(origin,'use: { browserName: "chromium", channel: "chromium" }')
-            .replace(originalTrace,'trace: { mode: "retain-on-failure", screenshots: false, snapshots: false },')
-            .replace(originalVideo,'video: "off",'));
-          console.log("The workload, browser viewport, isolation and all budgets are unchanged. This lane measures recorder overhead.");
-          const browser = await chromium.launch({channel:"chromium"});
-          try {
-            const session = await browser.newBrowserCDPSession();
-            const {gpu}=await session.send("SystemInfo.getInfo");
-            const receipt={
-              renderer:gpu.auxAttributes?.glRenderer,
-              compositor:gpu.featureStatus?.gpu_compositing,
-              raster:gpu.featureStatus?.rasterization,
-            };
-            console.log("LANTERNWAKE_HOSTED_METAL "+JSON.stringify(receipt));
-            if (!receipt.renderer?.includes("Metal") || !receipt.compositor?.startsWith("enabled") || !receipt.raster?.startsWith("enabled"))
-              throw Error("The hosted Chromium instance did not expose a hardware Metal compositor and rasterizer.");
-          } finally {
-            await browser.close();
-          }
+          const replace = (source, from, to) => {
+            if (source.split(from).length!==2) throw Error("Unexpected diagnostic source anchor");
+            return source.replace(from,to);
+          };
+          const configPath="playwright.config.ts";
+          let config=fs.readFileSync(configPath,"utf8");
+          config=replace(config,'use: { baseURL, trace:','use: { baseURL, channel: "chromium", trace:');
+          if (process.env.JOURNAL_DIAGNOSTIC_RECORDING==="reduced") {
+            config=replace(config,'trace: "retain-on-failure"','trace: {mode:"retain-on-failure",screenshots:false,snapshots:false}');
+            config=replace(config,'video: "retain-on-failure"','video: "off"');
+          } else if (process.env.JOURNAL_DIAGNOSTIC_RECORDING!=="normal") throw Error("Unknown recorder mode");
+          fs.writeFileSync(configPath,config);
+          const specPath="tests/e2e/phase3-performance.spec.ts";
+          const spec=fs.readFileSync(specPath,"utf8");
+          const probe=[
+            '    expect(browserName).toBe("chromium");',
+            '    const rendererSession = await browser.newBrowserCDPSession();',
+            '    const {gpu}=await rendererSession.send("SystemInfo.getInfo");',
+            '    await rendererSession.detach();',
+            '    const activeRenderer = {renderer:gpu.auxAttributes?.glRenderer,compositor:gpu.featureStatus?.gpu_compositing,raster:gpu.featureStatus?.rasterization};',
+            '    console.log("LANTERNWAKE_MEASURED_RENDERER "+JSON.stringify(activeRenderer));',
+            '    expect(activeRenderer.renderer).toMatch(/Metal/i);',
+            '    expect(activeRenderer.compositor).toMatch(/^enabled/);',
+            '    expect(activeRenderer.raster).toMatch(/^enabled/);',
+          ].join("\n");
+          fs.writeFileSync(specPath,replace(spec.trimEnd()+"\n",'    expect(browserName).toBe("chromium");',probe));
           EOF
       - name: Select the existing Darwin diagnostic guardian for this isolated macOS job
         run: |
@@ -124,7 +129,7 @@ jobs:
           }
           fs.writeFileSync(file,source);
           EOF
-      - name: Measure every original budget with the recorder controls
+      - name: Measure all original budgets with this verified renderer
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
         run: |
@@ -141,7 +146,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-hosted-metal-reduced-recorder-${{ matrix.lane }}
+          name: journal-hosted-metal-${{ matrix.lane }}
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
           if-no-files-found: ignore
           retention-days: 30
