@@ -1,0 +1,208 @@
+{
+  "contractId": "crossdeck.refit.companion",
+  "packetDigest": "fba6dcdfb986166be679742849da052e1ec39a5c1d72a9c2189ca82ac7093763",
+  "builderContext": "codex:/root",
+  "reviewerContext": "codex:/root/pr906_review_mobile",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "status": "ACCEPTED",
+  "iterations": 1,
+  "dimensions": {
+    "composition": {
+      "observation": "The companion gives Journal, Guided Lens, Chart and Artifact their own workspaces within the same dark shell. A light clue card, map and artifact panel distinguish each purpose. Returned Journal keeps the passage and fixed action strip in separate areas.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-ARTIFACT_READY-13",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-RETURNED-20",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-CHART_READY-7"
+      ]
+    },
+    "hierarchy": {
+      "observation": "The Voyage name and Return to Chronicle precede the current purpose. Guided Lens elevates the Captain's note and offers Choose, Inspect and Place in Guided View. Chart leads with the current objective and map; Artifact leads with The brass compass.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-ARTIFACT_READY-13",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3"
+      ]
+    },
+    "typography": {
+      "observation": "The parchment titles Follow the lanterns and The brass compass use legible serif headings. Smaller companion utility copy is subordinate but readable. The mobile Guided Lens title and Voyage name wrap without losing their words, and Journal offers larger reading size.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-ARTIFACT_READY-13",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-JOURNAL_RESTORED-16"
+      ]
+    },
+    "spacing": {
+      "observation": "The single-column handheld panels leave space between the status, reading controls and parchment. Chart items and options follow the map; Artifact description fits beneath its image. More purposes and the return remain reachable through vertical navigation.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-ARTIFACT_READY-13",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "controls": {
+      "observation": "Trace activates Change companion purpose, the Lens and its Close action, Voyage Chart, More purposes, Artifact viewer, Journal companion, larger reading size and Return to Chronicle. These actions bring up the expected content in both modes on both viewports.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-trace",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "contrast": {
+      "observation": "Dark reading text stands out against parchment; white outlines mark the Lens Close control and new active purpose headings. Guided Lens disables browser AR and explains the availability of Guided View. The capture reports no serious axe finding in the journey states.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-JOURNAL_RESTORED-16",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3"
+      ]
+    },
+    "consistency": {
+      "observation": "Same Voyage · in sync and the persistent Voyage name are shared anchors while the body changes purpose. The Chart received in the paired journey repeats the objective and map treatment of the manually selected Chart. The original Journal title and passage persist on return.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-RETURNED-20",
+        "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-10-chart-received.png",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-RETURNED-20"
+      ]
+    },
+    "states": {
+      "observation": "The screenshots show Journal, Guided Lens, Chart, Artifact and the restored Journal on both devices and motion modes. Pairing adds offline and reconnected Chart, an empty restricted display, a received crew Chart and removal of personal content on revocation.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-ARTIFACT_READY-13",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-JOURNAL_RESTORED-16",
+        "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-11-offline.png",
+        "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-12-reconnected.png",
+        "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-09-restricted-crew-chart-received.png",
+        "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-11-current-surface-revoked.png"
+      ]
+    },
+    "responsive": {
+      "observation": "The purpose workspaces use a wide desktop panel and stacked mobile controls. The portrait captures show readable map, artifact and text without document overflow. The landscape evidence is limited to reflow and the Chart heading in the first viewport.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-ARTIFACT_READY-13",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-ARTIFACT_READY-13",
+        "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-15-phone-landscape.png"
+      ]
+    },
+    "keyboard": {
+      "observation": "The contract traces use keyboard activation for each purpose transition, Guided Lens close, reading-size change and safe return in all four contexts. In the paired traces, separate device actions demonstrate the received Chart and eventual continuation.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-trace",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace",
+        "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-recording-page@ac90b12187fa70e1826b1371f11f9e18.webm",
+        "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-recording-page@a4389257234df8aacd26402b578e744f.webm"
+      ]
+    },
+    "focus": {
+      "observation": "The Lens Close control has a visible outline on opening. Chart and restored Journal headings show focus rings on purpose changes, orienting the Player to the new workspace. Recorded keyboard and focus checks pass for all four configurations.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-JOURNAL_RESTORED-16",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-trace",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "feedback": {
+      "observation": "Keyboard selection to a visible Guided Lens clue measures 115–158 ms across the four single-context captures against the 5,000 ms limit. Paired transfer similarly provides a visible offer and a separate sender acknowledgment after the Chart opens.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-09-receive-offer.png",
+        "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-10-chart-received.png",
+        "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-10-delivery-acknowledged.png"
+      ]
+    },
+    "motion": {
+      "observation": "The desktop and phone recordings show changed purpose content and a usable Journal return in both modes. Normal phone re-entry retains the readable opening fallback; reduced re-entry reaches the same passage with explicit reduced-motion fallback. Both paired modes advance to Voyage complete.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-recording",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-recording",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-recording",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-recording",
+        "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-16-voyage-continued.png",
+        "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-16-voyage-continued.png"
+      ]
+    },
+    "continuity": {
+      "observation": "The four single-context runs retain the Voyage and immutable edition across Lens, Chart, artifact and Journal return. Paired witness records distinct surfaces of the same Voyage and edition, and the phone trace and completed state show authorized progression after return in both modes.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-ARTIFACT_READY-13",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-RETURNED-20",
+        "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-16-voyage-continued.png",
+        "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-16-voyage-continued.png",
+        "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-recording-page@ac90b12187fa70e1826b1371f11f9e18.webm",
+        "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-recording-page@a4389257234df8aacd26402b578e744f.webm"
+      ]
+    },
+    "complexity": {
+      "observation": "One purpose chooser provides named, explained choices; More purposes exposes the artifact as a secondary step. The dedicated Chart and artifact panels have a single job each. Return to Chronicle carries the Player directly back to the reading task.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-ARTIFACT_READY-13",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-RETURNED-20"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "The authorized Player actually sees the released northern-light clue, the Secret Isle map objective, the brass compass and the restored passage. The paired restricted display shows the separately authorized crew Chart, and the canonical return to the personal role restores its own passage.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-ARTIFACT_READY-13",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-JOURNAL_RESTORED-16",
+        "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-09-restricted-crew-chart-received.png",
+        "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-10-authorized-personal-return.png"
+      ]
+    },
+    "fallbacks": {
+      "observation": "Guided View presents the released clue with browser AR unavailable. Unavailable purposes leave the Journal available. Offline state retains the last released Chart, and revoke replaces the private workspace with reconnect guidance. The adverse capture and witness exercise permission and revocation in Chromium contexts.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-03-unavailable-purposes.png",
+        "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-11-offline.png",
+        "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-12-reconnected.png",
+        "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-11-current-surface-revoked.png",
+        "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-recording-page@0181fbe992ff34eaf46bce072ebbfd9f.webm"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "PR906-CROSSDECK-REFIT-MOBILE-OPENING-NOTICE",
+      "classification": "MINOR_POLISH",
+      "contractId": "crossdeck.refit.companion",
+      "observation": "The normal mobile return presents an optional opening failure notice despite readable Journal content, a stable current objective, and usable continuation. The reduced-motion experience explains its readable fallback without the failure wording.",
+      "evidenceIds": [
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-RETURNED-20",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-RETURNED-20",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-recording",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-recording"
+      ],
+      "disposition": "OPEN"
+    }
+  ]
+}

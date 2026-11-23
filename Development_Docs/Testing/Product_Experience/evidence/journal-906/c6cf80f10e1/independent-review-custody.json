@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "baseSha": "fc813a4c03a4916c6b0aab346abbb8b1caa8cf38",
+  "productCandidateSha": "c6cf80f10e1253471a63898ecb55154e8b381ba1",
+  "sourceDigest": "c08d9cf40ef85c78708529c6d02ae0a83a8f0d3b6e7f0e7669777aebce65cc4e",
+  "contractDigest": "4578d749590b9033c43bf566138577f9d32cb249722f3050f98608db287253de",
+  "capture": {
+    "workflowRun": 45106176038,
+    "artifactId": 14787603014,
+    "archiveBytes": 423139168,
+    "archiveSha256": "143eeee471e038d518b065c1ca287541a7f89a44316b1919792e966c0d889f6b",
+    "manifestArtifacts": 342,
+    "artifactUniquePaths": 268,
+    "journeys": 28
+  },
+  "reviewDisposition": "REPAIR_AND_RECAPTURE",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "reviews": [
+    {
+      "contractId": "homeport.shell.crossdeck-companion",
+      "iterations": 2,
+      "status": "BLOCKED",
+      "reviewBlobSha": "f7c32926b84c8745018e35b4881b5b08c65291f7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c6cf80f10e1/homeport.shell.crossdeck-companion-iteration-2-review.json"
+    },
+    {
+      "contractId": "chronicle.creation",
+      "iterations": 1,
+      "status": "ACCEPTED",
+      "reviewBlobSha": "e9d48be012eb04b492f91cd1ca7237ae2e5e5c53",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c6cf80f10e1/chronicle.creation-iteration-1-review.json"
+    },
+    {
+      "contractId": "crossdeck.refit.published-lens",
+      "iterations": 1,
+      "status": "BLOCKED",
+      "reviewBlobSha": "c69f234a3e9fd31c4cd40e37293a0fe548312f72",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c6cf80f10e1/crossdeck.refit.published-lens-iteration-1-review.json"
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "iterations": 2,
+      "status": "ACCEPTED",
+      "reviewBlobSha": "c4c4f98ba06af258fd9a1b6fdc6f72f59f0dddbc",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c6cf80f10e1/homeport.shell.crossdeck-companion-mobile-iteration-2-review.json"
+    },
+    {
+      "contractId": "crossdeck.phase2.continuity",
+      "iterations": 1,
+      "status": "ACCEPTED",
+      "reviewBlobSha": "838c596d03f5b61d15f5d10c3848582d8206005d",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c6cf80f10e1/crossdeck.phase2.continuity-iteration-1-review.json"
+    },
+    {
+      "contractId": "crossdeck.refit.companion",
+      "iterations": 1,
+      "status": "ACCEPTED",
+      "reviewBlobSha": "7dbd3ac48421ebf34758c6aa652503b2bd300582",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c6cf80f10e1/crossdeck.refit.companion-iteration-1-review.json"
+    },
+    {
+      "contractId": "homeport.transition.reduced-motion",
+      "iterations": 2,
+      "status": "ACCEPTED",
+      "reviewBlobSha": "40799c746e56c49db8578fdc084f9c6e511f0bcc",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c6cf80f10e1/homeport.transition.reduced-motion-iteration-2-review.json"
+    },
+    {
+      "contractId": "homeport.motion.authority",
+      "iterations": 1,
+      "status": "ACCEPTED",
+      "reviewBlobSha": "59338b31ee89d937626f6be0a2d912a6f2d8f1ba",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c6cf80f10e1/homeport.motion.authority-iteration-1-review.json"
+    },
+    {
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "iterations": 1,
+      "status": "ACCEPTED",
+      "reviewBlobSha": "7fded9a94d551bdcc5d6089c574fec0b2c2e3e34",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c6cf80f10e1/homeport.owner-correction.round1.workspaces-iteration-1-review.json"
+    },
+    {
+      "contractId": "homeport.community.public-projection",
+      "iterations": 1,
+      "status": "ACCEPTED",
+      "reviewBlobSha": "766df375d8ef9769483f969733b8ec82c7586565",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/journal-906/c6cf80f10e1/homeport.community.public-projection-iteration-1-review.json"
+    }
+  ]
+}

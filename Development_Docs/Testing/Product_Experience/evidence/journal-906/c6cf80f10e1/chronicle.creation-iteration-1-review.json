@@ -1,0 +1,159 @@
+{
+  "contractId": "chronicle.creation",
+  "packetDigest": "471044fae454a86eff64e8de6bfae1cfe50cf5d20c23754f446e04b67cb3e854",
+  "builderContext": "codex:/root",
+  "reviewerContext": "codex:/root/pr906_review_desktop",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "status": "ACCEPTED",
+  "iterations": 1,
+  "dimensions": {
+    "composition": {
+      "observation": "The Studio uses a centered two-by-two choice grid at desktop and a single-column mobile stack. Selecting manual opens the editor, with Details inline above the passage workspace.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15"
+      ]
+    },
+    "hierarchy": {
+      "observation": "The large Create a Chronicle heading leads into the options. A gold treatment emphasizes the manual action and later the Save details action, with the draft title retained in the editor.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15"
+      ]
+    },
+    "typography": {
+      "observation": "Serif Studio and creation headings establish the page hierarchy. Card titles are heavier than their descriptions, and metadata labels and the Saved at line stay legible at the mobile width.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15"
+      ]
+    },
+    "spacing": {
+      "observation": "The desktop grid keeps distinct gutters and the mobile stack separates each card. Inline Details keeps the primary button beneath its fields with enough clearance above the passage library.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15"
+      ]
+    },
+    "controls": {
+      "observation": "Create Manually opens the blank editor. The tested rename, Apply title, Chronicle Details, Save details and Close actions are inline controls with visually distinct active states.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15"
+      ]
+    },
+    "contrast": {
+      "observation": "Cream heading text and the gold Save details mark the main actions on teal. Disabled alternatives remain readable in the choice grid despite lower emphasis.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15"
+      ]
+    },
+    "consistency": {
+      "observation": "The Studio shell, account control and teal-and-gold visual language remain in the library, chooser and editor. Both browser sizes reach the same choices and real editor.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "states": {
+      "observation": "The recordings show choices, untitled editing, inline Details and a named draft in the Library after Save. The first desktop run starts from an empty Library and makes the newly created card distinct.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "responsive": {
+      "observation": "The desktop editor uses multiple columns. Mobile stacks the authoring content and preserves the Save action and its status in normal and reduced captures. The mobile choice stack naturally requires vertical scrolling.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "keyboard": {
+      "observation": "The trace records Enter on the library entry, manual creation, rename, apply, open Details, save and close. Desktop and mobile captures show visible focus. The journey uses the named Close action, so it offers no direct Escape-path evidence.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-trace",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "focus": {
+      "observation": "The chooser and editor headings receive clear landing outlines. Keyboard movement in the records brings the target into view, and the Library heading gains focus when leaving the editor.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "feedback": {
+      "observation": "The capture reports boundary feedback between 93 and 217 ms across the four contexts. On desktop normal the trace shows the Saved at witness within about 90 ms from Save details activation.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-trace",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-trace",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15"
+      ]
+    },
+    "motion": {
+      "observation": "Normal and reduced playback show a restrained chooser-to-editor transition, then immediate inline authoring and save feedback. Both paths return to the Studio library and repeat the chooser entry.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-recording",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "continuity": {
+      "observation": "The first desktop recording starts with no Chronicles, enters and names Untitled Chronicle, then returns to a single card with the entered title and description. Subsequent captures share a fixture and display multiple identically named drafts, so title alone cannot uniquely identify them.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-recording"
+      ]
+    },
+    "complexity": {
+      "observation": "The initial choice offers one previewable manual workflow, going straight into the editor without a metadata step. Details and save remain in the authoring surface. A return link reaches the Studio Library.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "The Creator reaches the actual draft Passage editor, changes title and short description, saves, and sees the draft card in the authenticated Library. The capture does not traverse every editable metadata field.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18"
+      ]
+    },
+    "fallbacks": {
+      "observation": "The manual blank-editor path is usable without AI, import or a template. The desktop recording shows all three alternative cards as Coming soon and only the manual card as available.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-recording"
+      ]
+    }
+  },
+  "findings": []
+}

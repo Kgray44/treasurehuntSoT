@@ -1,0 +1,191 @@
+{
+  "contractId": "homeport.community.public-projection",
+  "packetDigest": "923d7d85b9e5b8d242ce1d6238dc19208627c6bc662927facbcaf96e6f7a4f98",
+  "builderContext": "codex:/root",
+  "reviewerContext": "codex:/root/pr906_review_reduced",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "status": "ACCEPTED",
+  "iterations": 1,
+  "dimensions": {
+    "composition": {
+      "observation": "The district has a hero, Community navigation, count and public Creator card. The personal projection uses the same frame with a public identity panel and a separate published-work section.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "hierarchy": {
+      "observation": "The title starts at Creators and resolves to the named public Creator after selection. The profile separates Creator Profile from On this Creator’s chart, where a Browse other Creators action appears in the empty-work state.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "typography": {
+      "observation": "The public name wraps across three readable lines on the phone hero. Smaller labels identify the public profile and Creator handle, while the published-work heading clearly leads the empty-state copy.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "spacing": {
+      "observation": "The desktop hero keeps header and directory strip in distinct bands. On phone the card and profile sections stack with visible separation around the count, profile actions and published-work panel.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "controls": {
+      "observation": "The named public Creator card is the direct entry. The profile exposes Follow Creator, Save, Favorite and Block Creator separately, and the visible gold Browse other Creators action returns to the directory.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "contrast": {
+      "observation": "Off-white headings and the gold district-return action stand out on dark teal surfaces. The active Community navigation and focused Creator or return controls remain visually distinguishable in the traces.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "consistency": {
+      "observation": "The dark harbor panels, public district styling and signed-in masthead account marker persist on the district and the detail. The returned Creators page reuses the original count and card arrangement.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4"
+      ]
+    },
+    "states": {
+      "observation": "Initial Creators, public Creator detail and returned Creators are all rendered. The detail exposes an explicit No public work yet substate beneath the public profile, rather than ending at the hero.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "responsive": {
+      "observation": "The desktop directory displays a horizontal navigation strip and a left-aligned card grid area. Phone width wraps the long public name, keeps the chart and empty-state action within one column, and shows the district navigation in a narrow strip.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "keyboard": {
+      "observation": "Both traces log Enter on the exact public Creator link and then on Browse other Creators. The mobile scroll sequence reaches the focusable card and the empty published-work navigation.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "focus": {
+      "observation": "A visible outline lands on the public Creator heading after entry and on Creators after return. While traversing the phone profile, an outline appears on Favorite before Browse other Creators is activated.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "feedback": {
+      "observation": "The district reports 1 entry on this chart and the profile clearly reports No public work yet. Its text distinguishes being publicly visible from having eligible published entries.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "motion": {
+      "observation": "The Chromium recordings show the original directory, the named profile and the directory after return. Short common-frame paints occur during loading, and the settled heading and action remain visible once each route arrives.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-recording",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "continuity": {
+      "observation": "Both viewport journeys return to the original Creators district from the public detail, maintaining the account badge and the same one-entry directory. The separate browser case contains the identity and private-canary assertions.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "complexity": {
+      "observation": "One Creator card leads to one public profile. No public work yet pairs with the direct Browse other Creators action, so the empty profile remains navigable without depending on engagement controls.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "The signed-in Creator can follow the existing listing to a visible public Creator and return. The captured body identifies public profile information and eligible work, with no private personal details visible within the reviewed material.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_READY-0",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-PUBLIC_CREATOR_READABLE-2",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "fallbacks": {
+      "observation": "When there is no eligible work, the profile explains the empty state and exposes Browse other Creators. That control returns to the same directory at desktop and phone width.",
+      "evidenceIds": [
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-CREATOR_DISTRICT_RETURNED-4",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.community.public-projection-community-public-creator-and-parent-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    }
+  },
+  "findings": []
+}

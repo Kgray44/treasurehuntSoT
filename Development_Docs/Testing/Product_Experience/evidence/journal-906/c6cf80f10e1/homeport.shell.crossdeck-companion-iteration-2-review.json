@@ -1,0 +1,193 @@
+{
+  "contractId": "homeport.shell.crossdeck-companion",
+  "packetDigest": "242f709a725d8ef698177c8549eedcd48338a1597c8a1a3ca2fbb87b26ada4c7",
+  "builderContext": "codex:/root",
+  "reviewerContext": "codex:/root/pr906_review_desktop",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "status": "BLOCKED",
+  "iterations": 2,
+  "dimensions": {
+    "composition": {
+      "observation": "The companion holds the released passage in a centered reading panel beneath compact shell controls. The library changes to catalog layout, and the return restores the Journal and its tools.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "hierarchy": {
+      "observation": "The companion leads with the active Voyage and Journal companion headings. The library leads with My Chronicle Library and Active Voyages, and the gold Continue Adventure control becomes distinct on the current card when it scrolls fully into view.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace"
+      ]
+    },
+    "typography": {
+      "observation": "Serif titles separate the library, Voyage, and passage from compact sans-serif navigation. Dark type on parchment keeps the current passage legible across companion and returned Journal.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "spacing": {
+      "observation": "The exit link uses a discrete contextual strip. The companion gives the reading-size buttons space above the passage. At 900 px high, the library card action takes a scroll from initial arrival.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace"
+      ]
+    },
+    "controls": {
+      "observation": "Exit to My Voyages is a distinct contextual link. Continue Adventure is the gold primary card action, visually separate from Continue Solo and Pin to top. The returned reduced Journal shows replay and reading-size controls.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "contrast": {
+      "observation": "Parchment against dark teal separates content from navigation. The gold continuation action and pale keyboard focus outlines are recognizable against the dark library.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+      ]
+    },
+    "consistency": {
+      "observation": "Both motion modes retain the same companion and catalog content. The teal shell, synthetic account witness, Voyage title, and Follow the lanterns stay recognizable across the compact and standard shell layouts.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "states": {
+      "observation": "All three required companion, library and returned states are visible with matched Voyage and account. The normal returned state displays an opening failure banner above the usable spread. Reduced return shows the deliberate page-turn fallback.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "responsive": {
+      "observation": "At the contract's 1440 by 900 desktop size, the compact shell, companion panel, library filters, and Journal tabs fit across the viewport in both modes. The library action is accessible through vertical scrolling.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-RETURNED-7",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+      ]
+    },
+    "keyboard": {
+      "observation": "Both traces show Tab navigation to the contextual exit and the library's Continue Adventure action. Enter on each link performs the destination change in both playback modes.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+      ]
+    },
+    "focus": {
+      "observation": "The trace shows visual focus moving through compact shell and library controls. The library heading acquires a visible outline after the exit, and tabbing to the adventure action brings its card into view.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+      ]
+    },
+    "feedback": {
+      "observation": "The capture receipt reports 141 ms normal and 131 ms reduced for the library outcome. Continue Adventure reaches visible normal Journal tools about 2.65 s after activation, but the normal opening has already failed when they appear.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7"
+      ]
+    },
+    "motion": {
+      "observation": "The normal recording reaches an open readable spread with the ceremony controls still covering it, then replaces those controls with a persistent failure notice. The trace records JOURNAL_READY, failure and phase-timeout. Reduced return reaches the intentional readable fallback without that failure.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-recording",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-recording",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-RETURNED-7"
+      ]
+    },
+    "continuity": {
+      "observation": "The registered account witness matches at the companion, library, and return. The library card keeps the same Voyage title, and both traces verify the exact same-Voyage Journal path with the current passage.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-RETURNED-7",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+      ]
+    },
+    "complexity": {
+      "observation": "Two destination-labeled links complete the tested journey. The immersive companion suppresses the global menu, leaving the contextual library link in its own strip and the standard library exposing its expected navigation and filters.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "The captured authorized Player registers the device, gets the released Journal companion, sees the active adventure in their own library, and reaches the same returning Journal with the replay control present.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-recording",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-recording",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+      ]
+    },
+    "fallbacks": {
+      "observation": "The contextual exit and the reduced-motion readable Journal supply working fallback routes. The normal timeout also recovers to a readable book. Camera-unavailable Guided Lens and disabled companion purposes are outside this captured shell journey.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-RETURNED-7",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-recording"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "pr906-desktop-library-continue-below-fold",
+      "contractId": "homeport.shell.crossdeck-companion",
+      "classification": "MINOR_POLISH",
+      "observation": "At the captured desktop height, the initial Library state places Continue Adventure below the fold despite a single active record. Keyboard focus scrolls the full card and its gold action into view, and the recorded journey completes.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+      ]
+    },
+    {
+      "id": "pr906-desktop-library-return-normal-opening-timeout",
+      "contractId": "homeport.shell.crossdeck-companion",
+      "classification": "PERFORMANCE_OR_SMOOTHNESS_DEFECT",
+      "disposition": "UNRESOLVED",
+      "observation": "On normal return, the already-readable spread remains beneath a settling ceremony before Journal tools appear about 2.65 seconds after Continue Adventure. A persistent opening-could-not-finish notice replaces the ceremony. The normal trace reports failure and phase-timeout. The same Voyage and page turning are available through recovery, but the normal opening does not complete successfully.",
+      "evidenceIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-recording",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-RETURNED-7"
+      ]
+    }
+  ]
+}

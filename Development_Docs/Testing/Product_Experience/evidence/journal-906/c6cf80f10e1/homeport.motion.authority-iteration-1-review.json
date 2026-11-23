@@ -1,0 +1,173 @@
+{
+  "contractId": "homeport.motion.authority",
+  "packetDigest": "4b1e8abf5a024ab584b05a4184bd63f5cf88507b7afe3138a0441c11873de711",
+  "builderContext": "codex:/root",
+  "reviewerContext": "codex:/root/pr906_review_reduced",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "status": "ACCEPTED",
+  "iterations": 1,
+  "dimensions": {
+    "composition": {
+      "observation": "The guarded Showcase opens with a masthead, prominent development-only notice and showcase heading. Desktop presents controls, preview and stage details together. Mobile places these in a scrollable reading order.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4"
+      ]
+    },
+    "hierarchy": {
+      "observation": "Forever Treasure Animation Showcase identifies the destination. Return to harbor sits in the introductory region, and the trailer and rig controls are visible as distinct sections.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4"
+      ]
+    },
+    "typography": {
+      "observation": "The large serif heading distinguishes the harness from the smaller utility labels. On mobile it wraps into two lines above the short synthetic-content explanation.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2"
+      ]
+    },
+    "spacing": {
+      "observation": "The desktop workspace uses columns for preview and controls; at 390 by 844 the same title, links and control groups stack, with space around the segmented motion options.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4"
+      ]
+    },
+    "controls": {
+      "observation": "The traces show the visible Home Test Animations link path, Enter on the reduced button and Return to harbor. The mobile controls show the reduced option accented and outlined after selection.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "contrast": {
+      "observation": "Gold Play selected scene and the reduced choice stand out from dark utility controls. The phone-width motion selector remains legible beside the dimmer idle-state actions.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "consistency": {
+      "observation": "The Home entry and exit maintain the shared night-harbor composition and signed-in chrome. The Showcase carries the same brand marks and uses a separate explicit development notice and utility treatment.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_HOME_READY-0",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_READY-0",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6"
+      ]
+    },
+    "states": {
+      "observation": "The evidence shows signed-in Home, the real Showcase, the motion controls in their idle state with reduced selected, and Home again. No animation scene is manually played by this contracted journey.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_HOME_READY-0",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_READY-0",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6"
+      ]
+    },
+    "responsive": {
+      "observation": "The controls sit alongside the preview on desktop and use a vertically reachable panel on mobile. The phone still shows Return to harbor, guard description and trailer without text collision.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4"
+      ]
+    },
+    "keyboard": {
+      "observation": "Both trace logs record Enter on the named Showcase link, reduced option and Return to harbor. The Showcase itself displays a compact keyboard shortcut legend within its controls.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "focus": {
+      "observation": "The outlined Showcase heading provides visible arrival focus, the reduced control has a strong outline in the phone viewport, and the gateway heading receives visible focus on return.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6"
+      ]
+    },
+    "feedback": {
+      "observation": "The motion setting is visually accent-marked on the phone rig. It also exposes Idle and a zero-percent timeline. On return the regular signed-in gateway resolves, with the reduced motion status shown on mobile.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "motion": {
+      "observation": "The observed journey selects the reduced option in a guarded harness and returns through the real Home gateway. The desktop and mobile recordings retain the Home title and action during return, even when the mobile presentation skip is visible.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-trace",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-recording",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "continuity": {
+      "observation": "The same signed-in identity appears before opening the harness and after Return to harbor. The navigation runs directly from the Home gateway to Showcase and back without detouring through an owner pilot.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_HOME_READY-0",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_READY-0",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "complexity": {
+      "observation": "The lab has more operational controls than the gateway. The guard notice, nearby return control, distinct playable trailer panel, and separate motion selector let this narrow journey avoid the unrelated rig actions.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "The synthetic Creator can open the explicitly enabled Showcase, reach its real playback controls, select reduced, and end at the same Home account. This evidence pertains to the guarded build.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_HOME_READY-0",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_READY-0",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "fallbacks": {
+      "observation": "Both the visible Return to harbor in the hero and development-tools exit navigation are apparent on the narrow Showcase. The captured reduced selection and keyboard Home return apply to the enabled synthetic harness.",
+      "evidenceIds": [
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6",
+        "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    }
+  },
+  "findings": []
+}

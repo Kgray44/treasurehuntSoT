@@ -1,0 +1,195 @@
+{
+  "contractId": "homeport.transition.reduced-motion",
+  "packetDigest": "853e354890989f46964396ac5459e60298e1a3e09c5cb9e5cedf89217a4c5d07",
+  "builderContext": "codex:/root",
+  "reviewerContext": "codex:/root/pr906_review_reduced",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "status": "ACCEPTED",
+  "iterations": 2,
+  "dimensions": {
+    "composition": {
+      "observation": "Desktop keeps the account sidebar beside the editor under a full-width Personal Information hero. The phone viewport compresses the sidebar into a disclosure and places the same editor beneath it.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_EDITOR_READY-0"
+      ]
+    },
+    "hierarchy": {
+      "observation": "Heading, editable name, gold save action and verified-email change form remain ordered by task. The returned Home title and Explore Chronicles remain visible together from the first rendered Home frame.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "typography": {
+      "observation": "Serif titles orient the page and the smaller sans-serif labels stay differentiated. The narrow primary email wraps naturally and the draft remains legible within the outlined input.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2"
+      ]
+    },
+    "spacing": {
+      "observation": "The sidebar and editor have independent gutters on desktop. The narrow layout expands around Unsaved changes while preserving rows for Return to Home and the sections disclosure.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2"
+      ]
+    },
+    "controls": {
+      "observation": "Save display name stays grouped with its field and Return to Home stays in the hero. On arrival, Explore Chronicles remains visible throughout the scenic introduction, including while the skip control appears on mobile.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "contrast": {
+      "observation": "Light labels and focus outlines stand out against the dark panels. The gold gateway action and its title stay legible while the darker scenic layer changes in the live return.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-recording",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "consistency": {
+      "observation": "The common masthead, harbor palette and signed-in account marker persist from Personal Information to the Home gateway and align with the shared frame references.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_HOME_RETURNED-4"
+      ]
+    },
+    "states": {
+      "observation": "The captures show the initial fixture name, the changed name and Unsaved changes, then the signed-in gateway. In the new traces there is no intervening hidden-title or hidden-action state after Home first paints.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "responsive": {
+      "observation": "At 1440 by 900 the editor and sections are adjacent. At 390 by 844 the nested focus ring and editable name fit the single-column editor while Home retains its title and action from first paint.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_HOME_RETURNED-4"
+      ]
+    },
+    "keyboard": {
+      "observation": "Both traces activate the named Return to Home link with Enter. The visible focus indication moves from the link to the destination heading, while Explore Chronicles remains available in the following frames.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "focus": {
+      "observation": "The edited field has a prominent focus outline, followed by visible focus on Return to Home before Enter and then on the Home heading. Both recordings use emulated reduced motion throughout. Separate browser cases contain the live bidirectional media-change and field-focus assertions.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "feedback": {
+      "observation": "Unsaved changes is absent in the initial editor states and present beside Return to Home after editing. The changed text remains inside Display name and Save display name is a separate action.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2"
+      ]
+    },
+    "motion": {
+      "observation": "First Home paint through settling, desktop frames 45 through 55 and mobile 31 through 45, retains the title and primary action. Playback still changes the scenic layer and briefly shows a mobile skip button. The source-bound recordings corroborate continuous visibility through the previously affected interval.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-recording",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "continuity": {
+      "observation": "The edited local draft remains visible while returning and the signed-in gateway is the same destination on both viewports. Its role options stay visually present during the handoff and the signed-in labels resolve as the gateway settles.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "complexity": {
+      "observation": "The account task remains a single field, local unsaved signal and ordinary exit. The transient presentation controls on Home coexist with the main call to action so the Creator can continue directly.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "The synthetic Creator edits the local display name, sees unsaved status, and reaches the signed-in gateway. The desktop settled Home shows a Creator continuation card alongside signed-in Player and Captain entries.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_HOME_RETURNED-4"
+      ]
+    },
+    "fallbacks": {
+      "observation": "The standard account task and keyboard exit remain available in reduced Chromium. Mobile Home shows an opening-presentation skip, while its title, Explore Chronicles and first role card remain independently readable.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-recording",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "HP-REDUCED-HOME-RETURN-01",
+      "classification": "ACCESSIBILITY_DEFECT",
+      "disposition": "RESOLVED",
+      "observation": "Iteration 1 reproduced the Home heading and primary actions painting, disappearing during automatic presentation, and returning in reduced motion on desktop and mobile. The repair was re-reviewed on the same account edit and Enter-based Home return in fresh source-bound Chromium captures.",
+      "evidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_HOME_RETURNED-4"
+      ],
+      "repairEvidenceIds": [
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-trace",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-recording",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-recording",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+        "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_HOME_RETURNED-4"
+      ],
+      "resolution": "Desktop Home frames 45–55 and mobile frames 31–45 keep Choose your role in Voyagewright, Explore Chronicles and visible role content present from first Home paint through presentation settlement. The recordings corroborate the same interval. The reduced first-arrival and session-reentry source paths preserve these task targets while scenic changes continue.",
+      "contractId": "homeport.transition.reduced-motion"
+    }
+  ]
+}

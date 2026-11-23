@@ -1,0 +1,200 @@
+{
+  "contractId": "crossdeck.phase2.continuity",
+  "packetDigest": "e99d8339136914949bdfda4e10361566417c2c050fa956ebab156fcc6b237e9e",
+  "builderContext": "codex:/root",
+  "reviewerContext": "codex:/root/pr906_review_mobile",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "status": "ACCEPTED",
+  "iterations": 1,
+  "dimensions": {
+    "composition": {
+      "observation": "On desktop the connection dialog sits centrally over a visibly retained parchment spread. On the handheld it becomes a narrow stacked panel, while the return restores the stable parchment and separate Journal tools and objective strip.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-RETURNED-5",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5"
+      ]
+    },
+    "hierarchy": {
+      "observation": "Bring your phone aboard and the current Voyage title precede the QR and account instruction. The prominent QR carries the primary join instruction and Use a code instead offers an explicit alternate path. The unchanged Follow the lanterns heading anchors the return.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-RETURNED-5",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5"
+      ]
+    },
+    "typography": {
+      "observation": "The pairing dialog uses a display heading and short readable lines for the account prompt. Mobile wraps the title without cutting words. The Journal uses a distinct serif passage heading and body against parchment; condensed utility labels occupy the darker chrome.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-RETURNED-5"
+      ]
+    },
+    "spacing": {
+      "observation": "The modal gives the QR a separate block from its directions and device list. The mobile list extends below the first screen, where Continue the Chronicle remains reachable by scrolling. The returned page's heading remains separated from the fixed Journal tools.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5"
+      ]
+    },
+    "controls": {
+      "observation": "Connect another device opens the in-place dialog, which provides QR/code guidance and Continue the Chronicle. Both activation steps reach their destinations across viewport and motion settings. The paired phone receives the offered Chart through its visible Receive action.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-trace",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-09-receive-offer.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-10-chart-received.png"
+      ]
+    },
+    "contrast": {
+      "observation": "The black-on-white QR stands out against the dark dialog. Ivory and gold outlines identify the focus target and which control regained focus after dismissal. Brown passage text remains clear on parchment. Capture reports no serious axe issues for the recorded states.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-RETURNED-5"
+      ]
+    },
+    "consistency": {
+      "observation": "The Voyage name and parchment remain recognizable through modal opening and dismissal, and the same style holds across viewport and motion settings. Paired send and receive render the same nautical visual language, with distinct states for the sender and receiver.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-RETURNED-5",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-09-transfer-pending.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-10-chart-received.png"
+      ]
+    },
+    "states": {
+      "observation": "The traces include preparation before the QR appears, the ready dialog, and restored Journal. Paired cases show pending delivery, received Chart and sender acknowledgment. The adverse case refuses an expired code and removes the personal surface after revocation.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-09-transfer-pending.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-10-chart-received.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-10-delivery-acknowledged.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-02-expired-code-refused.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-11-current-surface-revoked.png"
+      ]
+    },
+    "responsive": {
+      "observation": "Desktop retains a spread behind the dialog; handheld presentation stacks the QR and guidance and scrolls vertically. The 820-pixel paired Journal keeps a visible passage and objective strip. The 844-by-390 landscape companion frame shows its Chart heading only within the first viewport.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-14-medium-chronicle.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-15-phone-landscape.png",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5"
+      ]
+    },
+    "keyboard": {
+      "observation": "Trace events use Enter to activate Connect another device and Continue the Chronicle on desktop and mobile in both modes. They reach the dialog and return without requiring pointer input for the contextual navigation.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "focus": {
+      "observation": "A clear ring surrounds the modal Close target on the handheld. On return a ring is visibly restored to Connect another device, preserving a reliable position in the Journal. The four isolated journey captures report passed focus checks.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-RETURNED-5",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace"
+      ]
+    },
+    "feedback": {
+      "observation": "The isolated action to visible connection guidance takes 319–594 ms across four contexts against the 5,000 ms contract boundary. Paired send-to-offer times are 479 and 503 ms and acceptance-to-acknowledgment is 439 and 456 ms, with visible pending and acknowledgment states.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-09-transfer-pending.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-10-delivery-acknowledged.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-10-chart-received.png"
+      ]
+    },
+    "motion": {
+      "observation": "Both motion settings reach the QR dialog and dismiss it to the same passage. Normal mobile keeps readable fallback after its opening warning; reduced motion shows the expected readable-page fallback. Paired recordings show actual Chart receipt and continued Voyage in both settings.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-recording",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-recording",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-recording",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-recording",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-recording-page@ac90b12187fa70e1826b1371f11f9e18.webm",
+        "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-recording-page@a4389257234df8aacd26402b578e744f.webm"
+      ]
+    },
+    "continuity": {
+      "observation": "The return retains Follow the lanterns on the exact Journal route. The run reports equal Voyage and edition witnesses at entry, connection and return. In each paired case the two contexts have distinct surface IDs and share the same Voyage and edition, with visible post-return progression in both positive cases.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-RETURNED-5",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-16-voyage-continued.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-16-voyage-continued.png"
+      ]
+    },
+    "complexity": {
+      "observation": "The Player can open connection guidance and resume the Chronicle with two actions. Pairing guidance and optional manual entry are contained inside the dialog. Paired handoff uses an explicit offer and the adverse case preserves the sender passage after decline.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-09-receive-offer.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-screenshot-06-declined-transfer.png"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "The context dialog tells the authorized Player to join with the same account. The paired captures show a phone companion receiving a released Chart and a sender acknowledgment. The adverse crew context shows a read-only shared view; the return switches back to personal passage content.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-10-chart-received.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-10-delivery-acknowledged.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-09-restricted-crew-chart-received.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-10-authorized-personal-return.png"
+      ]
+    },
+    "fallbacks": {
+      "observation": "The dialog offers manual code entry. Expired pairing displays recovery guidance, the offline phone keeps released Chart content visible, and reconnect restores in-sync status. Revocation clears the personal content at the measured refresh. Gesture and physical scanning ergonomics were outside this capture.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-02-expired-code-refused.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-11-offline.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-12-reconnected.png",
+        "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-11-current-surface-revoked.png"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "PR906-CROSSDECK-CONTINUITY-MOBILE-OPENING-NOTICE",
+      "classification": "MINOR_POLISH",
+      "contractId": "crossdeck.phase2.continuity",
+      "observation": "Normal mobile shows an optional opening failure notice before and after the connection task. The reading and connection controls remain usable, and the same passage remains legible when the dialog closes.",
+      "evidenceIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-recording"
+      ],
+      "disposition": "OPEN"
+    }
+  ]
+}

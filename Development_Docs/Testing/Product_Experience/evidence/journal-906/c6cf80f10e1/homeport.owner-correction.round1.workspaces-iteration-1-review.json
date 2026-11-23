@@ -1,0 +1,217 @@
+{
+  "contractId": "homeport.owner-correction.round1.workspaces",
+  "packetDigest": "cf26ed15bab3edf6003d06d31d040a5e016abb7fd7e635b431b3f64247143bc0",
+  "builderContext": "codex:/root",
+  "reviewerContext": "codex:/root/pr906_review_reduced",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "status": "ACCEPTED",
+  "iterations": 1,
+  "dimensions": {
+    "composition": {
+      "observation": "All Workspaces groups the three role cards beneath a common account introduction. The creation page places a two-column choice matrix beneath its title on desktop and a single-card column on the phone.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "hierarchy": {
+      "observation": "The workspace heading introduces entry actions before editing. Within Studio, Create Chronicle leads to a separate four-choice page where Create Manually is first and the other intentions carry Coming soon.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "typography": {
+      "observation": "Distinct serif headings identify the Studio, Captain’s Console and My Chronicle Library. The phone-width Player title wraps onto two lines and separates from the explanatory text and empty-library action.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
+      ]
+    },
+    "spacing": {
+      "observation": "Workspace cards have distinct padded sections and action rows. At narrow width the Creator entry and lower intentions move below the initial viewport and stay reachable in the vertical flow.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "controls": {
+      "observation": "Enter Creator, Enter Captain and Enter Player are available through their cards. Create Chronicle opens the intention preview, and Your Chronicles and the account menu’s All Workspaces route provide explicit exits.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "contrast": {
+      "observation": "Gold workspace-entry buttons and the manual start label differentiate the available actions. The lower-intent cards still show readable labels and Coming soon against dark teal surfaces in the mobile recording and trace.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-recording",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "consistency": {
+      "observation": "The masthead and recognizable synthetic account marker persist through the workspace changes. Active workspace pages use different accents, with the same headings, action styles, and account-menu return pattern.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_RETURNED-10",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_RETURNED-10",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "states": {
+      "observation": "The capture covers entry, empty Creator library, all four intentions, Creator return, empty Captain Voyages, Captain’s published tab, empty Player library and the final All Workspaces return.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_RETURNED-10",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "responsive": {
+      "observation": "Desktop displays the three workspace cards together. On phone the cards stack and scroll to Creator; the two-column intention matrix becomes a single column; and Captain’s Published Chronicles action fits its own row.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "keyboard": {
+      "observation": "The traces show Enter on each workspace entry, Create Chronicle, Your Chronicles and All Workspaces. They follow the actual account dropdown and Published Chronicles control using the named focusable actions on both viewport sizes.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "focus": {
+      "observation": "Focus rings are visible on the workspace menu actions and on arriving at Studio, Create a Chronicle, Captain’s Console, My Chronicle Library and All Workspaces. On phone the account menu scrolls its focused All Workspaces entry into view.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "feedback": {
+      "observation": "Creator and Player clearly report No Chronicles yet, while Captain reports No Captain Voyages yet. The Published Chronicles tab visibly selects before the return, and the three inactive creation intentions carry explicit Coming soon labels.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "motion": {
+      "observation": "The reduced Chromium recordings preserve the content order across route changes and settle each destination into a visible heading and body. Some workspace switches briefly show the common frame before the next view resolves.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-recording",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "continuity": {
+      "observation": "The same synthetic account opens Creator, returns from the intentions to the library, then reaches Captain, Player and All Workspaces. The capture exits the intention screen without initiating manual creation. Separate cases hold account-ID and no-creation assertions.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_RETURNED-10",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_RETURNED-10",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "complexity": {
+      "observation": "The account hub consolidates three capabilities under one navigation route, the creation preview keeps the four intentions on one page, and the repeated account-menu return provides a consistent way to switch workspaces.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "The signed-in synthetic account reaches the three intended capabilities. Captain’s published listing is visually distinct from Creator’s authoring screen, and Player opens its own My Chronicle Library. Foreign private-content rejection belongs to the separate browser cases.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "fallbacks": {
+      "observation": "Each empty library offers an appropriate next action. The creation preview has an immediately visible Your Chronicles return on narrow screens and three future choices communicate Coming soon.",
+      "evidenceIds": [
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
+        "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    }
+  },
+  "findings": []
+}

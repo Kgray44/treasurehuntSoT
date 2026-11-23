@@ -1,0 +1,181 @@
+{
+  "contractId": "crossdeck.refit.published-lens",
+  "packetDigest": "6225fb9d4ccd976b4a0a6b39c09281798fcd4fff1ccee4de814aa4d06c8cb35d0",
+  "builderContext": "codex:/root",
+  "reviewerContext": "codex:/root/pr906_review_desktop",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "status": "BLOCKED",
+  "iterations": 1,
+  "dimensions": {
+    "composition": {
+      "observation": "A centered dark dialog separates the parchment clue from the dimmed Journal. Mobile uses a nearly full-height bounded sheet while keeping the clue and close button in the initial view.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3"
+      ]
+    },
+    "hierarchy": {
+      "observation": "The dialog title and same Voyage context precede an availability line and the Guided View. The Captain’s note is the high-contrast task surface containing the clue and its actions.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+      ]
+    },
+    "typography": {
+      "observation": "The narrative title and clue use serif type, separated from the sans-serif control labels and availability explanation. The northern-light clue stays readable on the narrow capture.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6"
+      ]
+    },
+    "spacing": {
+      "observation": "The desktop panel gives the clue and action strip a separate block. Mobile wraps the third action to a second row and keeps the inspection acknowledgement inside the note card.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6"
+      ]
+    },
+    "controls": {
+      "observation": "The Journal Lens button opens the dialog. Inspect changes the clue card’s visible state. The top-right close control returns to the same Journal and its original Lens control.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-recording"
+      ]
+    },
+    "contrast": {
+      "observation": "Dark text on parchment makes the released clue stand out. A gold outline marks the Close button and returned Lens opener against their teal controls.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-RETURNED-8"
+      ]
+    },
+    "consistency": {
+      "observation": "The same clue wording, Guided View structure and inspection response persist across both sizes and motion modes. The normal Journal view consistently carries an opening failure notice.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-RETURNED-8",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8"
+      ]
+    },
+    "states": {
+      "observation": "The media show a Journal, its released clue, an inspection response, and the same Journal after close in all four runs. Both normal Journal states report phase-timeout even though the content is readable.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace"
+      ]
+    },
+    "responsive": {
+      "observation": "The desktop modal retains context around it while the compact mobile Lens label and tall modal preserve clue, Inspect and close. A mobile footer extends beyond this initial screenshot while the task actions remain visible.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3"
+      ]
+    },
+    "keyboard": {
+      "observation": "The traces show Enter on Open Chronicle Lens, Inspect and Close on both sizes. The capture receipts verify keyboard traversal and visible focus across the tested steps.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "focus": {
+      "observation": "Opening the dialog places a clear outline on the top-right close button. After closing, the same outline returns to the Journal's Lens control on both desktop and mobile.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-RETURNED-8",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8"
+      ]
+    },
+    "feedback": {
+      "observation": "The four runs report worst-boundary feedback of 138 to 293 ms. Desktop normal shows the changed inspection message in about 75 ms after keyboard activation. Those successful Lens timings are separate from the Journal opening timeout.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "motion": {
+      "observation": "The Lens itself opens and closes cleanly in normal and reduced recordings. During Journal preparation, both normal traces progress from BOOK_SETTLING to JOURNAL_READY with failure and phase-timeout, displaying the fallback notice even after Lens close. Reduced mode reaches the intended readable book.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-recording",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-recording",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-recording"
+      ]
+    },
+    "continuity": {
+      "observation": "The clue and matching Voyage name stay visible through the dialog. Exact Journey traces and receipt verify matching Voyage and edition witnesses before, at outcomes and after return. The recordings show no cross-device handoff in this single-context consumer journey.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "complexity": {
+      "observation": "The journey adds three distinct controls to the Journal task: open Lens, Inspect, and Close. The unavailable camera option explains why it is disabled and leaves Guided View immediately usable.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "An authorized Player reads the real published clue, sees a changed inspection state on The Captain’s note, and returns to the same Journal. The evidence does not cover Creator-side publication, native camera operation or a paired-device handoff.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-recording",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-recording",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "fallbacks": {
+      "observation": "Browser world tracking is explicitly unavailable in these captures. The full released northern-light clue, Inspect response, and contextual close remain usable with Guided View in both desktop and mobile. Unavailable companion purpose states are outside this Lens capture.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-recording"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "pr906-published-lens-journal-normal-opening-timeout",
+      "contractId": "crossdeck.refit.published-lens",
+      "classification": "PERFORMANCE_OR_SMOOTHNESS_DEFECT",
+      "disposition": "UNRESOLVED",
+      "observation": "Both normal-mode viewports enter BOOK_SETTLING and end in JOURNAL_READY with opening failure and phase-timeout. The opening-could-not-finish notice is visible before Lens and remains on return. The camera-free clue, Inspect, close and same-Voyage continuity all work. The persistent unexpected fallback signals that the normal Journal opening did not complete.",
+      "evidenceIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-RETURNED-8",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-recording"
+      ]
+    }
+  ]
+}
