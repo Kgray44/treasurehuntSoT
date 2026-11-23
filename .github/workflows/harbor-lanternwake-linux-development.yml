@@ -1,5 +1,5 @@
-name: Lanternwake isolated Linux benchmark
-run-name: Prepare bounded independent review media from the exact capture
+name: Sounding Line browser dependency transport
+run-name: Qualify the standard Ubuntu archive for the required browser dependencies
 
 on:
   push:
@@ -9,99 +9,80 @@ on:
       - .github/workflows/harbor-lanternwake-linux-development.yml
 
 permissions:
-  actions: read
   contents: read
 
 jobs:
-  review-media:
+  browser-dependency-archive:
+    name: Verify unchanged Playwright package coverage through the Ubuntu archive
     runs-on: ubuntu-24.04
-    timeout-minutes: 16
+    timeout-minutes: 22
     env:
-      CAPTURE_RUN: "45181002598"
-      CAPTURE_ID: "14822994890"
-      CAPTURE_DIGEST: sha256:6e1fa2c42858bc362a7919f7b5c15cdf56eacc43777a22965d14df40dec9e009
-      SOURCE_SHA: f8873659a79379c17c86346bf2232428efe690fa
-      SOURCE_DIGEST: d9f836c996e7f6d6eb3aa7f9b74c39c63f25aeb3919f497fac30cd8b2dd15c64
-      CONTRACT_DIGEST: 3c02f34674640c190d4c0e168882b42171624389887c4a6a2668c9bd4ae0755c
+      CANDIDATE_SHA: f8873659a79379c17c86346bf2232428efe690fa
       BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
+      FOREVER_VALIDATION_SOURCE_SHA: f8873659a79379c17c86346bf2232428efe690fa
+      NEXT_TELEMETRY_DISABLED: "1"
     steps:
-      - name: Verify and retrieve the immutable capture
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - uses: actions/checkout@v4
+        with:
+          ref: f8873659a79379c17c86346bf2232428efe690fa
+          fetch-depth: 16
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
+            /scripts/
+            /src/
+            /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Install locked JavaScript dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Use the Ubuntu HTTPS archive on the ephemeral runner
         run: |
-          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$CAPTURE_ID" |
-            jq -e --arg digest "$CAPTURE_DIGEST" --arg run "$CAPTURE_RUN"               '.digest==$digest and (.workflow_run.id|tostring)==$run and (.expired|not) and .size_in_bytes<3000000000'
-          gh run download "$CAPTURE_RUN" --repo "$GITHUB_REPOSITORY"             --name harbor-shared-source-bound-experience --dir "$RUNNER_TEMP/original-experience"
-      - name: Hash-check the actual media and retain source-bound review packets
+          source=/etc/apt/sources.list.d/ubuntu.sources
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          test "$(git rev-parse HEAD:package-lock.json)" = "7e94051457947e82cf639d3162a7713d692bbce2"
+          grep -E '^(URIs|Suites|Signed-By):' "$source"
+          sudo sed -E -i 's|mirror[+]file:/etc/apt/apt-mirrors[.]txt|https://archive.ubuntu.com/ubuntu/|g; s|http://[^[:space:]]*[.]ec2[.]archive[.]ubuntu[.]com/ubuntu/?|https://archive.ubuntu.com/ubuntu/|g' "$source"
+          grep -E '^URIs:.*https://archive[.]ubuntu[.]com/ubuntu/' "$source"
+          grep -E '^(URIs|Suites|Signed-By):' "$source"
+      - name: Install full browser compatibility coverage
+        timeout-minutes: 18
+        run: npx --no-install playwright install --with-deps chromium webkit
+      - name: Launch both required engines with the locked Playwright version
         run: |
+          npx --no-install playwright --version
           node --input-type=module <<'EOF'
-          import { readFile, writeFile, mkdir, copyFile, readdir, lstat } from "node:fs/promises";
-          import { createHash } from "node:crypto";
-          import { join, dirname } from "node:path";
-          const original = join(process.env.RUNNER_TEMP, "original-experience");
-          const target = join(process.env.RUNNER_TEMP, "review-media");
-          const receipt = JSON.parse(await readFile(join(original, "development-capture-receipt.json"), "utf8"));
-          const capture = JSON.parse(await readFile(join(original, "capture.json"), "utf8"));
-          if (receipt.candidate !== process.env.SOURCE_SHA || receipt.status !== "PASS" ||
-              capture.baseSha !== process.env.BASE_SHA || capture.sourceDigest !== process.env.SOURCE_DIGEST ||
-              capture.contractDigest !== process.env.CONTRACT_DIGEST || receipt.contracts.length !== 31)
-            throw new Error("Capture identity does not match the candidate");
-          const prefix = "artifacts/sounding-line/harbor-shared-experience/";
-          const pairedArtifactIds = new Set(capture.pairedEvidence.cases.flatMap(item => item.artifactIds));
-          const pairedTracePaths = new Set(capture.artifacts.filter(artifact => artifact.type === "trace" &&
-            pairedArtifactIds.has(artifact.id)).map(artifact => artifact.path));
-          if (pairedTracePaths.size !== 6) throw new Error("Expected both paired traces for each case");
-          const planned = new Map();
-          for (const artifact of capture.artifacts) {
-            if (!artifact.path.startsWith(prefix)) throw new Error("Unexpected evidence path");
-            if (!["recording", "screenshot"].includes(artifact.type) && !pairedTracePaths.has(artifact.path)) continue;
-            const file = artifact.path.slice(prefix.length);
-            if (!/[.](webm|png|zip)$/u.test(file) || file.split("/").some(part => !part || part === "." || part === "..") ||
-                file.includes("\\")) throw new Error("Media path is invalid");
-            if (planned.has(file) && planned.get(file) !== artifact.sha256) throw new Error("Conflicting media identity");
-            planned.set(file, artifact.sha256);
-          }
-          let total = 0;
-          for (const [file, sha256] of planned) {
-            const source = join(original, file);
-            const stat = await lstat(source);
-            if (!stat.isFile() || stat.size > 16 * 1024 * 1024) throw new Error("Unbounded media item");
-            total += stat.size;
-            if (total > 400 * 1024 * 1024) throw new Error("Review media exceeds its transport bound");
-            if (createHash("sha256").update(await readFile(source)).digest("hex") !== sha256)
-              throw new Error("Evidence hash mismatch: " + file);
-            const destination = join(target, file);
-            await mkdir(dirname(destination), { recursive: true });
-            await copyFile(source, destination);
-          }
-          async function copyJson(directory = "") {
-            for (const entry of await readdir(join(original, directory), { withFileTypes: true })) {
-              const relative = join(directory, entry.name);
-              if (entry.isDirectory()) await copyJson(relative);
-              if (!entry.isFile() || !entry.name.endsWith(".json")) continue;
-              const file = join(original, relative);
-              const stat = await lstat(file);
-              total += stat.size;
-              if (total > 410 * 1024 * 1024 || stat.size > 8 * 1024 * 1024) throw new Error("Unbounded review metadata");
-              const destination = join(target, relative);
-              await mkdir(dirname(destination), { recursive: true });
-              await copyFile(file, destination);
+          import { chromium, webkit } from "playwright";
+          for (const engine of [chromium, webkit]) {
+            const browser = await engine.launch();
+            try {
+              const page = await browser.newPage();
+              await page.setContent("<h1>Browser dependency proof</h1>");
+              if (await page.getByRole("heading", { name: "Browser dependency proof" }).count() !== 1)
+                throw new Error("Installed browser did not render the probe");
+              console.log(engine.name(), browser.version(), "PASS");
+            } finally {
+              await browser.close();
             }
           }
-          await copyJson();
-          const output = {
-            captureArtifactId: Number(process.env.CAPTURE_ID), archiveDigest: process.env.CAPTURE_DIGEST,
-            baseSha: capture.baseSha, candidateSha: receipt.candidate, sourceDigest: capture.sourceDigest,
-            contractDigest: capture.contractDigest, contracts: receipt.contracts, journeys: capture.journeys.length,
-            reviewMediaFiles: planned.size, bytes: total,
-          };
-          await writeFile(join(target, "media-transport.json"), JSON.stringify(output, null, 2) + "\n");
-          console.log(JSON.stringify(output));
           EOF
-      - name: Retain screenshots and recordings for independent review
-        uses: actions/upload-artifact@v4
-        with:
-          name: harbor-f887-source-bound-review-media
-          path: ${{ runner.temp }}/review-media/**
-          if-no-files-found: error
-          retention-days: 15
