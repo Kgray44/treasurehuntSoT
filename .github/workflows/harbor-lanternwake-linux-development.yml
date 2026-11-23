@@ -1,95 +1,37 @@
-name: Lanternwake isolated Linux benchmark
-run-name: Recorded Journal comparison with a single book perspective layer
-
+name: Ordinary verification scope for canonical Journal candidate
+run-name: Identify selected browser specs for the active Journal candidate
 on:
   push:
     branches:
       - codex/lanternwake-focused-development-cf6b1d6bbae4
     paths:
       - .github/workflows/harbor-lanternwake-linux-development.yml
-
 permissions:
   contents: read
-
 jobs:
-  benchmark:
-    name: Recorded Journal perspective (${{ matrix.projection }})
+  ordinary-plan:
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        projection: [control, one-camera]
-    timeout-minutes: 22
-    env:
-      JOURNAL_COMPARE_BROWSER: shell
-      JOURNAL_COMPARE_CAPTURE: record
-      CANDIDATE_SHA: ${{ github.sha }}
-      BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
-      FOREVER_VALIDATION_SOURCE_SHA: ${{ github.sha }}
-      NEXT_TELEMETRY_DISABLED: "1"
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.sha }}
-          fetch-depth: 2
+          ref: e6d748c3d87548d391577021d8b533c2cd8fcb2d
+          fetch-depth: 8
           persist-credentials: false
-          sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /*
-            !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
-            /scripts/
-            /src/
-            /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
+            scripts
+            testing
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
+      - name: Print the source-only candidate ordinary plan
+        env:
+          BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
+          CANDIDATE_SHA: e6d748c3d87548d391577021d8b533c2cd8fcb2d
         run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium
-      - name: Remove only the redundant outer perspective while retaining the book camera
-        if: matrix.projection == 'one-camera'
-        run: |
-          cat >> src/components/player/journal/ChronicleJournalSession.module.css <<'EOF'
-
-          @media (min-width: 961px) {
-            .journalShell[data-motion-level="full"] :global(.journal-table) {
-              perspective: none;
-            }
-          }
-          EOF
-      - name: Run unchanged recorded canonical workload and performance budgets
-        run: |
+          git fetch --no-tags --filter=blob:none --depth=4 origin refs/heads/main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
-          EOF
-      - name: Retain sanitized performance metrics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: journal-single-perspective-${{ matrix.projection }}
-          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
-          if-no-files-found: ignore
-          retention-days: 30
+          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
+          node scripts/sounding-line-v3/cli.mjs plan --base "$BASE_SHA" --head "$CANDIDATE_SHA" --json |
+            jq -c '{base,tree,category,projects,jobs:[.jobs[]|{id,kind,files:.files}],notes}'
