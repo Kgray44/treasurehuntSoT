@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Verify mobile dossier repair and recapture the exact Native Scene candidate
+run-name: Capture the verified Native Scene candidate after the dossier repair
 
 on:
   push:
@@ -12,70 +12,7 @@ permissions:
   contents: read
 
 jobs:
-  mobile-dossier:
-    name: Mobile account dossier ID and keyboard Copy
-    runs-on: ubuntu-24.04
-    timeout-minutes: 38
-    env:
-      CANDIDATE_SHA: 44b286e6a1bffe460c77d5a9fb7929718aa9025e
-      BASE_SHA: 5be59f18590f2c48a4a7672a14a25dee5bf0e82d
-      FOREVER_VALIDATION_SOURCE_SHA: 44b286e6a1bffe460c77d5a9fb7929718aa9025e
-      NEXT_TELEMETRY_DISABLED: "1"
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: 44b286e6a1bffe460c77d5a9fb7929718aa9025e
-          fetch-depth: 2
-          persist-credentials: false
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /*
-            !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
-            /scripts/
-            /src/
-            /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
-        run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install chromium
-      - name: Check tracked source formatting
-        run: SL_JOB=format node scripts/sounding-line-v3/cli.mjs ci-job --base "$BASE_SHA"
-      - name: Verify visible account ID and keyboard clipboard readback in Chromium
-        run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "43389ce9a34c8d5d1ae1c281e384b8a5d7a8eca1"
-          test "$(git rev-parse HEAD:native)" = "6795af566a32e2196088551de5b5c89840cc589f"
-          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/admiralty-dossier-mobile.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
-          EOF
-
   benchmark:
-    needs: [mobile-dossier, verify-clipped-control]
     name: Source-bound Native Scene experience capture
     runs-on: ubuntu-24.04
     timeout-minutes: 75
@@ -172,72 +109,4 @@ jobs:
           path: artifacts/sounding-line/harbor-shared-experience/**
           if-no-files-found: ignore
           retention-days: 30
-
-  verify-clipped-control:
-    name: Reproduce clipped mobile Copy before the layout repair
-    runs-on: ubuntu-24.04
-    timeout-minutes: 38
-    env:
-      CANDIDATE_SHA: 97e96cf4a086f115ad2c935207adf60ec4b1738c
-      BASE_SHA: 5be59f18590f2c48a4a7672a14a25dee5bf0e82d
-      FOREVER_VALIDATION_SOURCE_SHA: 97e96cf4a086f115ad2c935207adf60ec4b1738c
-      NEXT_TELEMETRY_DISABLED: "1"
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: 97e96cf4a086f115ad2c935207adf60ec4b1738c
-          fetch-depth: 2
-          persist-credentials: false
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /*
-            !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
-            /scripts/
-            /src/
-            /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
-        run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install chromium
-      - name: Verify visible account ID and keyboard clipboard readback in Chromium
-        run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "c38ad697a5b18bcab41cb633f236309ebe5cdf24"
-          test "$(git rev-parse HEAD:native)" = "6795af566a32e2196088551de5b5c89840cc589f"
-          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          if node --input-type=module <<'EOF' > "$RUNNER_TEMP/mobile-dossier-control.log" 2>&1
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/admiralty-dossier-mobile.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
-          EOF
-          then
-            cat "$RUNNER_TEMP/mobile-dossier-control.log"
-            exit 1
-          fi
-          cat "$RUNNER_TEMP/mobile-dossier-control.log"
-          test "$(rg -c 'Locator:.*Copy account ID' "$RUNNER_TEMP/mobile-dossier-control.log")" -eq 2
-          test "$(rg -c 'Received: viewport ratio' "$RUNNER_TEMP/mobile-dossier-control.log")" -eq 2
-          printf '%s\n' 'ACCOUNT_DOSSIER_CLIPPING_REPRODUCED_AFTER_SCROLL width=320,390'
 
