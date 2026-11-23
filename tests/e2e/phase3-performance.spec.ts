@@ -598,7 +598,7 @@ async function measuredFullOpening(page: Page, control: Locator) {
 phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
 
 phase3Test(
-  "compare complete desktop Journal motion with sequenced paint",
+  "measure nested animation and clip cost in the Chronicle Journal",
   async ({ page, phase3, browserName }) => {
     expect(browserName).toBe("chromium");
     expect(process.env.FOREVER_VALIDATION_ISOLATION, "Production performance must use isolated validation.").toBe("1");
@@ -630,15 +630,20 @@ phase3Test(
 
 
 
+
     const scope = '.chronicle-journal-shell[data-journal-phase="BOOK_SETTLING"]';
-    const sequential = [
-      scope + " .closed-book { visibility: hidden; transition: opacity 380ms ease, transform 395ms cubic-bezier(.16,.78,.2,1), visibility 0s linear 400ms; }",
-      scope + " .open-page-stage { transition-delay: 400ms, 400ms, 400ms; }",
-      scope + " :is(.book-shadow, .rear-book-cover, .page-stack, .book-binding) { transition-delay: 400ms; }",
-    ].join("\n");
-    const measured = [];
-    for (const treatment of [false, true, true, false]) {
-      const override = treatment ? await page.addStyleTag({ content: sequential }) : null;
+    const outgoing = [
+      scope + ' .opening-sealed-page { transition: none; opacity: 1; transform: translateZ(7px) scale(1); }',
+      scope + ' .opening-wax-seal { transition: none; opacity: 1; transform: none; }',
+    ];
+    const stacks = [
+      scope + ' .page-stack { clip-path: none; }',
+      scope + ' .rear-book-cover { box-shadow: inset 0 0 0 2px rgba(187,139,71,.38); }',
+    ];
+    const variants = { current: [], outgoing, stacks, combined: [...outgoing, ...stacks] };
+    const measurements = [];
+    for (const key of ["current","outgoing","stacks","combined","combined","stacks","outgoing","current"] as const) {
+      const style = variants[key].length ? await page.addStyleTag({ content: variants[key].join("\n") }) : null;
       try {
         await waitForStableRuntimeBaseline(page);
         const run = await measuredFullOpening(page, replay(page));
@@ -647,59 +652,18 @@ phase3Test(
         expect(settling.length).toBeGreaterThan(20);
         expect(run.durationMs).toBeLessThan(budgets.openingMs);
         await expect(replay(page)).toBeFocused();
-        measured.push({ treatment, count: frames.length, desktopP95: rounded(percentile(frames, .95)),
-          desktopSlow: frames.filter(ms => ms > budgets.desktopFrameP95Ms).length,
-          settlingCount: settling.length, settlingP95: rounded(percentile(settling, .95)),
-          settlingSlow: settling.filter(ms => ms > budgets.desktopFrameP95Ms).length,
-          animationMs: rounded(run.durationMs) });
+        measurements.push({ key, desktopP95: rounded(percentile(frames,.95)),
+          desktopCount: frames.length, desktopSlow: frames.filter(ms=>ms>budgets.desktopFrameP95Ms).length,
+          settlingP95:rounded(percentile(settling,.95)), settlingCount:settling.length,
+          settlingSlow: settling.filter(ms=>ms>budgets.desktopFrameP95Ms).length,
+          openingMs: rounded(run.durationMs) });
       } finally {
-        await override?.evaluate((node) => { node.parentNode?.removeChild(node); });
-      }
-    }
-    const snapshots = [];
-    for (const treatment of [false,true]) {
-      const override = treatment ? await page.addStyleTag({ content: sequential }) : null;
-      try {
-        await replay(page).click();
-        await expect(journal(page)).toHaveAttribute("data-journal-phase", "BOOK_SETTLING");
-        const states = await journal(page).evaluate((root) => new Promise<{
-          covered: number; open: number; overlap: number; count: number;
-        }>((resolve) => {
-          const cover = root.querySelector(".closed-book");
-          const spread = root.querySelector(".open-page-stage");
-          if (!cover || !spread) throw new Error("Missing book faces");
-          let covered = 0, open = 0, overlap = 0, count = 0;
-          const visual = (element: Element) => {
-            const style = getComputedStyle(element);
-            return style.visibility === "visible" && Number(style.opacity) > 0.05;
-          };
-          function sample() {
-            if (root.getAttribute("data-journal-phase") !== "BOOK_SETTLING") {
-              resolve({ covered, open, overlap, count });
-              return;
-            }
-            const coverPainted = visual(cover!);
-            const spreadPainted = visual(spread!);
-            if (coverPainted) covered++;
-            if (spreadPainted) open++;
-            if (coverPainted && spreadPainted) overlap++;
-            count++;
-            requestAnimationFrame(sample);
-          }
-          sample();
-        }));
-        expect(states.covered + states.open).toBeGreaterThan(20);
-        expect(states.open).toBeGreaterThan(8);
-        await assertReadableJournal(page);
-        await expect(replay(page)).toBeFocused();
-        snapshots.push({ treatment, ...states });
-      } finally {
-        await override?.evaluate((node) => { node.parentNode?.removeChild(node); });
+        await style?.evaluate(node=>{node.parentNode?.removeChild(node);});
       }
     }
     const report = { purpose: "DEVELOPMENT_ONLY", candidate: process.env.FOREVER_VALIDATION_SOURCE_SHA,
-      measured, snapshots, budget: budgets.desktopFrameP95Ms };
+      frameBudgetMs:budgets.desktopFrameP95Ms, measurements };
     await writePerformanceArtifact(artifact.artifactPath, report, [fixture.slug, voyage!.sessionId]);
-    console.log("JOURNAL_SEQUENTIAL_PAINT " + JSON.stringify(report));
+    console.log("JOURNAL_PAINT_COMPOSITION " + JSON.stringify(report));
   },
 );
