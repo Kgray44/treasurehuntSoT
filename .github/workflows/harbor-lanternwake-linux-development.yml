@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Measure background route-snapshot copying during the Journal opening
+run-name: Route-only Journal pruning on protected main
 
 on:
   push:
@@ -15,21 +15,8 @@ jobs:
   benchmark:
     name: Phase 3 performance only (development)
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - snapshot: current
-            browser: chromium
-            capture: no-record
-          - snapshot: defer
-            browser: chromium
-            capture: no-record
     timeout-minutes: 22
     env:
-      NEXT_PUBLIC_JOURNAL_SNAPSHOT_MODE: ${{ matrix.snapshot }}
-      JOURNAL_COMPARE_BROWSER: ${{ matrix.browser }}
-      JOURNAL_COMPARE_CAPTURE: ${{ matrix.capture }}
       CANDIDATE_SHA: ${{ github.sha }}
       BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
       FOREVER_VALIDATION_SOURCE_SHA: ${{ github.sha }}
@@ -71,11 +58,16 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Run the full canonical Journal performance benchmark from the candidate source
+      - name: Verify route components and the isolated Journal snapshot
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "journal-route-components-focused", kind: "vitest",
+              files: ["src/animation/platform/RouteMotionBoundary.test.tsx"] },
+            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
+          );
           await runJob(
             { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
             { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
@@ -85,7 +77,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-active-snapshot-${{ matrix.snapshot }}
+          name: journal-isolated-prune-proof
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30

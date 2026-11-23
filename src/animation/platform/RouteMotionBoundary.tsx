@@ -41,16 +41,7 @@ function routeLayer(pathname: string, generation?: number) {
   );
 }
 
-
-const deferActiveJournalSnapshot = process.env.NEXT_PUBLIC_JOURNAL_SNAPSHOT_MODE === "defer";
-
-function openingJournal(content: HTMLElement) {
-  return content.querySelector<HTMLElement>('.chronicle-journal-shell[data-journal-opening-outcome="running"]');
-}
-
 function routeSnapshotHtml(route: HTMLElement) {
-  const journal = route.querySelector<HTMLElement>(".chronicle-journal-shell");
-  const start = journal ? performance.now() : null;
   const snapshot = route.cloneNode(true) as HTMLElement;
   // PageFlip uses these inert templates to prepare its live pages. The frozen
   // route copy only needs the already-rendered book.
@@ -70,16 +61,7 @@ function routeSnapshotHtml(route: HTMLElement) {
     visualLabel.innerHTML = label.innerHTML;
     label.replaceWith(visualLabel);
   });
-  const html = snapshot.innerHTML;
-  if (journal && start !== null) {
-    const probe = window as Window & { journalSnapshotDiagnostic?: Record<string, { calls: number; ms: number }> };
-    const rows = (probe.journalSnapshotDiagnostic ??= {});
-    const phase = journal.dataset.journalPhase ?? "outside";
-    const row = (rows[phase] ??= { calls: 0, ms: 0 });
-    row.calls++;
-    row.ms += performance.now() - start;
-  }
-  return html;
+  return snapshot.innerHTML;
 }
 
 function contentIsPending(content: HTMLElement) {
@@ -222,13 +204,9 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
           "[data-route-content]",
         )
       : null;
-    const lastSettled = deferActiveJournalSnapshot && !previousNavigation && /\/journal$/.test(settledRoute.current.pathname)
-      ? routeLayer(settledRoute.current.pathname)?.querySelector<HTMLElement>("[data-route-content]")
-      : null;
-    const departingContent = previousIncoming ?? (lastSettled && openingJournal(lastSettled) ? lastSettled : null);
     const outgoing =
-      departingContent && !contentIsPending(departingContent) && departingContent.textContent?.trim()
-        ? { pathname: previousNavigation?.pathname ?? settledRoute.current.pathname, html: routeSnapshotHtml(departingContent) }
+      previousIncoming && !contentIsPending(previousIncoming) && previousIncoming.textContent?.trim()
+        ? { pathname: previousNavigation!.pathname, html: routeSnapshotHtml(previousIncoming) }
         : (previousNavigation?.outgoing ?? {
             pathname: settledRoute.current.pathname,
             html: stableSnapshot.current.pathname === settledRoute.current.pathname ? stableSnapshot.current.html : "",
@@ -344,7 +322,6 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
     const capture = () => {
       frame = 0;
       if (!content.isConnected || contentIsPending(content)) return;
-      if (deferActiveJournalSnapshot && openingJournal(content)) return;
       stableSnapshot.current = { pathname, html: routeSnapshotHtml(content) };
     };
     capture();
