@@ -5,6 +5,8 @@ import { createCrossdeckRefitFixture, removeCrossdeckRefitFixture } from "./fixt
 import { authenticateClosure } from "./fixtures/landfall-closure";
 import { PHASE3_MOTION_MODES, setPhase3Motion } from "./fixtures/lanternwake-phase3";
 
+type SkipSample = { elapsed: number; owners: Array<{ property: string; owner: string }> };
+
 test.afterAll(() => db.$disconnect());
 test("identify animations remaining after Skip during a real full Journal replay", async ({ page, context, baseURL }) => {
   test.setTimeout(90_000);
@@ -21,11 +23,11 @@ test("identify animations remaining after Skip during a real full Journal replay
     await expect(journal).toHaveAttribute("data-journal-opening-outcome", "running");
     const skip = page.getByRole("button", { name: "Skip ceremony" });
     await skip.evaluate((control) => {
-      const scoped = window as Window & { journalSkipAttribution?: Promise<unknown> };
+      const scoped = window as Window & { journalSkipAttribution?: Promise<SkipSample[]> };
       scoped.journalSkipAttribution = new Promise((resolve) => {
         control.addEventListener("click", () => {
           const start = performance.now();
-          const observations: unknown[] = [];
+          const observations: SkipSample[] = [];
           let previous = "";
           const inspect = () => {
             const elapsed = performance.now() - start;
@@ -55,8 +57,27 @@ test("identify animations remaining after Skip during a real full Journal replay
     await skip.click();
     await expect(journal).toHaveAttribute("data-journal-ready-reason", "skipped");
     await expect(page.getByRole("navigation", { name: "Journal tools" })).toBeVisible();
-    const observations = await page.evaluate(() => (window as Window & { journalSkipAttribution?: Promise<unknown> }).journalSkipAttribution);
+    const observations = await page.evaluate(() => (window as Window & { journalSkipAttribution?: Promise<SkipSample[]> }).journalSkipAttribution);
     expect(observations).toBeTruthy();
+    const ownsDecoration = (sample: SkipSample) =>
+      sample.owners.some(({ owner }) => /(?:^|\s)(?:book-shadow|rear-book-cover|page-stack|book-binding)(?:\s|$)/.test(owner));
+    const firstClean = observations!.find(sample => !ownsDecoration(sample));
+    expect(firstClean).toBeDefined();
+    if (process.env.SKIP_LANE === "patched") {
+      expect(firstClean!.elapsed).toBeLessThan(250);
+      expect(observations!.some(ownsDecoration)).toBe(false);
+    } else {
+      expect(observations!.some(ownsDecoration)).toBe(true);
+      expect(firstClean!.elapsed).toBeGreaterThanOrEqual(250);
+    }
+    const decorations = journal.locator(".book-shadow, .rear-book-cover, .page-stack, .book-binding");
+    await expect(decorations).toHaveCount(5);
+    for (const decoration of await decorations.all()) {
+      await expect(decoration).toHaveCSS("opacity", "1");
+      await expect(decoration).toBeVisible();
+    }
+    await page.getByRole("button", { name: "Next journal page" }).click({ trial: true });
+    console.log("JOURNAL_SKIP_DECORATIVE_MS " + JSON.stringify({lane:process.env.SKIP_LANE, elapsed:firstClean!.elapsed}));
     const directory = "artifacts/sounding-line/journal-skip-owners";
     await mkdir(directory, { recursive: true });
     await writeFile(directory + "/owners.json", JSON.stringify(observations, null, 2) + "\n");
