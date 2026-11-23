@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Test Homeport publication hydration and the actual protected Journey T
+run-name: Verify the landed Studio Exchange workflow on main
 
 on:
   push:
@@ -13,19 +13,18 @@ permissions:
 
 jobs:
   browser-probe:
-    name: Homeport Round 2 Journey T protected baseline
+    name: Studio Exchange landed-tree smoke
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      FOREVER_VALIDATION_SOURCE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+      CANDIDATE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
+      BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
+      FOREVER_VALIDATION_SOURCE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
       NEXT_TELEMETRY_DISABLED: "1"
-      HOMEPORT_PHASE7_CORRECTION_JOURNEYS: "T"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 627a4e651641b6765ac789d378672ea6e903c120
+          ref: 00420421bacc6e9b923c5e50852a83a858886131
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -52,41 +51,23 @@ jobs:
             /Development_Docs/**/*.txt
             /Development_Docs/**/*.sql
             /Development_Docs/**/*.csv
-            /Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/experience-images-index.html
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Hydrate the Homeport publication as V3 does
-        timeout-minutes: 8
-        run: |
-          evidence=Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2
-          if [[ "$(git rev-parse --is-shallow-repository)" == true ]]; then
-            git fetch --no-tags --filter=blob:none --unshallow origin refs/heads/main
-          fi
-          publication="$(git log -1 --diff-filter=A --format=%H HEAD -- "$evidence/experience-images-manifest.json")"
-          test "$publication" = "8e3900a734674cb58800878aaeaf91a0e9f2285e"
-          staging="$(mktemp -d "$RUNNER_TEMP/homeport-publication.XXXXXX")"
-          GIT_INDEX_FILE="$staging/historical-index" git -c core.sparseCheckout=false read-tree "$publication"
-          mkdir -p "$staging/images"
-          export GIT_INDEX_FILE="$staging/historical-index"
-          git ls-tree -rz --name-only "$publication" -- Experience_Images |
-            git -c core.sparseCheckout=false checkout-index --prefix="$staging/images/" -z --stdin
-          unset GIT_INDEX_FILE
-          test "$(git hash-object "$staging/images/Experience_Images/manifest.json")" = "$(git rev-parse "HEAD:$evidence/experience-images-manifest.json")"
-          echo "Hydrated exact Round 2 publication in an isolated temporary index."
       - name: Install locked dependencies and Chromium
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Run exact protected Homeport Journey T and verify its publication
+      - name: Run current Brightwork Studio Exchange suite on the exact protected merge
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          test "$(git rev-parse HEAD:tests/e2e/brightwork-stage8-wave4.spec.ts)" = "0c6cd9537e1fdbc8cc0d057c57cc78074a5fe52e"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          npx --no-install prettier --check tests/e2e/homeport-phase7-owner-correction-round2.spec.ts
+          npx --no-install prettier --check tests/e2e/brightwork-stage8-wave4.spec.ts
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
           await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/homeport-phase7-owner-correction-round2.spec.ts"] },
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/brightwork-stage8-wave4.spec.ts"] },
             { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
           );
           EOF
