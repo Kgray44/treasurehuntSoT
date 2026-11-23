@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Measure the cost of redundant PageFlip class writes on one runner
+run-name: Compare both exact Journal builds and measure redundant PageFlip classes
 
 on:
   push:
@@ -72,7 +72,7 @@ jobs:
           test "$exported" = "$spec"
           test "$main" = "$BASE_SHA"
           nproc
-          cat /sys/fs/cgroup/cpu.max
+          if [[ -r /sys/fs/cgroup/cpu.max ]]; then cat /sys/fs/cgroup/cpu.max; fi
           mkdir -p "$RUNNER_TEMP/pageflip-class-comparison"
           for lane in original coalesced; do
             echo "PageFlip class diagnostic: $lane"
@@ -98,5 +98,91 @@ jobs:
         with:
           name: pageflip-class-write-comparison
           path: ${{ runner.temp }}/pageflip-class-comparison/*.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  exact-source-comparison:
+    name: Same-runner exact source comparison
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    env:
+      CANDIDATE_SHA: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
+      BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
+      FOREVER_VALIDATION_SOURCE_SHA: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
+          fetch-depth: 16
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
+            /scripts/
+            /src/
+            /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Install locked dependencies and Chromium
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install chromium
+      - name: Compare unchanged timing workloads on the same runner
+        run: |
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          prior=67ba7699f548aadbffbf7a10d947264ef3b98884
+          git fetch --depth=1 --no-tags origin "$prior"
+          test "$(git rev-parse HEAD:package-lock.json)" = "$(git rev-parse "$prior:package-lock.json")"
+          nproc
+          if [[ -r /sys/fs/cgroup/cpu.max ]]; then cat /sys/fs/cgroup/cpu.max; fi
+          uname -sr
+          result=0
+          for source in "$CANDIDATE_SHA" "$prior"; do
+            git checkout --detach "$source"
+            test "$(git rev-parse HEAD)" = "$source"
+            test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "2e10c383fa2accb79fbad09f92d61631b23e2d78"
+            test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
+            printf 'Timing application %s with the canonical benchmark\n' "$source"
+            if FOREVER_VALIDATION_SOURCE_SHA="$source" TIMING_SOURCE="$source" node --input-type=module <<'EOF'
+          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "lanternwake-current-compare", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.TIMING_SOURCE },
+          );
+          EOF
+            then
+              printf '%s PASS\n' "$source"
+            else
+              printf '%s FAILED\n' "$source"
+              result=1
+            fi
+          done
+          exit "$result"
+      - name: Retain both receipts for comparison
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: same-runner-journal-timing-comparison
+          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: warn
           retention-days: 30
