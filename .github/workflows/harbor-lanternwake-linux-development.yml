@@ -1,97 +1,94 @@
-name: Lanternwake isolated Linux benchmark
-run-name: Matched desktop frame comparison with locally isolated cover and paper effects
-
+name: Validate exact source-bound Journal experience publication
+run-name: Verify Journal evidence against the corrected fixture revision
 on:
   push:
     branches:
       - codex/lanternwake-focused-development-cf6b1d6bbae4
     paths:
       - .github/workflows/harbor-lanternwake-linux-development.yml
-
 permissions:
   contents: read
-
 jobs:
-  benchmark:
-    name: Recorded desktop comparison (${{ matrix.artwork }})
+  validate-evidence:
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        artwork: [control, isolated]
-    timeout-minutes: 22
-    env:
-      JOURNAL_COMPARE_BROWSER: shell
-      JOURNAL_COMPARE_CAPTURE: record
-      ARTWORK_TREATMENT: ${{ matrix.artwork }}
-      CANDIDATE_SHA: ${{ github.sha }}
-      BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
-      FOREVER_VALIDATION_SOURCE_SHA: ${{ github.sha }}
-      NEXT_TELEMETRY_DISABLED: "1"
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.sha }}
-          fetch-depth: 2
+          ref: e6d748c3d87548d391577021d8b533c2cd8fcb2d
+          fetch-depth: 8
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /*
             !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
             /scripts/
-            /src/
             /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
+            /src/
+            /app/
+            /components/
+            /lib/
+            /styles/
+            **/*.json
+            /Development_Docs/Testing/Product_Experience/evidence/journal-906/a29968b8e4/
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
+      - name: Hydrate exact source and published media objects
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
+          CANDIDATE_SHA: e6d748c3d87548d391577021d8b533c2cd8fcb2d
         run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install --with-deps chromium
-      - name: Keep cover grain and sealed-page grain inside their opaque paint surfaces
-        if: matrix.artwork == 'isolated'
-        run: |
-          cat >> src/components/player/journal/ChronicleJournalSession.module.css <<'EOF'
-
-          @media (min-width: 961px) {
-            .journalShell[data-motion-level="full"] :global(.cover-front),
-            .journalShell[data-motion-level="full"] :global(.opening-sealed-page) {
-              isolation: isolate;
+          git fetch --no-tags --depth=8 --filter=blob:none origin refs/heads/main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
+          node --input-type=module > "$RUNNER_TEMP/evidence-object-ids" <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { sourceSnapshotReadsPath } from "./scripts/sounding-line/product-experience.mjs";
+          const git=(args)=>execFileSync("git",args,{encoding:"utf8",maxBuffer:64*1024*1024});
+          const recordPath="Development_Docs/Testing/Product_Experience/candidate-review.json";
+          const receipt=JSON.parse(git(["show",process.env.CANDIDATE_SHA+":"+recordPath]));
+          const pair=receipt.pairedEvidence;
+          const evidenceFiles=new Set([recordPath,...receipt.artifacts.map(a=>a.path),pair.report.path,pair.profile.path,pair.runtime.path,...pair.cases.map(c=>c.witness.path)]);
+          const ids=new Set();
+          for (const revision of [process.env.BASE_SHA,process.env.CANDIDATE_SHA]) {
+            for (const entry of git(["ls-tree","-rz",revision]).split("\0").filter(Boolean)) {
+              const i=entry.indexOf("\t");
+              const [,type,oid]=entry.slice(0,i).split(" ");
+              const file=entry.slice(i+1);
+              if(type==="blob" && (sourceSnapshotReadsPath(file) || (revision===process.env.CANDIDATE_SHA && evidenceFiles.has(file)))) {
+                ids.add(oid);
+              }
             }
           }
+          console.log([...ids].sort().join("\n"));
           EOF
-      - name: Run the same full canonical workload and recorded desktop metrics
+          GIT_NO_LAZY_FETCH=1 git cat-file --batch-check < "$RUNNER_TEMP/evidence-object-ids" |
+            awk '$2=="missing" { print $1 }' > "$RUNNER_TEMP/missing-evidence-object-ids"
+          count=$(wc -l < "$RUNNER_TEMP/missing-evidence-object-ids")
+          echo "Missing objects after path checkout: $count"
+          test "$count" -le 100
+          while IFS= read -r oid; do
+            actual=$(gh api "repos/Kgray44/treasurehuntSoT/git/blobs/$oid" --jq '.content' | base64 --decode | git hash-object -w --stdin)
+            test "$actual" = "$oid"
+          done < "$RUNNER_TEMP/missing-evidence-object-ids"
+      - name: Run the repository source-bound experience verifier
+        env:
+          BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
+          CANDIDATE_SHA: e6d748c3d87548d391577021d8b533c2cd8fcb2d
         run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
+          import { execFileSync } from "node:child_process";
+          import { planProductExperience, verifyProductExperience } from "./scripts/sounding-line/product-experience.mjs";
+          const root=process.cwd();
+          const baseSha=process.env.BASE_SHA;
+          const candidateSha=process.env.CANDIDATE_SHA;
+          const changedPaths=execFileSync("git",["diff","--name-only","--no-renames",baseSha,candidateSha],{encoding:"utf8",maxBuffer:8*1024*1024}).trim().split("\n");
+          const plan=planProductExperience({root,baseSha,candidateSha,changedPaths});
+          if(!plan.applicable || plan.sourceDigest!=="3bbac0b5da0f9a8d529bdbe9781524c38df757c3377c34b9535a5e7432c43d08" || plan.contractDigest!=="4578d749590b9033c43bf566138577f9d32cb249722f3050f98608db287253de") throw new Error("Expected verified source and contract boundaries");
+          const receipt=verifyProductExperience(root,candidateSha,plan);
+          console.log("JOURNAL_906_EXPERIENCE_VERIFICATION "+JSON.stringify({baseSha,candidateSha,receipt}));
+          if(receipt.status!=="PASS") throw new Error("Product Experience evidence did not pass");
           EOF
-      - name: Retain sanitized performance metrics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: journal-local-grain-isolation-${{ matrix.artwork }}
-          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
-          if-no-files-found: ignore
-          retention-days: 30
