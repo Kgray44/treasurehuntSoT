@@ -8,6 +8,7 @@ import { useMotionMode } from "../motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "./motion-tokens";
 
 const pendingSelector = '[data-async-state="pending-delay"], .ui-loading-state';
+const liveJournalSelector = ".chronicle-journal-shell[data-journal-phase]";
 const loadingThresholdMs = 500;
 
 type Navigation = {
@@ -204,12 +205,22 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
           "[data-route-content]",
         )
       : null;
+    const settledPath = settledRoute.current.pathname;
+    const settledContent = previousNavigation
+      ? null
+      : routeLayer(settledPath)?.querySelector<HTMLElement>("[data-route-content]");
+    const liveJournal =
+      settledContent?.querySelector(liveJournalSelector) && !contentIsPending(settledContent) ? settledContent : null;
     const outgoing =
       previousIncoming && !contentIsPending(previousIncoming) && previousIncoming.textContent?.trim()
         ? { pathname: previousNavigation!.pathname, html: routeSnapshotHtml(previousIncoming) }
         : (previousNavigation?.outgoing ?? {
-            pathname: settledRoute.current.pathname,
-            html: stableSnapshot.current.pathname === settledRoute.current.pathname ? stableSnapshot.current.html : "",
+            pathname: settledPath,
+            html: liveJournal
+              ? routeSnapshotHtml(liveJournal)
+              : stableSnapshot.current.pathname === settledPath
+                ? stableSnapshot.current.html
+                : "",
           });
     generation.current += 1;
     navigation.current = {
@@ -323,12 +334,15 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
       frame = 0;
       if (!content.isConnected || contentIsPending(content)) return;
       stableSnapshot.current = { pathname, html: routeSnapshotHtml(content) };
+      // The live Journal is captured when navigation starts. Keep this initial
+      // snapshot as a fallback without cloning the book on each PageFlip mutation.
+      if (content.querySelector(liveJournalSelector)) observer.disconnect();
     };
-    capture();
     const observer = new MutationObserver(() => {
       if (!frame) frame = requestAnimationFrame(capture);
     });
     observer.observe(content, { attributes: true, characterData: true, childList: true, subtree: true });
+    capture();
     return () => {
       observer.disconnect();
       if (frame) cancelAnimationFrame(frame);

@@ -63,6 +63,45 @@ describe("RouteMotionBoundary", () => {
     expect(view.container.querySelector('[data-route-layer="/studio/library"]')).toBeNull();
   });
 
+  it("refreshes the Journal snapshot only when leaving and captures the current page", async () => {
+    vi.useFakeTimers();
+    const view = render(
+      <RouteMotionBoundary pathname="/player/playthroughs/voyage-1/journal">
+        <main className="chronicle-journal-shell" data-journal-phase="JOURNAL_READY">
+          <h1>Voyage Journal</h1>
+          <p>First page</p>
+        </main>
+      </RouteMotionBoundary>,
+    );
+    const journal = view.getByRole("main");
+    const routeContent = journal.closest<HTMLElement>("[data-route-content]")!;
+    const clone = vi.spyOn(routeContent, "cloneNode");
+
+    try {
+      for (const phase of ["CLOSED_BOOK_REVEAL", "BOOK_SETTLING", "JOURNAL_READY"]) {
+        await act(async () => {
+          journal.dataset.journalPhase = phase;
+          await vi.advanceTimersByTimeAsync(34);
+        });
+      }
+      expect(clone).not.toHaveBeenCalled();
+
+      view.getByText("First page").textContent = "Current page";
+      view.rerender(<RouteMotionBoundary pathname="/player/library">{ready("Chronicle Library")}</RouteMotionBoundary>);
+
+      const outgoing = view.container.querySelector('[data-route-role="outgoing"]');
+      expect(outgoing).toHaveAttribute("inert");
+      expect(outgoing).toHaveTextContent("Current page");
+      expect(clone).toHaveBeenCalledExactlyOnceWith(true);
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(280);
+      });
+      expect(view.getByRole("heading", { name: "Chronicle Library" })).toBeVisible();
+    } finally {
+      clone.mockRestore();
+    }
+  });
+
   it("keeps the outgoing visual snapshot inert and strips duplicated labels and ids", () => {
     vi.useFakeTimers();
     const view = render(
