@@ -88,16 +88,25 @@ test("Brightwork Stage 8 Wave 4 presents Community and Studio workflows as bound
 
     await page.goto("/studio/exchange");
     await expect(page.getByRole("heading", { name: "Open the Exchange", exact: true })).toBeVisible();
-    await expect(page.getByRole("list", { name: "Community Exchange workflow" })).toBeVisible();
-    const previewPoster = page.locator('[data-testid="studio-community-exchange"] figure img');
+    const publication = page.getByRole("region", { name: "Share saved Creator work" });
+    await expect(publication.getByRole("combobox", { name: "Saved source" })).toHaveValue("");
+    const safeguards = page.getByRole("complementary", { name: "Community publishing safeguards" });
+    await expect(safeguards.getByRole("list")).toContainText("Submit the exact package to independent moderation.");
+    const installed = page.getByRole("region", { name: "Installed from Community" });
+    await expect(installed.getByText(/No Community items installed yet/)).toBeVisible();
+
+    const preview = page.getByRole("figure", { name: "Preview sandbox" });
+    const previewPoster = preview.getByRole("img");
     await expect(previewPoster).toHaveAttribute("src", "/animations/stills/compass-fallback.svg");
     await expect(previewPoster).toHaveJSProperty("complete", true);
     expect(
       await previewPoster.evaluate((image) => image instanceof HTMLImageElement && image.naturalWidth > 0),
     ).toBeTruthy();
-    await page.getByRole("radio", { name: "Preview sandbox (no changes)" }).check();
-    await page.getByRole("button", { name: "Open preview sandbox" }).click();
-    await expect(page.getByText("Preview sandbox opened. No content was installed.")).toBeVisible();
+    await preview.getByRole("button", { name: "Rotate right" }).click();
+    await expect(preview.getByRole("status")).toHaveText("3D preview rotation 15 degrees; zoom 100 percent.");
+    await preview.getByRole("button", { name: "Reset preview" }).click();
+    await expect(preview.getByRole("status")).toHaveText("3D preview rotation 0 degrees; zoom 100 percent.");
+    await expect(installed.getByText(/No Community items installed yet/)).toBeVisible();
     await assertAccessible(page);
     await capture(page, "03-studio-exchange-desktop");
 
