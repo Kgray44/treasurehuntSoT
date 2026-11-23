@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Measure all original Journal budgets on the shared page stack fade
+run-name: Measure the cost of browser recording on one standard Journal runner
 
 on:
   push:
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   canonical-budget:
-    name: Original recorded workload on the compiled shared page stack fade
+    name: Journal recorder overhead comparison on standard Ubuntu
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
@@ -66,7 +66,10 @@ jobs:
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
           npx --no-install prettier --check src/components/player/journal/ChronicleJournalSession.tsx
-      - name: Measure all unchanged Journal budgets
+      - name: Set up isolated recorder comparisons with the same real click workload
+        run: |
+          python3 -c 'import base64; exec(base64.b64decode("CmZyb20gcGF0aGxpYiBpbXBvcnQgUGF0aApwID0gUGF0aCgidGVzdHMvZTJlL3BoYXNlMy1wZXJmb3JtYW5jZS5zcGVjLnRzIikKdGV4dCA9IHAucmVhZF90ZXh0KCkKc3BsaXQ9IiAgICBjb25zdCB3YXJtUnVuczoiCnRpdGxlPWNocigxMCkuam9pbihbJ3BoYXNlM1Rlc3QoJywgJyAgImNhbm9uaWNhbCBwcm9kdWN0aW9uIEpvdXJuYWwgcGVyZm9ybWFuY2UgYW5kIGxpZmVjeWNsZSBidWRnZXRzIiwnXSkKYXNzZXJ0IHRleHQuY291bnQoc3BsaXQpPT0xIGFuZCB0ZXh0LmNvdW50KHRpdGxlKT09MQpwcmVmaXg9dGV4dC5zcGxpdChzcGxpdCwxKVswXQpyZWdpc3RyYXRpb249Y2hyKDEwKS5qb2luKFsKICAnY29uc3QgcmVjb3JkaW5nTGFuZXMgPSBbJywKICAnICB7aWQ6ICJyZWNvcmRlZCIsIHZpZGVvOiAicmV0YWluLW9uLWZhaWx1cmUiLCB0cmFjZTogInJldGFpbi1vbi1mYWlsdXJlIn0sJywKICAnICB7aWQ6ICJuby12aWRlbyIsIHZpZGVvOiAib2ZmIiwgdHJhY2U6ICJyZXRhaW4tb24tZmFpbHVyZSJ9LCcsCiAgJyAge2lkOiAibm8tdHJhY2UiLCB2aWRlbzogInJldGFpbi1vbi1mYWlsdXJlIiwgdHJhY2U6ICJvZmYifSwnLAogICcgIHtpZDogIm5vLXJlY29yZGVyIiwgdmlkZW86ICJvZmYiLCB0cmFjZTogIm9mZiJ9LCcsCiAgJ10gYXMgY29uc3Q7JywKICAnZm9yIChjb25zdCBsYW5lIG9mIHJlY29yZGluZ0xhbmVzKSB7JywKICAncGhhc2UzVGVzdC5kZXNjcmliZSgiSm91cm5hbCByZWNvcmRpbmcgb3ZlcmhlYWQ6ICIgKyBsYW5lLmlkLCAoKSA9PiB7JywKICAncGhhc2UzVGVzdC51c2Uoe3ZpZGVvOiBsYW5lLnZpZGVvLCB0cmFjZTogbGFuZS50cmFjZX0pOycsCiAgJ3BoYXNlM1Rlc3QoJywKICAnICAicnVucyB0aGUgcmVjb3JkZWQgZGVza3RvcCBjZXJlbW9ueSB3b3JrbG9hZCIsJywKXSkKcHJlZml4PXByZWZpeC5yZXBsYWNlKHRpdGxlLHJlZ2lzdHJhdGlvbikKcHJlZml4PXByZWZpeC5yZXBsYWNlKCciUDMtUEVSRk9STUFOQ0UtQ0hBUFRFUiInLCAnIlAzLVBFUkZPUk1BTkNFLUNIQVBURVItIiArIGxhbmUuaWQnKQptYXJrZXI9JyAgICBjb25zdCBjb2xkID0gYXdhaXQgbWVhc3VyZWRGdWxsT3BlbmluZycKYXNzZXJ0IHByZWZpeC5jb3VudChtYXJrZXIpPT0xCnByZWZpeD1wcmVmaXgucmVwbGFjZShtYXJrZXIsJycnICAgIGF3YWl0IGV4cGVjdChqb3VybmFsKHBhZ2UpLmdldEJ5Um9sZSgiYnV0dG9uIiwge25hbWU6ICJPcGVuIHRoZSBqb3VybmFsIn0pKS50b0JlVmlzaWJsZSgpOwogICAgY29uc3QgaGFzVmlkZW8gPSBwYWdlLnZpZGVvKCkgIT09IG51bGw7CiAgICBleHBlY3QoaGFzVmlkZW8pLnRvQmUobGFuZS52aWRlbyAhPT0gIm9mZiIpOwonJycrbWFya2VyKQp0YWlsPScnJyAgICBjb25zdCBydW5zID0gW2NvbGRdOwogICAgZm9yIChsZXQgaW5kZXggPSAwOyBpbmRleCA8IDI7IGluZGV4ICs9IDEpIHJ1bnMucHVzaChhd2FpdCBtZWFzdXJlZEZ1bGxPcGVuaW5nKHBhZ2UsIHJlcGxheShwYWdlKSkpOwogICAgY29uc3QgcmVwb3J0ID0gewogICAgICBzb3VyY2U6IHByb2Nlc3MuZW52LkZPUkVWRVJfVkFMSURBVElPTl9TT1VSQ0VfU0hBLCBsYW5lLCBoYXNWaWRlbywKICAgICAgcmVzdWx0czogcnVucy5tYXAoKHJ1bikgPT4gKHsKICAgICAgICBkdXJhdGlvbk1zOiByb3VuZGVkKHJ1bi5kdXJhdGlvbk1zKSwKICAgICAgICBwOTU6IHJvdW5kZWQocGVyY2VudGlsZShydW4udmlzdWFsLmZyYW1lRHVyYXRpb25zTXMsIDAuOTUpKSwKICAgICAgICBmcmFtZXM6IHJ1bi52aXN1YWwuZnJhbWVEdXJhdGlvbnNNcy5sZW5ndGgsCiAgICAgICAgc2xvd0ZyYW1lczogcnVuLnZpc3VhbC5mcmFtZUR1cmF0aW9uc01zLmZpbHRlcigoZnJhbWUpID0+IGZyYW1lID4gMjUpLmxlbmd0aCwKICAgICAgICBsb25nVGFza3M6IHJ1bi52aXN1YWwubG9uZ1Rhc2tEdXJhdGlvbnNNcywKICAgICAgICBjbHM6IHJvdW5kZWQocnVuLnZpc3VhbC5jbHMpLAogICAgICB9KSksCiAgICB9OwogICAgYXdhaXQgZnMud3JpdGVGaWxlKHBhdGguam9pbihhcnRpZmFjdC5hcnRpZmFjdERpcmVjdG9yeSwgImpvdXJuYWwtcmVjb3JkZXItIiArIGxhbmUuaWQgKyAiLmpzb24iKSwKICAgICAgSlNPTi5zdHJpbmdpZnkocmVwb3J0LCBudWxsLCAyKSArICJcXG4iLCB7ZmxhZzogInd4In0pOwogIH0sCik7Cn0pOwp9CicnJwpwLndyaXRlX3RleHQocHJlZml4K3RhaWwpCg=="))'
+      - name: Compare browser recorder costs
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -80,7 +83,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-shared-page-stack-fade-standard-ubuntu
+          name: journal-recorder-overhead-serial-ubuntu
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
