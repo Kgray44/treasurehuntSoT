@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Trace the real cold Journal handoff under verified Metal
+run-name: Run the original recorded workload on the exact Journal cue trial
 
 on:
   push:
@@ -12,27 +12,19 @@ permissions:
   contents: read
 
 jobs:
-  benchmark:
-    name: Cold Journal handoff with in-test Metal (${{ matrix.lane }})
-    runs-on: macos-15
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - lane: main-normal
-            source: 627a4e651641b6765ac789d378672ea6e903c120
-            recording: normal
+  canonical-budget:
+    name: Original recorded Journal benchmark on standard Ubuntu
+    runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: ${{ matrix.source }}
+      CANDIDATE_SHA: 348def7124c8d5290aab763c183ebc5c6548dbdf
       BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      FOREVER_VALIDATION_SOURCE_SHA: ${{ matrix.source }}
+      FOREVER_VALIDATION_SOURCE_SHA: 348def7124c8d5290aab763c183ebc5c6548dbdf
       NEXT_TELEMETRY_DISABLED: "1"
-      JOURNAL_DIAGNOSTIC_RECORDING: ${{ matrix.recording }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ matrix.source }}
+          ref: 348def7124c8d5290aab763c183ebc5c6548dbdf
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -65,100 +57,17 @@ jobs:
       - name: Install locked dependencies and Chromium
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install chromium
-      - name: Apply the selected recorder settings to the root Playwright config
+          npx --no-install playwright install --with-deps chromium
+      - name: Preserve canonical benchmark and unmodified recording settings
         run: |
-          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD:tests/config/playwright/playwright.phase3-performance.config.ts)" = "4347403eaf7ccbcc7fe0cf1dca8f62f148f24857"
           git fetch --no-tags --depth=1 origin 186e0d868f5cb1aaf542e7885486f7e5ce144f16
           git show 186e0d868f5cb1aaf542e7885486f7e5ce144f16:tests/e2e/phase3-performance.spec.ts > tests/e2e/phase3-performance.spec.ts
           test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "ce468f106d9bf65548db3ad638af36c7a9cd5196"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
-          node --input-type=module <<'EOF'
-          import fs from "node:fs";
-          const replace = (source, from, to) => {
-            if (source.split(from).length!==2) throw Error("Unexpected diagnostic source anchor");
-            return source.replace(from,to);
-          };
-          const configPath="playwright.config.ts";
-          let config=fs.readFileSync(configPath,"utf8");
-          config=replace(config,'use: { baseURL, trace:','use: { baseURL, channel: "chromium", trace:');
-          if (process.env.JOURNAL_DIAGNOSTIC_RECORDING==="reduced") {
-            config=replace(config,'trace: "retain-on-failure"','trace: {mode:"retain-on-failure",screenshots:false,snapshots:false}');
-            config=replace(config,'video: "retain-on-failure"','video: "off"');
-          } else if (process.env.JOURNAL_DIAGNOSTIC_RECORDING!=="normal") throw Error("Unknown recorder mode");
-          fs.writeFileSync(configPath,config);
-          const specPath="tests/e2e/phase3-performance.spec.ts";
-          const spec=fs.readFileSync(specPath,"utf8");
-          const probe=[
-            '    expect(browserName).toBe("chromium");',
-            '    const rendererSession = await browser.newBrowserCDPSession();',
-            '    const {gpu}=await rendererSession.send("SystemInfo.getInfo");',
-            '    await rendererSession.detach();',
-            '    const activeRenderer = {renderer:gpu.auxAttributes?.glRenderer,compositor:gpu.featureStatus?.gpu_compositing,raster:gpu.featureStatus?.rasterization};',
-            '    console.log("LANTERNWAKE_MEASURED_RENDERER "+JSON.stringify(activeRenderer));',
-            '    expect(activeRenderer.renderer).toMatch(/Metal/i);',
-            '    expect(activeRenderer.compositor).toMatch(/^enabled/);',
-            '    expect(activeRenderer.raster).toMatch(/^enabled/);',
-          ].join("\n");
-          const rewritten=replace(spec.trimEnd()+"\n",'    expect(browserName).toBe("chromium");',probe);
-          const first=rewritten.indexOf('    const cold = await measuredFullOpening(');
-          const end=rewritten.indexOf("\n  },\n);",first);
-          if(first<0||end<=first)throw Error("Expected the canonical cold opening boundary");
-          const witness=[
-            '    await page.evaluate(()=>{',
-            '      const storage=window as unknown as {__handoffWitness?:{stop:()=>unknown}};',
-            '      const original=document.querySelector(".chronicle-journal-shell");',
-            '      const beginning=performance.now();',
-            '      const events: unknown[]=[];',
-            '      let previous=""; let frame=0;',
-            '      const read=()=>{',
-            '        const shell=document.querySelector(".chronicle-journal-shell");',
-            '        const book=shell?.querySelector(".main-journal-book");',
-            '        return {sameNode:shell===original,oldConnected:original?.isConnected,exists:!!shell,phase:shell?.getAttribute("data-journal-phase"),outcome:shell?.getAttribute("data-journal-opening-outcome"),reason:shell?.getAttribute("data-journal-ready-reason"),pageFlip:book?.getAttribute("data-pageflip-status"),bookReadiness:shell?.getAttribute("data-page-flip-readiness")};',
-            '      };',
-            '      const tick=()=>{const state=read(); const key=JSON.stringify(state);',
-            '        if(key!==previous && events.length<128){events.push({ms:Math.round(performance.now()-beginning),...state});previous=key;}',
-            '        frame=requestAnimationFrame(tick);',
-            '      }; tick();',
-            '      storage.__handoffWitness={stop:()=>{cancelAnimationFrame(frame);return {events,final:read(),elapsed:Math.round(performance.now()-beginning)};}};',
-            '    });',
-            '    let measured=false; let error:string|null=null;',
-            '    try {await measuredFullOpening(page,page.getByRole("button",{name:"Open the journal"}));measured=true;}',
-            '    catch(reason) { error=reason instanceof Error?reason.message.split("\\n")[0]:String(reason); }',
-            '    const handoff=await page.evaluate(()=>(window as unknown as {__handoffWitness:{stop:()=>unknown}}).__handoffWitness.stop());',
-            '    const evidence={source:process.env.FOREVER_VALIDATION_SOURCE_SHA,measured,error,handoff};',
-            '    await fs.writeFile(path.join(artifact.artifactDirectory,"cold-handoff.json"),JSON.stringify(evidence,null,2)+"\\n");',
-            '    console.log("LANTERNWAKE_COLDCHECK "+JSON.stringify(evidence));',
-            '    expect(measured,error??"The measured cold handoff must complete").toBe(true);',
-          ].join("\n");
-          fs.writeFileSync(specPath,rewritten.slice(0,first)+witness+rewritten.slice(end));
-          EOF
-      - name: Select the existing Darwin diagnostic guardian for this isolated macOS job
+          npx --no-install prettier --check src/components/player/journal/ChronicleJournalSession.tsx
+      - name: Measure all unchanged Journal budgets
         run: |
-          git fetch --no-tags --depth=1 origin f3edff6df19885a14acf5f97990ed355be5777a2
-          git show f3edff6df19885a14acf5f97990ed355be5777a2:scripts/sounding-line/owned-process-darwin-diagnostic.py > scripts/sounding-line/owned-process-darwin-diagnostic.py
-          node --input-type=module <<'EOF'
-          import fs from "node:fs";
-          if (process.platform !== "darwin" || process.env.GITHUB_ACTIONS !== "true") throw Error("Ephemeral macOS is required");
-          const file = "scripts/sounding-line/owned-process.mjs";
-          let source = fs.readFileSync(file,"utf8");
-          const replacements = [
-            ['new URL("./owned-process-linux.py", import.meta.url)', 'new URL(process.platform === "darwin" ? "./owned-process-darwin-diagnostic.py" : "./owned-process-linux.py", import.meta.url)'],
-            ['record.windows ? "WINDOWS_JOB_OBJECT" : "LINUX_SUBREAPER_AND_PIDFD"', 'record.windows ? "WINDOWS_JOB_OBJECT" : process.platform === "darwin" ? "DARWIN_DIAGNOSTIC_PROCESS_GROUP" : "LINUX_SUBREAPER_AND_PIDFD"'],
-          ];
-          for (const [before, after] of replacements) {
-            if (source.split(before).length !== 2) throw Error("Unexpected launcher anchor");
-            source = source.replace(before, after);
-          }
-          fs.writeFileSync(file,source);
-          EOF
-      - name: Identify whether the real cold handoff or its benchmark observer timed out
-        env:
-          NODE_OPTIONS: "--max-old-space-size=4096"
-        run: |
-          sysctl hw.memsize
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
@@ -171,7 +80,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-metal-cold-handoff
-          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/cold-handoff.json
+          name: journal-page-turn-cue-standard-ubuntu
+          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
+
