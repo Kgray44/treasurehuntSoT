@@ -60,3 +60,35 @@
     filter: none;
   }
 }
+
+@media (min-width: 961px) {
+  /* The Library return renders a frozen, inert copy of the Journal. Keep its
+     book geometry while avoiding unnecessary depth and backdrop sampling. */
+  :global(
+      .product-route-transition:has(> [data-route-layer="/player/library"][data-route-role="incoming"])
+        > [data-route-role="outgoing"]
+    )
+    .journalShell
+    :global(.book-camera) {
+    perspective: none;
+    transform: scale(0.985);
+  }
+
+  :global(
+      .product-route-transition:has(> [data-route-layer="/player/library"][data-route-role="incoming"])
+        > [data-route-role="outgoing"]
+    )
+    .journalShell
+    :global(.chronicle-session-header) {
+    backdrop-filter: none;
+  }
+
+  :global(
+      .product-route-transition:has(> [data-route-layer="/player/library"][data-route-role="incoming"])
+        > [data-route-role="outgoing"]
+    )
+    .journalShell
+    :global(.ocean-depth)::after {
+    mix-blend-mode: normal;
+  }
+}
