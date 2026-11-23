@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Capture exact prerequisite tree after the browser dependency acquisition repair
+run-name: Capture the prerequisite with both compatibility installer paths repaired
 
 on:
   push:
@@ -17,15 +17,15 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 75
     env:
-      CANDIDATE_SHA: 9f493b11dba3ba75b0330bb681e085e343b056d6
+      CANDIDATE_SHA: 1d76ff945c81b25615fb1212426bb1e1e4ff47e4
       BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: 9f493b11dba3ba75b0330bb681e085e343b056d6
+      FOREVER_VALIDATION_SOURCE_SHA: 1d76ff945c81b25615fb1212426bb1e1e4ff47e4
       NEXT_TELEMETRY_DISABLED: "1"
       SOUNDING_LINE_PR_NUMBER: "901"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 9f493b11dba3ba75b0330bb681e085e343b056d6
+          ref: 1d76ff945c81b25615fb1212426bb1e1e4ff47e4
           fetch-depth: 64
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -67,7 +67,7 @@ jobs:
       - name: Capture real source-bound Product Experience journeys for PR 901
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "3f8295823157d890db3a09338b1963df60c4c255"
+          test "$(git rev-parse HEAD^{tree})" = "1f71491f05a8593f353571696fb5e94a22873555"
           node --input-type=module <<'EOF'
           import {execFileSync} from "node:child_process";
           import {writeFile} from "node:fs/promises";
