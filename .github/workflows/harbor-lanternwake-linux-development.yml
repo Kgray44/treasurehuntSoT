@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Measure main and Native with full recording on Metal and the existing Darwin diagnostic guardian
+run-name: Isolate recorder overhead on the exact staged Native tree and hosted Metal
 
 on:
   push:
@@ -13,14 +13,12 @@ permissions:
 
 jobs:
   benchmark:
-    name: Canonical recorded workload on hosted Metal (${{ matrix.lane }})
+    name: Native workload with reduced test recording on hosted Metal (${{ matrix.lane }})
     runs-on: macos-15
     strategy:
       fail-fast: false
       matrix:
         include:
-          - lane: main
-            source: 627a4e651641b6765ac789d378672ea6e903c120
           - lane: native
             source: e68eb73782ba4e13ac3fca30972c6f72f02d7314
     timeout-minutes: 22
@@ -81,7 +79,16 @@ jobs:
           const config=fs.readFileSync(configPath,"utf8");
           const origin='use: { browserName: "chromium" }';
           if (config.split(origin).length!==2) throw Error("The exact browser-channel anchor is required.");
-          fs.writeFileSync(configPath,config.replace(origin,'use: { browserName: "chromium", channel: "chromium" }'));
+          const originalTrace='trace: "retain-on-failure",';
+          const originalVideo='video: "retain-on-failure",';
+          for (const anchor of [originalTrace,originalVideo]) {
+            if (config.split(anchor).length !== 2) throw Error("Unexpected recording settings");
+          }
+          fs.writeFileSync(configPath,config
+            .replace(origin,'use: { browserName: "chromium", channel: "chromium" }')
+            .replace(originalTrace,'trace: { mode: "retain-on-failure", screenshots: false, snapshots: false },')
+            .replace(originalVideo,'video: "off",'));
+          console.log("The workload, browser viewport, isolation and all budgets are unchanged. This lane measures recorder overhead.");
           const browser = await chromium.launch({channel:"chromium"});
           try {
             const session = await browser.newBrowserCDPSession();
@@ -117,7 +124,7 @@ jobs:
           }
           fs.writeFileSync(file,source);
           EOF
-      - name: Measure every original budget with normal recording
+      - name: Measure every original budget with the recorder controls
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
         run: |
@@ -134,10 +141,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-hosted-metal-${{ matrix.lane }}
+          name: journal-hosted-metal-reduced-recorder-${{ matrix.lane }}
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/phase3-performance-metrics.json
           if-no-files-found: ignore
           retention-days: 30
-
-
-
