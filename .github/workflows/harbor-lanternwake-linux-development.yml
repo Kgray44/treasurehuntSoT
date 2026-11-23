@@ -75,18 +75,20 @@ jobs:
           text = p.read_text()
           split = "    const warmRuns:"
           insertion = "    await page.setViewportSize({ width: 1_440, height: 900 });"
-          title = 'phase3Test(
-  "canonical production Journal performance and lifecycle budgets",'
+          title = chr(10).join(['phase3Test(', '  "canonical production Journal performance and lifecycle budgets",'])
           open_line = "    const cold = await measuredFullOpening"
           assert all(text.count(marker)==1 for marker in [split, insertion, title, open_line])
           css = base64.b64decode("CiAgICBpZiAobGFuZSA9PT0gImNvbnRyb2wiKSB7CiAgICAgIGF3YWl0IHBhZ2UuYWRkSW5pdFNjcmlwdCgoKSA9PiB7CiAgICAgICAgZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigiRE9NQ29udGVudExvYWRlZCIsICgpID0+IHsKICAgICAgICAgIGNvbnN0IHNoZWV0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic3R5bGUiKTsKICAgICAgICAgIHNoZWV0LnRleHRDb250ZW50ID0gYAogICAgICAgICAgICAuY2hyb25pY2xlLWpvdXJuYWwtc2hlbGwudm95YWdlLXNoZWxsOjphZnRlciB7IGNvbnRlbnQ6ICIiICFpbXBvcnRhbnQ7IH0KICAgICAgICAgICAgLmNocm9uaWNsZS1qb3VybmFsLXNoZWxsIC5vY2Vhbi1kZXB0aCB7CiAgICAgICAgICAgICAgY29udGFpbjogbm9uZSAhaW1wb3J0YW50OwogICAgICAgICAgICAgIGlzb2xhdGlvbjogYXV0byAhaW1wb3J0YW50OwogICAgICAgICAgICAgIHdpbGwtY2hhbmdlOiBhdXRvICFpbXBvcnRhbnQ7CiAgICAgICAgICAgIH0KICAgICAgICAgICAgLmNocm9uaWNsZS1qb3VybmFsLXNoZWxsIC5vY2Vhbi1kZXB0aDo6YWZ0ZXIgeyBjb250ZW50OiBub25lICFpbXBvcnRhbnQ7IH0KICAgICAgICAgIGA7CiAgICAgICAgICBkb2N1bWVudC5oZWFkLmFwcGVuZChzaGVldCk7CiAgICAgICAgfSwgeyBvbmNlOiB0cnVlIH0pOwogICAgICB9KTsKICAgIH0K").decode()
           verify = base64.b64decode("CiAgICBjb25zdCBjb21wdXRlZCA9IGF3YWl0IGpvdXJuYWwocGFnZSkuZXZhbHVhdGUoKHNoZWxsKSA9PiB7CiAgICAgIGNvbnN0IGFtYmllbnQgPSBzaGVsbC5xdWVyeVNlbGVjdG9yKCIub2NlYW4tZGVwdGgiKSE7CiAgICAgIHJldHVybiB7CiAgICAgICAgc2hlbGw6IGdldENvbXB1dGVkU3R5bGUoc2hlbGwsICI6OmFmdGVyIikuY29udGVudCwKICAgICAgICBhbWJpZW50OiBnZXRDb21wdXRlZFN0eWxlKGFtYmllbnQsICI6OmFmdGVyIikuY29udGVudCwKICAgICAgICBjb250YWluOiBnZXRDb21wdXRlZFN0eWxlKGFtYmllbnQpLmNvbnRhaW4sCiAgICAgIH07CiAgICB9KTsKICAgIGV4cGVjdChjb21wdXRlZCkudG9FcXVhbChsYW5lID09PSAiY29udHJvbCIKICAgICAgPyB7c2hlbGw6ICciIicsIGFtYmllbnQ6ICJub25lIiwgY29udGFpbjogIm5vbmUifQogICAgICA6IHtzaGVsbDogIm5vbmUiLCBhbWJpZW50OiAnIiInLCBjb250YWluOiAicGFpbnQifSk7Cg==").decode()
           tail = base64.b64decode("CiAgICBjb25zdCBydW5zID0gW2NvbGRdOwogICAgZm9yIChsZXQgaW5kZXggPSAwOyBpbmRleCA8IDI7IGluZGV4ICs9IDEpIHsKICAgICAgcnVucy5wdXNoKGF3YWl0IG1lYXN1cmVkRnVsbE9wZW5pbmcocGFnZSwgcmVwbGF5KHBhZ2UpKSk7CiAgICB9CiAgICBjb25zdCByZXN1bHRzID0gcnVucy5tYXAoKHJ1bikgPT4gKHsKICAgICAgb3BlbmluZ01zOiByb3VuZGVkKHJ1bi5kdXJhdGlvbk1zKSwKICAgICAgZnJhbWVQOTU6IHJvdW5kZWQocGVyY2VudGlsZShydW4udmlzdWFsLmZyYW1lRHVyYXRpb25zTXMsIDAuOTUpKSwKICAgICAgZnJhbWVzOiBydW4udmlzdWFsLmZyYW1lRHVyYXRpb25zTXMubGVuZ3RoLAogICAgICBzbG93RnJhbWVzOiBydW4udmlzdWFsLmZyYW1lRHVyYXRpb25zTXMuZmlsdGVyKChmcmFtZSkgPT4gZnJhbWUgPiAyNSkubGVuZ3RoLAogICAgICBsb25nVGFza01heGltdW06IG1heGltdW0ocnVuLnZpc3VhbC5sb25nVGFza0R1cmF0aW9uc01zKSwKICAgICAgY2xzOiByb3VuZGVkKHJ1bi52aXN1YWwuY2xzKSwKICAgIH0pKTsKICAgIGNvbnN0IGRpYWdub3N0aWMgPSB7IHNvdXJjZTogcHJvY2Vzcy5lbnYuRk9SRVZFUl9WQUxJREFUSU9OX1NPVVJDRV9TSEEsIGxhbmUsIHJlc3VsdHMgfTsKICAgIGF3YWl0IGZzLndyaXRlRmlsZShwYXRoLmpvaW4oYXJ0aWZhY3QuYXJ0aWZhY3REaXJlY3RvcnksICJqb3VybmFsLWNvbXBvc2l0b3ItcGFpci0iICsgbGFuZSArICIuanNvbiIpLAogICAgICBKU09OLnN0cmluZ2lmeShkaWFnbm9zdGljLCBudWxsLCAyKSArICJcbiIsIHsgZmxhZzogInd4IiB9KTsKICB9LAopOwp9Cg==").decode()
           prefix = text.split(split, 1)[0]
-          prefix = prefix.replace(title, 'phase3Test.describe.configure({mode: "serial"});
-for (const lane of ["control", "static"] as const) {
-phase3Test(
-  "Journal compositor comparison: " + lane,')
+          registration = chr(10).join([
+              'phase3Test.describe.configure({mode: "serial"});',
+              'for (const lane of ["control", "static"] as const) {',
+              'phase3Test(',
+              '  "Journal compositor comparison: " + lane,',
+          ])
+          prefix = prefix.replace(title, registration)
           prefix = prefix.replace(insertion, css + insertion)
           prefix = prefix.replace(open_line, verify + open_line)
           prefix = prefix.replace('"P3-PERFORMANCE-CHAPTER"', '"P3-PERFORMANCE-CHAPTER-" + lane')
