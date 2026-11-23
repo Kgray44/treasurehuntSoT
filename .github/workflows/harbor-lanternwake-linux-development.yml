@@ -1,5 +1,5 @@
 name: Player invitation contrast diagnostic
-run-name: Compare reporter Git diff collection on identical Journal workloads
+run-name: Compare the Journal and browser cadence on the same host
 
 on:
   push:
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   contrast:
-    name: Compare Journal timing with and without reporter diff metadata
+    name: Measure baseline browser cadence around the unchanged Journal workload
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
@@ -58,52 +58,72 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install chromium
-      - name: Run both reporter modes on the same runner and exact product
+      - name: Measure the browser control and exact Journal workload
         shell: bash
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           git fetch --no-tags --filter=blob:none --depth=64 origin refs/heads/main:refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "$BASE_SHA"
-          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
           test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "2e10c383fa2accb79fbad09f92d61631b23e2d78"
-          jq -n --arg base "$BASE_SHA" --arg head "$CANDIDATE_SHA" '
-            {pull_request: {number: 901, base: {sha: $base, ref:"main"}, head:{sha:$head}}}
-          ' > "$RUNNER_TEMP/harbor-git-metadata-event.json"
+          mkdir -p "$RUNNER_TEMP/harbor-cadence"
+          test ! -e .harbor-cadence.diag.mjs
+          cat > .harbor-cadence.diag.mjs <<'EOF'
+          import { chromium, devices } from "playwright";
+          const browser = await chromium.launch({headless:true});
+          try {
+           const page=await browser.newPage({...devices["Desktop Chrome"]});
+           await page.setContent("<body style='margin:0;background:#0d1920'><main></main></body>");
+           const results=[];
+           for (const control of ["idle", "compositor-transform"]) {
+            if (control==="compositor-transform") {
+             await page.locator("main").evaluate(node=>{
+              Object.assign(node.style,{width:"32rem",height:"24rem",background:"#d1bb83",willChange:"transform"});
+              node.animate([{transform:"translateX(0)"},{transform:"translateX(108px)"}],{duration:1000,iterations:Infinity,direction:"alternate"});
+             });
+            }
+            const result=await page.evaluate(async ()=>{
+             const values=[];
+             let prior;
+             await new Promise(resolve=>{
+              const frame=(time)=>{
+               if(prior!==undefined) values.push(time-prior);
+               prior=time;
+               if(values.length===270) resolve(true);
+               else requestAnimationFrame(frame);
+              };
+              requestAnimationFrame(frame);
+             });
+             const intervals=values.slice(30).sort((a,b)=>a-b);
+             return {samples:intervals.length,p50Ms:intervals[Math.ceil(intervals.length*.5)-1],p95Ms:intervals[Math.ceil(intervals.length*.95)-1]};
+            });
+            results.push({control,...result});
+           }
+           console.log(JSON.stringify({phase:process.env.HARBOR_CONTROL_PHASE,device:devices["Desktop Chrome"].viewport,results}));
+          } finally {
+           await browser.close();
+          }
+          EOF
           lscpu | sed -n '1,20p'
-          mkdir -p "$RUNNER_TEMP/harbor-timing"
-          export GITHUB_EVENT_NAME=pull_request
-          export GITHUB_EVENT_PATH="$RUNNER_TEMP/harbor-git-metadata-event.json"
-          for lane in default without-reporter-diff; do
-            if [[ "$lane" == without-reporter-diff ]]; then
-              python - <<'PY'
-          from pathlib import Path
-          config=Path("playwright.config.ts")
-          text=config.read_text()
-          anchor="export default defineConfig({\n"
-          assert text.count(anchor)==1
-          config.write_text(text.replace(anchor,anchor+"  captureGitInfo: { commit: true, diff: false },\n"))
-          PY
-            fi
-            echo "HARBOR_TIMING_LANE=$lane"
-            if node --input-type=module <<'EOF'
+          HARBOR_CONTROL_PHASE=before node .harbor-cadence.diag.mjs | tee "$RUNNER_TEMP/harbor-cadence/before.json"
+          if node --input-type=module <<'EOF'
           import {runJob} from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob({id:"harbor-journal-git-metadata",kind:"browser",files:["tests/e2e/phase3-performance.spec.ts"]},
+          await runJob({id:"harbor-journal-cadence",kind:"browser",files:["tests/e2e/phase3-performance.spec.ts"]},
             {base:process.env.BASE_SHA,tree:process.env.CANDIDATE_SHA});
           EOF
-            then
-              echo "$lane PASS"
-            else
-              echo "$lane FAILED"
-            fi
-            output="$(find artifacts/sounding-line -name phase3-performance-metrics.json -type f -printf '%T@ %p\n' | sort -rn | head -1 | cut -d' ' -f2-)"
-            test -s "$output"
-            cp "$output" "$RUNNER_TEMP/harbor-timing/$lane.json"
-            jq '{provenance:.provenance.testedSourceSha, failedBudgets, metrics: {desktopFrameP95Ms:.metrics.desktopFrameP95Ms,ordinaryCumulativeLongTaskMs:.metrics.ordinaryCumulativeLongTaskMs}}' "$output"
-          done
+          then
+            echo PASS
+          else
+            echo FAILED
+          fi
+          HARBOR_CONTROL_PHASE=after node .harbor-cadence.diag.mjs | tee "$RUNNER_TEMP/harbor-cadence/after.json"
+          output="$(find artifacts/sounding-line -name phase3-performance-metrics.json -type f | head -1)"
+          test -s "$output"
+          cp "$output" "$RUNNER_TEMP/harbor-cadence/journal.json"
+          jq '{testedSource:.provenance.testedSourceSha, desktop:.metrics.desktopFrameP95Ms, ordinary:.metrics.ordinaryCumulativeLongTaskMs, failedBudgets}' "$output"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: harbor-journal-reporter-diff-comparison
-          path: ${{ runner.temp }}/harbor-timing/*.json
+          name: harbor-journal-host-cadence
+          path: ${{ runner.temp }}/harbor-cadence/*.json
           if-no-files-found: error
           retention-days: 15
