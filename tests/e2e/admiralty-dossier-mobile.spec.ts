@@ -12,11 +12,7 @@ test.beforeEach(() => {
 test.afterAll(() => db.$disconnect());
 
 for (const width of [320, 390]) {
-  test(`the account dossier exposes its complete ID and keyboard Copy at ${width}px`, async ({
-    page,
-    context,
-    baseURL,
-  }) => {
+  test(`the account dossier exposes its complete ID and keyboard Copy at ${width}px`, async ({ page, context, baseURL }) => {
     const operator = await closureAccount("Synthetic dossier administrator");
     await db.accountRoleAssignment.create({
       data: { accountId: operator.id, role: "ADMINISTRATOR", scopeType: "GLOBAL" },
@@ -33,11 +29,11 @@ for (const width of [320, 390]) {
     await context.grantPermissions(["clipboard-read", "clipboard-write"], { origin: new URL(baseURL!).origin });
     await page.setViewportSize({ width, height: 844 });
     await page.goto(`/admin/people/${target.id}`);
-    await expect(page.getByRole("heading", { name: "Synthetic dossier target", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Synthetic dossier target", exact: true, level: 1 })).toBeVisible();
 
     const copy = page.getByRole("button", { name: "Copy account ID", exact: true });
     await expect(copy).toBeInViewport({ ratio: 1 });
-    const identifier = page.locator("code").filter({ hasText: target.id });
+    const identifier = page.locator(".chartroom-copy").filter({ has: copy }).locator("code");
     await expect(identifier).toHaveText(target.id);
     await expect(identifier).toBeInViewport({ ratio: 1 });
     expect(await identifier.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
