@@ -1,5 +1,5 @@
-name: Player invitation contrast diagnostic
-run-name: Reproduce and verify the Player invitation helper copy contrast repair
+name: Lanternwake isolated Linux benchmark
+run-name: Verify the readable invitation and released code submission
 
 on:
   push:
@@ -12,19 +12,19 @@ permissions:
   contents: read
 
 jobs:
-  contrast:
-    name: Read computed contrast during the invitation handoff
+  invitation-media:
+    name: Record the repaired invitation transition on desktop and mobile
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: 7c936058132544030feafc37fd05f2cfdc620d06
+      CANDIDATE_SHA: d2d80e1a0c0951d3d8edc4b20501f0a697a05130
       BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: 7c936058132544030feafc37fd05f2cfdc620d06
+      FOREVER_VALIDATION_SOURCE_SHA: d2d80e1a0c0951d3d8edc4b20501f0a697a05130
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 7c936058132544030feafc37fd05f2cfdc620d06
+          ref: d2d80e1a0c0951d3d8edc4b20501f0a697a05130
           fetch-depth: 16
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,50 +58,79 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install chromium
-      - name: Prove the original helper copy uses the wrong color
-        shell: bash
+      - name: Record the complete invitation mode handoff
+        env:
+          INVITATION_MEDIA: ${{ runner.temp }}/harbor-invitation-media
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          cat >> tests/e2e/access-gates.spec.ts <<'SPEC'
-
-          test("Player invitation instructions use readable parchment ink", async ({ page }) => {
-            await page.goto("/player/sign-in#invitation-code");
-            const helper = page.locator("#invitation-code").getByText("Invitation links open the same ceremony automatically.", {
-              exact: false,
-            });
-            await expect(helper).toBeVisible();
-            await expect(helper, "Invitation instructions use parchment ink").toHaveCSS("color", "rgb(43, 42, 34)");
+          mkdir -p "$INVITATION_MEDIA"
+          cat > tests/e2e/harbor-invitation-media.diag.spec.ts <<'SPEC'
+          import {mkdir} from "node:fs/promises";
+          import {join} from "node:path";
+          import {expect,test} from "@playwright/test";
+          
+          test("record the public invitation handoff in each viewport and motion mode", async ({browser,baseURL}) => {
+            const root = process.env.INVITATION_MEDIA;
+            if (!root) throw Error("Invitation evidence path is required");
+            await mkdir(root,{recursive:true});
+            for (const [device,viewport] of Object.entries({desktop:{width:1440,height:900},mobile:{width:390,height:844}})) {
+              for (const reducedMotion of ["no-preference","reduce"] as const) {
+                const label = device + "-" + reducedMotion;
+                const context = await browser.newContext({viewport,reducedMotion,baseURL,recordVideo:{dir:join(root,label)}});
+                try {
+                  const page = await context.newPage();
+                  await page.goto("/player/sign-in");
+                  await expect(page.getByRole("heading",{name:"Open your Chronicle Library"})).toBeVisible();
+                  await page.getByRole("tab",{name:"Invitation code"}).focus();
+                  await page.keyboard.press("Enter");
+                  const form=page.locator("#invitation-code");
+                  await expect(form.getByRole("button",{name:"Find my invitation"})).toBeVisible();
+                  await page.screenshot({path:join(root,label+"-invitation.png")});
+                  await expect(form).toHaveCSS("transform","none");
+                  await expect(form).toHaveCSS("opacity","1");
+                  expect((await page.request.get("/api/player/library")).status()).toBe(401);
+                } finally {
+                  await context.close();
+                }
+              }
+            }
           });
           SPEC
-          cat > "$RUNNER_TEMP/harbor-invitation-focus.mjs" <<'EOF'
+          node --input-type=module <<'EOF'
           import {runJob} from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob({id:"harbor-invitation-help",kind:"browser",files:["tests/e2e/access-gates.spec.ts"]},
+          await runJob({id:"harbor-invitation-media",kind:"browser",files:["tests/e2e/harbor-invitation-media.diag.spec.ts"]},
             {base:process.env.BASE_SHA,tree:process.env.CANDIDATE_SHA});
           EOF
-          if node --input-type=module < "$RUNNER_TEMP/harbor-invitation-focus.mjs" 2>&1 | tee "$RUNNER_TEMP/help-red.log"; then
-            echo 'Expected the original helper copy color assertion to fail'
-            exit 1
-          fi
-          grep -F 'Error: Invitation instructions use parchment ink' "$RUNNER_TEMP/help-red.log"
-      - name: Apply the shared parchment ink and verify both access surfaces
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harbor-invitation-transition-media
+          path: ${{ runner.temp }}/harbor-invitation-media/**
+          if-no-files-found: error
+          retention-days: 15
+      - name: Verify a released short code through the real browser entry and accept flow
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
-          form = Path("src/components/platform/PlayerSignIn.tsx")
-          text = form.read_text()
-          old = '                id="invitation-code"\n'
-          assert text.count(old) == 1
-          form.write_text(text.replace(old, old + '                className={styles.invitationPanel}\n'))
-          css = Path("src/components/platform/PlayerSignIn.module.css")
-          text = css.read_text()
-          old = ':global(.auth-mode-panel) .accountPanel p,\n'
-          assert text.count(old) == 1
-          css.write_text(text.replace(old, old + ':global(.auth-mode-panel) .invitationPanel p,\n'))
+          test = Path("tests/e2e/chronicle-platform.spec.ts")
+          source = test.read_text()
+          old = "  await playerPage.goto(invitation.link);"
+          assert source.count(old) == 2
+          new = '''  await playerPage.goto("/player/sign-in");
+            await playerPage.getByRole("tab", {name:"Invitation code"}).focus();
+            await playerPage.keyboard.press("Enter");
+            const shortCode = playerPage.getByLabel("Short code", {exact:true});
+            await expect(shortCode).toBeFocused();
+            expect((await playerPage.request.get("/api/player/library")).status()).toBe(401);
+            await shortCode.fill(invitation.shortCode);
+            const lookup = playerPage.waitForResponse(response => response.url().endsWith("/api/invitations/code") && response.request().method()==="POST");
+            await shortCode.press("Enter");
+            expect((await lookup).ok()).toBe(true);
+            expect((await playerPage.request.get("/api/player/library")).status()).toBe(401);'''
+          test.write_text(source.replace(old,new,1))
           PY
-          git diff --check
           node --input-type=module <<'EOF'
           import {runJob} from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob({id:"harbor-invitation-help",kind:"browser",files:["tests/e2e/access-gates.spec.ts","tests/e2e/lanternwake-phase4.spec.ts"]},
+          await runJob({id:"harbor-invitation-released-code",kind:"browser",files:["tests/e2e/chronicle-platform.spec.ts"]},
             {base:process.env.BASE_SHA,tree:process.env.CANDIDATE_SHA});
           EOF
