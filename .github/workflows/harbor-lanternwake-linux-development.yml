@@ -1,53 +1,87 @@
-name: Native Sounding Line V3 plan
-run-name: Resolve exact ordinary V3 test selection for the reconciled Native candidate
+name: Lanternwake isolated Linux benchmark
+run-name: Inspect hidden Journal compositor surfaces on protected main
+
 on:
   push:
     branches:
       - codex/lanternwake-focused-development-cf6b1d6bbae4
     paths:
       - .github/workflows/harbor-lanternwake-linux-development.yml
+
 permissions:
   contents: read
+
 jobs:
-  plan:
+  benchmark:
+    name: Inspect current-main Journal compositor ownership
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 22
     env:
-      CANDIDATE_SHA: e68eb73782ba4e13ac3fca30972c6f72f02d7314
-      BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      EXPECTED_TREE: 491043e4d1c5b3d17f4957a9ae3ab43d44dfe068
+      CANDIDATE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+      BASE_SHA: d0f21b9dfc4a7390c34f94beedc72904e1431f1f
+      FOREVER_VALIDATION_SOURCE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+      NEXT_TELEMETRY_DISABLED: "1"
+      EXPECTED_TREE: b0a8802278c11399f703a2fddf6f5e52ca470a13
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: e68eb73782ba4e13ac3fca30972c6f72f02d7314
+          ref: 627a4e651641b6765ac789d378672ea6e903c120
           fetch-depth: 2
           persist-credentials: false
+          sparse-checkout-cone-mode: false
           sparse-checkout: |
-            scripts/sounding-line-v3
-            testing
+            /*
+            !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
+            /scripts/
+            /src/
+            /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Verify the exact staged tree and resolve V3 coverage without running the gate
+      - name: Install locked dependencies and Chromium
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install --with-deps chromium
+      - name: Verify mainline ancestry and stage the proven browser probe
+        run: |
+          git fetch --no-tags --depth=8 --filter=blob:none origin refs/heads/main:refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "$CANDIDATE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "$EXPECTED_TREE"
+          git fetch --no-tags --depth=1 origin "${{ github.sha }}"
+          git show "${{ github.sha }}:tests/e2e/parallax-shared-consumers.spec.ts" > tests/e2e/parallax-shared-consumers.spec.ts
+          test "$(git hash-object tests/e2e/parallax-shared-consumers.spec.ts)" = "4a556bba983b77d3e9cdafa5f26fed74f33a9e4d"
+      - name: Attribute visible and hidden Journal compositor surfaces
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "$EXPECTED_TREE"
-          test "$(git rev-parse 'HEAD^2')" = "$BASE_SHA"
-          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          node scripts/sounding-line-v3/cli.mjs plan --base "$BASE_SHA" --head "$CANDIDATE_SHA" --json > "$RUNNER_TEMP/v3-native-plan.json"
           node --input-type=module <<'EOF'
-          import fs from "node:fs";
-          import { execFileSync } from "node:child_process";
-          const p=JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP+"/v3-native-plan.json","utf8"));
-          const git=(...args)=>execFileSync("git",args,{encoding:"utf8"}).trim();
-          const performance="tests/e2e/phase3-performance.spec.ts";
-          const config="tests/config/playwright/playwright.phase3-performance.config.ts";
-          console.log("NATIVE_V3_EXACT_PLAN "+JSON.stringify({
-            category:p.category,
-            base:p.base,
-            candidate:p.tree,
-            performanceSource:git("rev-parse","HEAD:"+performance),
-            performanceConfig:git("rev-parse","HEAD:"+config),
-            jobs:p.jobs.map(({id,kind,files})=>({id,kind,files:files.length,performance:files.includes(performance)})),
-          }));
+          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-shared-consumers.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
+          );
           EOF
+      - name: Retain sanitized performance metrics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: journal-current-hidden-surfaces
+          path: artifacts/sounding-line/journal-current-hidden-surfaces/**
+          if-no-files-found: ignore
+          retention-days: 30
