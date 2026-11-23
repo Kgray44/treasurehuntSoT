@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Compare recorded canonical desktop p95 on landed main and the reconciled Native candidate
+run-name: Attribute the Skip cleanup delay on the exact landed Journal
 
 on:
   push:
@@ -13,26 +13,18 @@ permissions:
 
 jobs:
   benchmark:
-    name: Exact recorded workload (${{ matrix.product }})
+    name: Inspect Skip cleanup animation owners
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - product: protected-main
-            source: d0f21b9dfc4a7390c34f94beedc72904e1431f1f
-          - product: native-candidate
-            source: 5f43a25b81804e60e00a92afc3b2f80236ec8da1
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: ${{ matrix.source }}
+      CANDIDATE_SHA: d0f21b9dfc4a7390c34f94beedc72904e1431f1f
       BASE_SHA: d0f21b9dfc4a7390c34f94beedc72904e1431f1f
-      FOREVER_VALIDATION_SOURCE_SHA: ${{ matrix.source }}
+      FOREVER_VALIDATION_SOURCE_SHA: d0f21b9dfc4a7390c34f94beedc72904e1431f1f
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ matrix.source }}
+          ref: d0f21b9dfc4a7390c34f94beedc72904e1431f1f
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -66,19 +58,17 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Install only the canonical-surface benchmark into the owned replay
+      - name: Install only the staged diagnostic fixture
         run: |
-          git fetch --no-tags --depth=1 origin 186e0d868f5cb1aaf542e7885486f7e5ce144f16
-          git show 186e0d868f5cb1aaf542e7885486f7e5ce144f16:tests/e2e/phase3-performance.spec.ts > tests/e2e/phase3-performance.spec.ts
-          test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "ce468f106d9bf65548db3ad638af36c7a9cd5196"
-          test "$(git diff --name-only)" = "tests/e2e/phase3-performance.spec.ts"
-      - name: Run the full recorded workload with the original thresholds
+          git fetch --no-tags --depth=1 origin "${{ github.sha }}"
+          git show "${{ github.sha }}:tests/e2e/parallax-shared-consumers.spec.ts" > tests/e2e/parallax-shared-consumers.spec.ts
+      - name: Capture actual transition owners during requested Skip
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
           await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-shared-consumers.spec.ts"] },
             { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
           );
           EOF
@@ -86,7 +76,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: exact-recorded-workload-${{ matrix.product }}
-          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
+          name: journal-skip-owners
+          path: artifacts/sounding-line/journal-skip-owners/**
           if-no-files-found: ignore
           retention-days: 30
