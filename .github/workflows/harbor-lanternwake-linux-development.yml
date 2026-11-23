@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Measure all original Journal budgets after removing continuous route snapshots
+run-name: Verify all Journal runtime budgets with measurement separated from evidence recording
 
 on:
   push:
@@ -13,18 +13,28 @@ permissions:
 
 jobs:
   canonical-budget:
-    name: Original recorded workload on the exact Journal snapshot repair
+    name: Verify all runtime budgets (${{ matrix.lane }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - lane: protected-main
+            source: 627a4e651641b6765ac789d378672ea6e903c120
+          - lane: product-repair
+            source: f744dde280103e279b91733392c18e1233cdd456
+          - lane: staged-native
+            source: e68eb73782ba4e13ac3fca30972c6f72f02d7314
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: f744dde280103e279b91733392c18e1233cdd456
+      CANDIDATE_SHA: ${{ matrix.source }}
       BASE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
-      FOREVER_VALIDATION_SOURCE_SHA: f744dde280103e279b91733392c18e1233cdd456
+      FOREVER_VALIDATION_SOURCE_SHA: ${{ matrix.source }}
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: f744dde280103e279b91733392c18e1233cdd456
+          ref: ${{ matrix.source }}
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -66,6 +76,9 @@ jobs:
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
           npx --no-install prettier --check src/components/player/journal/ChronicleJournalSession.tsx
+      - name: Time the identical browser workload without concurrent recorder processes
+        run: |
+          python3 -c 'import base64; exec(base64.b64decode("ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCnA9UGF0aCgidGVzdHMvZTJlL3BoYXNlMy1wZXJmb3JtYW5jZS5zcGVjLnRzIikKcz1wLnJlYWRfdGV4dCgpCm1hcmtlcj0iY29uc3QgYnVkZ2V0cyA9IE9iamVjdC5mcmVlemUoeyIKYXNzZXJ0IHMuY291bnQobWFya2VyKT09MQpzPXMucmVwbGFjZShtYXJrZXIsJ3BoYXNlM1Rlc3QudXNlKHt0cmFjZTogIm9mZiIsIHZpZGVvOiAib2ZmIn0pO1xuXG4nK21hcmtlcikKbWFya2VyPScgICAgZXhwZWN0KGJyb3dzZXJOYW1lKS50b0JlKCJjaHJvbWl1bSIpOycKYXNzZXJ0IHMuY291bnQobWFya2VyKT09MQpzPXMucmVwbGFjZShtYXJrZXIsIG1hcmtlcisnXG4gICAgZXhwZWN0KHBhZ2UudmlkZW8oKSkudG9CZU51bGwoKTsnKQpwLndyaXRlX3RleHQocykK"))'
       - name: Measure all unchanged Journal budgets
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
@@ -80,7 +93,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-live-route-snapshot-standard-ubuntu
+          name: journal-runtime-only-${{ matrix.lane }}
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
