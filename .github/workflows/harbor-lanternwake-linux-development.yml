@@ -1,94 +1,88 @@
-name: Validate exact source-bound Journal experience publication
-run-name: Verify source-bound Journal Skip evidence against the protected base
+name: Lanternwake isolated Linux benchmark
+run-name: Smoke test explicit Journal Skip on protected main
+
 on:
   push:
     branches:
       - codex/lanternwake-focused-development-cf6b1d6bbae4
     paths:
       - .github/workflows/harbor-lanternwake-linux-development.yml
+
 permissions:
   contents: read
+
 jobs:
-  validate-evidence:
+  benchmark:
+    name: Verify landed tree and explicit Skip
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 22
+    env:
+      SKIP_LANE: patched
+      CANDIDATE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+      BASE_SHA: d0f21b9dfc4a7390c34f94beedc72904e1431f1f
+      FOREVER_VALIDATION_SOURCE_SHA: 627a4e651641b6765ac789d378672ea6e903c120
+      NEXT_TELEMETRY_DISABLED: "1"
+      EXPECTED_TREE: b0a8802278c11399f703a2fddf6f5e52ca470a13
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 283f42e5b0de23193237533d8548496ca197e5fa
-          fetch-depth: 12
+          ref: 627a4e651641b6765ac789d378672ea6e903c120
+          fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /*
             !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
             /scripts/
-            /testing/
             /src/
-            /app/
-            /components/
-            /lib/
-            /styles/
-            **/*.json
-            /Development_Docs/Testing/Product_Experience/evidence/journal-skip/0a1fdf912b/
+            /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Hydrate exact source and published media objects
-        env:
-          GH_TOKEN: ${{ github.token }}
-          BASE_SHA: d0f21b9dfc4a7390c34f94beedc72904e1431f1f
-          CANDIDATE_SHA: 283f42e5b0de23193237533d8548496ca197e5fa
+      - name: Install locked dependencies and Chromium
         run: |
-          git fetch --no-tags --depth=12 --filter=blob:none origin refs/heads/main:refs/remotes/origin/main
-          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install --with-deps chromium
+      - name: Verify mainline ancestry and stage the proven browser probe
+        run: |
+          git fetch --no-tags --depth=8 --filter=blob:none origin refs/heads/main:refs/remotes/origin/main
+          git merge-base --is-ancestor "$CANDIDATE_SHA" origin/main
+          test "$(git rev-parse HEAD^{tree})" = "$EXPECTED_TREE"
+          git fetch --no-tags --depth=1 origin "ca984d10b6af4ff666f00e4ef80aa052e784a07a"
+          git show "ca984d10b6af4ff666f00e4ef80aa052e784a07a:tests/e2e/parallax-shared-consumers.spec.ts" > tests/e2e/parallax-shared-consumers.spec.ts
+          test "$(git hash-object tests/e2e/parallax-shared-consumers.spec.ts)" = "35f9d2758a71811d8c1195fe7578a9225c37aacb"
+      - name: Capture actual transition owners during requested Skip
+        run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
-          node --input-type=module > "$RUNNER_TEMP/evidence-object-ids" <<'EOF'
-          import { execFileSync } from "node:child_process";
-          import { sourceSnapshotReadsPath } from "./scripts/sounding-line/product-experience.mjs";
-          const git=(args)=>execFileSync("git",args,{encoding:"utf8",maxBuffer:64*1024*1024});
-          const recordPath="Development_Docs/Testing/Product_Experience/candidate-review.json";
-          const receipt=JSON.parse(git(["show",process.env.CANDIDATE_SHA+":"+recordPath]));
-          const pair=receipt.pairedEvidence;
-          const evidenceFiles=new Set([recordPath,...receipt.artifacts.map(a=>a.path),pair.report.path,pair.profile.path,pair.runtime.path,...pair.cases.map(c=>c.witness.path)]);
-          const ids=new Set();
-          for (const revision of [process.env.BASE_SHA,process.env.CANDIDATE_SHA]) {
-            for (const entry of git(["ls-tree","-rz",revision]).split("\0").filter(Boolean)) {
-              const i=entry.indexOf("\t");
-              const [,type,oid]=entry.slice(0,i).split(" ");
-              const file=entry.slice(i+1);
-              if(type==="blob" && (sourceSnapshotReadsPath(file) || (revision===process.env.CANDIDATE_SHA && evidenceFiles.has(file)))) {
-                ids.add(oid);
-              }
-            }
-          }
-          console.log([...ids].sort().join("\n"));
-          EOF
-          GIT_NO_LAZY_FETCH=1 git cat-file --batch-check < "$RUNNER_TEMP/evidence-object-ids" |
-            awk '$2=="missing" { print $1 }' > "$RUNNER_TEMP/missing-evidence-object-ids"
-          count=$(wc -l < "$RUNNER_TEMP/missing-evidence-object-ids")
-          echo "Missing objects after path checkout: $count"
-          test "$count" -le 100
-          while IFS= read -r oid; do
-            actual=$(gh api "repos/Kgray44/treasurehuntSoT/git/blobs/$oid" --jq '.content' | base64 --decode | git hash-object -w --stdin)
-            test "$actual" = "$oid"
-          done < "$RUNNER_TEMP/missing-evidence-object-ids"
-      - name: Run the repository source-bound experience verifier
-        env:
-          BASE_SHA: d0f21b9dfc4a7390c34f94beedc72904e1431f1f
-          CANDIDATE_SHA: 283f42e5b0de23193237533d8548496ca197e5fa
-        run: |
           node --input-type=module <<'EOF'
-          import { execFileSync } from "node:child_process";
-          import { planProductExperience, verifyProductExperience } from "./scripts/sounding-line/product-experience.mjs";
-          const root=process.cwd();
-          const baseSha=process.env.BASE_SHA;
-          const candidateSha=process.env.CANDIDATE_SHA;
-          const changedPaths=execFileSync("git",["diff","--name-only","--no-renames",baseSha,candidateSha],{encoding:"utf8",maxBuffer:8*1024*1024}).trim().split("\n");
-          const plan=planProductExperience({root,baseSha,candidateSha,changedPaths});
-          if(!plan.applicable || plan.sourceDigest!=="e8cd334f089255752e02cbcc5420d8b367eae3816c0ad5bfd319674cb9d020bb" || plan.contractDigest!=="353a6515594fe39c41300eb093e5e1f78ac6e9293a6d3494a77131cd9f20f41f") throw new Error("Expected verified source and contract boundaries");
-          const receipt=verifyProductExperience(root,candidateSha,plan);
-          console.log("JOURNAL_SKIP_EXPERIENCE_VERIFICATION "+JSON.stringify({baseSha,candidateSha,receipt}));
-          if(receipt.status!=="PASS") throw new Error("Product Experience evidence did not pass");
+          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-shared-consumers.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
+          );
           EOF
+      - name: Retain sanitized performance metrics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: journal-skip-owners-landed
+          path: artifacts/sounding-line/journal-skip-owners/**
+          if-no-files-found: ignore
+          retention-days: 30
