@@ -1,0 +1,37 @@
+{
+  "capturedSha": "44b286e6a1bffe460c77d5a9fb7929718aa9025e",
+  "captureArtifactId": 14855539138,
+  "captureArchiveSha256": "ba36e57d1eecae6dd2e8a0cecd3a63e8a0138bd91249c9ac9f113c464880fbc5",
+  "receipts": [
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/harbor-896/44b286e6a1bf/generic/paired/playwright-report.json",
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/harbor-896/44b286e6a1bf/generic/paired/playwright-report.json.original.raw",
+      "originalSha256": "9b9a7ffc48e2888dbf240e69d94c12e430c94921eacc75ca53bd927815ab202f",
+      "formattedSha256": "aeb482d3b76d0049a09d6b461fabc9c7fc07eea0b5940fc69c54168590eac45c"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/harbor-896/44b286e6a1bf/generic/paired/refit-no-preference/paired-witness.json",
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/harbor-896/44b286e6a1bf/generic/paired/refit-no-preference/paired-witness.json.original.raw",
+      "originalSha256": "c06e7204c46192c96f4cd14eb473629c3e406bad18a0adf29ec5a549cc3cc4c6",
+      "formattedSha256": "8639a3b444fd7fb80cb1578307126fdb8f0ea0589f304852eeb7ea593fa05b45"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/harbor-896/44b286e6a1bf/generic/paired/refit-reduce/paired-witness.json",
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/harbor-896/44b286e6a1bf/generic/paired/refit-reduce/paired-witness.json.original.raw",
+      "originalSha256": "759e993e6712a82295856c39cd173caf35efbb91876374198f98b69556c4c1e2",
+      "formattedSha256": "b65db05219a5c6319a8d0c423a81593423f860ae8ece6a3431f67e998b30b13a"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/harbor-896/44b286e6a1bf/generic/paired/refit-recovery/paired-witness.json",
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/harbor-896/44b286e6a1bf/generic/paired/refit-recovery/paired-witness.json.original.raw",
+      "originalSha256": "dc9e898ef7ae553a9be71f76ae64c3433f2c1ae435ab1c1e8150ba4dab9dd88b",
+      "formattedSha256": "a7657d2641e33328a1248b1762fe81849ec81cb895a0a1943c1bd5f97f59f057"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/harbor-896/44b286e6a1bf/development-capture-receipt.json",
+      "rawPath": "Development_Docs/Testing/Product_Experience/evidence/harbor-896/44b286e6a1bf/development-capture-receipt.json.original.raw",
+      "originalSha256": "4ae8146a4e8048828e43ea9e963b66f86ffee5747c3f84735a0286a746812694",
+      "formattedSha256": "b7b11e60e094c085445334248daf2d1d80af0cac94cc5a12cfa5283f6b78f1f7"
+    }
+  ]
+}
