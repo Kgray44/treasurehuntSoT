@@ -70,7 +70,7 @@ jobs:
             await installerPage.locator(listingLink).first().press("Enter");
             const install = installerPage.getByRole("button", { name: "Install to my reusable Library" });
             await expect(installerPage.getByText(/release 2\\.0\\.0 by Synthetic owner Creator/)).toBeVisible();'''
-          new='''  const interaction = [];
+          new='''  const interaction: Array<{ event: string; pathname: string; status?: number; rsc?: boolean }> = [];
             installerPage.on("framenavigated", (frame) => {
               if (frame === installerPage.mainFrame()) interaction.push({ event: "navigation", pathname: new URL(frame.url()).pathname });
             });
@@ -88,7 +88,7 @@ jobs:
               window.addEventListener("click", (event) => { if (event.target === anchor) events.push("click"); }, true);
               Object.assign(window, { __harborListingEvents: events });
             });
-            const before = await candidateLink.evaluate(anchor=>({ visible: Boolean(anchor.getClientRects().length), text: anchor.textContent, href: anchor.getAttribute("href") }));
+            const before = await candidateLink.evaluate(anchor=>({ visible: Boolean(anchor.getClientRects().length), inert: Boolean(anchor.closest("[inert]")), hiddenAncestor: Boolean(anchor.closest("[aria-hidden=true]")), text: anchor.textContent, href: anchor.getAttribute("href") }));
             await candidateLink.press("Enter");
             const install = installerPage.getByRole("button", { name: "Install to my reusable Library" });
             try {
