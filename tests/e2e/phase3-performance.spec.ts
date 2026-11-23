@@ -584,6 +584,8 @@ async function measuredFullOpening(page: Page, control: Locator) {
   return { ...opening, visual };
 }
 
+phase3Test.use({ channel: "chromium", video: "off", trace: "off" });
+
 phase3Test(
   "canonical production Journal performance and lifecycle budgets",
   async ({ page, phase3, browser, browserName }) => {
@@ -617,11 +619,24 @@ phase3Test(
 
     const warmRuns: Awaited<ReturnType<typeof measuredFullOpening>>[] = [];
     const desktopRuns = [cold.visual];
+    const cadence = process.env.JOURNAL_REPLAY_CADENCE;
+    expect(cadence === "immediate" || cadence === "idle").toBeTruthy();
+    const cadenceWitness = [];
     for (let index = 0; index < 3; index += 1) {
+      const activeBeforeClick = (await readRuntimeBaseline(page)).activeAnimations;
+      const started = performance.now();
+      if (cadence === "idle") await waitForStableRuntimeBaseline(page);
+      const preparationMs = performance.now() - started;
       const run = await measuredFullOpening(page, replay(page));
+      cadenceWitness.push({ activeBeforeClick, preparationMs: rounded(preparationMs),
+        intervals: run.visual.frameDurationsMs.length, p95: rounded(percentile(run.visual.frameDurationsMs, .95)) });
       warmRuns.push(run);
       desktopRuns.push(run.visual);
     }
+    console.log("JOURNAL_CADENCE_CONTEXT " + JSON.stringify({
+      cadence, cold: { intervals: cold.visual.frameDurationsMs.length, p95: rounded(percentile(cold.visual.frameDurationsMs,.95)) },
+      warm: cadenceWitness,
+    }));
     const mobileContext = await browser.newContext({ ...devices["Pixel 7"], baseURL: "http://127.0.0.1:3200" });
     const mobileRuns: VisualProbeResult[] = [];
     try {

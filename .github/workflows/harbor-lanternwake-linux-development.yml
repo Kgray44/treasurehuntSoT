@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Canonical Journal benchmark for isolated static atmosphere
+run-name: Compare back-to-back and idle Journal replay on identical source
 
 on:
   push:
@@ -15,8 +15,13 @@ jobs:
   benchmark:
     name: Phase 3 performance only (development)
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        cadence: [immediate, idle]
     timeout-minutes: 22
     env:
+      JOURNAL_REPLAY_CADENCE: ${{ matrix.cadence }}
       CANDIDATE_SHA: ${{ github.sha }}
       BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
       FOREVER_VALIDATION_SOURCE_SHA: ${{ github.sha }}
@@ -72,7 +77,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-static-atmosphere-benchmark
+          name: journal-cadence-${{ matrix.cadence }}
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
