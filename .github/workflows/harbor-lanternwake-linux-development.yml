@@ -1,5 +1,5 @@
-name: Stage source-bound Harbor review evidence
-run-name: Validate and stage the independently reviewed prerequisite evidence
+name: Verify byte-preserving receipt provenance and formatting
+run-name: Verify the formatted prerequisite evidence
 
 on:
   push:
@@ -13,23 +13,17 @@ permissions:
   contents: write
 
 jobs:
-  publish-proof:
+  format-evidence:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 20
     env:
-      CAPTURED_SHA: d2d80e1a0c0951d3d8edc4b20501f0a697a05130
-      CAPTURED_TREE: a03102dd59d2b48ea98d6474b7b832264d0d11c3
-      BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      TRANSPORT_RUN: "45216007396"
-      TRANSPORT_ARTIFACT: "14839785717"
-      TRANSPORT_DIGEST: sha256:ae04a2135f6759313f98613d5b32a4700e50e7c5c56526507f4c485f39c2b6b9
-      TRANSPORT_NAME: harbor-d2d80-source-bound-review-media
-      REVIEW_INPUT_DIGEST: 2cd9c22c6736e57d597aa243a967751b4c4e13202b8c4813a36b39d92eec1ad3
-      PROOF_REF: refs/heads/codex/harbor-901-reviewed-proof-d2d80e1a0c09
+      PREVIOUS_PROOF: a3aabc93e6c305978f9a30b87e5fdb1d2e0ffaa0
+      PROTECTED_BASE: 00420421bacc6e9b923c5e50852a83a858886131
+      PROOF_REF: refs/heads/codex/harbor-901-formatted-proof-d2d80e1
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: d2d80e1a0c0951d3d8edc4b20501f0a697a05130
+          ref: a3aabc93e6c305978f9a30b87e5fdb1d2e0ffaa0
           fetch-depth: 64
           persist-credentials: true
           sparse-checkout-cone-mode: false
@@ -56,65 +50,106 @@ jobs:
             /Development_Docs/**/*.txt
             /Development_Docs/**/*.sql
             /Development_Docs/**/*.csv
+            /Development_Docs/Testing/Product_Experience/evidence/harbor-901/d2d80e1a0c09/
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Verify the captured source and retrieve the reviewed bytes
+      - name: Install pinned formatting dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Preserve raw receipt identity and verify all formatting constraints
         shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
-          test "$(git rev-parse HEAD)" = "$CAPTURED_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "$CAPTURED_TREE"
+          test "$(git rev-parse HEAD)" = "$PREVIOUS_PROOF"
           git fetch --no-tags --filter=blob:none --depth=64 origin refs/heads/main:refs/remotes/origin/main
-          test "$(git rev-parse origin/main)" = "$BASE_SHA"
-          git merge-base --is-ancestor "$BASE_SHA" "$CAPTURED_SHA"
-          test -z "$(git ls-remote origin "$PROOF_REF")"
-          mkdir -p "$RUNNER_TEMP/harbor-proof/media"
-          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$TRANSPORT_ARTIFACT" |
-            jq -e --arg run "$TRANSPORT_RUN" --arg digest "$TRANSPORT_DIGEST" --arg name "$TRANSPORT_NAME" '
-              .digest == $digest and .name == $name and (.workflow_run.id | tostring) == $run
-              and (.expired | not) and .size_in_bytes <= 440401920
-            '
-          gh run download "$TRANSPORT_RUN" --repo "$GITHUB_REPOSITORY" --name "$TRANSPORT_NAME" --dir "$RUNNER_TEMP/harbor-proof/media"
-          gh api -H 'Accept: application/vnd.github.raw+json' "repos/$GITHUB_REPOSITORY/contents/.github/harbor-proof-input.json?ref=$GITHUB_SHA" > "$RUNNER_TEMP/harbor-proof/input.json"
-          printf '%s  %s\n' "$REVIEW_INPUT_DIGEST" "$RUNNER_TEMP/harbor-proof/input.json" | sha256sum --check
+          test "$(git rev-parse origin/main)" = "$PROTECTED_BASE"
           node --input-type=module <<'EOF'
-          import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-          import { join } from "node:path";
-          const directory = join(process.env.RUNNER_TEMP, "harbor-proof");
-          const input = JSON.parse(readFileSync(join(directory, "input.json"), "utf8"));
-          if (input.candidateSha !== process.env.CAPTURED_SHA || input.baseSha !== process.env.BASE_SHA ||
-              !Number.isInteger(input.iterations) || input.iterations < 1 || input.iterations > 3)
-            throw new Error("Review input identity is invalid");
-          const identities = {};
-          for (const { folder, reviewerContext, report } of input.reviews) {
-            if (!/^[a-z][a-z0-9-]+$/u.test(folder) || Object.hasOwn(identities, folder) ||
-                !/^codex:\/root\/[a-z0-9_]+$/u.test(reviewerContext) || report.candidateSha !== input.candidateSha)
-              throw new Error("Independent review is not bound to the candidate");
-            identities[folder] = reviewerContext;
-            mkdirSync(join(directory, folder));
-            writeFileSync(join(directory, folder, "review.json"), JSON.stringify(report));
+          import { createHash } from "node:crypto";
+          import { execFileSync } from "node:child_process";
+          import { readFileSync, writeFileSync } from "node:fs";
+          import prettier from "prettier";
+          import { experienceDigest, planProductExperience } from "./scripts/sounding-line/product-experience.mjs";
+          const root=process.cwd();
+          const recordPath="Development_Docs/Testing/Product_Experience/candidate-review.json";
+          const prefix="Development_Docs/Testing/Product_Experience/evidence/harbor-901/d2d80e1a0c09/";
+          const [proof,base]=[process.env.PREVIOUS_PROOF,process.env.PROTECTED_BASE];
+          const hash=(bytes)=>createHash("sha256").update(bytes).digest("hex");
+          const git=(...args)=>execFileSync("git",args,{encoding:"utf8",maxBuffer:16*1024*1024}).trim();
+          const original=JSON.parse(readFileSync(recordPath,"utf8"));
+          const record=structuredClone(original);
+          const paths=[
+           prefix+"development-capture-receipt.json",
+           record.pairedEvidence.report.path,
+           ...record.pairedEvidence.cases.map(item=>item.witness.path),
+          ];
+          if(new Set(paths).size!==5 || paths.some(file=>!file.startsWith(prefix))) throw Error("Unexpected receipt scope");
+          async function format(file,text) {
+           return prettier.format(text,{...await prettier.resolveConfig(file),filepath:file});
           }
-          writeFileSync(join(directory, "reviewers.json"), JSON.stringify(identities));
-          writeFileSync(join(directory, "evidence.mjs"), input.verifier);
-          writeFileSync(join(directory, "iterations"), String(input.iterations));
+          const provenance=[];
+          for(const file of paths){
+           const prior=readFileSync(file,"utf8");
+           const formatted=await format(file,prior);
+           if(formatted===prior||JSON.stringify(JSON.parse(prior))!==JSON.stringify(JSON.parse(formatted)))
+            throw Error("The expected formatting-only change did not hold: "+file);
+           const before=hash(prior), after=hash(formatted);
+           const reference=[record.pairedEvidence.report,...record.pairedEvidence.cases.map(item=>item.witness)].find(item=>item.path===file);
+           if(reference){
+            if(reference.sha256!==before) throw Error("Original verified receipt hash differs: "+file);
+            reference.sha256=after;
+           }
+           writeFileSync(file,formatted);
+           provenance.push({path:file,originalSha256:before,formattedSha256:after});
+          }
+          const common={root,baseSha:base,candidateSha:proof,changedPaths:git("diff","--name-only","--no-renames",base,proof).split("\n").filter(Boolean)};
+          const plan=planProductExperience(common);
+          if(plan.sourceDigest!==record.sourceDigest||plan.contractDigest!==record.contractDigest||plan.contracts.length!==31)
+           throw Error("Capture source or contract plan changed");
+          for(const review of record.reviews){
+           const contract=plan.contracts.find(item=>item.id===review.contractId);
+           if(!contract) throw Error("Review contract disappeared");
+           const media=record.artifacts.filter(item=>item.contractId===contract.id).map(({id,sha256})=>({id,sha256}));
+           const binding={sourceDigest:plan.sourceDigest,contract,artifacts:media};
+           const former=experienceDigest({...binding,...(contract.experience.pairedEvidence?{pairedEvidence:original.pairedEvidence}:{})});
+           if(former!==review.packetDigest) throw Error("Original review packet differs: "+contract.id);
+           review.packetDigest=experienceDigest({...binding,...(contract.experience.pairedEvidence?{pairedEvidence:record.pairedEvidence}:{})});
+          }
+          const manifest=prefix+"published-receipt-normalization.json";
+          writeFileSync(recordPath,await format(recordPath,JSON.stringify(record)));
+          writeFileSync(manifest,await format(manifest,JSON.stringify({
+           captureArtifactId:14836984644,
+           captureArchiveSha256:"b287092438f36332a011d990716f649d1fcab6e1fa90065d553a3f5f8f5c9b29",
+           originalGitCommit:proof,
+           verification:"Each formatted file parsed to the same JSON as its producer original. The original bytes remain in the immutable capture archive and parent commit.",
+           receipts:provenance,
+          })));
+          console.log("Verified JSON-only formatting for "+paths.length+" captured receipts.");
           EOF
-      - name: Assemble the independently accepted evidence and validate the commit
-        shell: bash
-        run: |
-          directory="$RUNNER_TEMP/harbor-proof"
-          node --check "$directory/evidence.mjs"
-          node "$directory/evidence.mjs" stage "$BASE_SHA" "$CAPTURED_SHA" "$directory" "$directory/reviewers.json" "$(cat "$directory/iterations")"
-          git add --sparse -f -- Development_Docs/Testing/Product_Experience/candidate-review.json "Development_Docs/Testing/Product_Experience/evidence/harbor-901/${CAPTURED_SHA:0:12}"
+          git add --sparse -f -- Development_Docs/Testing/Product_Experience/candidate-review.json Development_Docs/Testing/Product_Experience/evidence/harbor-901/d2d80e1a0c09
+          test "$(git diff --cached --name-only | wc -l)" -eq 7
           git diff --cached --check
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Record independent Product Experience review for Harbor prerequisite"
-          node "$directory/evidence.mjs" verify-commit "$BASE_SHA" "$CAPTURED_SHA"
-          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          git commit -m "Format published receipts and preserve their original provenance"
+          SL_JOB=format node scripts/sounding-line-v3/cli.mjs ci-job --base "$PROTECTED_BASE"
+          node --input-type=module <<'EOF'
+          import { execFileSync } from "node:child_process";
+          import { readFileSync } from "node:fs";
+          import { planProductExperience, verifyProductExperience } from "./scripts/sounding-line/product-experience.mjs";
+          const git=(...args)=>execFileSync("git",args,{encoding:"utf8",maxBuffer:16*1024*1024}).trim();
+          const path="Development_Docs/Testing/Product_Experience/candidate-review.json";
+          const root=process.cwd();
+          const baseSha=process.env.PROTECTED_BASE;
+          const candidateSha=git("rev-parse","HEAD");
+          const changedPaths=git("diff","--name-only","--no-renames",baseSha,candidateSha).split("\n").filter(Boolean);
+          const plan=planProductExperience({root,baseSha,candidateSha,changedPaths});
+          const record=JSON.parse(readFileSync(path,"utf8"));
+          if(git("rev-parse","HEAD^")!==process.env.PREVIOUS_PROOF || plan.sourceDigest!==record.sourceDigest ||
+           plan.contractDigest!==record.contractDigest || plan.contracts.length!==31 ||
+           verifyProductExperience(root,candidateSha,plan).status!=="PASS") throw Error("Formatted proof did not verify");
+          console.log(JSON.stringify({status:"PASS",proofSha:candidateSha,sourceDigest:plan.sourceDigest,contracts:plan.contracts.length}));
+          EOF
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$PROTECTED_BASE"
           test -z "$(git ls-remote origin "$PROOF_REF")"
           git push origin "HEAD:$PROOF_REF"
           test "$(git ls-remote origin "$PROOF_REF" | cut -f1)" = "$(git rev-parse HEAD)"
-          printf 'HARBOR_REVIEW_PROOF_SHA=%s\n' "$(git rev-parse HEAD)"
-
+          printf 'HARBOR_FORMATTED_PROOF_SHA=%s\n' "$(git rev-parse HEAD)"
