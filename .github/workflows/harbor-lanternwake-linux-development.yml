@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Journal replay experiment for shadow and binding compositing
+run-name: Chromium timing trace for desktop Journal Book Settling
 
 on:
   push:
@@ -58,7 +58,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Compare actual desktop Journal replay with and without book filters
+      - name: Trace real desktop Journal replay and compare instrumentation overhead
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -72,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-book-filter-comparison
+          name: journal-book-settling-trace
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
