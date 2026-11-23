@@ -111,7 +111,45 @@ async function writePerformanceArtifact(
   await fs.writeFile(artifactPath, serialized, "utf8");
 }
 
+async function installPageFlipClassProbe(page: Page) {
+  const mode = process.env.HARBOR_PAGEFLIP_CLASS_PROBE;
+  if (mode !== "original" && mode !== "coalesced") throw new Error("Unknown diagnostic PageFlip lane");
+  await page.addInitScript((mode) => {
+    const stats = { mode, noOpAdds: 0, noOpRemoves: 0, realChanges: 0 };
+    Object.defineProperty(window, "__harborPageFlipClassProbe", { value: stats });
+    const prototype = DOMTokenList.prototype;
+    const add = prototype.add;
+    const remove = prototype.remove;
+    prototype.add = function (...tokens) {
+      if (tokens.length === 1 && tokens[0] === "--simple" && this.contains("stf__item")) {
+        if (!this.contains("--simple")) stats.realChanges++;
+        else {
+          stats.noOpAdds++;
+          if (mode === "coalesced") return;
+        }
+      }
+      add.apply(this, tokens);
+    };
+    prototype.remove = function (...tokens) {
+      if (tokens.length === 1 && tokens[0] === "--simple" && this.contains("stf__item")) {
+        if (this.contains("--simple")) stats.realChanges++;
+        else {
+          stats.noOpRemoves++;
+          if (mode === "coalesced") return;
+        }
+      }
+      remove.apply(this, tokens);
+    };
+  }, mode);
+}
+
+async function printPageFlipClassProbe(page: Page, route: string) {
+  const stats = await page.evaluate(() => Reflect.get(window, "__harborPageFlipClassProbe") ?? null);
+  if (!stats) throw new Error("Missing PageFlip class write diagnostic");
+  console.log("HARBOR_PAGEFLIP_CLASS_PROBE " + JSON.stringify({ route, ...stats }));
+}
 async function installRuntimeCounter(page: Page) {
+  await installPageFlipClassProbe(page);
   await page.addInitScript(() => {
     const runtimeWindow = window as unknown as Window & { __phase3RuntimeCounter?: JournalRuntimeProbe };
     let activeEventSources = 0;
@@ -695,6 +733,7 @@ phase3Test(
     await expect(page.getByRole("heading", { name: "My Chronicle Library" })).toBeVisible();
     await waitAnimationFrames(page, 30);
     const ordinaryVisual = await stopVisualProbe(page);
+    await printPageFlipClassProbe(page, "desktop");
 
     const openingVisuals = [...desktopRuns, ...mobileRuns, skipVisual];
     const desktopFrames = desktopRuns.flatMap((run) => [...run.frameDurationsMs]);
