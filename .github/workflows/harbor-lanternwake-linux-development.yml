@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Matched Journal benchmark browser and recording comparison
+run-name: Compiled Journal paint and Skip handoff witness
 
 on:
   push:
@@ -15,15 +15,8 @@ jobs:
   benchmark:
     name: Phase 3 performance only (development)
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [shell, chromium]
-        capture: [record, no-record]
     timeout-minutes: 22
     env:
-      JOURNAL_COMPARE_BROWSER: ${{ matrix.browser }}
-      JOURNAL_COMPARE_CAPTURE: ${{ matrix.capture }}
       CANDIDATE_SHA: ${{ github.sha }}
       BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
       FOREVER_VALIDATION_SOURCE_SHA: ${{ github.sha }}
@@ -65,7 +58,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Run the full canonical Journal performance benchmark from the candidate source
+      - name: Witness the live book layers at settling, ready and Skip
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
@@ -79,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-matched-${{ matrix.browser }}-${{ matrix.capture }}
+          name: journal-source-paint-witness
           path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
           if-no-files-found: ignore
           retention-days: 30
