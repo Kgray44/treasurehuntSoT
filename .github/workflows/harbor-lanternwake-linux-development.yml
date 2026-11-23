@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Prepare bounded independent review media from the exact capture
+run-name: Compare protected main and the exact candidate with the same Journal workload
 
 on:
   push:
@@ -9,95 +9,101 @@ on:
       - .github/workflows/harbor-lanternwake-linux-development.yml
 
 permissions:
-  actions: read
   contents: read
 
 jobs:
-  review-media:
+  exact-source-comparison:
+    name: Same-runner protected-main control
     runs-on: ubuntu-24.04
-    timeout-minutes: 16
+    timeout-minutes: 22
     env:
-      CAPTURE_RUN: "45170706520"
-      CAPTURE_ID: "14820371919"
-      CAPTURE_DIGEST: sha256:15366d93e8077f0edafc9194fba3f610e8cbd6b53d645764e121d05c6639b341
-      SOURCE_SHA: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
-      SOURCE_DIGEST: 296fb46b196ffa8526d689958eeee6334a6f490d3369af31b693ac2aaebf874f
-      CONTRACT_DIGEST: 3c02f34674640c190d4c0e168882b42171624389887c4a6a2668c9bd4ae0755c
+      CANDIDATE_SHA: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
       BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
+      FOREVER_VALIDATION_SOURCE_SHA: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
+      NEXT_TELEMETRY_DISABLED: "1"
     steps:
-      - name: Verify and retrieve the immutable capture
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - uses: actions/checkout@v4
+        with:
+          ref: 61d5cf2f0a71432f47c808e1f5084f6d6f130d18
+          fetch-depth: 16
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
+            /scripts/
+            /src/
+            /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Install locked dependencies and Chromium
         run: |
-          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$CAPTURE_ID" |
-            jq -e --arg digest "$CAPTURE_DIGEST" --arg run "$CAPTURE_RUN"               '.digest==$digest and (.workflow_run.id|tostring)==$run and (.expired|not) and .size_in_bytes<3000000000'
-          gh run download "$CAPTURE_RUN" --repo "$GITHUB_REPOSITORY"             --name harbor-shared-source-bound-experience --dir "$RUNNER_TEMP/original-experience"
-      - name: Hash-check the actual media and retain source-bound review packets
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install chromium
+      - name: Compare protected main and candidate under the canonical workload
         run: |
-          node --input-type=module <<'EOF'
-          import { readFile, writeFile, mkdir, copyFile, readdir, lstat } from "node:fs/promises";
-          import { createHash } from "node:crypto";
-          import { join, dirname } from "node:path";
-          const original = join(process.env.RUNNER_TEMP, "original-experience");
-          const target = join(process.env.RUNNER_TEMP, "review-media");
-          const receipt = JSON.parse(await readFile(join(original, "development-capture-receipt.json"), "utf8"));
-          const capture = JSON.parse(await readFile(join(original, "capture.json"), "utf8"));
-          if (receipt.candidate !== process.env.SOURCE_SHA || receipt.status !== "PASS" ||
-              capture.baseSha !== process.env.BASE_SHA || capture.sourceDigest !== process.env.SOURCE_DIGEST ||
-              capture.contractDigest !== process.env.CONTRACT_DIGEST || receipt.contracts.length !== 31)
-            throw new Error("Capture identity does not match the candidate");
-          const prefix = "artifacts/sounding-line/harbor-shared-experience/";
-          const planned = new Map();
-          for (const artifact of capture.artifacts) {
-            if (!artifact.path.startsWith(prefix)) throw new Error("Unexpected evidence path");
-            if (!["recording", "screenshot"].includes(artifact.type)) continue;
-            const file = artifact.path.slice(prefix.length);
-            if (!/.(webm|png)$/u.test(file) || file.split("/").some(part => !part || part === "." || part === "..") ||
-                file.includes("\\")) throw new Error("Media path is invalid");
-            if (planned.has(file) && planned.get(file) !== artifact.sha256) throw new Error("Conflicting media identity");
-            planned.set(file, artifact.sha256);
-          }
-          let total = 0;
-          for (const [file, sha256] of planned) {
-            const source = join(original, file);
-            const stat = await lstat(source);
-            if (!stat.isFile() || stat.size > 16 * 1024 * 1024) throw new Error("Unbounded media item");
-            total += stat.size;
-            if (total > 400 * 1024 * 1024) throw new Error("Review media exceeds its transport bound");
-            if (createHash("sha256").update(await readFile(source)).digest("hex") !== sha256)
-              throw new Error("Evidence hash mismatch: " + file);
-            const destination = join(target, file);
-            await mkdir(dirname(destination), { recursive: true });
-            await copyFile(source, destination);
-          }
-          async function copyJson(directory = "") {
-            for (const entry of await readdir(join(original, directory), { withFileTypes: true })) {
-              const relative = join(directory, entry.name);
-              if (entry.isDirectory()) await copyJson(relative);
-              if (!entry.isFile() || !entry.name.endsWith(".json")) continue;
-              const file = join(original, relative);
-              const stat = await lstat(file);
-              total += stat.size;
-              if (total > 410 * 1024 * 1024 || stat.size > 8 * 1024 * 1024) throw new Error("Unbounded review metadata");
-              const destination = join(target, relative);
-              await mkdir(dirname(destination), { recursive: true });
-              await copyFile(file, destination);
-            }
-          }
-          await copyJson();
-          const output = {
-            captureArtifactId: Number(process.env.CAPTURE_ID), archiveDigest: process.env.CAPTURE_DIGEST,
-            baseSha: capture.baseSha, candidateSha: receipt.candidate, sourceDigest: capture.sourceDigest,
-            contractDigest: capture.contractDigest, contracts: receipt.contracts, journeys: capture.journeys.length,
-            reviewMediaFiles: planned.size, bytes: total,
-          };
-          await writeFile(join(target, "media-transport.json"), JSON.stringify(output, null, 2) + "\n");
-          console.log(JSON.stringify(output));
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          prior="$BASE_SHA"
+          git fetch --depth=1 --no-tags origin "$prior"
+          test "$(git rev-parse HEAD:package-lock.json)" = "$(git rev-parse "$prior:package-lock.json")"
+          nproc
+          if [[ -r /sys/fs/cgroup/cpu.max ]]; then cat /sys/fs/cgroup/cpu.max; fi
+          uname -sr
+          lscpu | sed -n '1,20p'
+          for metric in /sys/fs/cgroup/cpu/cpu.cfs_quota_us /sys/fs/cgroup/cpu/cpu.cfs_period_us; do
+            if [[ -r "$metric" ]]; then printf '%s: ' "$metric"; cat "$metric"; fi
+          done
+          result=0
+          for source in "$CANDIDATE_SHA" "$prior"; do
+            git checkout --detach "$source"
+            if [[ "$source" == "$BASE_SHA" ]]; then
+              # Transplant the measured workload only. The product build is protected main.
+              git show "$CANDIDATE_SHA:tests/e2e/phase3-performance.spec.ts" > tests/e2e/phase3-performance.spec.ts
+            fi
+            git diff --name-only
+            git diff --exit-code -- src public prisma
+            test "$(git rev-parse HEAD)" = "$source"
+            test "$(git hash-object tests/e2e/phase3-performance.spec.ts)" = "2e10c383fa2accb79fbad09f92d61631b23e2d78"
+            test "$(git hash-object playwright.config.ts)" = "e43e9912bc263909c58a31ded843a25209761917"
+            printf 'Timing application %s with the canonical benchmark\n' "$source"
+            if FOREVER_VALIDATION_SOURCE_SHA="$source" TIMING_SOURCE="$source" node --input-type=module <<'EOF'
+          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "lanternwake-current-compare", kind: "browser", files: ["tests/e2e/phase3-performance.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.TIMING_SOURCE },
+          );
           EOF
-      - name: Retain screenshots and recordings for independent review
+            then
+              printf '%s PASS\n' "$source"
+            else
+              printf '%s FAILED\n' "$source"
+              result=1
+            fi
+          done
+          exit "$result"
+      - name: Retain both receipts for comparison
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: harbor-current-creator-review-media
-          path: ${{ runner.temp }}/review-media/**
-          if-no-files-found: error
-          retention-days: 15
+          name: protected-main-journal-timing-comparison
+          path: artifacts/sounding-line/lanternwake-phase3-*/**/phase3-performance/*
+          if-no-files-found: warn
+          retention-days: 30
