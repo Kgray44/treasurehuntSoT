@@ -162,7 +162,7 @@ export function browserProfileBatches(profile, files, fullBrowser) {
 }
 
 async function runBrowserProfile(profileId, browserArgs, tree, fullBrowser, shard) {
-  const { browserSuiteProfiles, isolatedBrowserFixtureCredentials } = await import(
+  const { browserSuiteProfiles, isolatedBrowserFixtureCredentials, sealedHoldBrowserFixtureEnvironment } = await import(
     "../sounding-line/browser-suite-profiles.mjs"
   );
   const profile = browserSuiteProfiles[profileId];
@@ -175,6 +175,7 @@ async function runBrowserProfile(profileId, browserArgs, tree, fullBrowser, shar
   const db = resolve(profileRoot, "validation-isolated-19700101-000000000-" + identity + ".db");
   const env = {
     ...profile.environment,
+    ...sealedHoldBrowserFixtureEnvironment(profileId, process.cwd()),
     DATABASE_URL: "file:" + db.replaceAll("\\", "/"),
     SOUNDING_LINE_SUITE_PROFILE: profileId,
     SOUNDING_LINE_TASK_OWNED_HTTP: "1",
