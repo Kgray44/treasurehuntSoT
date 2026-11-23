@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Verify spatial authoring and finish the landed Studio Exchange smoke
+run-name: Trace Creator keyboard focus after the spatial authoring flows
 
 on:
   push:
@@ -12,19 +12,19 @@ permissions:
   contents: read
 
 jobs:
-  spatial-browser:
-    name: Exact spatial provenance browser candidate
+  browser-probe:
+    name: Creator focus geometry after spatial browser journeys
     runs-on: ubuntu-24.04
     timeout-minutes: 22
     env:
-      CANDIDATE_SHA: f64c047c2515910e9119f237950e6ef553b860e7
+      CANDIDATE_SHA: 21e333c35b800eb368d7b8cf6fb0f0a2f1da312f
       BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: f64c047c2515910e9119f237950e6ef553b860e7
+      FOREVER_VALIDATION_SOURCE_SHA: 21e333c35b800eb368d7b8cf6fb0f0a2f1da312f
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: f64c047c2515910e9119f237950e6ef553b860e7
+          ref: 21e333c35b800eb368d7b8cf6fb0f0a2f1da312f
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
@@ -58,75 +58,15 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install chromium
-      - name: Run the spatial authoring and complete Pilot journeys
+      - name: Run spatial authoring and Creator moderation against the provenance repair
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD^{tree})" = "f6b7777a4d3d9ba2844974ab39740e690bd02169"
+          test "$(git rev-parse HEAD^{tree})" = "df829ed9340011b5f63efbede7a8be87bc773f6d"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           node --input-type=module <<'EOF'
           import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
           await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-studio.spec.ts","tests/e2e/parallax-adaptive.spec.ts","tests/e2e/spatial-chronicle-pilot.spec.ts"] },
-            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
-          );
-          EOF
-
-  landed-smoke:
-    name: Studio Exchange landed-tree smoke
-    runs-on: ubuntu-24.04
-    timeout-minutes: 22
-    env:
-      CANDIDATE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      BASE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      FOREVER_VALIDATION_SOURCE_SHA: 00420421bacc6e9b923c5e50852a83a858886131
-      NEXT_TELEMETRY_DISABLED: "1"
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: 00420421bacc6e9b923c5e50852a83a858886131
-          fetch-depth: 2
-          persist-credentials: false
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /*
-            !/*/
-            /.agents/
-            /.github/
-            /bridgewatch/
-            /deploy/
-            /docs/
-            /native/
-            /prisma/
-            /public/
-            /scripts/
-            /src/
-            /testing/
-            /tests/
-            /Development_Docs/**/*.json
-            /Development_Docs/**/*.md
-            /Development_Docs/**/*.mdx
-            /Development_Docs/**/*.yaml
-            /Development_Docs/**/*.yml
-            /Development_Docs/**/*.txt
-            /Development_Docs/**/*.sql
-            /Development_Docs/**/*.csv
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-      - name: Install locked dependencies and Chromium
-        run: |
-          npm ci --ignore-scripts --no-audit --no-fund
-          npx --no-install playwright install chromium
-      - name: Run current Brightwork Studio Exchange suite on the exact protected merge
-        run: |
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
-          test "$(git rev-parse HEAD:tests/e2e/brightwork-stage8-wave4.spec.ts)" = "0c6cd9537e1fdbc8cc0d057c57cc78074a5fe52e"
-          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
-          npx --no-install prettier --check tests/e2e/brightwork-stage8-wave4.spec.ts
-          node --input-type=module <<'EOF'
-          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
-          await runJob(
-            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/brightwork-stage8-wave4.spec.ts"] },
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-adaptive.spec.ts","tests/e2e/parallax-studio.spec.ts","tests/e2e/sc07-creator-community.spec.ts"] },
             { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
           );
           EOF
