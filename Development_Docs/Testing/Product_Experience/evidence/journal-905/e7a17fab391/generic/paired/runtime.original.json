@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+  "baseURL": "http://127.0.0.1:44589",
+  "failureCategory": null,
+  "failureCode": null,
+  "lifecycle": {
+    "capture": "PASS",
+    "fixture": "NOT_STARTED",
+    "cleanup": {
+      "browser": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 0,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": false,
+        "payloadExitCode": 0,
+        "elapsedMs": 7,
+        "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+      },
+      "fixture": {
+        "status": "NOT_STARTED",
+        "treeReaped": true,
+        "streamsClosed": true
+      },
+      "server": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": false,
+        "payloadExitCode": 143,
+        "elapsedMs": 58,
+        "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+      },
+      "proxy": {
+        "status": "PASS"
+      },
+      "portsReleased": true,
+      "status": "PASS"
+    },
+    "cancelled": false
+  },
+  "timings": {
+    "serverPreparationMs": 6,
+    "serverReadinessMs": 1137,
+    "browserExecutionMs": 277431,
+    "infrastructureFailureWaitMs": 0,
+    "cleanupMs": 58
+  },
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "a54c5ff7-2622-4399-9fdd-fbf82c5272e0",
+    "scopeId": "0d82cb25-666b-48d9-9f48-9b1374d29e2a",
+    "baseSha": "9e612bd42dee2561d75dfac9263ac3307d5dee24",
+    "candidateSha": "e7a17fab39173fbd4a18ba53332e2033bf3f69eb",
+    "planDigest": "732ca3e97d125fd474c558642ccdfd5e2fe8c9c95ed66de5e013e83b095f21b6"
+  }
+}

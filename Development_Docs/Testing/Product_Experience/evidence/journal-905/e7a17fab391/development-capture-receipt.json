@@ -1,0 +1,46 @@
+{
+  "candidate": "e7a17fab39173fbd4a18ba53332e2033bf3f69eb",
+  "base": "9e612bd42dee2561d75dfac9263ac3307d5dee24",
+  "status": "PASS",
+  "sourceDigest": "e497fe79c9c76420939c500697a853c3bdb7d1dddd0786d2ddb7de18f6ce7fe4",
+  "contractDigest": "353a6515594fe39c41300eb093e5e1f78ac6e9293a6d3494a77131cd9f20f41f",
+  "profiles": ["generic"],
+  "contracts": [
+    "crossdeck.refit.published-lens",
+    "crossdeck.phase2.continuity",
+    "homeport.shell.crossdeck-companion",
+    "homeport.shell.crossdeck-companion-mobile",
+    "crossdeck.refit.companion"
+  ],
+  "workflowRole": "DEVELOPMENT_CAPTURE",
+  "runId": "45084384259",
+  "artifactId": "14779161607",
+  "archiveSha256": "1a664c202732c1f74a1e95af32f9d8c955e516283327a04506e92c6dbb83892d",
+  "retainedArtifacts": 244,
+  "publishedReceipts": [
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/journal-905/e7a17fab391/generic/paired/playwright-report.json.capture",
+      "originalSha256": "b2e5d943aa52972a36263c01cca9b4029aaa21e03a452321e3df6516bde31301",
+      "publishedPath": "Development_Docs/Testing/Product_Experience/evidence/journal-905/e7a17fab391/generic/paired/playwright-report.json",
+      "publishedSha256": "52313bbc6dabfcce0bab7c33c2074fb1a3be1904a27a71c036a9b21dbd9da01a"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/journal-905/e7a17fab391/generic/paired/refit-no-preference/paired-witness.json.capture",
+      "originalSha256": "f163f62319d4fab0729c4892f4efc2e80c4cc8ea17931efab13bc70ba2627056",
+      "publishedPath": "Development_Docs/Testing/Product_Experience/evidence/journal-905/e7a17fab391/generic/paired/refit-no-preference/paired-witness.json",
+      "publishedSha256": "187604090daaa2811cc3ebcbe2bee2e2ae2f02120bc94c1b264c1d7144b1fa5d"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/journal-905/e7a17fab391/generic/paired/refit-reduce/paired-witness.json.capture",
+      "originalSha256": "67940d4167048259a3cdb883638616cc45b15682764d1a08eb2cbe9be1b32a28",
+      "publishedPath": "Development_Docs/Testing/Product_Experience/evidence/journal-905/e7a17fab391/generic/paired/refit-reduce/paired-witness.json",
+      "publishedSha256": "2d9265fcedebea8293b700390582d0ff49443ffd4bb3f62c9d80757c53c2d2a8"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/journal-905/e7a17fab391/generic/paired/refit-recovery/paired-witness.json.capture",
+      "originalSha256": "bfad762baea3ce7851eb03a50d344d43d592c8b62d3757eb7c011f5cba49b601",
+      "publishedPath": "Development_Docs/Testing/Product_Experience/evidence/journal-905/e7a17fab391/generic/paired/refit-recovery/paired-witness.json",
+      "publishedSha256": "cfc322759676b83121ac15ccc965a27e985b94e4a120267433b6aefd541b28e0"
+    }
+  ]
+}
