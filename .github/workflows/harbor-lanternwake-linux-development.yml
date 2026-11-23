@@ -1,5 +1,5 @@
 name: Lanternwake isolated Linux benchmark
-run-name: Capture repaired reduced-motion Home and Journal route source
+run-name: Matched browser proof scoped to the Home gateway controls
 
 on:
   push:
@@ -13,20 +13,23 @@ permissions:
 
 jobs:
   benchmark:
-    name: Source-bound Journal experience capture
+    name: Reduced-motion Home (${{ matrix.product }})
+    strategy:
+      fail-fast: false
+      matrix:
+        product: [baseline, candidate]
     runs-on: ubuntu-24.04
-    timeout-minutes: 36
+    timeout-minutes: 22
     env:
-      CANDIDATE_SHA: c6cf80f10e1253471a63898ecb55154e8b381ba1
+      CANDIDATE_SHA: ${{ github.sha }}
       BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
-      FOREVER_VALIDATION_SOURCE_SHA: c6cf80f10e1253471a63898ecb55154e8b381ba1
+      FOREVER_VALIDATION_SOURCE_SHA: ${{ github.sha }}
       NEXT_TELEMETRY_DISABLED: "1"
-      SOUNDING_LINE_PR_NUMBER: "906"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: c6cf80f10e1253471a63898ecb55154e8b381ba1
-          fetch-depth: 16
+          ref: ${{ github.sha }}
+          fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
@@ -55,51 +58,40 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Verify the actual protected base and its candidate ancestry
-        run: |
-          git fetch --no-tags --filter=blob:none --depth=16 origin refs/heads/main:refs/remotes/origin/main
-          test "$(git rev-parse origin/main)" = "$BASE_SHA"
-          git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
       - name: Install locked dependencies and Chromium
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install --with-deps chromium
-      - name: Capture real source-bound Product Experience journeys for PR 906
+      - name: Select exact application source
+        env:
+          PRODUCT: ${{ matrix.product }}
+        run: |
+          echo "HOME_PRODUCT_ROLE=$PRODUCT" >> "$GITHUB_ENV"
+          source_sha="$CANDIDATE_SHA"
+          if [ "$PRODUCT" = baseline ]; then
+            git fetch --no-tags --depth=1 origin "$BASE_SHA"
+            git show "$BASE_SHA:src/animation/scenes/arrival.scene.ts" > src/animation/scenes/arrival.scene.ts
+            source_sha="$BASE_SHA"
+          else
+            npx --no-install vitest run src/animation/scenes/scene-builders.test.ts src/components/landing/HarborLanding.test.tsx
+            npx --no-install prettier --check src/animation/scenes/arrival.scene.ts
+          fi
+          echo "HOME_PRODUCT_SOURCE=$source_sha" >> "$GITHUB_ENV"
+      - name: Check continuous heading and action visibility on the actual account-to-Home return
         run: |
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
-          import {execFileSync} from "node:child_process";
-          import {writeFile} from "node:fs/promises";
-          import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
-          import {recognizeExceptionExecution} from "./scripts/sounding-line/experience-exception.mjs";
-          const root = process.cwd();
-          if (recognizeExceptionExecution({root, baseSha: process.env.BASE_SHA, candidateSha: process.env.CANDIDATE_SHA}))
-            throw new Error("Current source was classified as a separate exception campaign");
-          const plan = JSON.parse(execFileSync(process.execPath, [
-            "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
-            "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
-          ], {encoding: "utf8"}));
-          if (!plan.applicable || plan.sourceDigest !== "c08d9cf40ef85c78708529c6d02ae0a83a8f0d3b6e7f0e7669777aebce65cc4e" ||
-              plan.contractDigest !== "4578d749590b9033c43bf566138577f9d32cb249722f3050f98608db287253de")
-            throw new Error("Exact source-bound Product Experience plan required");
-          plan.outputDirectory = "artifacts/sounding-line/journal-906-experience";
-          delete process.env.GH_TOKEN;
-          delete process.env.GITHUB_TOKEN;
-          const receipt = await runTrustedExperienceReplay({
-            root, plan, validateReplay: false,
-            environment: { SOUNDING_LINE_BASE_SHA: plan.baseSha },
-          });
-          if (receipt.status !== "PASS") throw new Error("The actual browser capture did not complete");
-          await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
-            JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
-              sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
-              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "DEVELOPMENT_CAPTURE"}, null, 2) + "\n");
+          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/parallax-shared-consumers.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
+          );
           EOF
-      - name: Retain source-bound synthetic browser review evidence
+      - name: Retain sanitized performance metrics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: journal-906-source-bound-experience
-          path: artifacts/sounding-line/journal-906-experience/**
+          name: journal-906-reduced-home-${{ matrix.product }}
+          path: artifacts/sounding-line/journal-906-reduced-home/**
           if-no-files-found: ignore
           retention-days: 30

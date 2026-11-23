@@ -49,10 +49,9 @@ for(const profile of [{id:"desktop",width:1440,height:900},{id:"mobile",width:39
             const now=performance.now()-start;
             if(location.pathname==="/"){
               homeStarted??=now;
-              const heading=[...document.querySelectorAll("h1,[role=heading]")].find(
-                e=>e.textContent?.includes("Choose your role in Voyagewright"));
-              const action=[...document.querySelectorAll("a,button")].find(
-                e=>e.textContent?.trim()==="Explore Chronicles");
+              const landing=document.querySelector('main.harbor-landing:not([inert]) .gateway-content');
+              const heading=landing?.querySelector("h1")??undefined;
+              const action=landing?.querySelector('.gateway-primary-actions a[href="/tales"]')??undefined;
               samples.push({at:now-homeStarted,heading:visible(heading),action:visible(action)});
             }
             if(homeStarted===undefined?now<20000:now-homeStarted<4000)requestAnimationFrame(tick);
@@ -70,7 +69,7 @@ for(const profile of [{id:"desktop",width:1440,height:900},{id:"mobile",width:39
       await expect(page.getByRole("heading",{name:"Choose your role in Voyagewright"})).toBeVisible();
       const first=frames.findIndex(frame=>frame.heading&&frame.action);
 
-      const gap=frames.findIndex((frame,index)=>index>first&&(!frame.heading||!frame.action));
+      const gap=first<0?-1:frames.findIndex((frame,index)=>index>first&&(!frame.heading||!frame.action));
       const backInView=gap<0?-1:frames.findIndex((frame,index)=>index>gap&&frame.heading&&frame.action);
       const directory="artifacts/sounding-line/journal-906-reduced-home";
       await mkdir(directory,{recursive:true});
@@ -80,6 +79,7 @@ for(const profile of [{id:"desktop",width:1440,height:900},{id:"mobile",width:39
       await writeFile(directory+"/"+profile.id+".json",JSON.stringify(receipt,null,2)+"\n");
       console.log("JOURNAL_REDUCED_HOME_CONTINUITY " + JSON.stringify({...receipt,frames:undefined}));
       await expect(page.getByRole("button",{name:"Motion: reduced. Change motion setting",exact:true})).toBeVisible();
+      await expect(page.locator("main.harbor-landing .gateway-primary-actions").getByRole("link",{name:"Explore Chronicles",exact:true})).toBeVisible();
       expect(first,"Home reached a visible heading and primary link").toBeGreaterThanOrEqual(0);
       expect(gap,"The primary Home action and heading should stay visible after their first paint").toBe(-1);
     });
