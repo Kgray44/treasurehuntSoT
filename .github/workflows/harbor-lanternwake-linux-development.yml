@@ -1,5 +1,5 @@
 name: Validate exact source-bound Journal experience publication
-run-name: Validate captured media and independent review for Journal PR 906
+run-name: Validate Journal experience with path-scoped artifact hydration
 on:
   push:
     branches:
@@ -18,9 +18,14 @@ jobs:
           ref: 09fad8014e2462911364c23d7c7440ef43deebf6
           fetch-depth: 8
           persist-credentials: false
+          sparse-checkout-cone-mode: false
           sparse-checkout: |
-            scripts
-            testing
+            /*
+            !/*/
+            /scripts/
+            /testing/
+            /Development_Docs/Testing/Product_Experience/candidate-review.json
+            /Development_Docs/Testing/Product_Experience/evidence/journal-906/ef6d31b1b8/
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
@@ -57,7 +62,10 @@ jobs:
           GIT_NO_LAZY_FETCH=1 git cat-file --batch-check < "$RUNNER_TEMP/evidence-object-ids" |
             awk '$2=="missing" { print $1 }' > "$RUNNER_TEMP/missing-evidence-object-ids"
           if [[ -s "$RUNNER_TEMP/missing-evidence-object-ids" ]]; then
-            git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin < "$RUNNER_TEMP/missing-evidence-object-ids"
+            split -l 100 "$RUNNER_TEMP/missing-evidence-object-ids" "$RUNNER_TEMP/j906-source-"
+            for batch in "$RUNNER_TEMP"/j906-source-*; do
+              git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin < "$batch"
+            done
           fi
       - name: Run the repository source-bound experience verifier
         env:
