@@ -1,94 +1,162 @@
-name: Validate exact source-bound Journal experience publication
-run-name: Validate Journal evidence with hash-checked base hydration
+name: Lanternwake isolated Linux benchmark
+run-name: Journal source-equivalent recapture and corrected listener probe
+
 on:
   push:
     branches:
       - codex/lanternwake-focused-development-cf6b1d6bbae4
     paths:
       - .github/workflows/harbor-lanternwake-linux-development.yml
+
 permissions:
   contents: read
+
 jobs:
-  validate-evidence:
+  benchmark:
+    name: Source-bound Journal experience capture
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 36
+    env:
+      CANDIDATE_SHA: a29968b8e408641b0dda03007dc30a7ee6d62908
+      BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
+      FOREVER_VALIDATION_SOURCE_SHA: a29968b8e408641b0dda03007dc30a7ee6d62908
+      NEXT_TELEMETRY_DISABLED: "1"
+      SOUNDING_LINE_PR_NUMBER: "906"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 09fad8014e2462911364c23d7c7440ef43deebf6
-          fetch-depth: 8
+          ref: a29968b8e408641b0dda03007dc30a7ee6d62908
+          fetch-depth: 16
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /*
             !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
             /scripts/
-            /testing/
             /src/
-            /app/
-            /components/
-            /lib/
-            /styles/
-            **/*.json
-            /Development_Docs/Testing/Product_Experience/evidence/journal-906/ef6d31b1b8/
+            /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Hydrate exact source and published media objects
-        env:
-          GH_TOKEN: ${{ github.token }}
-          BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
-          CANDIDATE_SHA: 09fad8014e2462911364c23d7c7440ef43deebf6
+      - name: Verify the actual protected base and its candidate ancestry
         run: |
-          git fetch --no-tags --depth=8 --filter=blob:none origin refs/heads/main:refs/remotes/origin/main
+          git fetch --no-tags --filter=blob:none --depth=16 origin refs/heads/main:refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "$BASE_SHA"
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           git merge-base --is-ancestor "$BASE_SHA" "$CANDIDATE_SHA"
-          node --input-type=module > "$RUNNER_TEMP/evidence-object-ids" <<'EOF'
-          import { execFileSync } from "node:child_process";
-          import { sourceSnapshotReadsPath } from "./scripts/sounding-line/product-experience.mjs";
-          const git=(args)=>execFileSync("git",args,{encoding:"utf8",maxBuffer:64*1024*1024});
-          const recordPath="Development_Docs/Testing/Product_Experience/candidate-review.json";
-          const receipt=JSON.parse(git(["show",process.env.CANDIDATE_SHA+":"+recordPath]));
-          const pair=receipt.pairedEvidence;
-          const evidenceFiles=new Set([recordPath,...receipt.artifacts.map(a=>a.path),pair.report.path,pair.profile.path,pair.runtime.path,...pair.cases.map(c=>c.witness.path)]);
-          const ids=new Set();
-          for (const revision of [process.env.BASE_SHA,process.env.CANDIDATE_SHA]) {
-            for (const entry of git(["ls-tree","-rz",revision]).split("\0").filter(Boolean)) {
-              const i=entry.indexOf("\t");
-              const [,type,oid]=entry.slice(0,i).split(" ");
-              const file=entry.slice(i+1);
-              if(type==="blob" && (sourceSnapshotReadsPath(file) || (revision===process.env.CANDIDATE_SHA && evidenceFiles.has(file)))) {
-                ids.add(oid);
-              }
-            }
-          }
-          console.log([...ids].sort().join("\n"));
-          EOF
-          GIT_NO_LAZY_FETCH=1 git cat-file --batch-check < "$RUNNER_TEMP/evidence-object-ids" |
-            awk '$2=="missing" { print $1 }' > "$RUNNER_TEMP/missing-evidence-object-ids"
-          count=$(wc -l < "$RUNNER_TEMP/missing-evidence-object-ids")
-          echo "Missing objects after path checkout: $count"
-          test "$count" -le 100
-          while IFS= read -r oid; do
-            actual=$(gh api "repos/Kgray44/treasurehuntSoT/git/blobs/$oid" --jq '.content' | base64 --decode | git hash-object -w --stdin)
-            test "$actual" = "$oid"
-          done < "$RUNNER_TEMP/missing-evidence-object-ids"
-      - name: Run the repository source-bound experience verifier
-        env:
-          BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
-          CANDIDATE_SHA: 09fad8014e2462911364c23d7c7440ef43deebf6
+      - name: Install locked dependencies and Chromium
         run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install --with-deps chromium
+      - name: Capture real source-bound Product Experience journeys for PR 906
+        run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           node --input-type=module <<'EOF'
-          import { execFileSync } from "node:child_process";
-          import { planProductExperience, verifyProductExperience } from "./scripts/sounding-line/product-experience.mjs";
-          const root=process.cwd();
-          const baseSha=process.env.BASE_SHA;
-          const candidateSha=process.env.CANDIDATE_SHA;
-          const changedPaths=execFileSync("git",["diff","--name-only","--no-renames",baseSha,candidateSha],{encoding:"utf8",maxBuffer:8*1024*1024}).trim().split("\n");
-          const plan=planProductExperience({root,baseSha,candidateSha,changedPaths});
-          if(!plan.applicable || plan.sourceDigest!=="130e633947cb7b6ed66572184f0ee61a765fbad3912b50339ed707f3c6d7404e" || plan.contractDigest!=="4578d749590b9033c43bf566138577f9d32cb249722f3050f98608db287253de") throw new Error("Expected verified source and contract boundaries");
-          const receipt=verifyProductExperience(root,candidateSha,plan);
-          console.log("JOURNAL_906_EXPERIENCE_VERIFICATION "+JSON.stringify({baseSha,candidateSha,receipt}));
-          if(receipt.status!=="PASS") throw new Error("Product Experience evidence did not pass");
+          import {execFileSync} from "node:child_process";
+          import {writeFile} from "node:fs/promises";
+          import {runTrustedExperienceReplay} from "./scripts/sounding-line/experience-browser.mjs";
+          import {recognizeExceptionExecution} from "./scripts/sounding-line/experience-exception.mjs";
+          const root = process.cwd();
+          if (recognizeExceptionExecution({root, baseSha: process.env.BASE_SHA, candidateSha: process.env.CANDIDATE_SHA}))
+            throw new Error("Current source was classified as a separate exception campaign");
+          const plan = JSON.parse(execFileSync(process.execPath, [
+            "scripts/sounding-line/experience-browser.mjs", "--base", process.env.BASE_SHA,
+            "--candidate", process.env.CANDIDATE_SHA, "--plan", "true",
+          ], {encoding: "utf8"}));
+          if (!plan.applicable || plan.sourceDigest !== "130e633947cb7b6ed66572184f0ee61a765fbad3912b50339ed707f3c6d7404e" ||
+              plan.contractDigest !== "4578d749590b9033c43bf566138577f9d32cb249722f3050f98608db287253de")
+            throw new Error("Exact source-bound Product Experience plan required");
+          plan.outputDirectory = "artifacts/sounding-line/journal-906-experience";
+          delete process.env.GH_TOKEN;
+          delete process.env.GITHUB_TOKEN;
+          const receipt = await runTrustedExperienceReplay({
+            root, plan, validateReplay: false,
+            environment: { SOUNDING_LINE_BASE_SHA: plan.baseSha },
+          });
+          if (receipt.status !== "PASS") throw new Error("The actual browser capture did not complete");
+          await writeFile(plan.outputDirectory + "/development-capture-receipt.json",
+            JSON.stringify({candidate: plan.candidateSha, base: plan.baseSha, status: receipt.status,
+              sourceDigest: plan.sourceDigest, contractDigest: plan.contractDigest, profiles: receipt.profiles,
+              contracts: plan.contracts.map((contract) => contract.id), workflowRole: "DEVELOPMENT_CAPTURE"}, null, 2) + "\n");
+          EOF
+      - name: Retain source-bound synthetic browser review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: journal-906-source-bound-experience
+          path: artifacts/sounding-line/journal-906-experience/**
+          if-no-files-found: ignore
+          retention-days: 30
+  browser-probe:
+    name: Journal reopening listener probe
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    env:
+      CANDIDATE_SHA: a29968b8e408641b0dda03007dc30a7ee6d62908
+      BASE_SHA: fc813a4c03a4916c6b0aab346abbb8b1caa8cf38
+      FOREVER_VALIDATION_SOURCE_SHA: a29968b8e408641b0dda03007dc30a7ee6d62908
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: a29968b8e408641b0dda03007dc30a7ee6d62908
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /deploy/
+            /docs/
+            /native/
+            /prisma/
+            /public/
+            /scripts/
+            /src/
+            /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Install locked dependencies and Chromium
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install --with-deps chromium
+      - name: Verify all Journal lifecycle cases with per-return listener observations
+        run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          npx --no-install prettier --check tests/e2e/lanternwake-journal.spec.ts
+          node --input-type=module <<'EOF'
+          import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+          await runJob(
+            { id: "lanternwake-linux-development", kind: "browser", files: ["tests/e2e/lanternwake-journal.spec.ts"] },
+            { base: process.env.BASE_SHA, tree: process.env.CANDIDATE_SHA },
+          );
           EOF
