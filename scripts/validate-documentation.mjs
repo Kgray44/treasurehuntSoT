@@ -85,7 +85,7 @@ function parseFrontmatter(text) {
   return Object.fromEntries(
     match[1]
       .split(/\r?\n/)
-      .filter(Boolean)
+      .filter((line) => line.includes(":"))
       .map((line) => {
         const pivot = line.indexOf(":");
         return [line.slice(0, pivot).trim(), line.slice(pivot + 1).trim()];
@@ -129,7 +129,8 @@ export async function validate(root = process.cwd()) {
       if (!(await exists(path.resolve(path.dirname(file), local))))
         failures.push(`broken link in ${relative}: ${target}`);
     }
-    const isExemption = relative === "Development_Docs/Engineering/Repository_Operations/developer/documentation-governance.md";
+    const isExemption =
+      relative === "Development_Docs/Engineering/Repository_Operations/developer/documentation-governance.md";
     if (!isExemption)
       for (const pattern of forbidden)
         if (pattern.test(text)) failures.push(`restricted automation language in ${relative}: ${pattern}`);
